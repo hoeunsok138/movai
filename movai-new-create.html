@@ -148,6 +148,11 @@
         <button class="seg-btn" id="signinBtn" type="button">Sign In</button>
       </div>
       <div class="hint">Sign in with your MovAi Gmail and password.</div>
+      <div class="hint" style="text-align:center;margin:12px 0 0">or</div>
+      <div id="googleBtn" style="margin-top:10px"></div>
+      <div class="rowline" style="margin-top:10px" id="googleFallback" hidden>
+        <button class="seg-btn" id="googleFallbackBtn" type="button">Continue with Google</button>
+      </div>
       <div class="err" id="loginErr" hidden></div>
     </div>
     <div class="field" id="userBox" hidden>
@@ -229,6 +234,7 @@
   var SESSION_KEY = "movai-session"; // old site: plain email string
   var USER_KEY = "movai-user"; // cached user object (name + balances)
   var MODEL_KEY = "movai-song-model"; // old site key, shared with the old site
+  var GIS_CLIENT_ID = "809358546010-dspkik0o4ahg7km15dspro5cj3qjk384.apps.googleusercontent.com"; // same client the server trusts (server.js MOVAI_GOOGLE_CLIENT_ID)
 
   // Style presets — exact names + style text copied from the old site.
   var PRESETS = {"🥹Sad.Trap💔": "Emotional Sad Melodic Trap, Deep Heartbreak Ballad, 72 BPM, minor key, haunting soft piano intro, emotional cinematic violin strings, atmospheric pads, deep warm 808 bass, slow trap drums, subtle hi-hats, emotional male vocal with slightly raspy and trembling voice, intimate verses, powerful heartbreaking chorus, vulnerable crying vocal delivery, beautiful melodic hooks, dramatic instrumental drop, piano-only emotional bridge, cinematic outro, melancholic atmosphere, deeply touching, tearjerking, professional studio production, modern emotional trap sound.", "😔 Sad Trap 💔": "Sad Emotional Melodic Hip Hop, Fast Male Rap Flow, Slow 72 BPM Instrumental, Deep Heartbroken Male Voice, Rapid Double-Time Rap Verses, Slow Melancholic Piano Melody, Soft Emotional Strings, Deep 808 Bass, Slow Hip Hop Drums, Atmospheric Pads, Clear English Pronunciation, Rhythmic Fast Rap Delivery, Emotional Melodic Singing Chorus, Lonely Night Mood, One-Sided Love, Painful Storytelling, Crying Vocal Texture, Cinematic Piano Bridge, Powerful Final Chorus, Professional Studio Quality.", "😭 Sad💔": "Male Khmer emotional sad ballad, heartbreaking vocal, deep sorrowful male voice, emotional melodic singing, crying vocal delivery, painful storytelling rap, melodic rap, slow tempo 68-74 BPM, minor key, cinematic piano, acoustic guitar, emotional strings, atmospheric pads, deep bass, soft trap drums, powerful emotional chorus, dramatic vocal climax, intimate verse, tearjerking outro, high quality studio production.", "💔Sad Drama😔": "Extremely Sad Khmer Emotional Ballad, Deep Mature Male Solo Vocal, Slow Tempo  sixty-two BPM, Heartbreaking Piano Intro, Emotional Acoustic Guitar, Sad Cinematic Violin, Deep Warm Male Voice, Emotional Storytelling, Painful and Melancholic Atmosphere, Soft Whispering Intro, Powerful Emotional Chorus, Dramatic Violin Instrumental Solo, Emotional Vocal Expression, Slow Piano Outro, Khmer Language Lyrics, 5-6 Minutes Song, No Female Vocal, No Duet.", "💔Pop Ballad ♥️": "Khmer Countryside Sad Song, Traditional Khmer Rural Ballad, Deep Emotional Male Solo Vocal, Heartbroken Love Story, Painful Family Conflict, Feeling Worthless and Broken, Extremely Sad Melancholic Mood, Slow Khmer Country Rhythm, Traditional Khmer Acoustic Guitar, Sad Tro Sau and Khmer Flute, Emotional Violin, Soft Traditional Khmer Instrumentation, Rural Village Atmosphere, Lonely Male Singing, Crying and Trembling Vocal, Deep Emotional Storytelling, Powerful Heartbreaking Chorus, Slow Tempo 60-65 BPM, Nostalgic Countryside Feeling, No Female Vocal, No Rap, Authentic Khmer Sad Music.", "♥️បទបែបស្រែ🥰": "Authentic Traditional Khmer Countryside Sad Ballad, Deep Emotional Male Solo Vocal, Extremely Heartbreaking Tearful Singing, Crying and Trembling Voice, Slow Tempo 58-62 BPM, Traditional Khmer Khloy Flute, Khmer Tro Sau, Tro Khmer, Chapey Dang Veng, Soft Acoustic Guitar, Traditional Khmer Wind Instruments, Emotional Violin, Gentle Piano, Rural Cambodian Village Atmosphere, Rice Fields at Sunset, Poor Man's Unrequited Love Story, Deep Sad Storytelling, Powerful Crying Chorus, Dramatic Final Chorus, Long Traditional Instrumental Solo, No Female Vocal, No Rap, No Electronic Dance Beat, Pure Khmer Rural Music.", "😔Trap Sad Hip-hop💔": "Slow Tempo 58-62 BPM, Trap, Sad, Hip-hop Reaper, male vocals", "😈Freestyle Rep BassTrap🫨": "Hip-hop, Freestyle, Rep, Bass, Trap", "🤙កន្ទ្រឹម💃": "Authentic Traditional Khmer Kantreum Folk Music, Joyful Cambodian Folk Dance Song, Ramvong Circle Dance Rhythm, Jrochak Traditional Dance Beat, Lam Lao Singing Style, Saravan Dance Rhythm, Deep Emotional Male Solo Vocal, Traditional Khmer Tro Sau, Tro Khmer, Khloy Flute, Chapey Dang Veng, Traditional Khmer Drums, Festive Village Celebration Atmosphere, Upbeat Danceable Tempo, Khmer Language Lyrics, No Female Vocal, No Rap, Pure Traditional Khmer Folk Music.", "😭Sad Emotional Rap💔": "Khmer Male Emotional Vocal, Deep Sad Trap, Emotional Hip Hop, Cinematic Piano, Dark Ambient Pads, Heavy 808 Bass, Powerful Drums, Melodic Rap, Raw Heartbroken Male Voice, Deep Expressive Vocal, Soft Intimate Verses, Explosive Screaming Chorus, Aggressive Emotional Belting, Crying Vocal Texture, Dynamic Vocal Build-up, Dramatic Strings, Atmospheric Sound Design, Powerful Final Chorus, Slow Emotional Intro, Modern Khmer Music Production, 75 BPM, High Quality Studio Production.", "💃កន្ទ្រឹម EDM🥲": "Khmer Traditional Kantrem Remix Dance, Modern Khmer Kantrem EDM, High Energy Dance Beat, Bouncy Rhythmic Drums, Catchy Synth Melody, Traditional Khmer Instrument Fusion, Deep Punchy Bass, Playful Melodic Vocal Runs, Male Khmer Vocal, Emotional Romantic Lyrics with a Happy Dance Feeling, Catchy Repeating Chorus, Melodic Call and Response, Energetic Instrumental Breaks, Creative Melody Variations, Festival Party Atmosphere, Professional Studio Production, 130 BPM, 4:30 to 5:00 minutes."};
@@ -436,6 +442,88 @@
     resultsEl.innerHTML = "";
     resultSongs = [];
   });
+
+  /* ---- Continue with Google (same flow as the old site) ----
+     Google Identity Services gives an ID token; the email + name are
+     decoded from it and POST /api/admin/sync creates the user on first
+     sync (0/0 credits; the gift comes only from CLAIM later). A Gmail
+     with no account yet cannot sign in by password — it must come
+     through Google first (server order), so this button is the way in. */
+  var googleBtnWrap = document.getElementById("googleBtn");
+  var googleFallback = document.getElementById("googleFallback");
+  var googleFallbackBtn = document.getElementById("googleFallbackBtn");
+  var gisLoading = false, gisReady = false, gisQueue = [];
+  function gisDecodeJwt(t){
+    try {
+      var parts = String(t || "").split(".");
+      if (parts.length < 2) return null;
+      var b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4) b64 += "=";
+      return JSON.parse(decodeURIComponent(escape(atob(b64))));
+    } catch (e) { return null; }
+  }
+  function gisOnCredential(resp){
+    var p = resp && resp.credential ? gisDecodeJwt(resp.credential) : null;
+    if (!p || !p.email) { showLoginErr("Google sign-in failed. Please try again."); return; }
+    var email = String(p.email).toLowerCase();
+    var name = (p.name || email.split("@")[0] || "").toString().slice(0, 100);
+    signinBtn.disabled = true;
+    apiPost("/api/admin/sync", { email: email, name: name }, 30000).then(function(j){
+      signinBtn.disabled = false;
+      if (!j || j.ok !== true || !j.user) {
+        showLoginErr(j && j.error ? j.error : "Google sign-in failed. Please try again.");
+        return;
+      }
+      user = j.user;
+      setSession(user.email);
+      saveStored(user);
+      loginPass.value = "";
+      renderAccount();
+      refreshBalance();
+    }).catch(function(){
+      signinBtn.disabled = false;
+      showLoginErr("Could not reach the server. Please check your connection and try again.");
+    });
+  }
+  function gisRenderButton(){
+    if (!window.google || !google.accounts || !google.accounts.id) return false;
+    try {
+      google.accounts.id.initialize({ client_id: GIS_CLIENT_ID, callback: gisOnCredential, auto_select: false, cancel_on_tap_outside: true });
+      google.accounts.id.renderButton(googleBtnWrap, { theme: "outline", size: "large", width: googleBtnWrap.clientWidth || 320 });
+      return true;
+    } catch (e) { return false; }
+  }
+  function gisEnsure(cb){
+    if (gisReady) { cb(true); return; }
+    gisQueue.push(cb);
+    if (gisLoading) return;
+    gisLoading = true;
+    var s = document.createElement("script");
+    s.src = "https://accounts.google.com/gsi/client";
+    s.async = true;
+    s.defer = true;
+    s.onload = function(){
+      gisLoading = false;
+      gisReady = gisRenderButton();
+      var q = gisQueue; gisQueue = [];
+      q.forEach(function(f){ try { f(gisReady); } catch (e) {} });
+      if (!gisReady && googleFallback) googleFallback.hidden = false;
+    };
+    s.onerror = function(){
+      gisLoading = false;
+      var q = gisQueue; gisQueue = [];
+      q.forEach(function(f){ try { f(false); } catch (e) {} });
+      if (googleFallback) googleFallback.hidden = false;
+    };
+    document.head.appendChild(s);
+  }
+  if (googleFallbackBtn) googleFallbackBtn.addEventListener("click", function(){
+    gisEnsure(function(ok){
+      if (!ok) { showLoginErr("Could not load Google sign-in. Please try again."); return; }
+      try { google.accounts.id.prompt(); } catch (e) { showLoginErr("Google sign-in failed. Please try again."); }
+    });
+  });
+  gisEnsure(function(){ /* button rendered when ready; fallback shows on failure */ });
 
   /* ---- lyrics counter ---- */
   function updateCount(){

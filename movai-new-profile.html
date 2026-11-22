@@ -133,6 +133,9 @@
       <input class="field" id="passwordInput" type="password" autocomplete="current-password"
         placeholder="Your MovAi password">
       <button class="primary-btn" id="signInBtn" type="button">Sign In</button>
+      <p class="note" style="text-align:center;margin:12px 0 0">or</p>
+      <div id="googleBtn" style="margin-top:10px"></div>
+      <button class="primary-btn" id="googleFallbackBtn" type="button" hidden>Continue with Google</button>
       <p class="msg" id="loginMsg" role="alert"></p>
       <p class="note">Sign in with the Gmail and password of your MovAi account.</p>
     </div>
@@ -173,6 +176,7 @@
   var SAVED_KEY = "movai_saved_account";   // same key as the old site: {email, rememberToken, ...}
   var ADMIN_EMAILS = ["hoeunsok138@gmail.com"];
   var BILLING_URL = "https://sunoapi.org/billing";
+  var GIS_CLIENT_ID = "809358546010-dspkik0o4ahg7km15dspro5cj3qjk384.apps.googleusercontent.com"; // same client the server trusts (server.js MOVAI_GOOGLE_CLIENT_ID)
 
   var statusEl = document.getElementById("status");
   var loginView = document.getElementById("loginView");
@@ -429,6 +433,86 @@
   signInBtn.addEventListener("click", doSignIn);
   passwordInput.addEventListener("keydown", function(e){ if (e.key === "Enter") doSignIn(); });
   emailInput.addEventListener("keydown", function(e){ if (e.key === "Enter") passwordInput.focus(); });
+
+  /* ---- Continue with Google (same flow as the old site) ----
+     Google Identity Services gives an ID token; the email + name are
+     decoded from it and POST /api/admin/sync creates the user on first
+     sync (0/0 credits; the gift comes only from CLAIM later). A Gmail
+     with no account yet cannot sign in by password — it must come
+     through Google first (server order), so this button is the way in. */
+  var googleBtnWrap = document.getElementById("googleBtn");
+  var googleFallbackBtn = document.getElementById("googleFallbackBtn");
+  var gisLoading = false, gisReady = false, gisQueue = [];
+  function gisDecodeJwt(t){
+    try {
+      var parts = String(t || "").split(".");
+      if (parts.length < 2) return null;
+      var b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4) b64 += "=";
+      return JSON.parse(decodeURIComponent(escape(atob(b64))));
+    } catch (e) { return null; }
+  }
+  function gisOnCredential(resp){
+    var p = resp && resp.credential ? gisDecodeJwt(resp.credential) : null;
+    if (!p || !p.email) { loginMsg.textContent = "Google sign-in failed. Please try again."; return; }
+    var email = String(p.email).toLowerCase();
+    var name = (p.name || email.split("@")[0] || "").toString().slice(0, 100);
+    loginMsg.textContent = "";
+    signInBtn.disabled = true;
+    apiJson("/api/admin/sync", "POST", { email: email, name: name })
+      .then(function(d){
+        signInBtn.disabled = false;
+        if (!d || d.ok !== true || !d.user) {
+          loginMsg.textContent = d && d.error ? String(d.error) : "Google sign-in failed. Please try again.";
+          return;
+        }
+        passwordInput.value = "";
+        afterLogin(d.user, email);
+      })
+      .catch(function(){
+        signInBtn.disabled = false;
+        loginMsg.textContent = "Could not reach the server — please try again.";
+      });
+  }
+  function gisRenderButton(){
+    if (!window.google || !google.accounts || !google.accounts.id) return false;
+    try {
+      google.accounts.id.initialize({ client_id: GIS_CLIENT_ID, callback: gisOnCredential, auto_select: false, cancel_on_tap_outside: true });
+      google.accounts.id.renderButton(googleBtnWrap, { theme: "outline", size: "large", width: googleBtnWrap.clientWidth || 320 });
+      return true;
+    } catch (e) { return false; }
+  }
+  function gisEnsure(cb){
+    if (gisReady) { cb(true); return; }
+    gisQueue.push(cb);
+    if (gisLoading) return;
+    gisLoading = true;
+    var s = document.createElement("script");
+    s.src = "https://accounts.google.com/gsi/client";
+    s.async = true;
+    s.defer = true;
+    s.onload = function(){
+      gisLoading = false;
+      gisReady = gisRenderButton();
+      var q = gisQueue; gisQueue = [];
+      q.forEach(function(f){ try { f(gisReady); } catch (e) {} });
+      if (!gisReady && googleFallbackBtn) googleFallbackBtn.hidden = false;
+    };
+    s.onerror = function(){
+      gisLoading = false;
+      var q = gisQueue; gisQueue = [];
+      q.forEach(function(f){ try { f(false); } catch (e) {} });
+      if (googleFallbackBtn) googleFallbackBtn.hidden = false;
+    };
+    document.head.appendChild(s);
+  }
+  if (googleFallbackBtn) googleFallbackBtn.addEventListener("click", function(){
+    gisEnsure(function(ok){
+      if (!ok) { loginMsg.textContent = "Could not load Google sign-in. Please try again."; return; }
+      try { google.accounts.id.prompt(); } catch (e) { loginMsg.textContent = "Google sign-in failed. Please try again."; }
+    });
+  });
+  gisEnsure(function(){ /* button rendered when ready; fallback shows on failure */ });
 
   /* ---- sign out ---- */
   function doSignOut(){
