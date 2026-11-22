@@ -496,6 +496,8 @@
       creating: "កំពុងបង្កើត… ",
       done: "រួចរាល់",
       download: "ទាញយក",
+      downloadingFile: "កំពុងទាញយកឯកសារ…",
+      downloadFailed: "ទាញយកមិនបានទេ សូមព្យាយាមម្ដងទៀត",
       split: "បំបែក",
       splitChoose: "បំបែកចម្រៀងនេះជាស្ទេម៖",
       split6: "៦ ស្ទេម · Studio",
@@ -573,6 +575,8 @@
       creating: "Creating… ",
       done: "Done",
       download: "Download",
+      downloadingFile: "Downloading file…",
+      downloadFailed: "Download failed, please try again",
       split: "Split",
       splitChoose: "Split this song into stems:",
       split6: "6 stems · Studio",
@@ -825,7 +829,8 @@
           dl.className = "c-dl";
           dl.href = playUrl(slot.url);
           dl.textContent = t("download");
-          dl.setAttribute("download", "");
+          dl.setAttribute("download", safeFileName(slot.title));
+          dl.addEventListener("click", function(e){ e.preventDefault(); downloadSong(slot, dl); });
           row.appendChild(pb);
           row.appendChild(dur);
           row.appendChild(dl);
@@ -1133,6 +1138,39 @@
       setTimeout(function(){ try { a.src = ""; } catch (e) {} }, 20000);
     } catch (e) { /* leave the placeholder */ }
   }
+  // In-site MP3 download: fetch the audio (CORS allows it from both
+  // Cloudinary and tempfile) and save it as "<song title>.mp3" — the
+  // browser tab never opens. Falls back to opening the URL on failure.
+  function safeFileName(title){
+    var s = String(title || t("untitled")).trim().replace(/[\\/:*?"<>|]/g, "").replace(/\s+/g, " ").trim();
+    if (!s) s = t("untitled");
+    return s.slice(0, 120) + ".mp3";
+  }
+  function downloadSong(song, btn){
+    var url = playUrl(songUrl(song));
+    if (!url) return;
+    if (btn && btn.getAttribute("data-busy") === "1") return;
+    if (btn) btn.setAttribute("data-busy", "1");
+    noteEl.textContent = t("downloadingFile");
+    fetch(url, { mode: "cors" }).then(function(r){
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.blob();
+    }).then(function(blob){
+      var objUrl = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = objUrl;
+      a.download = safeFileName(song.title);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ try { URL.revokeObjectURL(objUrl); } catch (e) {} try { a.remove(); } catch (e) {} }, 5000);
+      noteEl.textContent = "";
+      if (btn) btn.setAttribute("data-busy", "");
+    }).catch(function(){
+      noteEl.textContent = t("downloadFailed");
+      if (btn) btn.setAttribute("data-busy", "");
+      try { window.open(url, "_blank"); } catch (e) {}
+    });
+  }
   function renderList(){
     closeSongMenu();
     listEl.innerHTML = "";
@@ -1177,10 +1215,10 @@
       var dl = document.createElement("a");
       dl.className = "row-icon-btn";
       dl.href = playUrl(songUrl(song));
-      dl.setAttribute("download", "");
+      dl.setAttribute("download", safeFileName(song.title));
       dl.setAttribute("aria-label", t("download"));
       dl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>';
-      dl.addEventListener("click", function(e){ e.stopPropagation(); });
+      dl.addEventListener("click", function(e){ e.stopPropagation(); e.preventDefault(); downloadSong(song, dl); });
       var more = document.createElement("button");
       more.type = "button"; more.className = "row-icon-btn";
       more.setAttribute("aria-label", t("menuAria"));
