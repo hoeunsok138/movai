@@ -759,6 +759,16 @@
 
   var user = null; // {email, name, songCredits, ...} from the server
   var model = "v6";
+  // Display name for a stored model value: Suno's API value is "v6" but
+  // the owner sees the UI name "V6 Ultra". Never store the raw value.
+  function displayModel(m){
+    var s = String(m || "").trim().toLowerCase();
+    if (s === "v6" || s === "v6 ultra") return "V6 Ultra";
+    if (s === "v6-wild" || s === "v6_wild" || s === "v6 wild" || s === "v6 pro") return "V6 Pro";
+    if (s === "v6-mini" || s === "v6_mini" || s === "v6 mini") return "V6 Mini";
+    if (s === "v5_5" || s === "v5.5") return "V5.5";
+    return String(m || "");
+  }
   var voice = "male";
   var selectedPreset = ""; // preset name, or "" when none selected
   var selectedCustom = ""; // custom style string, or "" when none selected
@@ -1306,7 +1316,8 @@
         title: x.title || "",
         image: x.image || x.cover || "",
         audioId: x.audioId || x.audio_id || x.id || "",
-        taskId: x.taskId || x.task_id || ""
+        taskId: x.taskId || x.task_id || "",
+        duration: Number(x.duration) || 0
       };
     }).filter(function(x){ return !!x.url; });
   }
@@ -1497,11 +1508,12 @@
         id: id, type: "song", mode: "song", url: permUrl,
         title: song.title || meta.title || "Untitled",
         prompt: (meta.lyrics || "").slice(0, 400),
-        model: meta.model || "", style: meta.style || "",
+        model: displayModel(meta.model), style: meta.style || "",
         image: song.image || "",
         streamUrl: song.streamUrl || "",
         audioId: song.audioId || meta.audioId || "",
         taskId: meta.jobId || "",
+        duration: Number(song.duration) || 0,
         ts: Date.now(), createdAt: new Date().toISOString(), origin: "created"
       };
       return apiPost("/api/public/history", { email: meta.email, items: [item] }, 30000)
@@ -1512,11 +1524,11 @@
   function saveLastSongs(title, modelText, songs){
     try {
       var keep = songs.filter(function(s){ return /^https:/i.test(s.url); }).map(function(s){
-        return { url: s.url, title: s.title || "", model: s.model || modelText || "",
+        return { url: s.url, title: s.title || "", model: displayModel(s.model || modelText),
           image: s.image || null, audioId: s.audioId || "", streamUrl: s.streamUrl || "", taskId: s.taskId || "" };
       });
       if (keep.length) localStorage.setItem(LASTSONGS_KEY + draftEmail(),
-        JSON.stringify({ ts: Date.now(), title: title || "", model: modelText || "", songs: keep }));
+        JSON.stringify({ ts: Date.now(), title: title || "", model: displayModel(modelText), songs: keep }));
     } catch (e) {}
   }
   function restoreLastSongs(){
