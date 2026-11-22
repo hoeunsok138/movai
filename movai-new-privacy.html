@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
+<link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Privacy Policy</title>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
@@ -145,6 +149,7 @@
 <script>
 (function(){
   "use strict";
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
   var menuEl = document.getElementById("menu");
   var menuFab = document.getElementById("menuFab");
   var menuVeil = document.getElementById("menuVeil");

@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
+<link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Songs</title>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
@@ -165,6 +169,7 @@
 <script>
 (function(){
   "use strict";
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
   var FEED_URL = "https://movai-proxy-wasr.onrender.com/api/public/feed";
   var COVER_FALLBACK = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24"><rect width="24" height="24" fill="#dfe7e2"/><path d="M9 18V5l10-2v11" stroke="#1f2937" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.2" fill="#1f2937"/><circle cx="16.5" cy="16" r="2.2" fill="#1f2937"/></svg>');

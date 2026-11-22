@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
+<link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Create Song</title>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
@@ -92,6 +96,11 @@
   textarea.txt{resize:vertical;min-height:150px;line-height:1.5}
   .count{text-align:right;font-size:.82rem;color:#6b7280;margin-top:5px}
   .rowline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .preset-strip{display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,auto);
+    gap:8px;overflow-x:auto;overflow-y:hidden;
+    padding-bottom:4px;touch-action:pan-x pan-y;
+    -webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .preset-strip .chip{white-space:nowrap}
   .chip{font-size:.9rem;color:#1f2937;border:1px solid #d1d5db;border-radius:999px;
     padding:7px 13px;background:transparent}
   .chip:active{background:#e5e7eb}
@@ -101,13 +110,14 @@
     border:1px solid #d1d5db;border-radius:8px;padding:8px 14px;background:transparent}
   .seg-btn:active{background:#e5e7eb}
   .seg-btn[aria-pressed="true"]{background:#1f2937;color:#ffffff;border-color:#1f2937}
+  #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
   .acct{font-size:.95rem;color:#1f2937}
   .acct b{font-weight:700}
   .linklike{font-size:.92rem;color:#1f2937;text-decoration:underline;padding:0}
   .bal{font-size:.95rem;color:#1f2937}
   .bal b{font-weight:700}
   .gen-btn{display:block;width:100%;font-size:1rem;font-weight:700;color:#ffffff;
-    background:#1f2937;border-radius:10px;padding:13px 16px}
+    background:#0f766e;border-radius:10px;padding:13px 16px}
   .gen-btn:active{opacity:.85}
   .prog{font-size:.95rem;color:#1f2937;margin-top:14px}
   .prog .secs{font-weight:700}
@@ -160,10 +170,6 @@
   <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>
 
   <main>
-    <div class="field" id="userBox" hidden>
-      <div class="acct">Signed in as <b id="acctName"></b> (<span id="acctEmail"></span>)</div>
-      <div style="margin-top:8px"><button class="linklike" id="signoutBtn" type="button">Sign out</button></div>
-    </div>
 
     <hr class="divider">
 
@@ -184,7 +190,7 @@
     <!-- Style presets -->
     <div class="field">
       <span class="lbl" id="styleLbl">Style</span>
-      <div class="rowline" id="presetRow" role="group" aria-labelledby="styleLbl"></div>
+      <div class="preset-strip" id="presetRow" role="group" aria-labelledby="styleLbl"></div>
       <input class="txt" id="styleText" type="text" style="margin-top:10px"
         placeholder="Tap a style above, or type your own style" aria-label="Style text">
     </div>
@@ -232,6 +238,7 @@
 <script>
 (function(){
   "use strict";
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
   var API = "https://movai-proxy-wasr.onrender.com";
   var SONG_COST = 12; // song credits per creation (server: 12 flat, 2 songs)
   var POLL_EVERY_MS = 5000;
@@ -243,10 +250,6 @@
   // Style presets — exact names + style text copied from the old site.
   var PRESETS = {"🥹Sad.Trap💔": "Emotional Sad Melodic Trap, Deep Heartbreak Ballad, 72 BPM, minor key, haunting soft piano intro, emotional cinematic violin strings, atmospheric pads, deep warm 808 bass, slow trap drums, subtle hi-hats, emotional male vocal with slightly raspy and trembling voice, intimate verses, powerful heartbreaking chorus, vulnerable crying vocal delivery, beautiful melodic hooks, dramatic instrumental drop, piano-only emotional bridge, cinematic outro, melancholic atmosphere, deeply touching, tearjerking, professional studio production, modern emotional trap sound.", "😔 Sad Trap 💔": "Sad Emotional Melodic Hip Hop, Fast Male Rap Flow, Slow 72 BPM Instrumental, Deep Heartbroken Male Voice, Rapid Double-Time Rap Verses, Slow Melancholic Piano Melody, Soft Emotional Strings, Deep 808 Bass, Slow Hip Hop Drums, Atmospheric Pads, Clear English Pronunciation, Rhythmic Fast Rap Delivery, Emotional Melodic Singing Chorus, Lonely Night Mood, One-Sided Love, Painful Storytelling, Crying Vocal Texture, Cinematic Piano Bridge, Powerful Final Chorus, Professional Studio Quality.", "😭 Sad💔": "Male Khmer emotional sad ballad, heartbreaking vocal, deep sorrowful male voice, emotional melodic singing, crying vocal delivery, painful storytelling rap, melodic rap, slow tempo 68-74 BPM, minor key, cinematic piano, acoustic guitar, emotional strings, atmospheric pads, deep bass, soft trap drums, powerful emotional chorus, dramatic vocal climax, intimate verse, tearjerking outro, high quality studio production.", "💔Sad Drama😔": "Extremely Sad Khmer Emotional Ballad, Deep Mature Male Solo Vocal, Slow Tempo  sixty-two BPM, Heartbreaking Piano Intro, Emotional Acoustic Guitar, Sad Cinematic Violin, Deep Warm Male Voice, Emotional Storytelling, Painful and Melancholic Atmosphere, Soft Whispering Intro, Powerful Emotional Chorus, Dramatic Violin Instrumental Solo, Emotional Vocal Expression, Slow Piano Outro, Khmer Language Lyrics, 5-6 Minutes Song, No Female Vocal, No Duet.", "💔Pop Ballad ♥️": "Khmer Countryside Sad Song, Traditional Khmer Rural Ballad, Deep Emotional Male Solo Vocal, Heartbroken Love Story, Painful Family Conflict, Feeling Worthless and Broken, Extremely Sad Melancholic Mood, Slow Khmer Country Rhythm, Traditional Khmer Acoustic Guitar, Sad Tro Sau and Khmer Flute, Emotional Violin, Soft Traditional Khmer Instrumentation, Rural Village Atmosphere, Lonely Male Singing, Crying and Trembling Vocal, Deep Emotional Storytelling, Powerful Heartbreaking Chorus, Slow Tempo 60-65 BPM, Nostalgic Countryside Feeling, No Female Vocal, No Rap, Authentic Khmer Sad Music.", "♥️បទបែបស្រែ🥰": "Authentic Traditional Khmer Countryside Sad Ballad, Deep Emotional Male Solo Vocal, Extremely Heartbreaking Tearful Singing, Crying and Trembling Voice, Slow Tempo 58-62 BPM, Traditional Khmer Khloy Flute, Khmer Tro Sau, Tro Khmer, Chapey Dang Veng, Soft Acoustic Guitar, Traditional Khmer Wind Instruments, Emotional Violin, Gentle Piano, Rural Cambodian Village Atmosphere, Rice Fields at Sunset, Poor Man's Unrequited Love Story, Deep Sad Storytelling, Powerful Crying Chorus, Dramatic Final Chorus, Long Traditional Instrumental Solo, No Female Vocal, No Rap, No Electronic Dance Beat, Pure Khmer Rural Music.", "😔Trap Sad Hip-hop💔": "Slow Tempo 58-62 BPM, Trap, Sad, Hip-hop Reaper, male vocals", "😈Freestyle Rep BassTrap🫨": "Hip-hop, Freestyle, Rep, Bass, Trap", "🤙កន្ទ្រឹម💃": "Authentic Traditional Khmer Kantreum Folk Music, Joyful Cambodian Folk Dance Song, Ramvong Circle Dance Rhythm, Jrochak Traditional Dance Beat, Lam Lao Singing Style, Saravan Dance Rhythm, Deep Emotional Male Solo Vocal, Traditional Khmer Tro Sau, Tro Khmer, Khloy Flute, Chapey Dang Veng, Traditional Khmer Drums, Festive Village Celebration Atmosphere, Upbeat Danceable Tempo, Khmer Language Lyrics, No Female Vocal, No Rap, Pure Traditional Khmer Folk Music.", "😭Sad Emotional Rap💔": "Khmer Male Emotional Vocal, Deep Sad Trap, Emotional Hip Hop, Cinematic Piano, Dark Ambient Pads, Heavy 808 Bass, Powerful Drums, Melodic Rap, Raw Heartbroken Male Voice, Deep Expressive Vocal, Soft Intimate Verses, Explosive Screaming Chorus, Aggressive Emotional Belting, Crying Vocal Texture, Dynamic Vocal Build-up, Dramatic Strings, Atmospheric Sound Design, Powerful Final Chorus, Slow Emotional Intro, Modern Khmer Music Production, 75 BPM, High Quality Studio Production.", "💃កន្ទ្រឹម EDM🥲": "Khmer Traditional Kantrem Remix Dance, Modern Khmer Kantrem EDM, High Energy Dance Beat, Bouncy Rhythmic Drums, Catchy Synth Melody, Traditional Khmer Instrument Fusion, Deep Punchy Bass, Playful Melodic Vocal Runs, Male Khmer Vocal, Emotional Romantic Lyrics with a Happy Dance Feeling, Catchy Repeating Chorus, Melodic Call and Response, Energetic Instrumental Breaks, Creative Melody Variations, Festival Party Atmosphere, Professional Studio Production, 130 BPM, 4:30 to 5:00 minutes."};
 
-  var userBox = document.getElementById("userBox");
-  var acctName = document.getElementById("acctName");
-  var acctEmail = document.getElementById("acctEmail");
-  var signoutBtn = document.getElementById("signoutBtn");
   var songTitle = document.getElementById("songTitle");
   var lyricsEl = document.getElementById("lyrics");
   var lyrCount = document.getElementById("lyrCount");
@@ -384,13 +387,8 @@
   }
   function renderAccount(){
     var loggedIn = !!(user && user.email);
-    userBox.hidden = !loggedIn;
     genBtn.disabled = !loggedIn || busy;
     genHint.textContent = loggedIn ? "" : "Sign in to create a song.";
-    if (loggedIn) {
-      acctName.textContent = user.name || user.email;
-      acctEmail.textContent = user.email;
-    }
     showBalance();
     menuAuthState();
   }
@@ -419,13 +417,10 @@
     saveStored(null);
     renderAccount();
     menuAuthState();
-  }
-  signoutBtn.addEventListener("click", function(){
-    signOutLocal();
     resultBox.hidden = true;
     resultsEl.innerHTML = "";
     resultSongs = [];
-  });
+  }
 
 
   /* ---- lyrics counter ---- */
