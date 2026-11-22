@@ -496,7 +496,11 @@
       gisReady = gisRenderButton();
       var q = gisQueue; gisQueue = [];
       q.forEach(function(f){ try { f(gisReady); } catch (e) {} });
-      if (!gisReady && googleFallbackBtn) googleFallbackBtn.hidden = false;
+      // Show the plain fallback only if no Google button rendered at all
+      // (renderButton can insert the button and still report failure).
+      if (!googleBtnWrap || !googleBtnWrap.children.length) {
+        if (googleFallbackBtn) googleFallbackBtn.hidden = false;
+      }
     };
     s.onerror = function(){
       gisLoading = false;
@@ -509,7 +513,13 @@
   if (googleFallbackBtn) googleFallbackBtn.addEventListener("click", function(){
     gisEnsure(function(ok){
       if (!ok) { loginMsg.textContent = "Could not load Google sign-in. Please try again."; return; }
-      try { google.accounts.id.prompt(); } catch (e) { loginMsg.textContent = "Google sign-in failed. Please try again."; }
+      try {
+        google.accounts.id.prompt(function(n){
+          if (n && ((n.isNotDisplayed && n.isNotDisplayed()) || (n.isSkippedMoment && n.isSkippedMoment()))) {
+            loginMsg.textContent = "Google sign-in could not open. Please use the \"Sign in with Google\" button above, or try again.";
+          }
+        });
+      } catch (e) { loginMsg.textContent = "Google sign-in failed. Please try again."; }
     });
   });
   gisEnsure(function(){ /* button rendered when ready; fallback shows on failure */ });

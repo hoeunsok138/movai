@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2faf6">
+<title>MovAi — Privacy Policy</title>
+<style>
+  /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;overflow-x:hidden}
+  html{
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    -webkit-text-size-adjust:100%;
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:#1f2937;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  a{color:#1f2937;text-decoration:none}
+  button{font:inherit;color:inherit;background:transparent;border:0;padding:0;cursor:pointer}
+  img{display:block;max-width:100%}
+
+  .wrap{max-width:720px;margin:0 auto}
+
+  /* ---- Header: two rows, directly on the background (transparent) ---- */
+  header{position:sticky;top:0;z-index:20;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;}
+  .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-left:16px;padding-right:16px}
+  .hdr-top{padding-top:14px;padding-bottom:10px;border-bottom:1px solid #e5e7eb}
+  .hdr-sub{padding-top:11px;padding-bottom:11px;border-bottom:1px solid #e5e7eb}
+  .hdr-logo{display:flex;align-items:center;gap:8px;color:#1f2937;min-width:0}
+  .hdr-logo svg{flex:none}
+  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:#1f2937;line-height:1}
+  .hdr-right{display:flex;align-items:center;gap:4px}
+  .icon-btn{font-size:1.35rem;line-height:1;color:#1f2937;padding:4px 9px;border-radius:8px}
+  .icon-btn:active{background:#e5e7eb}
+  .hdr-sec{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .hdr-sec .icon-btn{padding:4px 8px}
+  .hdr-sec-name{font-size:1rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ---- Dropdown menu (plain, no shadow, no card) ---- */
+  .menu{position:absolute;left:16px;right:16px;top:100%;z-index:30;
+    background:#f2faf6;border:1px solid #e5e7eb;border-radius:10px;
+    padding:4px 0;display:none}
+  .menu.open{display:block}
+  .menu a{display:block;padding:11px 14px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0}
+  .menu a:last-child{border-bottom:0}
+  .menu a:active{background:#e5e7eb}
+
+  /* ---- Policy text: plain, directly on the background ---- */
+  main{padding:8px 16px 96px}
+  h1{font-size:1.25rem;font-weight:800;margin:18px 0 4px}
+  .updated{font-size:.85rem;color:#6b7280;margin:0 0 8px}
+  h2{font-size:1rem;font-weight:700;margin:22px 0 6px}
+  p,li{font-size:.95rem;line-height:1.6}
+  p{margin:8px 0}
+  ul{margin:6px 0;padding-left:20px}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header id="hdr">
+    <div class="hdr-row hdr-top">
+      <a class="hdr-logo" href="movai-new.html">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18V5l10-2v11" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#1f2937"/><circle cx="16.5" cy="16" r="2.5" fill="#1f2937"/></svg>
+        <b>MovAi</b>
+      </a>
+      <span class="hdr-right">
+        <button class="icon-btn" id="dotsBtn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false">&#8942;</button>
+      </span>
+    </div>
+    <div class="hdr-row hdr-sub">
+      <span class="hdr-sec">
+        <button class="icon-btn" id="burgerBtn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false">&#9776;</button>
+        <span class="hdr-sec-name">Privacy Policy</span>
+      </span>
+    </div>
+    <nav class="menu" id="menu" aria-label="Menu">
+      <a href="movai-new.html">Home</a>
+      <a href="movai-new-create.html">Create Song</a>
+      <a href="movai-new-market.html">Marketplace</a>
+      <a href="movai-new-songs.html">My Songs</a>
+      <a href="movai-new-profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: 22 November 2026</p>
+
+    <p>MovAi is a song creation and sharing service. This policy explains what information we collect when you use MovAi, and how we use it.</p>
+
+    <h2>Information we collect</h2>
+    <ul>
+      <li><b>Account information.</b> When you sign in with Google, we receive your Gmail address, name, and profile picture from Google. When you sign in with Gmail and a password, we store your Gmail address and a hashed password (never the password itself).</li>
+      <li><b>Your creations.</b> Song titles, lyrics, styles, and the songs, images, and videos you create, plus the songs you list or buy in the marketplace.</li>
+      <li><b>Credits and wallet.</b> Your song and media credit balances, packages you buy, and payment receipts you upload for admin approval.</li>
+      <li><b>Device and security information.</b> Device model and identifier, IP address, and sign-in activity, used to protect accounts against abuse and unauthorised access.</li>
+    </ul>
+
+    <h2>How we use it</h2>
+    <p>We use this information to provide the service, to manage your credits and purchases, to show your songs and profile to other users where you choose to publish them, and to keep accounts secure. We do not sell your personal information to anyone.</p>
+
+    <h2>Sharing</h2>
+    <p>Your information is processed by the service providers that power song, image, and video generation, and by the admin when reviewing payment receipts. Public songs you publish are visible to other users. Nothing else is shared with third parties.</p>
+
+    <h2>Your choices</h2>
+    <p>You can sign out at any time from your Profile page. To delete your account and your data, contact us at hoeunsok138@gmail.com and we will remove your account.</p>
+
+    <h2>Contact</h2>
+    <p>If you have questions about this policy, contact us at hoeunsok138@gmail.com.</p>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var menuEl = document.getElementById("menu");
+  var dotsBtn = document.getElementById("dotsBtn");
+  var burgerBtn = document.getElementById("burgerBtn");
+  function setMenu(open){
+    menuEl.classList.toggle("open", !!open);
+    dotsBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    burgerBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
+  dotsBtn.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  burgerBtn.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  document.addEventListener("click", function(e){
+    if (menuEl.classList.contains("open") && !menuEl.contains(e.target)) setMenu(false);
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  menuEl.addEventListener("click", function(e){
+    if (e.target && e.target.tagName === "A") setMenu(false);
+  });
+})();
+</script>
+</body>
+</html>
