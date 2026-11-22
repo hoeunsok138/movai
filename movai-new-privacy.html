@@ -45,14 +45,34 @@
   .hdr-sec .icon-btn{padding:4px 8px}
   .hdr-sec-name{font-size:1rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* ---- Dropdown menu (plain, no shadow, no card) ---- */
-  .menu{position:absolute;left:16px;right:16px;top:100%;z-index:30;
-    background:#f2faf6;border:1px solid #e5e7eb;border-radius:10px;
-    padding:4px 0;display:none}
-  .menu.open{display:block}
-  .menu a{display:block;padding:11px 14px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0}
-  .menu a:last-child{border-bottom:0}
-  .menu a:active{background:#e5e7eb}
+  /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
+  .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#f2faf6;border:1px solid #d1d5db;
+    font-size:1.4rem;line-height:1;color:#1f2937;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.12)}
+  .menu-fab:active{background:#e5e7eb}
+  .menu-veil{position:fixed;inset:0;z-index:55;display:none;
+    background:rgba(242,250,246,.55);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .menu-veil.open{display:block;animation:veilIn .18s ease-out}
+  @keyframes veilIn{from{opacity:0}to{opacity:1}}
+  .menu{position:fixed;left:0;right:0;bottom:0;z-index:56;
+    max-height:70vh;overflow-y:auto;
+    background:#f2faf6;border-top:1px solid #e5e7eb;border-radius:16px 16px 0 0;
+    padding:6px 0 calc(10px + env(safe-area-inset-bottom,0px));
+    transform:translateY(105%);transition:transform .22s ease-out;
+    visibility:hidden}
+  .menu.open{transform:translateY(0);visibility:visible;animation:sheetIn .25s ease-out}
+  @keyframes sheetIn{from{filter:blur(6px)}to{filter:blur(0)}}
+  .menu.open + .menu-fab{display:none}
+  .menu a,.menu button.menu-link{display:block;width:100%;text-align:left;
+    padding:13px 20px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0;background:transparent}
+  .menu a:last-child,.menu button.menu-link:last-child{border-bottom:0}
+  .menu a:active,.menu button.menu-link:active{background:#e5e7eb}
+  .menu .menu-sep{height:1px;background:#e5e7eb;margin:6px 0}
+  .menu .menu-user{padding:12px 20px 4px;font-size:.85rem;color:#6b7280}
 
   /* ---- Policy text: plain, directly on the background ---- */
   main{padding:8px 16px 96px}
@@ -73,24 +93,26 @@
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18V5l10-2v11" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#1f2937"/><circle cx="16.5" cy="16" r="2.5" fill="#1f2937"/></svg>
         <b>MovAi</b>
       </a>
-      <span class="hdr-right">
-        <button class="icon-btn" id="dotsBtn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false">&#8942;</button>
-      </span>
     </div>
     <div class="hdr-row hdr-sub">
       <span class="hdr-sec">
-        <button class="icon-btn" id="burgerBtn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false">&#9776;</button>
         <span class="hdr-sec-name">Privacy Policy</span>
       </span>
     </div>
-    <nav class="menu" id="menu" aria-label="Menu">
+  </header>
+  <div class="menu-veil" id="menuVeil"></div>
+  <nav class="menu" id="menu" aria-label="Menu">
       <a href="movai-new.html">Home</a>
       <a href="movai-new-create.html">Create Song</a>
       <a href="movai-new-market.html">Marketplace</a>
       <a href="movai-new-songs.html">My Songs</a>
       <a href="movai-new-profile.html">Profile</a>
-    </nav>
-  </header>
+    <div class="menu-sep"></div>
+    <div class="menu-user" id="menuUser" hidden></div>
+    <a href="movai-new-profile.html" id="menuSignIn">Sign In</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden>Sign out</button>
+  </nav>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>
 
   <main>
     <h1>Privacy Policy</h1>
@@ -124,20 +146,35 @@
 (function(){
   "use strict";
   var menuEl = document.getElementById("menu");
-  var dotsBtn = document.getElementById("dotsBtn");
-  var burgerBtn = document.getElementById("burgerBtn");
+  var menuFab = document.getElementById("menuFab");
+  var menuVeil = document.getElementById("menuVeil");
+  var menuSignIn = document.getElementById("menuSignIn");
+  var menuSignOut = document.getElementById("menuSignOut");
+  var menuUser = document.getElementById("menuUser");
   function setMenu(open){
     menuEl.classList.toggle("open", !!open);
-    dotsBtn.setAttribute("aria-expanded", open ? "true" : "false");
-    burgerBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (menuVeil) menuVeil.classList.toggle("open", !!open);
+    if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
   }
   function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
-  dotsBtn.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
-  burgerBtn.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
-  document.addEventListener("click", function(e){
-    if (menuEl.classList.contains("open") && !menuEl.contains(e.target)) setMenu(false);
-  });
+  if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  function menuAuthState(){
+    var em = "";
+    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
+    if (menuUser) { menuUser.textContent = em ? ("Signed in as " + em) : ""; menuUser.hidden = !em; }
+    if (menuSignIn) menuSignIn.hidden = !!em;
+    if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  if (menuSignOut) menuSignOut.addEventListener("click", function(){
+    setMenu(false);
+    if (typeof doSignOut === "function") { doSignOut(); return; }
+    if (typeof signOutLocal === "function") { signOutLocal(); return; }
+    try { localStorage.removeItem("movai-session"); } catch (e) {}
+    location.reload();
+  });
+  menuAuthState();
   menuEl.addEventListener("click", function(e){
     if (e.target && e.target.tagName === "A") setMenu(false);
   });
