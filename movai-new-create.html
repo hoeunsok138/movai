@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="km">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
 <link rel="apple-touch-icon" href="movai-icon-192.png">
-<title>MovAi — Create Song</title>
+<title>MovAi Music Generate</title>
 <script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
@@ -53,6 +53,7 @@
   .hdr-btn{flex:none;font-size:.9rem;font-weight:600;color:#1f2937;
     border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;background:transparent}
   .hdr-btn:active{background:#e5e7eb}
+  .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
 
   /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
   .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
@@ -97,15 +98,6 @@
   textarea.txt{resize:vertical;min-height:150px;line-height:1.5}
   .count{text-align:right;font-size:.82rem;color:#6b7280;margin-top:5px}
   .rowline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .preset-strip{display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,auto);
-    gap:8px;overflow-x:auto;overflow-y:hidden;
-    padding-bottom:4px;touch-action:pan-x pan-y;
-    -webkit-overflow-scrolling:touch;scrollbar-width:thin}
-  .preset-strip .chip{white-space:nowrap}
-  .chip{font-size:.9rem;color:#1f2937;border:1px solid #d1d5db;border-radius:999px;
-    padding:7px 13px;background:transparent}
-  .chip:active{background:#e5e7eb}
-  .chip[aria-pressed="true"]{background:#1f2937;color:#ffffff;border-color:#1f2937}
   .seg{display:flex;gap:8px;flex-wrap:wrap}
   .seg-btn{font-size:.92rem;font-weight:600;color:#1f2937;
     border:1px solid #d1d5db;border-radius:8px;padding:8px 14px;background:transparent}
@@ -153,11 +145,6 @@
   .cover-msg.ok-t{color:#0f766e;font-weight:600}
   .bar{height:6px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:8px}
   .bar>div{height:100%;width:0;background:#0f766e}
-  /* ---- Custom style chips (Add-style) ---- */
-  .tagchip{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;color:#1f2937;
-    border:1px solid #d1d5db;border-radius:999px;padding:6px 6px 6px 12px;background:transparent}
-  .tagchip button{font-size:.85rem;color:#6b7280;padding:2px 6px;border-radius:50%}
-  .tagchip button:active{background:#e5e7eb}
   .chk-row{display:flex;align-items:center;gap:8px;font-size:.92rem;color:#1f2937;margin-top:12px}
   .chk-row input{width:18px;height:18px;accent-color:#0f766e}
   /* ---- Gift sheet ---- */
@@ -195,18 +182,44 @@
   .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
   .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
   .chat-fab:active{opacity:.85}
-  /* Round 4 (G): hide the chat button while the drawer is open, same as
-     the menu button (which the drawer already hides). The 10s slide-away
-     timer is untouched - this only covers the button while the drawer is
-     open, and it returns to whatever state the timer left it in. */
   body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
-  /* Round 4 (H): fade both floating buttons out while the user is
-     actively scrolling, so they never cover content mid-scroll. */
   body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
   .chat-fab svg{width:24px;height:24px;flex:none}
-  .player-on .chat-fab{bottom:84px}
-  .player-on .menu-fab{bottom:84px}
   html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  /* ---- Style picker (old-site style, rebuilt) ---- */
+  .style-preset-wrap{position:relative}
+  .style-preset-field{width:100%;display:flex;align-items:center;gap:10px;
+    min-height:48px;padding:10px 14px;text-align:left;cursor:pointer;
+    font-family:inherit;font-size:.9375rem;font-weight:800;line-height:1.2;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px}
+  .style-preset-field .spf-label{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .style-preset-field .spf-label.ph{color:#6b7280;font-weight:700}
+  .style-preset-field .spf-count{flex:none;display:inline-flex;align-items:center;justify-content:center;
+    min-width:24px;height:24px;padding:0 7px;border-radius:999px;
+    background:#0f766e;color:#ffffff;font-size:.8125rem;font-weight:900;line-height:1}
+  .style-preset-field .spf-chev{flex:none;color:#6b7280;font-size:.75rem;transition:transform .2s}
+  .style-preset-wrap.open .spf-chev{transform:rotate(180deg)}
+  .style-preset-drop{position:absolute;top:100%;left:0;right:0;z-index:30;
+    max-height:17.25rem;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:thin;
+    margin-top:6px;padding:6px;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px;
+    box-shadow:0 16px 40px rgba(0,0,0,.35)}
+  .style-preset-drop::-webkit-scrollbar{width:5px}
+  .style-preset-drop::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:99px}
+  .style-preset-row{display:flex;align-items:center;gap:10px;width:100%;
+    min-height:48px;padding:10px 14px;text-align:left;cursor:pointer;
+    font-family:inherit;font-size:.9375rem;font-weight:800;line-height:1.2;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px}
+  .style-preset-row + .style-preset-row{margin-top:6px}
+  .style-preset-row .preset-check{flex:none;display:inline-flex;align-items:center;justify-content:center;
+    width:26px;height:26px;border:2px solid #d1d5db;border-radius:8px;
+    background:transparent;color:transparent;font-size:1rem;font-weight:900;line-height:1}
+  .style-preset-row.on{border-color:#0f766e}
+  .style-preset-row.on .preset-check{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .style-preset-row .row-name{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .style-preset-row .row-del{flex:none;font-size:.9rem;color:#6b7280;padding:2px 8px;border-radius:50%}
+  .style-preset-row .row-del:active{background:#e5e7eb}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
   html[data-theme="dark"]{background:#0e1a15}
   html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
@@ -215,8 +228,8 @@
   html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
   html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
   html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
-  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .hdr-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .hdr-btn:active{background:#1d2f28}
   html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
   html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
@@ -229,36 +242,22 @@
   html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
   html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
   html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
-  html[data-theme="dark"] .status{color:#8fa89e}
-  html[data-theme="dark"] .retry{color:#e7f0ec}
-  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
-  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
-  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
-  html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
-  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
-  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
-  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
-  html[data-theme="dark"] .player-title{color:#e7f0ec}
-  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .player button:active{background:#1d2f28}
-  html[data-theme="dark"] .player img{background:#24362f}
-  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
-  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
-  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
-  html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
-  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
-  html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
-  html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .res-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .res-title,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count{color:#e7f0ec}
+  html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .hint,html[data-theme="dark"] .cover-msg{color:#8fa89e}
+  html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
   html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
   html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
-  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
-  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
   html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
   html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
   html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
-  html[data-theme="dark"] .tagchip button{color:#8fa89e}
-  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .linklike{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active{background:#1d2f28}
   html[data-theme="dark"] .cover-box{border-color:#3a524a}
   html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
   html[data-theme="dark"] .bar{background:#24362f}
@@ -267,30 +266,16 @@
   html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
   html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
   html[data-theme="dark"] .gift-later{color:#8fa89e}
-  html[data-theme="dark"] .contact{border-top-color:#24362f}
-  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
-  html[data-theme="dark"] .contact-text b{color:#e7f0ec}
-  html[data-theme="dark"] .contact-text span{color:#8fa89e}
-  html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
-  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
-  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
-  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
-  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
-  html[data-theme="dark"] .amt{color:#e7f0ec}
-  html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
-  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
-  html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
-  html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
-  html[data-theme="dark"] .row{border-bottom-color:#24362f}
-  html[data-theme="dark"] .row-sub{color:#8fa89e}
-  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
-  html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
-  html[data-theme="dark"] .field-label{color:#e7f0ec}
-  html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
-  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
-  .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
+  html[data-theme="dark"] .style-preset-field{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .style-preset-field .spf-label.ph{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-field .spf-chev{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-drop{background:#16261f;border-color:#3a524a}
+  html[data-theme="dark"] .style-preset-row{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .style-preset-row .preset-check{border-color:#3a524a}
+  html[data-theme="dark"] .style-preset-row.on{border-color:#0f766e}
+  html[data-theme="dark"] .style-preset-row.on .preset-check{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .style-preset-row .row-del{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-row .row-del:active{background:#1d2f28}
 </style>
 </head>
 <body>
@@ -305,7 +290,7 @@
     <div class="hdr-row hdr-sub">
       <a class="hdr-back" href="index.html" aria-label="Back">&#8249;</a>
       <span class="hdr-sec">
-        <span class="hdr-sec-name" data-i18n="secCreate">បង្កើតចម្រៀង</span>
+        <span class="hdr-sec-name">MovAi Music Generate</span>
       </span>
       <a class="hdr-btn" href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
     </div>
@@ -342,33 +327,7 @@
   <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
 
   <main>
-
     <hr class="divider">
-
-    <!-- Cover (old site: collapsible box above the title) -->
-    <div class="field" style="margin-top:10px" id="coverField">
-      <button class="cover-toggle" id="coverToggle" type="button" aria-expanded="false">
-        <span data-i18n="coverLbl">🎵 ខូវើ</span><span id="coverChev">&#9662;</span>
-      </button>
-      <div class="cover-box" id="coverBox" hidden>
-        <div class="lbl" style="margin-bottom:4px" data-i18n="coverSub">ខូវើចម្រៀងដែលអ្នកមានរួចហើយ</div>
-        <div class="hint" style="margin:0 0 10px" data-i18n="coverHint">អតិបរមា ៨ នាទី · MP3 · ខូវើច្រៀងចម្រៀងដដែល តន្ត្រីដដែល</div>
-        <div class="rowline">
-          <input type="file" id="coverFileInput" accept="audio/mpeg,.mp3" hidden>
-          <button class="mini-btn dark" id="coverPickBtn" type="button" data-i18n="coverChoose">📁 ជ្រើសរើសចម្រៀង</button>
-          <button class="mini-btn" id="coverClearBtn" type="button" hidden data-i18n="coverRemove">✕ លុបចេញ</button>
-          <button class="mini-btn" id="coverListenBtn" type="button" hidden data-i18n="coverListen">▶ ស្ដាប់</button>
-        </div>
-        <div class="cover-fileinfo" id="coverFileInfo"></div>
-        <div class="bar" id="coverProg" hidden><div id="coverProgFill"></div></div>
-        <div class="rowline" style="margin-top:10px">
-          <input class="txt" id="coverUrl" type="url" placeholder="https://...mp3" style="flex:1;min-width:0">
-          <button class="mini-btn dark" id="coverUseUrlBtn" type="button" data-i18n="coverUseLink">ប្រើលីងនេះ</button>
-        </div>
-        <div class="cover-msg" id="coverMsg"></div>
-        <div class="hint" data-i18n="coverCost">១២ ក្រេឌីតចម្រៀង · អ្នកទទួលបានចម្រៀងខូវើ ២ បទ។</div>
-      </div>
-    </div>
 
     <!-- Title -->
     <div class="field" style="margin-top:22px">
@@ -391,19 +350,25 @@
       <div class="hint" id="aiLyricsMsg"></div>
     </div>
 
-    <!-- Style presets -->
+    <!-- Style picker (old-site dropdown, rebuilt) -->
     <div class="field">
       <span class="lbl" id="styleLbl" data-i18n="styleLbl">រចនាបថ</span>
-      <div class="preset-strip" id="presetRow" role="group" aria-labelledby="styleLbl"><button type="button" class="chip" aria-pressed="false">🥹Sad.Trap💔</button><button type="button" class="chip" aria-pressed="false">😔 Sad Trap 💔</button><button type="button" class="chip" aria-pressed="false">😭 Sad💔</button><button type="button" class="chip" aria-pressed="false">💔Sad Drama😔</button><button type="button" class="chip" aria-pressed="false">💔Pop Ballad ♥️</button><button type="button" class="chip" aria-pressed="false">♥️បទបែបស្រែ🥰</button><button type="button" class="chip" aria-pressed="false">😔Trap Sad Hip-hop💔</button><button type="button" class="chip" aria-pressed="false">😈Freestyle Rep BassTrap🫨</button><button type="button" class="chip" aria-pressed="false">🤙កន្ទ្រឹម💃</button><button type="button" class="chip" aria-pressed="false">😭Sad Emotional Rap💔</button><button type="button" class="chip" aria-pressed="false">💃កន្ទ្រឹម EDM🥲</button></div>
+      <div class="style-preset-wrap" id="styleWrap">
+        <button type="button" class="style-preset-field" id="styleField" aria-haspopup="listbox" aria-expanded="false">
+          <span class="spf-label ph" id="styleFieldLabel">ជ្រើសរើសរចនាបថ</span>
+          <span class="spf-count" id="styleCount">11</span>
+          <span class="spf-chev" id="styleChev">&#9662;</span>
+        </button>
+        <div class="style-preset-drop" id="styleDrop" hidden role="listbox" aria-labelledby="styleLbl"></div>
+      </div>
       <input class="txt" id="styleText" type="text" style="margin-top:10px"
         placeholder="ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក" data-i18n-ph="stylePh" aria-label="Style text">
-      <!-- Add-style: save your own styles (old site) -->
+      <!-- Add-style: save your own styles; they appear as extra rows in the dropdown above -->
       <div class="rowline" style="margin-top:10px">
         <input class="txt" id="styleAddText" type="text" style="flex:1;min-width:0"
           placeholder="វាយរចនាបថ រួចចុចបន្ថែម" data-i18n-ph="addStylePh" aria-label="Add a custom style">
         <button class="mini-btn dark" id="styleAddBtn" type="button" data-i18n="addBtn">បន្ថែម</button>
       </div>
-      <div class="rowline" id="customStyleRow" style="margin-top:8px"></div>
     </div>
 
     <!-- Model -->
@@ -447,6 +412,31 @@
       <label class="chk-row"><input type="checkbox" id="instrumentalChk"> <span data-i18n="instrumental">ឧបករណ៍ភ្លេងតែប៉ុណ្ណោះ (គ្មានសំឡេងច្រៀង)</span></label>
     </div>
 
+    <!-- Cover (collapsible box) -->
+    <div class="field" id="coverField">
+      <button class="cover-toggle" id="coverToggle" type="button" aria-expanded="false">
+        <span data-i18n="coverLbl">🎵 ខូវើ</span><span id="coverChev">&#9662;</span>
+      </button>
+      <div class="cover-box" id="coverBox" hidden>
+        <div class="lbl" style="margin-bottom:4px" data-i18n="coverSub">ខូវើចម្រៀងដែលអ្នកមានរួចហើយ</div>
+        <div class="hint" style="margin:0 0 10px" data-i18n="coverHint">អតិបរមា ៨ នាទី · MP3 · ខូវើច្រៀងចម្រៀងដដែល តន្ត្រីដដែល</div>
+        <div class="rowline">
+          <input type="file" id="coverFileInput" accept="audio/mpeg,.mp3" hidden>
+          <button class="mini-btn dark" id="coverPickBtn" type="button" data-i18n="coverChoose">📁 ជ្រើសរើសចម្រៀង</button>
+          <button class="mini-btn" id="coverClearBtn" type="button" hidden data-i18n="coverRemove">✕ លុបចេញ</button>
+          <button class="mini-btn" id="coverListenBtn" type="button" hidden data-i18n="coverListen">▶ ស្ដាប់</button>
+        </div>
+        <div class="cover-fileinfo" id="coverFileInfo"></div>
+        <div class="bar" id="coverProg" hidden><div id="coverProgFill"></div></div>
+        <div class="rowline" style="margin-top:10px">
+          <input class="txt" id="coverUrl" type="url" placeholder="https://...mp3" style="flex:1;min-width:0">
+          <button class="mini-btn dark" id="coverUseUrlBtn" type="button" data-i18n="coverUseLink">ប្រើលីងនេះ</button>
+        </div>
+        <div class="cover-msg" id="coverMsg"></div>
+        <div class="hint" data-i18n="coverCost">១២ ក្រេឌីតចម្រៀង · អ្នកទទួលបានចម្រៀងខូវើ ២ បទ។</div>
+      </div>
+    </div>
+
     <!-- Balance + Generate -->
     <div class="field">
       <div class="bal" id="balLine">ក្រេឌីតចម្រៀង៖ …</div>
@@ -481,447 +471,7 @@
 <script>
 (function(){
   "use strict";
-  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
-  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
-  var THEME_KEY = "movai-theme";
-  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
-  function applyTheme(){
-    var v = curTheme();
-    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
-    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
-    var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
-    var seg = document.getElementById("themeSeg");
-    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
-  }
-  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
-  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
-  var themeSeg = document.getElementById("themeSeg");
-  if (themeSeg) themeSeg.addEventListener("click", function(e){
-    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
-    if (b) setTheme(b.getAttribute("data-theme-val"));
-  });
-  applyTheme();
-
-  var API = "https://movai-proxy-wasr.onrender.com";
-  var SONG_COST = 12; // song credits per creation (server: 12 flat, 2 songs)
-  var POLL_EVERY_MS = 5000;
-  var POLL_MAX_MS = 10 * 60 * 1000; // 10 minutes, same as the old site's wait
-  var SESSION_KEY = "movai-session"; // old site: plain email string
-  var USER_KEY = "movai-user"; // cached user object (name + balances)
-  var MODEL_KEY = "movai-song-model"; // old site key, shared with the old site
-  var PENDING_KEY = "movai-pending-gens"; // pending generations, handed to My Songs
-  var LASTSONGS_KEY = "movai-lastsongs-"; // + email — last finished pair (old site)
-  function draftKey(em){ return "movai-create-draft-" + String(em || "guest").toLowerCase(); }
-  function stylesKey(em){ return "movai-custom-styles-" + String(em || "guest").toLowerCase(); }
-
-  // Style presets — exact names + style text copied from the old site.
-  var PRESETS = {"🥹Sad.Trap💔": "Emotional Sad Melodic Trap, Deep Heartbreak Ballad, 72 BPM, minor key, haunting soft piano intro, emotional cinematic violin strings, atmospheric pads, deep warm 808 bass, slow trap drums, subtle hi-hats, emotional male vocal with slightly raspy and trembling voice, intimate verses, powerful heartbreaking chorus, vulnerable crying vocal delivery, beautiful melodic hooks, dramatic instrumental drop, piano-only emotional bridge, cinematic outro, melancholic atmosphere, deeply touching, tearjerking, professional studio production, modern emotional trap sound.", "😔 Sad Trap 💔": "Sad Emotional Melodic Hip Hop, Fast Male Rap Flow, Slow 72 BPM Instrumental, Deep Heartbroken Male Voice, Rapid Double-Time Rap Verses, Slow Melancholic Piano Melody, Soft Emotional Strings, Deep 808 Bass, Slow Hip Hop Drums, Atmospheric Pads, Clear English Pronunciation, Rhythmic Fast Rap Delivery, Emotional Melodic Singing Chorus, Lonely Night Mood, One-Sided Love, Painful Storytelling, Crying Vocal Texture, Cinematic Piano Bridge, Powerful Final Chorus, Professional Studio Quality.", "😭 Sad💔": "Male Khmer emotional sad ballad, heartbreaking vocal, deep sorrowful male voice, emotional melodic singing, crying vocal delivery, painful storytelling rap, melodic rap, slow tempo 68-74 BPM, minor key, cinematic piano, acoustic guitar, emotional strings, atmospheric pads, deep bass, soft trap drums, powerful emotional chorus, dramatic vocal climax, intimate verse, tearjerking outro, high quality studio production.", "💔Sad Drama😔": "Extremely Sad Khmer Emotional Ballad, Deep Mature Male Solo Vocal, Slow Tempo  sixty-two BPM, Heartbreaking Piano Intro, Emotional Acoustic Guitar, Sad Cinematic Violin, Deep Warm Male Voice, Emotional Storytelling, Painful and Melancholic Atmosphere, Soft Whispering Intro, Powerful Emotional Chorus, Dramatic Violin Instrumental Solo, Emotional Vocal Expression, Slow Piano Outro, Khmer Language Lyrics, 5-6 Minutes Song, No Female Vocal, No Duet.", "💔Pop Ballad ♥️": "Khmer Countryside Sad Song, Traditional Khmer Rural Ballad, Deep Emotional Male Solo Vocal, Heartbroken Love Story, Painful Family Conflict, Feeling Worthless and Broken, Extremely Sad Melancholic Mood, Slow Khmer Country Rhythm, Traditional Khmer Acoustic Guitar, Sad Tro Sau and Khmer Flute, Emotional Violin, Soft Traditional Khmer Instrumentation, Rural Village Atmosphere, Lonely Male Singing, Crying and Trembling Vocal, Deep Emotional Storytelling, Powerful Heartbreaking Chorus, Slow Tempo 60-65 BPM, Nostalgic Countryside Feeling, No Female Vocal, No Rap, Authentic Khmer Sad Music.", "♥️បទបែបស្រែ🥰": "Authentic Traditional Khmer Countryside Sad Ballad, Deep Emotional Male Solo Vocal, Extremely Heartbreaking Tearful Singing, Crying and Trembling Voice, Slow Tempo 58-62 BPM, Traditional Khmer Khloy Flute, Khmer Tro Sau, Tro Khmer, Chapey Dang Veng, Soft Acoustic Guitar, Traditional Khmer Wind Instruments, Emotional Violin, Gentle Piano, Rural Cambodian Village Atmosphere, Rice Fields at Sunset, Poor Man's Unrequited Love Story, Deep Sad Storytelling, Powerful Crying Chorus, Dramatic Final Chorus, Long Traditional Instrumental Solo, No Female Vocal, No Rap, No Electronic Dance Beat, Pure Khmer Rural Music.", "😔Trap Sad Hip-hop💔": "Slow Tempo 58-62 BPM, Trap, Sad, Hip-hop Reaper, male vocals", "😈Freestyle Rep BassTrap🫨": "Hip-hop, Freestyle, Rep, Bass, Trap", "🤙កន្ទ្រឹម💃": "Authentic Traditional Khmer Kantreum Folk Music, Joyful Cambodian Folk Dance Song, Ramvong Circle Dance Rhythm, Jrochak Traditional Dance Beat, Lam Lao Singing Style, Saravan Dance Rhythm, Deep Emotional Male Solo Vocal, Traditional Khmer Tro Sau, Tro Khmer, Khloy Flute, Chapey Dang Veng, Traditional Khmer Drums, Festive Village Celebration Atmosphere, Upbeat Danceable Tempo, Khmer Language Lyrics, No Female Vocal, No Rap, Pure Traditional Khmer Folk Music.", "😭Sad Emotional Rap💔": "Khmer Male Emotional Vocal, Deep Sad Trap, Emotional Hip Hop, Cinematic Piano, Dark Ambient Pads, Heavy 808 Bass, Powerful Drums, Melodic Rap, Raw Heartbroken Male Voice, Deep Expressive Vocal, Soft Intimate Verses, Explosive Screaming Chorus, Aggressive Emotional Belting, Crying Vocal Texture, Dynamic Vocal Build-up, Dramatic Strings, Atmospheric Sound Design, Powerful Final Chorus, Slow Emotional Intro, Modern Khmer Music Production, 75 BPM, High Quality Studio Production.", "💃កន្ទ្រឹម EDM🥲": "Khmer Traditional Kantrem Remix Dance, Modern Khmer Kantrem EDM, High Energy Dance Beat, Bouncy Rhythmic Drums, Catchy Synth Melody, Traditional Khmer Instrument Fusion, Deep Punchy Bass, Playful Melodic Vocal Runs, Male Khmer Vocal, Emotional Romantic Lyrics with a Happy Dance Feeling, Catchy Repeating Chorus, Melodic Call and Response, Energetic Instrumental Breaks, Creative Melody Variations, Festival Party Atmosphere, Professional Studio Production, 130 BPM, 4:30 to 5:00 minutes."};
-
-  var songTitle = document.getElementById("songTitle");
-  var lyricsEl = document.getElementById("lyrics");
-  var lyrCount = document.getElementById("lyrCount");
-  var presetRow = document.getElementById("presetRow");
-  var styleText = document.getElementById("styleText");
-  var modelRow = document.getElementById("modelRow");
-  var voiceRow = document.getElementById("voiceRow");
-  var balLine = document.getElementById("balLine");
-  var genBtn = document.getElementById("genBtn");
-  var genHint = document.getElementById("genHint");
-  var progEl = document.getElementById("prog");
-  var genErr = document.getElementById("genErr");
-  var resultBox = document.getElementById("resultBox");
-  var resultTitle = document.getElementById("resultTitle");
-  var resultsEl = document.getElementById("results");
-  var resultNote = document.getElementById("resultNote");
-  var au = document.getElementById("au");
-
-  var user = null; // {email, name, songCredits, ...} from the server
-  var model = "v6";
-  var voice = "male";
-  var selectedPreset = "";
-  var instrumental = false;
-  var aiLang = "kh";
-  var coverState = { url: "", name: "", duration: 0, checkJobId: "", checkParams: null, checkState: "none" };
-  var myVoice = { hasVoice: false, available: false, name: "" };
-  var customStyles = [];
-  var busy = false;
-  var cancelGen = false;
-  var tickTimer = null;
-  var genStart = 0;
-  var curJobId = "";
-  var playingIdx = -1;
-  var resultSongs = [];
-
-  /* ---- menu (same as the home page) ---- */
-  var menuEl = document.getElementById("menu");
-  var menuFab = document.getElementById("menuFab");
-  var menuVeil = document.getElementById("menuVeil");
-  var menuSignIn = document.getElementById("menuSignIn");
-  var menuSignOut = document.getElementById("menuSignOut");
-  var menuUser = document.getElementById("menuUser");
-  function setMenu(open){
-    if (open) syncDrawerState();
-    menuEl.classList.toggle("open", !!open);
-    document.body.classList.toggle("drawer-open", !!open);
-    if (menuVeil) menuVeil.classList.toggle("open", !!open);
-    if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
-  }
-  function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
-  if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
-  if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
-  /* Menu links close the drawer at once, before navigation starts. */
-  if (menuEl) menuEl.addEventListener("click", function(e){
-    var a = e.target && e.target.closest ? e.target.closest("a") : null;
-    if (a) setMenu(false);
-  });
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
-  /* Round 4 (H): while the user is actively scrolling, fade the floating
-     buttons out so they never cover content mid-scroll; ~1s after
-     scrolling stops they fade back in. Never touches the chat button's
-     10s slide-away timer or the drawer-open behaviour. */
-  var scrollFabTimer = null;
-  window.addEventListener("scroll", function(){
-    document.body.classList.add("scrolling");
-    if (scrollFabTimer) clearTimeout(scrollFabTimer);
-    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
-  }, { passive: true });
-  function menuAuthState(){
-    var em = "";
-    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
-    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
-    if (menuSignIn) menuSignIn.hidden = !!em;
-    if (menuSignOut) menuSignOut.hidden = !em;
-  }
-  /* Round 3: re-render the drawer from live stored state every time it
-     opens, so it can never show a stale sign-in state or unselected
-     theme/language buttons. Runs synchronously, before the drawer
-     becomes visible. Never throws - the drawer must always open. */
-  function syncDrawerState(){
-    try {
-      if (typeof applyTheme === "function") applyTheme();
-      var ls = null;
-      try { ls = localStorage.getItem("movai-lang"); } catch (e) {}
-      if ((ls === "en" || ls === "kh") && typeof lang !== "undefined" && ls !== lang) {
-        lang = ls;
-        if (typeof applyLang === "function") applyLang();
-      } else if (typeof lang !== "undefined") {
-        var seg = document.getElementById("langSeg");
-        if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-lang-val") === lang); }
-      }
-      if (typeof menuAuthState === "function") menuAuthState();
-    } catch (e) {}
-  }
-  if (menuSignOut) menuSignOut.addEventListener("click", function(){
-    setMenu(false);
-    if (typeof doSignOut === "function") { doSignOut(); return; }
-    if (typeof signOutLocal === "function") { signOutLocal(); return; }
-    try { localStorage.removeItem("movai-session"); } catch (e) {}
-    location.reload();
-  });
-  menuEl.addEventListener("click", function(e){
-    if (e.target && e.target.tagName === "A") setMenu(false);
-  });
-
-  /* ---- helpers ---- */
-  function sleep(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
-  function fmtTime(sec){
-    if (!isFinite(sec) || sec <= 0) return "–:––";
-    sec = Math.floor(sec);
-    return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
-  }
-  function playUrl(u){
-    var s = String(u || "");
-    s = s.replace(/,fl_attachment/g, "").replace(/fl_attachment,/g, "");
-    s = s.replace(/\/fl_attachment\//g, "/");
-    s = s.replace(/([?&])fl_attachment=[^&]*&/g, "$1");
-    s = s.replace(/([?&])fl_attachment=[^&]*$/, "");
-    return s;
-  }
-  // Server error text may carry a provider prefix; provider names must
-  // never appear on screen, so strip them from anything shown.
-  function cleanErr(msg){
-    var s = String(msg || "").trim();
-    s = s.replace(/^\s*(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\s*:\s*/i, "");
-    s = s.replace(/\b(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\b/gi, "");
-    s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
-    return s || "Could not create the song. Please try again.";
-  }
-  function apiPost(path, body, timeoutMs){
-    var ctrl = null, timer = null;
-    var opts = { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body || {}) };
-    if (window.AbortController) {
-      ctrl = new AbortController();
-      opts.signal = ctrl.signal;
-      var ms = timeoutMs || 60000;
-      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
-    }
-    return fetch(API + path, opts).then(function(r){
-      if (timer) clearTimeout(timer);
-      return r.json().catch(function(){ return null; });
-    }).catch(function(e){
-      if (timer) clearTimeout(timer);
-      throw e;
-    });
-  }
-  function loadStored(){
-    try { return JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch (e) { return null; }
-  }
-  function saveStored(u){
-    try {
-      if (u) localStorage.setItem(USER_KEY, JSON.stringify(u));
-      else localStorage.removeItem(USER_KEY);
-    } catch (e) {}
-  }
-  function sessionEmail(){
-    try { return (localStorage.getItem(SESSION_KEY) || "").trim(); } catch (e) { return ""; }
-  }
-  function setSession(email){
-    try {
-      if (email) localStorage.setItem(SESSION_KEY, email);
-      else localStorage.removeItem(SESSION_KEY);
-    } catch (e) {}
-  }
-
-  /* ---- account ---- */
-  function showBalance(){
-    if (!user) { balLine.textContent = t("balLabel") + "—"; return; }
-    var c = Math.floor(Number(user.songCredits) || 0);
-    balLine.innerHTML = "";
-    var b = document.createElement("b");
-    b.textContent = t("balLabel") + c;
-    balLine.appendChild(b);
-  }
-  function renderAccount(){
-    var loggedIn = !!(user && user.email);
-    genBtn.disabled = !loggedIn || busy;
-    genHint.textContent = loggedIn ? "" : t("genHint");
-    showBalance();
-    menuAuthState();
-  }
-  function refreshBalance(){
-    if (!user || !user.email) return Promise.resolve();
-    // POST /api/admin/sync {email} returns {ok:true, user:{...songCredits}}
-    // — the server balance is the only truth, so refresh it from there.
-    return apiPost("/api/admin/sync", { email: user.email }, 30000).then(function(j){
-      if (j && j.ok === true && j.user) {
-        user = j.user;
-        saveStored(user);
-        renderAccount();
-      } else if (j && j.ok === false && j.error) {
-        // Server refused this account (e.g. blocked): sign out locally.
-        signOutLocal();
-        showLoginErr(j.error);
-      }
-    }).catch(function(){ /* offline / server waking: keep the cached balance */ });
-  }
-  function showLoginErr(msg){
-    genHint.textContent = cleanErr(msg);
-  }
-  function signOutLocal(){
-    user = null;
-    setSession("");
-    saveStored(null);
-    renderAccount();
-    menuAuthState();
-    resultBox.hidden = true;
-    resultsEl.innerHTML = "";
-    resultSongs = [];
-  }
-
-
-  /* ---- lyrics counter ---- */
-  function updateCount(){
-    lyrCount.textContent = String((lyricsEl.value || "").length) + " / 5000";
-  }
-  lyricsEl.addEventListener("input", function(){ updateCount(); saveDraftSoon(); });
-  songTitle.addEventListener("input", saveDraftSoon);
-
-  /* ---- style presets (exact names from the old site) ----
-     Chips are static HTML so they always show; JS only wires the taps. */
-  (function wirePresetChips(){
-    var chips = presetRow.querySelectorAll(".chip");
-    chips.forEach(function(b){
-      var name = (b.textContent || "").trim();
-      b.addEventListener("click", function(){
-        selectedPreset = name;
-        if (PRESETS[name]) styleText.value = PRESETS[name];
-        chips.forEach(function(c){ c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
-      });
-    });
-  })();
-  styleText.addEventListener("input", function(){
-    if (selectedPreset && styleText.value !== PRESETS[selectedPreset]) {
-      selectedPreset = "";
-      var chips = presetRow.querySelectorAll(".chip");
-      chips.forEach(function(c){ c.setAttribute("aria-pressed", "false"); });
-    }
-    saveDraftSoon();
-  });
-
-  /* ---- model + voice ---- */
-  try {
-    var savedModel = localStorage.getItem(MODEL_KEY) || "";
-    if (savedModel === "v6" || savedModel === "v6-wild" ||
-        savedModel === "v6-mini" || savedModel === "v5_5") model = savedModel;
-  } catch (e) {}
-  function syncModelRow(){
-    var btns = modelRow.querySelectorAll(".seg-btn");
-    btns.forEach(function(b){
-      b.setAttribute("aria-pressed", b.getAttribute("data-model") === model ? "true" : "false");
-    });
-  }
-  modelRow.addEventListener("click", function(e){
-    var b = e.target && e.target.closest ? e.target.closest("[data-model]") : null;
-    if (!b) return;
-    model = b.getAttribute("data-model");
-    try { localStorage.setItem(MODEL_KEY, model); } catch (err) {}
-    syncModelRow();
-    saveDraftSoon();
-  });
-  syncModelRow();
-  function syncVoiceRow(){
-    var btns = voiceRow.querySelectorAll(".seg-btn");
-    btns.forEach(function(b){
-      b.setAttribute("aria-pressed", b.getAttribute("data-voice") === voice ? "true" : "false");
-    });
-    if (typeof myVoiceBox !== "undefined" && myVoiceBox) myVoiceBox.hidden = voice !== "myvoice";
-  }
-  voiceRow.addEventListener("click", function(e){
-    var b = e.target && e.target.closest ? e.target.closest("[data-voice]") : null;
-    if (!b) return;
-    voice = b.getAttribute("data-voice");
-    syncVoiceRow();
-    saveDraftSoon();
-  });
-
-  /* ---- results ---- */
-  function normSongs(j){
-    var arr = null;
-    if (j && Array.isArray(j.songs)) arr = j.songs;
-    else if (j && Array.isArray(j.data)) arr = j.data;
-    else if (j && j.data && Array.isArray(j.data.songs)) arr = j.data.songs;
-    if (!arr) return [];
-    return arr.map(function(x){
-      if (typeof x === "string") return { url: x, title: "" };
-      if (!x || typeof x !== "object") return { url: "", title: "" };
-      /* Round 3 (D): the Suno stream link (url / streamAudioUrl) answers
-         HTTP 200 with an EMPTY body - it cannot play. The real audio is
-         audioUrl (tempfile link). Prefer it; keep the stream link as
-         streamUrl so the player can fall back to it. */
-      var stream = x.url || x.streamAudioUrl || x.stream_audio_url || "";
-      var audio = x.audioUrl || x.audio_url ||
-                  x.permanentMp3Url || x.permanent_mp3_url || "";
-      return {
-        url: audio || stream,
-        streamUrl: (stream && stream !== (audio || stream)) ? stream : "",
-        title: x.title || "",
-        image: x.image || x.cover || "",
-        audioId: x.audioId || x.audio_id || x.id || "",
-        taskId: x.taskId || x.task_id || ""
-      };
-    }).filter(function(x){ return !!x.url; });
-  }
-  function probeDuration(song, durEl){
-    try {
-      var a = new Audio();
-      a.preload = "metadata";
-      a.onloadedmetadata = function(){ durEl.textContent = fmtTime(a.duration); };
-      a.onerror = function(){};
-      a.src = playUrl(song.url);
-      setTimeout(function(){ try { a.src = ""; } catch (e) {} }, 20000);
-    } catch (e) {}
-  }
-  function renderResults(songs, isPreview){
-    resultSongs = songs;
-    resultsEl.innerHTML = "";
-    playingIdx = -1;
-    resultBox.hidden = false;
-    resultTitle.textContent = isPreview ? "Your songs (preview — still finishing…)" : "Your songs";
-    resultNote.hidden = true;
-    songs.forEach(function(song, i){
-      var row = document.createElement("div");
-      row.className = "res-row";
-      var pb = document.createElement("button");
-      pb.type = "button";
-      pb.className = "play-btn";
-      pb.textContent = "▶";
-      pb.setAttribute("aria-label", t("playSong") + (i + 1));
-      pb.addEventListener("click", function(){ togglePlay(i, pb); });
-      var text = document.createElement("span");
-      text.className = "res-text";
-      var tel = document.createElement("span");
-      tel.className = "res-title";
-      tel.textContent = song.title || ("Song " + (i + 1));
-      var sub = document.createElement("span");
-      sub.className = "res-sub";
-      sub.textContent = isPreview ? "Preview" : "Song " + (i + 1) + " of " + songs.length;
-      text.appendChild(tel);
-      text.appendChild(sub);
-      var dur = document.createElement("span");
-      dur.className = "res-dur";
-      dur.textContent = "–:––";
-      var dl = document.createElement("a");
-      dl.className = "res-dl";
-      dl.href = playUrl(song.url);
-      dl.textContent = t("download");
-      dl.setAttribute("download", "");
-      row.appendChild(pb);
-      row.appendChild(text);
-      row.appendChild(dur);
-      row.appendChild(dl);
-      resultsEl.appendChild(row);
-      probeDuration(song, dur);
-    });
-  }
-  /* Round 3 (D): result songs carry url + streamUrl - if the first URL
-     is a dead link, try the next one before giving up. */
-  var playAltUrls = [];
-  var playAltIdx = 0;
-  function togglePlay(i, btn){
-    var song = resultSongs[i];
-    if (!song) return;
-    if (playingIdx === i && !au.paused) {
-      au.pause();
-      btn.textContent = "▶";
-      return;
-    }
-    if (playingIdx !== i) {
-      playAltUrls = [];
-      [song.url, song.streamUrl, song.audioUrl].forEach(function(u){
-        u = playUrl(u);
-        if (u && playAltUrls.indexOf(u) < 0) playAltUrls.push(u);
-      });
-      playAltIdx = 0;
-      au.src = playAltUrls[0] || "";
-      playingIdx = i;
-      var btns = resultsEl.querySelectorAll(".play-btn");
-      btns.forEach(function(b){ b.textContent = "▶"; });
-    }
-    btn.textContent = "❚❚";
-    var srcNow = au.src;
-    au.play().catch(function(){
-      if (playAltIdx + 1 < playAltUrls.length) {
-        playAltIdx++;
-        au.src = playAltUrls[playAltIdx];
-        try { au.load(); } catch (e) {}
-        au.play().catch(function(){ btn.textContent = "▶"; });
-      } else { btn.textContent = "▶"; }
-    });
-  }
-  au.addEventListener("ended", function(){
-    playingIdx = -1;
-    var btns = resultsEl.querySelectorAll(".play-btn");
-    btns.forEach(function(b){ b.textContent = "▶"; });
-  });
-  au.addEventListener("pause", function(){
-    var btns = resultsEl.querySelectorAll(".play-btn");
-    btns.forEach(function(b, i){ if (i === playingIdx) b.textContent = "▶"; });
-  });
-
-  /* ---- i18n: Khmer / English, strictly separated ----
-     Every UI string goes through t(). Default is Khmer. */
+  /* ---- i18n table FIRST: no t() call may run before this assignment. ---- */
   var STR = {
     kh: {
       claimTitle: "អំណោយឥតគិតថ្លៃ",
@@ -1006,6 +556,7 @@
       lyricsPh: "សរសេរអត្ថបទចម្រៀងរបស់អ្នកនៅទីនេះ…",
       styleLbl: "រចនាបថ",
       stylePh: "ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក",
+      stylePlaceholder: "ជ្រើសរើសរចនាបថ",
       addStylePh: "វាយរចនាបថ រួចចុចបន្ថែម",
       addBtn: "បន្ថែម",
       modelLbl: "ម៉ូដែល",
@@ -1120,6 +671,7 @@
       lyricsPh: "Write your lyrics here…",
       styleLbl: "Style",
       stylePh: "Tap a style above, or type your own style",
+      stylePlaceholder: "Choose a style",
       addStylePh: "Type a style, then Add",
       addBtn: "Add",
       modelLbl: "Model",
@@ -1152,27 +704,287 @@
       delStyle: "Delete style "
     }
   };
-  /* Drawer state, now that STR exists (was a bare call before STR: it threw
-     for signed-in users and killed this whole script). */
-  menuAuthState();
   var LANG_KEY = "movai-lang";
   var lang = "kh";
   try {
-    var _sl = localStorage.getItem(LANG_KEY) || "";
-    if (_sl === "en" || _sl === "kh") lang = _sl;
+    var storedLang = localStorage.getItem(LANG_KEY) || "";
+    if (storedLang === "en" || storedLang === "kh") lang = storedLang;
   } catch (e) {}
-  function t(k){
-    /* Never throw before the STR table is assigned (STR is a hoisted var,
-       undefined until its assignment runs): return the key itself. */
-    var d = (STR && STR[lang]) || (STR && STR.en);
-    return (d && d[k]) || (STR && STR.en && STR.en[k]) || k;
+  /* Guarded translator: never throws, even if STR were undefined. */
+  function t(key){
+    var dict = (typeof STR !== "undefined" && STR && STR[lang]) || (typeof STR !== "undefined" && STR && STR.en);
+    if (dict && dict[key]) return dict[key];
+    if (typeof STR !== "undefined" && STR && STR.en && STR.en[key]) return STR.en[key];
+    return key;
   }
 
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+
+  var API = "https://movai-proxy-wasr.onrender.com";
+  var SONG_COST = 12; // song credits per creation (server: 12 flat, 2 songs)
+  var SESSION_KEY = "movai-session"; // plain email string
+  var USER_KEY = "movai-user"; // cached user object (name + balances)
+  var MODEL_KEY = "movai-song-model";
+  var PENDING_KEY = "movai-pending-gens"; // pending generations, handed to My Songs
+  var LASTSONGS_KEY = "movai-lastsongs-"; // + email — last finished pair
+  var GRACE_MS = 4 * 60 * 1000; // 4-minute state-restore grace
+  function draftKey(em){ return "movai-create-draft-" + String(em || "guest").toLowerCase(); }
+  function stylesKey(em){ return "movai-custom-styles-" + String(em || "guest").toLowerCase(); }
+
+  // Style presets — exact names + style text copied from the old site.
+  var PRESETS = {"🥹Sad.Trap💔": "Emotional Sad Melodic Trap, Deep Heartbreak Ballad, 72 BPM, minor key, haunting soft piano intro, emotional cinematic violin strings, atmospheric pads, deep warm 808 bass, slow trap drums, subtle hi-hats, emotional male vocal with slightly raspy and trembling voice, intimate verses, powerful heartbreaking chorus, vulnerable crying vocal delivery, beautiful melodic hooks, dramatic instrumental drop, piano-only emotional bridge, cinematic outro, melancholic atmosphere, deeply touching, tearjerking, professional studio production, modern emotional trap sound.", "😔 Sad Trap 💔": "Sad Emotional Melodic Hip Hop, Fast Male Rap Flow, Slow 72 BPM Instrumental, Deep Heartbroken Male Voice, Rapid Double-Time Rap Verses, Slow Melancholic Piano Melody, Soft Emotional Strings, Deep 808 Bass, Slow Hip Hop Drums, Atmospheric Pads, Clear English Pronunciation, Rhythmic Fast Rap Delivery, Emotional Melodic Singing Chorus, Lonely Night Mood, One-Sided Love, Painful Storytelling, Crying Vocal Texture, Cinematic Piano Bridge, Powerful Final Chorus, Professional Studio Quality.", "😭 Sad💔": "Male Khmer emotional sad ballad, heartbreaking vocal, deep sorrowful male voice, emotional melodic singing, crying vocal delivery, painful storytelling rap, melodic rap, slow tempo 68-74 BPM, minor key, cinematic piano, acoustic guitar, emotional strings, atmospheric pads, deep bass, soft trap drums, powerful emotional chorus, dramatic vocal climax, intimate verse, tearjerking outro, high quality studio production.", "💔Sad Drama😔": "Extremely Sad Khmer Emotional Ballad, Deep Mature Male Solo Vocal, Slow Tempo  sixty-two BPM, Heartbreaking Piano Intro, Emotional Acoustic Guitar, Sad Cinematic Violin, Deep Warm Male Voice, Emotional Storytelling, Painful and Melancholic Atmosphere, Soft Whispering Intro, Powerful Emotional Chorus, Dramatic Violin Instrumental Solo, Emotional Vocal Expression, Slow Piano Outro, Khmer Language Lyrics, 5-6 Minutes Song, No Female Vocal, No Duet.", "💔Pop Ballad ♥️": "Khmer Countryside Sad Song, Traditional Khmer Rural Ballad, Deep Emotional Male Solo Vocal, Heartbroken Love Story, Painful Family Conflict, Feeling Worthless and Broken, Extremely Sad Melancholic Mood, Slow Khmer Country Rhythm, Traditional Khmer Acoustic Guitar, Sad Tro Sau and Khmer Flute, Emotional Violin, Soft Traditional Khmer Instrumentation, Rural Village Atmosphere, Lonely Male Singing, Crying and Trembling Vocal, Deep Emotional Storytelling, Powerful Heartbreaking Chorus, Slow Tempo 60-65 BPM, Nostalgic Countryside Feeling, No Female Vocal, No Rap, Authentic Khmer Sad Music.", "♥️បទបែបស្រែ🥰": "Authentic Traditional Khmer Countryside Sad Ballad, Deep Emotional Male Solo Vocal, Extremely Heartbreaking Tearful Singing, Crying and Trembling Voice, Slow Tempo 58-62 BPM, Traditional Khmer Khloy Flute, Khmer Tro Sau, Tro Khmer, Chapey Dang Veng, Soft Acoustic Guitar, Traditional Khmer Wind Instruments, Emotional Violin, Gentle Piano, Rural Cambodian Village Atmosphere, Rice Fields at Sunset, Poor Man's Unrequited Love Story, Deep Sad Storytelling, Powerful Crying Chorus, Dramatic Final Chorus, Long Traditional Instrumental Solo, No Female Vocal, No Rap, No Electronic Dance Beat, Pure Khmer Rural Music.", "😔Trap Sad Hip-hop💔": "Slow Tempo 58-62 BPM, Trap, Sad, Hip-hop Reaper, male vocals", "😈Freestyle Rep BassTrap🫨": "Hip-hop, Freestyle, Rep, Bass, Trap", "🤙កន្ទ្រឹម💃": "Authentic Traditional Khmer Kantreum Folk Music, Joyful Cambodian Folk Dance Song, Ramvong Circle Dance Rhythm, Jrochak Traditional Dance Beat, Lam Lao Singing Style, Saravan Dance Rhythm, Deep Emotional Male Solo Vocal, Traditional Khmer Tro Sau, Tro Khmer, Khloy Flute, Chapey Dang Veng, Traditional Khmer Drums, Festive Village Celebration Atmosphere, Upbeat Danceable Tempo, Khmer Language Lyrics, No Female Vocal, No Rap, Pure Traditional Khmer Folk Music.", "😭Sad Emotional Rap💔": "Khmer Male Emotional Vocal, Deep Sad Trap, Emotional Hip Hop, Cinematic Piano, Dark Ambient Pads, Heavy 808 Bass, Powerful Drums, Melodic Rap, Raw Heartbroken Male Voice, Deep Expressive Vocal, Soft Intimate Verses, Explosive Screaming Chorus, Aggressive Emotional Belting, Crying Vocal Texture, Dynamic Vocal Build-up, Dramatic Strings, Atmospheric Sound Design, Powerful Final Chorus, Slow Emotional Intro, Modern Khmer Music Production, 75 BPM, High Quality Studio Production.", "💃កន្ទ្រឹម EDM🥲": "Khmer Traditional Kantrem Remix Dance, Modern Khmer Kantrem EDM, High Energy Dance Beat, Bouncy Rhythmic Drums, Catchy Synth Melody, Traditional Khmer Instrument Fusion, Deep Punchy Bass, Playful Melodic Vocal Runs, Male Khmer Vocal, Emotional Romantic Lyrics with a Happy Dance Feeling, Catchy Repeating Chorus, Melodic Call and Response, Energetic Instrumental Breaks, Creative Melody Variations, Festival Party Atmosphere, Professional Studio Production, 130 BPM, 4:30 to 5:00 minutes."};
+  var PRESET_NAMES = Object.keys(PRESETS);
+
+  var songTitle = document.getElementById("songTitle");
+  var lyricsEl = document.getElementById("lyrics");
+  var lyrCount = document.getElementById("lyrCount");
+  var styleWrap = document.getElementById("styleWrap");
+  var styleField = document.getElementById("styleField");
+  var styleFieldLabel = document.getElementById("styleFieldLabel");
+  var styleCount = document.getElementById("styleCount");
+  var styleDrop = document.getElementById("styleDrop");
+  var styleText = document.getElementById("styleText");
+  var modelRow = document.getElementById("modelRow");
+  var voiceRow = document.getElementById("voiceRow");
+  var balLine = document.getElementById("balLine");
+  var genBtn = document.getElementById("genBtn");
+  var genHint = document.getElementById("genHint");
+  var progEl = document.getElementById("prog");
+  var genErr = document.getElementById("genErr");
+  var resultBox = document.getElementById("resultBox");
+  var resultTitle = document.getElementById("resultTitle");
+  var resultsEl = document.getElementById("results");
+  var resultNote = document.getElementById("resultNote");
+  var au = document.getElementById("au");
+
+  var user = null; // {email, name, songCredits, ...} from the server
+  var model = "v6";
+  var voice = "male";
+  var selectedPreset = ""; // preset name, or "" when none selected
+  var selectedCustom = ""; // custom style string, or "" when none selected
+  var instrumental = false;
+  var aiLang = "kh";
+  var coverState = { url: "", name: "", duration: 0, checkJobId: "", checkParams: null, checkState: "none" };
+  var myVoice = { hasVoice: false, available: false, name: "" };
+  var customStyles = [];
+  var busy = false;
+  var cancelGen = false;
+  var tickTimer = null;
+  var genStart = 0;
+  var curJobId = "";
+  var playingIdx = -1;
+  var resultSongs = [];
+
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var metaEl = document.querySelector('meta[name="theme-color"]');
+    if (metaEl) metaEl.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var btns = seg.querySelectorAll("button"); for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("on", btns[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (btnEl) setTheme(btnEl.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
+  /* ---- menu (bottom sheet) ---- */
+  var menuEl = document.getElementById("menu");
+  var menuFab = document.getElementById("menuFab");
+  var menuVeil = document.getElementById("menuVeil");
+  var menuSignIn = document.getElementById("menuSignIn");
+  var menuSignOut = document.getElementById("menuSignOut");
+  var menuUser = document.getElementById("menuUser");
+  function setMenu(open){
+    if (open) syncDrawerState();
+    menuEl.classList.toggle("open", !!open);
+    document.body.classList.toggle("drawer-open", !!open);
+    if (menuVeil) menuVeil.classList.toggle("open", !!open);
+    if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
+  if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
+  /* Menu links close the drawer at once, before navigation starts. */
+  if (menuEl) menuEl.addEventListener("click", function(e){
+    var linkEl = e.target && e.target.closest ? e.target.closest("a") : null;
+    if (linkEl) setMenu(false);
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") { setMenu(false); closeStyleDrop(); }
+  });
+  /* Round 4 (H) + Round 5 (O): while the user is actively scrolling, fade
+     the floating buttons out so they never cover content mid-scroll.
+     scrollend drops the class the moment scrolling truly ends, and a 2s
+     watchdog drops it if no scroll event arrived for 1.2s. */
+  var scrollFabTimer = null;
+  var scrollFabLast = 0;
+  window.addEventListener("scroll", function(){
+    document.body.classList.add("scrolling");
+    scrollFabLast = Date.now();
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
+  }, { passive: true });
+  window.addEventListener("scrollend", function(){
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    document.body.classList.remove("scrolling");
+  });
+  setInterval(function(){
+    if (document.body.classList.contains("scrolling") && Date.now() - scrollFabLast > 1200) document.body.classList.remove("scrolling");
+  }, 2000);
+  function menuAuthState(){
+    var em = "";
+    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
+    if (menuSignIn) menuSignIn.hidden = !!em;
+    if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  /* Re-render the drawer from live stored state every time it opens, so it
+     can never show a stale sign-in state or unselected theme/language
+     buttons. Runs synchronously, before the drawer becomes visible. */
+  function syncDrawerState(){
+    try {
+      applyTheme();
+      var stored = null;
+      try { stored = localStorage.getItem("movai-lang"); } catch (e) {}
+      if ((stored === "en" || stored === "kh") && stored !== lang) {
+        lang = stored;
+        applyLang();
+      } else {
+        var seg = document.getElementById("langSeg");
+        if (seg) { var btns = seg.querySelectorAll("button"); for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("on", btns[i].getAttribute("data-lang-val") === lang); }
+      }
+      menuAuthState();
+    } catch (e) {}
+  }
+  if (menuSignOut) menuSignOut.addEventListener("click", function(){
+    setMenu(false);
+    signOutLocal();
+    location.reload();
+  });
+
+  /* ---- helpers ---- */
+  function sleep(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
+  function fmtTime(sec){
+    if (!isFinite(sec) || sec <= 0) return "–:––";
+    sec = Math.floor(sec);
+    return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+  }
+  function playUrl(u){
+    var s = String(u || "");
+    s = s.replace(/,fl_attachment/g, "").replace(/fl_attachment,/g, "");
+    s = s.replace(/\/fl_attachment\//g, "/");
+    s = s.replace(/([?&])fl_attachment=[^&]*&/g, "$1");
+    s = s.replace(/([?&])fl_attachment=[^&]*$/, "");
+    return s;
+  }
+  // Server error text may carry a provider prefix; provider names must
+  // never appear on screen, so strip them from anything shown.
+  function cleanErr(msg){
+    var s = String(msg || "").trim();
+    s = s.replace(/^\s*(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\s*:\s*/i, "");
+    s = s.replace(/\b(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\b/gi, "");
+    s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
+    return s || "Could not create the song. Please try again.";
+  }
+  function apiPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      var ms = timeoutMs || 60000;
+      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
+    }
+    return fetch(API + path, opts).then(function(r){
+      if (timer) clearTimeout(timer);
+      return r.json().catch(function(){ return null; });
+    }).catch(function(e){
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
+  }
+  function loadStored(){
+    try { return JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch (e) { return null; }
+  }
+  function saveStored(u){
+    try {
+      if (u) localStorage.setItem(USER_KEY, JSON.stringify(u));
+      else localStorage.removeItem(USER_KEY);
+    } catch (e) {}
+  }
+  function sessionEmail(){
+    try { return (localStorage.getItem(SESSION_KEY) || "").trim(); } catch (e) { return ""; }
+  }
+  function setSession(email){
+    try {
+      if (email) localStorage.setItem(SESSION_KEY, email);
+      else localStorage.removeItem(SESSION_KEY);
+    } catch (e) {}
+  }
+
+  /* ---- account ---- */
+  function showBalance(){
+    if (!user) { balLine.textContent = t("balLabel") + "—"; return; }
+    var c = Math.floor(Number(user.songCredits) || 0);
+    balLine.innerHTML = "";
+    var boldEl = document.createElement("b");
+    boldEl.textContent = t("balLabel") + c;
+    balLine.appendChild(boldEl);
+  }
+  function renderAccount(){
+    var loggedIn = !!(user && user.email);
+    genBtn.disabled = !loggedIn || busy;
+    genHint.textContent = loggedIn ? "" : t("genHint");
+    showBalance();
+    menuAuthState();
+  }
+  function refreshBalance(){
+    if (!user || !user.email) return Promise.resolve();
+    // POST /api/admin/sync {email} returns {ok:true, user:{...songCredits}}
+    // — the server balance is the only truth, so refresh it from there.
+    return apiPost("/api/admin/sync", { email: user.email }, 30000).then(function(j){
+      if (j && j.ok === true && j.user) {
+        user = j.user;
+        saveStored(user);
+        renderAccount();
+      } else if (j && j.ok === false && j.error) {
+        // Server refused this account (e.g. blocked): sign out locally.
+        signOutLocal();
+        showLoginErr(j.error);
+      }
+    }).catch(function(){ /* offline / server waking: keep the cached balance */ });
+  }
+  function showLoginErr(msg){
+    genHint.textContent = cleanErr(msg);
+  }
+  function signOutLocal(){
+    user = null;
+    setSession("");
+    saveStored(null);
+    renderAccount();
+    menuAuthState();
+    resultBox.hidden = true;
+    resultsEl.innerHTML = "";
+    resultSongs = [];
+  }
+
+  /* ---- language ---- */
   function onLangChange(){
     renderAccount();
     syncModelRow();
     syncVoiceRow();
-    renderCustomStyles();
+    renderStyleRows();
+    syncStyleField();
     restoreLastSongs();
     mvSetStatus();
   }
@@ -1185,35 +997,37 @@
     for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
     document.documentElement.lang = lang === "en" ? "en" : "km";
     var seg = document.getElementById("langSeg");
-    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
-    if (typeof onLangChange === "function") onLangChange();
+    if (seg) { var btns = seg.querySelectorAll("button"); for (var q = 0; q < btns.length; q++) btns[q].classList.toggle("on", btns[q].getAttribute("data-lang-val") === lang); }
+    onLangChange();
     /* The "Signed in as ..." line is rendered by JS, not data-i18n, so
        re-render it here too - otherwise it stays in the previous
        language after a language switch. */
-    if (typeof menuAuthState === "function") menuAuthState();
-    if (typeof syncAiLangBtn === "function") syncAiLangBtn();
+    menuAuthState();
+    syncAiLangBtn();
   }
   function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
   var langSeg = document.getElementById("langSeg");
   if (langSeg) langSeg.addEventListener("click", function(e){
-    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
-    if (b) setLang(b.getAttribute("data-lang-val"));
+    var btnEl = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (btnEl) setLang(btnEl.getAttribute("data-lang-val"));
   });
+
+  /* ---- lyrics counter ---- */
+  function updateCount(){
+    lyrCount.textContent = String((lyricsEl.value || "").length) + " / 5000";
+  }
+  lyricsEl.addEventListener("input", function(){ updateCount(); saveDraftSoon(); });
+  songTitle.addEventListener("input", saveDraftSoon);
 
   /* ---- draft persistence (owner rule: nothing disappears on refresh) ----
      Every field on Create is saved to localStorage as a draft, per Gmail,
-     and restored on load. An item disappears ONLY when its own delete
-     button is tapped (custom style chips / cover Remove / song ✕). */
+     and restored on load. */
   var draftTimer = null;
   var instrumentalChk = document.getElementById("instrumentalChk");
   function draftEmail(){ return (user && user.email) || sessionEmail() || "guest"; }
   function readDraft(){
     try { return JSON.parse(localStorage.getItem(draftKey(draftEmail())) || "null"); } catch (e) { return null; }
   }
-  /* Round 4 (J): the draft also carries the scroll position and the
-     time it was saved, so a return within the 4-minute grace restores
-     the exact scroll position too. The draft itself still lives forever. */
-  var GRACE_MS = 4 * 60 * 1000;
   function saveDraft(){
     try {
       var d = {
@@ -1223,6 +1037,7 @@
         lyrics: lyricsEl.value || "",
         styleText: styleText.value || "",
         selectedPreset: selectedPreset || "",
+        selectedCustom: selectedCustom || "",
         model: model, voice: voice, instrumental: instrumental, aiLang: aiLang,
         cover: coverState.url ? { url: coverState.url, name: coverState.name || "",
           duration: coverState.duration || 0, checkJobId: coverState.checkJobId || "",
@@ -1243,8 +1058,10 @@
     if (typeof d.styleText === "string") styleText.value = d.styleText;
     if (typeof d.selectedPreset === "string" && d.selectedPreset && PRESETS[d.selectedPreset]) {
       selectedPreset = d.selectedPreset;
-      var chips = presetRow.querySelectorAll(".chip");
-      chips.forEach(function(c){ c.setAttribute("aria-pressed", c.textContent === selectedPreset ? "true" : "false"); });
+      selectedCustom = "";
+    } else if (typeof d.selectedCustom === "string" && d.selectedCustom && customStyles.indexOf(d.selectedCustom) >= 0) {
+      selectedCustom = d.selectedCustom;
+      selectedPreset = "";
     }
     if (d.model === "v6" || d.model === "v6-wild" || d.model === "v6-mini" || d.model === "v5_5") model = d.model;
     if (d.voice === "male" || d.voice === "female" || d.voice === "random" || d.voice === "myvoice") voice = d.voice;
@@ -1261,8 +1078,10 @@
     }
     updateCount();
     syncAiLangBtn();
-    /* Round 4 (J): restore the scroll position only on a fresh return
-       (within the grace); the draft fields above restore regardless. */
+    renderStyleRows();
+    syncStyleField();
+    /* Restore the scroll position only on a fresh return (within the
+       4-minute grace); the draft fields above restore regardless. */
     if (typeof d.savedAt === "number" && Date.now() - d.savedAt <= GRACE_MS && typeof d.scrollY === "number" && d.scrollY > 0) {
       requestAnimationFrame(function(){ try { window.scrollTo(0, d.scrollY); } catch (e) {} });
     }
@@ -1272,10 +1091,142 @@
   window.addEventListener("pagehide", saveDraft);
   setInterval(function(){ if (!document.hidden) saveDraft(); }, 10000);
 
+  /* ---- style picker (old-site dropdown, rebuilt) ----
+     Field shows the selected name (or the placeholder), a count badge and
+     a chevron that rotates when open. The dropdown holds 11 preset rows
+     plus any saved custom styles. Each row has a 26px square check box
+     with a ✓ that is only visible when the row is selected. Tap a row to
+     select it (only one at a time); tap the same row again to deselect
+     and clear the style text. Typing in the style text clears the
+     selection. Tapping outside or Escape closes the dropdown. */
+  function clearStyleSelection(){
+    selectedPreset = "";
+    selectedCustom = "";
+    syncStyleField();
+    renderStyleRows();
+  }
+  function syncStyleField(){
+    var name = selectedPreset || selectedCustom || "";
+    if (name) {
+      styleFieldLabel.textContent = name;
+      styleFieldLabel.classList.remove("ph");
+    } else {
+      styleFieldLabel.textContent = t("stylePlaceholder");
+      styleFieldLabel.classList.add("ph");
+    }
+    styleCount.textContent = String(PRESET_NAMES.length + customStyles.length);
+  }
+  function openStyleDrop(){
+    styleWrap.classList.add("open");
+    styleDrop.hidden = false;
+    styleField.setAttribute("aria-expanded", "true");
+  }
+  function closeStyleDrop(){
+    styleWrap.classList.remove("open");
+    styleDrop.hidden = true;
+    styleField.setAttribute("aria-expanded", "false");
+  }
+  function toggleStyleDrop(){
+    if (styleDrop.hidden) openStyleDrop(); else closeStyleDrop();
+  }
+  function renderStyleRows(){
+    styleDrop.innerHTML = "";
+    PRESET_NAMES.forEach(function(name){
+      var rowEl = document.createElement("button");
+      rowEl.type = "button";
+      rowEl.className = "style-preset-row" + (selectedPreset === name ? " on" : "");
+      rowEl.setAttribute("role", "option");
+      rowEl.setAttribute("aria-selected", selectedPreset === name ? "true" : "false");
+      var checkEl = document.createElement("span");
+      checkEl.className = "preset-check";
+      checkEl.textContent = "✓";
+      var nameEl = document.createElement("span");
+      nameEl.className = "row-name";
+      nameEl.textContent = name;
+      rowEl.appendChild(checkEl);
+      rowEl.appendChild(nameEl);
+      rowEl.addEventListener("click", function(){
+        if (selectedPreset === name) {
+          selectedPreset = "";
+          if (styleText.value === PRESETS[name]) styleText.value = "";
+        } else {
+          selectedPreset = name;
+          selectedCustom = "";
+          styleText.value = PRESETS[name];
+        }
+        renderStyleRows();
+        syncStyleField();
+        saveDraftSoon();
+      });
+      styleDrop.appendChild(rowEl);
+    });
+    customStyles.forEach(function(name){
+      var rowEl = document.createElement("button");
+      rowEl.type = "button";
+      rowEl.className = "style-preset-row" + (selectedCustom === name ? " on" : "");
+      rowEl.setAttribute("role", "option");
+      rowEl.setAttribute("aria-selected", selectedCustom === name ? "true" : "false");
+      var checkEl = document.createElement("span");
+      checkEl.className = "preset-check";
+      checkEl.textContent = "✓";
+      var nameEl = document.createElement("span");
+      nameEl.className = "row-name";
+      nameEl.textContent = name;
+      var delEl = document.createElement("span");
+      delEl.className = "row-del";
+      delEl.setAttribute("role", "button");
+      delEl.setAttribute("aria-label", t("delStyle") + name);
+      delEl.textContent = "✕";
+      delEl.addEventListener("click", function(e){
+        e.stopPropagation();
+        customStyles = customStyles.filter(function(s){ return s !== name; });
+        if (selectedCustom === name) {
+          selectedCustom = "";
+          if (styleText.value === name) styleText.value = "";
+        }
+        saveCustomStyles();
+        renderStyleRows();
+        syncStyleField();
+        saveDraftSoon();
+      });
+      rowEl.appendChild(checkEl);
+      rowEl.appendChild(nameEl);
+      rowEl.appendChild(delEl);
+      rowEl.addEventListener("click", function(){
+        if (selectedCustom === name) {
+          selectedCustom = "";
+          if (styleText.value === name) styleText.value = "";
+        } else {
+          selectedCustom = name;
+          selectedPreset = "";
+          styleText.value = name;
+        }
+        renderStyleRows();
+        syncStyleField();
+        saveDraftSoon();
+      });
+      styleDrop.appendChild(rowEl);
+    });
+    styleCount.textContent = String(PRESET_NAMES.length + customStyles.length);
+  }
+  styleField.addEventListener("click", function(e){
+    e.stopPropagation();
+    toggleStyleDrop();
+  });
+  styleDrop.addEventListener("click", function(e){ e.stopPropagation(); });
+  document.addEventListener("click", function(e){
+    if (!styleDrop.hidden && !(e.target && e.target.closest && e.target.closest("#styleWrap"))) closeStyleDrop();
+  });
+  styleText.addEventListener("input", function(){
+    var cur = styleText.value;
+    if (selectedPreset && cur !== PRESETS[selectedPreset]) clearStyleSelection();
+    else if (selectedCustom && cur !== selectedCustom) clearStyleSelection();
+    saveDraftSoon();
+  });
+
   /* ---- Add-style: your own saved styles (old site songStyleAdd) ---- */
   var styleAddText = document.getElementById("styleAddText");
   var styleAddBtn = document.getElementById("styleAddBtn");
-  var customStyleRow = document.getElementById("customStyleRow");
   function loadCustomStyles(){
     try {
       var a = JSON.parse(localStorage.getItem(stylesKey(draftEmail())) || "[]");
@@ -1284,35 +1235,6 @@
   }
   function saveCustomStyles(){
     try { localStorage.setItem(stylesKey(draftEmail()), JSON.stringify(customStyles)); } catch (e) {}
-  }
-  function renderCustomStyles(){
-    customStyleRow.innerHTML = "";
-    customStyles.forEach(function(name){
-      var chip = document.createElement("span");
-      chip.className = "tagchip";
-      var tx = document.createElement("span");
-      tx.textContent = name;
-      tx.addEventListener("click", function(){
-        selectedPreset = "";
-        var chips = presetRow.querySelectorAll(".chip");
-        chips.forEach(function(c){ c.setAttribute("aria-pressed", "false"); });
-        styleText.value = name;
-        saveDraftSoon();
-      });
-      var x = document.createElement("button");
-      x.type = "button";
-      x.textContent = "✕";
-      x.setAttribute("aria-label", t("delStyle") + name);
-      x.addEventListener("click", function(e){
-        e.stopPropagation();
-        customStyles = customStyles.filter(function(s){ return s !== name; });
-        saveCustomStyles();
-        renderCustomStyles();
-      });
-      chip.appendChild(tx);
-      chip.appendChild(x);
-      customStyleRow.appendChild(chip);
-    });
   }
   function addCustomStyles(){
     var raw = (styleAddText.value || "").trim();
@@ -1323,17 +1245,172 @@
     });
     styleAddText.value = "";
     saveCustomStyles();
-    renderCustomStyles();
+    renderStyleRows();
+    syncStyleField();
   }
   styleAddBtn.addEventListener("click", addCustomStyles);
   styleAddText.addEventListener("keydown", function(e){ if (e.key === "Enter") { e.preventDefault(); addCustomStyles(); } });
 
+  /* ---- model + voice ---- */
+  try {
+    var savedModel = localStorage.getItem(MODEL_KEY) || "";
+    if (savedModel === "v6" || savedModel === "v6-wild" ||
+        savedModel === "v6-mini" || savedModel === "v5_5") model = savedModel;
+  } catch (e) {}
+  function syncModelRow(){
+    var btns = modelRow.querySelectorAll(".seg-btn");
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-model") === model ? "true" : "false"); });
+  }
+  modelRow.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("[data-model]") : null;
+    if (!btnEl) return;
+    model = btnEl.getAttribute("data-model");
+    try { localStorage.setItem(MODEL_KEY, model); } catch (err) {}
+    syncModelRow();
+    saveDraftSoon();
+  });
+  syncModelRow();
+  function syncVoiceRow(){
+    var btns = voiceRow.querySelectorAll(".seg-btn");
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-voice") === voice ? "true" : "false"); });
+    var mvBox = document.getElementById("myVoiceBox");
+    if (mvBox) mvBox.hidden = voice !== "myvoice";
+  }
+  voiceRow.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("[data-voice]") : null;
+    if (!btnEl) return;
+    voice = btnEl.getAttribute("data-voice");
+    syncVoiceRow();
+    saveDraftSoon();
+  });
+
+  /* ---- results ---- */
+  function normSongs(j){
+    var arr = null;
+    if (j && Array.isArray(j.songs)) arr = j.songs;
+    else if (j && Array.isArray(j.data)) arr = j.data;
+    else if (j && j.data && Array.isArray(j.data.songs)) arr = j.data.songs;
+    if (!arr) return [];
+    return arr.map(function(x){
+      if (typeof x === "string") return { url: x, title: "" };
+      if (!x || typeof x !== "object") return { url: "", title: "" };
+      /* The stream link (url / streamAudioUrl) can answer HTTP 200 with
+         an EMPTY body - it cannot play. The real audio is audioUrl.
+         Prefer it; keep the stream link as streamUrl for fallback. */
+      var stream = x.url || x.streamAudioUrl || x.stream_audio_url || "";
+      var audio = x.audioUrl || x.audio_url ||
+                  x.permanentMp3Url || x.permanent_mp3_url || "";
+      return {
+        url: audio || stream,
+        streamUrl: (stream && stream !== (audio || stream)) ? stream : "",
+        title: x.title || "",
+        image: x.image || x.cover || "",
+        audioId: x.audioId || x.audio_id || x.id || "",
+        taskId: x.taskId || x.task_id || ""
+      };
+    }).filter(function(x){ return !!x.url; });
+  }
+  function probeDuration(song, durEl){
+    try {
+      var a = new Audio();
+      a.preload = "metadata";
+      a.onloadedmetadata = function(){ durEl.textContent = fmtTime(a.duration); };
+      a.onerror = function(){};
+      a.src = playUrl(song.url);
+      setTimeout(function(){ try { a.src = ""; } catch (e) {} }, 20000);
+    } catch (e) {}
+  }
+  function renderResults(songs, isPreview){
+    resultSongs = songs;
+    resultsEl.innerHTML = "";
+    playingIdx = -1;
+    resultBox.hidden = false;
+    resultTitle.textContent = isPreview ? "Your songs (preview — still finishing…)" : t("resultTitle");
+    resultNote.hidden = true;
+    songs.forEach(function(song, i){
+      var rowEl = document.createElement("div");
+      rowEl.className = "res-row";
+      var pb = document.createElement("button");
+      pb.type = "button";
+      pb.className = "play-btn";
+      pb.textContent = "▶";
+      pb.setAttribute("aria-label", t("playSong") + (i + 1));
+      pb.addEventListener("click", function(){ togglePlay(i, pb); });
+      var textEl = document.createElement("span");
+      textEl.className = "res-text";
+      var titleEl = document.createElement("span");
+      titleEl.className = "res-title";
+      titleEl.textContent = song.title || ("Song " + (i + 1));
+      var subEl = document.createElement("span");
+      subEl.className = "res-sub";
+      subEl.textContent = isPreview ? "Preview" : "Song " + (i + 1) + " of " + songs.length;
+      textEl.appendChild(titleEl);
+      textEl.appendChild(subEl);
+      var durEl = document.createElement("span");
+      durEl.className = "res-dur";
+      durEl.textContent = "–:––";
+      var dlEl = document.createElement("a");
+      dlEl.className = "res-dl";
+      dlEl.href = playUrl(song.url);
+      dlEl.textContent = t("download");
+      dlEl.setAttribute("download", "");
+      rowEl.appendChild(pb);
+      rowEl.appendChild(textEl);
+      rowEl.appendChild(durEl);
+      rowEl.appendChild(dlEl);
+      resultsEl.appendChild(rowEl);
+      probeDuration(song, durEl);
+    });
+  }
+  /* Result songs carry url + streamUrl - if the first URL is a dead link,
+     try the next one before giving up. */
+  var playAltUrls = [];
+  var playAltIdx = 0;
+  function togglePlay(i, btnEl){
+    var song = resultSongs[i];
+    if (!song) return;
+    if (playingIdx === i && !au.paused) {
+      au.pause();
+      btnEl.textContent = "▶";
+      return;
+    }
+    if (playingIdx !== i) {
+      playAltUrls = [];
+      [song.url, song.streamUrl, song.audioUrl].forEach(function(u){
+        u = playUrl(u);
+        if (u && playAltUrls.indexOf(u) < 0) playAltUrls.push(u);
+      });
+      playAltIdx = 0;
+      au.src = playAltUrls[0] || "";
+      playingIdx = i;
+      var btns = resultsEl.querySelectorAll(".play-btn");
+      btns.forEach(function(b){ b.textContent = "▶"; });
+    }
+    btnEl.textContent = "❚❚";
+    au.play().catch(function(){
+      if (playAltIdx + 1 < playAltUrls.length) {
+        playAltIdx++;
+        au.src = playAltUrls[playAltIdx];
+        try { au.load(); } catch (e) {}
+        au.play().catch(function(){ btnEl.textContent = "▶"; });
+      } else { btnEl.textContent = "▶"; }
+    });
+  }
+  au.addEventListener("ended", function(){
+    playingIdx = -1;
+    var btns = resultsEl.querySelectorAll(".play-btn");
+    btns.forEach(function(b){ b.textContent = "▶"; });
+  });
+  au.addEventListener("pause", function(){
+    var btns = resultsEl.querySelectorAll(".play-btn");
+    btns.forEach(function(b, i){ if (i === playingIdx) b.textContent = "▶"; });
+  });
+
   /* ---- gift CLAIM popup ----
      New-user gift: 24 Song Credits, once per Gmail, forever (server lock).
      The server grants it when POST /api/admin/sync carries giftClaimed:true
-     and the account has not claimed yet (gift50 toggle OFF, so 24, not 50).
-     The popup shows once per device until claimed; "Not now" dismisses it
-     for this session only. */
+     and the account has not claimed yet. The popup shows once per device
+     until claimed; "Not now" dismisses it for this session only. */
   var giftSheet = document.getElementById("giftSheet");
   var giftClaimBtn = document.getElementById("giftClaimBtn");
   var giftLaterBtn = document.getElementById("giftLaterBtn");
@@ -1407,7 +1484,7 @@
     if (!/^https:/i.test(url) || url.indexOf("res.cloudinary.com") >= 0 || url.indexOf("/uploads/") >= 0) {
       return Promise.resolve(url);
     }
-    // POST /api/public/song-store {url, title} -> {ok, url} (permanent Cloudinary URL)
+    // POST /api/public/song-store {url, title} -> {ok, url} (permanent URL)
     return apiPost("/api/public/song-store", { url: url, title: title || "" }, 60000).then(function(j){
       if (j && j.ok && j.url) return j.url;
       return url;
@@ -1471,17 +1548,17 @@
     window.location.href = "movai-new-songs.html";
   }
 
-  /* ---- AI Lyrics (old site: free 2/day, Groq) ---- */
+  /* ---- AI Lyrics (free 2/day) ---- */
   var aiLangBtn = document.getElementById("aiLangBtn");
   var aiLyricsBtn = document.getElementById("aiLyricsBtn");
   var aiLyricsMsg = document.getElementById("aiLyricsMsg");
   var aiBusy = false;
   var aiTickTimer = null;
   function syncAiLangBtn(){
-    /* Round 4 (F): the language NAME follows the current UI language,
-       never the other one: Khmer UI shows «ខ្មែរ» / «អង់គ្លេស», English UI «Khmer» / «English». */
-    var khName = (typeof lang !== "undefined" && lang === "en") ? "Khmer" : "ខ្មែរ";
-    var enName = (typeof lang !== "undefined" && lang === "en") ? "English" : "អង់គ្លេស";
+    /* The language NAME follows the current UI language, never the other
+       one: Khmer UI shows «ខ្មែរ» / «អង់គ្លេស», English UI «Khmer» / «English». */
+    var khName = (lang === "en") ? "Khmer" : "ខ្មែរ";
+    var enName = (lang === "en") ? "English" : "អង់គ្លេស";
     aiLangBtn.innerHTML = aiLang === "kh" ? "&#127472;&#127469; " + khName + " &#9662;" : "&#127468;&#127463; " + enName + " &#9662;";
     aiLangBtn.setAttribute("aria-pressed", aiLang === "en" ? "true" : "false");
   }
@@ -1765,9 +1842,9 @@
   }
 
   /* ---- My Voice (old site flow) ----
-     Record a 15s sample -> validate (Suno gives an English phrase) ->
+     Record a 15s sample -> validate (server gives an English phrase) ->
      record the phrase -> save. The voice itself lives on the server;
-     generations only send myVoice:true (model forced to V5.5 server-side). */
+     generations only send myVoice:true. */
   var myVoiceBox = document.getElementById("myVoiceBox");
   var myVoiceStatus = document.getElementById("myVoiceStatus");
   var mvRecBtn = document.getElementById("mvRecBtn");
@@ -1811,7 +1888,7 @@
       }).catch(function(){});
   }
   function wav16kMono(blob){
-    // MediaRecorder gives webm/opus; Suno takes mp3/wav — decode and
+    // MediaRecorder gives webm/opus; the server takes mp3/wav — decode and
     // re-encode as 16 kHz mono WAV (old site does the same).
     var AudioCtx = window.AudioContext || window.webkitAudioContext;
     var ctx = new AudioCtx();
@@ -1828,7 +1905,7 @@
       }
       var buf = new ArrayBuffer(44 + out.length * 2);
       var v = new DataView(buf);
-      function ws(o, s){ for (var k = 0; k < s.length; k++) v.setUint8(o + k, s.charCodeAt(k)); }
+      function ws(o, str){ for (var k = 0; k < str.length; k++) v.setUint8(o + k, str.charCodeAt(k)); }
       ws(0, "RIFF"); v.setUint32(4, 36 + out.length * 2, true); ws(8, "WAVE");
       ws(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
       v.setUint16(22, 1, true); v.setUint32(24, 16000, true); v.setUint32(28, 32000, true);
@@ -1864,7 +1941,7 @@
         mvRecorder = new MediaRecorder(stream);
         mvRecorder.ondataavailable = function(e){ if (e.data && e.data.size) mvChunks.push(e.data); };
         mvRecorder.onstop = function(){
-          try { stream.getTracks().forEach(function(x){ x.stop(); }); } catch (e) {}
+          try { stream.getTracks().forEach(function(tr){ tr.stop(); }); } catch (e) {}
           var blob = new Blob(mvChunks, { type: (mvRecorder && mvRecorder.mimeType) || "audio/webm" });
           var doneKind = mvRecording;
           mvRecording = null;
@@ -2005,9 +2082,9 @@
   /* ---- generation ---- */
   function showGenErr(msg, showRetry){
     genErr.innerHTML = "";
-    var el = document.createElement("div");
-    el.textContent = cleanErr(msg);
-    genErr.appendChild(el);
+    var msgEl = document.createElement("div");
+    msgEl.textContent = cleanErr(msg);
+    genErr.appendChild(msgEl);
     if (showRetry) {
       var r = document.createElement("button");
       r.type = "button";
@@ -2020,16 +2097,16 @@
   }
   function setProg(sec, stage){
     progEl.innerHTML = "";
-    var el = document.createElement("span");
-    el.textContent = t("generating");
-    var s = document.createElement("span");
-    s.className = "secs";
-    s.textContent = sec + "s";
-    var st = document.createElement("span");
-    st.textContent = stage ? t("stageSep") + stage : "";
-    progEl.appendChild(el);
-    progEl.appendChild(s);
-    progEl.appendChild(st);
+    var labelEl = document.createElement("span");
+    labelEl.textContent = t("generating");
+    var secsEl = document.createElement("span");
+    secsEl.className = "secs";
+    secsEl.textContent = sec + "s";
+    var stageEl = document.createElement("span");
+    stageEl.textContent = stage ? t("stageSep") + stage : "";
+    progEl.appendChild(labelEl);
+    progEl.appendChild(secsEl);
+    progEl.appendChild(stageEl);
     progEl.hidden = false;
   }
   function stopTick(){
@@ -2081,6 +2158,7 @@
       style: styleFull,
       tags: styleFull,
       voice: voice,
+      vocalGender: coverVocalGender(),
       model: model,
       instrumental: instrumental,
       make_instrumental: instrumental,
@@ -2186,7 +2264,8 @@
     }
     renderAccount();
     restoreDraft();
-    renderCustomStyles();
+    renderStyleRows();
+    syncStyleField();
     syncModelRow();
     syncVoiceRow();
     if (instrumentalChk) {
