@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
+<link rel="apple-touch-icon" href="movai-icon-192.png">
+<title>MovAi — AI Chat</title>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
+<style>
+  /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;overflow-x:hidden}
+  html{
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    -webkit-text-size-adjust:100%;
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:#1f2937;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  a{color:#1f2937;text-decoration:none}
+  button{font:inherit;color:inherit;background:transparent;border:0;padding:0;cursor:pointer}
+  img{display:block;max-width:100%}
+
+  .wrap{max-width:720px;margin:0 auto}
+
+  /* ---- Header: two rows, directly on the background (transparent) ---- */
+  header{position:sticky;top:0;z-index:20;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;}
+  .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-left:16px;padding-right:16px}
+  .hdr-top{padding-top:14px;padding-bottom:10px;border-bottom:1px solid #e5e7eb}
+  .hdr-sub{padding-top:11px;padding-bottom:11px;border-bottom:1px solid #e5e7eb}
+  .hdr-logo{display:flex;align-items:center;gap:8px;color:#1f2937;min-width:0}
+  .hdr-logo svg,.hdr-logo img{flex:none}
+  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:#1f2937;line-height:1}
+  .hdr-sec{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .hdr-sec-name{font-size:1rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hdr-btn{flex:none;font-size:.9rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;background:transparent}
+  .hdr-btn:active{background:#e5e7eb}
+
+  /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
+  .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#f2faf6;border:1px solid #d1d5db;
+    font-size:1.4rem;line-height:1;color:#1f2937;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.12)}
+  .menu-fab:active{background:#e5e7eb}
+  .menu-veil{position:fixed;inset:0;z-index:55;display:none;
+    background:rgba(242,250,246,.55);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .menu-veil.open{display:block;animation:veilIn .18s ease-out}
+  @keyframes veilIn{from{opacity:0}to{opacity:1}}
+  .menu{position:fixed;left:0;right:0;bottom:0;z-index:56;
+    max-height:70vh;overflow-y:auto;
+    background:#f2faf6;border-top:1px solid #e5e7eb;border-radius:16px 16px 0 0;
+    padding:6px 0 calc(10px + env(safe-area-inset-bottom,0px));
+    transform:translateY(105%);transition:transform .22s ease-out;
+    visibility:hidden}
+  .menu.open{transform:translateY(0);visibility:visible;animation:sheetIn .25s ease-out}
+  @keyframes sheetIn{from{filter:blur(6px)}to{filter:blur(0)}}
+  .menu.open + .menu-fab{display:none}
+  .menu a,.menu button.menu-link{display:block;width:100%;text-align:left;
+    padding:13px 20px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0;background:transparent}
+  .menu a:last-child,.menu button.menu-link:last-child{border-bottom:0}
+  .menu a:active,.menu button.menu-link:active{background:#e5e7eb}
+  .menu .menu-sep{height:1px;background:#e5e7eb;margin:6px 0}
+  .menu .menu-user{padding:12px 20px 4px;font-size:.85rem;color:#6b7280}
+  [hidden]{display:none !important}
+
+  /* ---- Chat button: bottom-right, slides in from the right edge ---- */
+  .chat-fab{position:fixed;right:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#0f766e;border:1px solid #0f766e;
+    color:#ffffff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.18);
+    transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);
+    transition:transform .45s ease-out,opacity .45s ease-out,filter .45s ease-out;
+    pointer-events:none}
+  .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
+  .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
+  .chat-fab:active{opacity:.85}
+  .chat-fab svg{width:24px;height:24px;flex:none}
+  .player-on .chat-fab{bottom:84px}
+  html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+
+  /* ---- Chat: plain message list on the background ---- */
+  main{padding-bottom:96px}
+  .sess-bar{display:flex;align-items:center;gap:8px;padding:12px 16px 0}
+  .sess-btn{flex:none;font-size:.85rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;background:transparent}
+  .sess-btn:active{background:#e5e7eb}
+  .sess-list{padding:8px 16px 0}
+  .sess-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:10px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .sess-row:active{background:#eef1f0}
+  .sess-title{flex:1;min-width:0;font-size:.9rem;font-weight:600;color:#1f2937;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sess-date{flex:none;font-size:.78rem;color:#6b7280}
+  .sess-del{flex:none;font-size:1rem;color:#6b7280;padding:4px 8px}
+  .sess-del:active{background:#e5e7eb;border-radius:8px}
+  .sess-empty{padding:12px 16px 0;font-size:.85rem;color:#6b7280}
+  .msgs{padding:12px 16px 0;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:85%;padding:10px 12px;border-radius:14px;font-size:.95rem;line-height:1.55;
+    white-space:pre-wrap;word-break:break-word}
+  .msg.user{align-self:flex-end;background:#0f766e;color:#ffffff;border-bottom-right-radius:4px}
+  .msg.ai{align-self:flex-start;background:#eef1f0;color:#1f2937;border-bottom-left-radius:4px}
+  .msg.err{align-self:flex-start;background:#fee2e2;color:#991b1b;border-bottom-left-radius:4px}
+  .msg .msg-media{margin-top:8px}
+  .msg img.chat-img{width:100%;border-radius:10px;display:block}
+  .msg video.chat-vid{width:100%;border-radius:10px;display:block}
+  .msg .dl-link{display:inline-block;margin-top:6px;font-size:.85rem;color:#0f766e;text-decoration:underline}
+  .msg.user .dl-link{color:#ffffff}
+  .msg .prog{font-size:.85rem;color:#6b7280;margin-top:6px}
+  .msg .prog .secs{font-weight:700;color:#1f2937}
+  .msg.user .prog{color:#d1fae5}
+  .msg.user .prog .secs{color:#ffffff}
+  .song-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .act-btn{font-size:.82rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:6px 10px;background:#ffffff}
+  .act-btn:active{background:#e5e7eb}
+  .style-row{display:flex;gap:6px;margin-top:8px}
+  .style-row input{flex:1;min-width:0;font:inherit;font-size:.9rem;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:8px;padding:7px 10px}
+  .confirm-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+  .confirm-row .confirm-text{flex:1;min-width:140px;font-size:.88rem}
+  .typing{display:inline-flex;gap:4px;align-items:center;padding:12px 14px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#6b7280;animation:blink 1.2s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}
+  .typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+  .signin-bar{padding:10px 16px 0;text-align:center;font-size:.88rem;color:#6b7280}
+  .signin-bar a{color:#0f766e;text-decoration:underline;font-weight:600}
+  .input-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;border-top:1px solid #e5e7eb;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));}
+  .input-in{max-width:720px;margin:0 auto;display:flex;align-items:flex-end;gap:8px}
+  .input-in textarea{flex:1;min-width:0;font:inherit;font-size:.95rem;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px;padding:10px 12px;
+    resize:none;max-height:120px;line-height:1.4}
+  .input-in textarea:focus{outline:2px solid #0f766e;border-color:#0f766e}
+  .input-in textarea:disabled{background:#eef1f0;color:#6b7280}
+  .send-btn{flex:none;font-size:.95rem;font-weight:700;color:#ffffff;
+    background:#0f766e;border-radius:12px;padding:11px 16px}
+  .send-btn:active{opacity:.85}
+  .send-btn:disabled{background:#9ca3af}
+
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name{color:#e7f0ec}
+  html[data-theme="dark"] .hdr-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .hdr-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .sess-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .sess-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .sess-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .sess-row:active{background:#1d2f28}
+  html[data-theme="dark"] .sess-title{color:#e7f0ec}
+  html[data-theme="dark"] .sess-date,html[data-theme="dark"] .sess-del,html[data-theme="dark"] .sess-empty{color:#8fa89e}
+  html[data-theme="dark"] .sess-del:active{background:#1d2f28}
+  html[data-theme="dark"] .msg.ai{background:#1d2f28;color:#e7f0ec}
+  html[data-theme="dark"] .msg.err{background:#3f1d1d;color:#fca5a5}
+  html[data-theme="dark"] .msg .dl-link{color:#2dd4bf}
+  html[data-theme="dark"] .msg .prog{color:#8fa89e}
+  html[data-theme="dark"] .msg .prog .secs{color:#e7f0ec}
+  html[data-theme="dark"] .act-btn{color:#e7f0ec;border-color:#3a524a;background:#16261f}
+  html[data-theme="dark"] .act-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .style-row input{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .typing i{background:#8fa89e}
+  html[data-theme="dark"] .input-bar{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .input-in textarea{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .input-in textarea:disabled{background:#1d2f28;color:#8fa89e}
+  html[data-theme="dark"] .input-in textarea:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .send-btn:disabled{background:#3a524a}
+  html[data-theme="dark"] .signin-bar{color:#8fa89e}
+  html[data-theme="dark"] .signin-bar a{color:#2dd4bf}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header id="hdr">
+    <div class="hdr-row hdr-top">
+      <a class="hdr-logo" href="index.html">
+        <img src="movai-logo-mark.png" width="26" height="26" alt="MovAi logo">
+        <b>MovAi</b>
+      </a>
+    </div>
+    <div class="hdr-row hdr-sub">
+      <span class="hdr-sec">
+        <span class="hdr-sec-name" data-i18n="secChat">ឆាត</span>
+      </span>
+      <button class="hdr-btn" id="newChatBtn" type="button" data-i18n="newChat">ជជែកថ្មី</button>
+    </div>
+  </header>
+  <div class="menu-veil" id="menuVeil"></div>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="index.html" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="movai-new-create.html" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
+      <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+      <a href="movai-new-chat.html" data-i18n="navChat">ឆាត</a>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en">English</button>
+      </div>
+    </div>
+    <div class="menu-sep"></div>
+    <div class="menu-user" id="menuUser" hidden></div>
+    <a href="movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
+  </nav>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
+  <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+
+  <main>
+    <div class="sess-bar">
+      <button class="sess-btn" id="sessToggle" type="button" data-i18n="conversations">ការសន្ទនា</button>
+    </div>
+    <div class="sess-list" id="sessList" hidden></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="signin-bar" id="signinBar" hidden><span data-i18n="signInToChat">សូមចូលប្រើជាមុនសិនដើម្បីឆាត</span> <a href="movai-new-profile.html" data-i18n="signInLink">ចូលប្រើ</a></div>
+  </main>
+</div>
+
+<div class="input-bar">
+  <div class="input-in">
+    <textarea id="chatInput" rows="1" data-i18n-ph="inputPh" placeholder="សរសេរសាររបស់អ្នក…"></textarea>
+    <button class="send-btn" id="chatSend" type="button" data-i18n="send">ផ្ញើ</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
+  /* ---- i18n: Khmer / English, strictly separated ---- */
+  var STR = {
+    kh: {
+      secChat: "ឆាត",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      navChat: "ឆាត",
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      chatFabAria: "ឆាត",
+      newChat: "ជជែកថ្មី",
+      conversations: "ការសន្ទនា",
+      noSessions: "មិនទាន់មានការសន្ទនាទេ។",
+      welcome: "សួស្តី! ខ្ញុំជា AI របស់ MovAi។ ខ្ញុំអាចសរសេរបទចម្រៀងឲ្យបង និងបង្កើតរូបភាព ឬវីដេអូបាន។ បងចង់ឲ្យខ្ញុំជួយអ្វី?",
+      inputPh: "សរសេរសាររបស់អ្នក…",
+      send: "ផ្ញើ",
+      signInToChat: "សូមចូលប្រើជាមុនសិនដើម្បីឆាត",
+      signInLink: "ចូលប្រើ",
+      typing: "កំពុងសរសេរ…",
+      copyLyrics: "ចម្លងអត្ថបទចម្រៀង",
+      copyStyle: "ចម្លងស្ទាយ",
+      copyTitle: "ចម្លងចំណងជើង",
+      regenerate: "សរសេរឡើងវិញ",
+      changeStyle: "ប្ដូរស្ទាយ",
+      stylePh: "សរសេរស្ទាយថ្មី…",
+      apply: "អនុវត្ត",
+      cancel: "បោះបង់",
+      approve: "យល់ព្រម",
+      videoConfirm: "វីដេអូ 5 វិនាទី ត្រូវការ 240 Media Credits។ បន្តឬទេ?",
+      creatingImage: "កំពុងបង្កើតរូបភាព…",
+      creatingVideo: "កំពុងបង្កើតវីដេអូ…",
+      copied: "បានចម្លងហើយ",
+      retry: "ព្យាយាមម្ដងទៀត",
+      noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      deleteSession: "លុប",
+      voiceChangedF: "បានប្ដូរសំឡេងទៅជាស្រីហើយ",
+      voiceChangedM: "បានប្ដូរសំឡេងទៅជាបុរសហើយ",
+      viewPackage: "មើលកញ្ចប់",
+      download: "ទាញយក",
+      untitled: "គ្មានចំណងជើង"
+    },
+    en: {
+      secChat: "AI Chat",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      navChat: "AI Chat",
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      chatFabAria: "AI Chat",
+      newChat: "New chat",
+      conversations: "Conversations",
+      noSessions: "No conversations yet.",
+      welcome: "Hello! I am the MovAi AI. I can write songs for you and create images or videos. What would you like me to do?",
+      inputPh: "Write your message…",
+      send: "Send",
+      signInToChat: "Please sign in first to chat",
+      signInLink: "Sign in",
+      typing: "Typing…",
+      copyLyrics: "Copy Lyrics",
+      copyStyle: "Copy Music Style",
+      copyTitle: "Copy Title",
+      regenerate: "Regenerate Song",
+      changeStyle: "Change Style",
+      stylePh: "Type the new style…",
+      apply: "Apply",
+      cancel: "Cancel",
+      approve: "Approve",
+      videoConfirm: "A 5-second video costs 240 Media Credits. Continue?",
+      creatingImage: "Creating image…",
+      creatingVideo: "Creating video…",
+      copied: "Copied",
+      retry: "Retry",
+      noServer: "Could not reach the server. Please try again.",
+      deleteSession: "Delete",
+      voiceChangedF: "Voice changed to female",
+      voiceChangedM: "Voice changed to male",
+      viewPackage: "View package",
+      download: "Download",
+      untitled: "Untitled"
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+
+  function onLangChange(){ renderMessages(); renderSessList(); }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    if (typeof onLangChange === "function") onLangChange();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
+
+  var API_BASE = "https://movai-proxy-wasr.onrender.com";
+  function apiPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      var ms = timeoutMs || 60000;
+      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
+    }
+    return fetch(API_BASE + path, opts).then(function(r){
+      if (timer) clearTimeout(timer);
+      return r.json().catch(function(){ return null; });
+    }).catch(function(e){
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
+  }
+
+  /* ---- menu ---- */
+  var menuEl = document.getElementById("menu");
+  var menuFab = document.getElementById("menuFab");
+  var menuVeil = document.getElementById("menuVeil");
+  var menuSignIn = document.getElementById("menuSignIn");
+  var menuSignOut = document.getElementById("menuSignOut");
+  var menuUser = document.getElementById("menuUser");
+  function setMenu(open){
+    menuEl.classList.toggle("open", !!open);
+    if (menuVeil) menuVeil.classList.toggle("open", !!open);
+    if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
+  if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  function getEmail(){
+    try { var em = (localStorage.getItem("movai-session") || "").trim(); if (em && em.indexOf("@") > 0) return em; } catch (e) {}
+    return "";
+  }
+  function menuAuthState(){
+    var em = getEmail();
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
+    if (menuSignIn) menuSignIn.hidden = !!em;
+    if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  if (menuSignOut) menuSignOut.addEventListener("click", function(){
+    setMenu(false);
+    try { localStorage.removeItem("movai-session"); } catch (e) {}
+    location.reload();
+  });
+  menuAuthState();
+  menuEl.addEventListener("click", function(e){
+    if (e.target && e.target.tagName === "A") setMenu(false);
+  });
+
+  /* ---- chat ---- */
+  var msgsEl = document.getElementById("msgs");
+  var inputEl = document.getElementById("chatInput");
+  var sendBtn = document.getElementById("chatSend");
+  var signinBar = document.getElementById("signinBar");
+  var sessListEl = document.getElementById("sessList");
+  var sessToggle = document.getElementById("sessToggle");
+  var newChatBtn = document.getElementById("newChatBtn");
+
+  var SESS_KEY = "movai-chat-sessions";
+  var CUR_KEY = "movai-chat-current";
+  var VOICE_KEY = "movai-chat-voice";
+  var busy = false;
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function scrollBottom(){
+    try { window.scrollTo(0, document.body.scrollHeight); } catch (e) {}
+  }
+
+  /* ---- sessions (localStorage, like the old site) ---- */
+  function loadSessions(){
+    try { var s = JSON.parse(localStorage.getItem(SESS_KEY) || "[]"); if (Array.isArray(s)) return s; } catch (e) {}
+    return [];
+  }
+  function saveSessions(s){ try { localStorage.setItem(SESS_KEY, JSON.stringify(s.slice(0, 20))); } catch (e) {} }
+  var sessions = loadSessions();
+  function pickCurrent(){
+    var id = "";
+    try { id = localStorage.getItem(CUR_KEY) || ""; } catch (e) {}
+    for (var i = 0; i < sessions.length; i++) if (sessions[i].id === id) return sessions[i];
+    return null;
+  }
+  var cur = pickCurrent();
+  if (!cur) {
+    cur = { id: "s" + Date.now().toString(36), title: "", at: Date.now(), messages: [] };
+    sessions.unshift(cur);
+    saveSessions(sessions);
+    try { localStorage.setItem(CUR_KEY, cur.id); } catch (e) {}
+  }
+  function touchSession(){
+    cur.at = Date.now();
+    saveSessions(sessions);
+    renderSessList();
+  }
+  function newSession(){
+    cur = { id: "s" + Date.now().toString(36), title: "", at: Date.now(), messages: [] };
+    sessions.unshift(cur);
+    saveSessions(sessions);
+    try { localStorage.setItem(CUR_KEY, cur.id); } catch (e) {}
+    renderSessList();
+    renderMessages();
+    inputEl.focus();
+  }
+  function fmtDate(ts){
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleDateString(lang === "en" ? "en-US" : "km-KH", { month: "short", day: "numeric" });
+  }
+  function renderSessList(){
+    sessListEl.innerHTML = "";
+    if (!sessions.length) {
+      sessListEl.appendChild(el("div", "sess-empty", t("noSessions")));
+      return;
+    }
+    sessions.forEach(function(s){
+      var row = el("button", "sess-row");
+      row.type = "button";
+      row.appendChild(el("span", "sess-title", s.title || t("untitled")));
+      row.appendChild(el("span", "sess-date", fmtDate(s.at)));
+      var del = el("span", "sess-del", "✕");
+      del.setAttribute("role", "button");
+      del.setAttribute("aria-label", t("deleteSession"));
+      del.addEventListener("click", function(e){
+        e.stopPropagation();
+        sessions = sessions.filter(function(x){ return x.id !== s.id; });
+        if (cur && cur.id === s.id) {
+          cur = sessions.length ? sessions[0] : null;
+          if (!cur) {
+            cur = { id: "s" + Date.now().toString(36), title: "", at: Date.now(), messages: [] };
+            sessions.unshift(cur);
+          }
+          try { localStorage.setItem(CUR_KEY, cur.id); } catch (e2) {}
+        }
+        saveSessions(sessions);
+        renderSessList();
+        renderMessages();
+      });
+      row.appendChild(del);
+      row.addEventListener("click", function(){
+        cur = s;
+        try { localStorage.setItem(CUR_KEY, cur.id); } catch (e) {}
+        sessListEl.hidden = true;
+        renderMessages();
+      });
+      sessListEl.appendChild(row);
+    });
+  }
+
+  /* ---- typing indicator ---- */
+  var typingEl = null;
+  function showTyping(){
+    hideTyping();
+    typingEl = el("div", "msg ai");
+    var dots = el("span", "typing");
+    dots.appendChild(el("i")); dots.appendChild(el("i")); dots.appendChild(el("i"));
+    typingEl.appendChild(dots);
+    msgsEl.appendChild(typingEl);
+    scrollBottom();
+  }
+  function hideTyping(){
+    if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+    typingEl = null;
+  }
+
+  /* ---- reply parsing ----
+     The server strips square brackets from replies, so song sections arrive
+     bare (Verse 1, Chorus ...) and VOICE:/PACKAGE: tags arrive bare too. */
+  function parseActions(raw){
+    var out = { text: String(raw || ""), voice: null, pkg: null, imgPrompt: null, vidPrompt: null };
+    var m;
+    m = out.text.match(/^[ \t]*\[?VOICE:(male|female)\]?[ \t]*$/im);
+    if (m) out.voice = m[1].toLowerCase();
+    m = out.text.match(/^[ \t]*\[?PACKAGE:([a-z0-9][a-z0-9-]*)\]?[ \t]*$/im);
+    if (m) out.pkg = m[1].toLowerCase();
+    m = out.text.match(/^IMAGE PROMPT:\s*(.+)$/im);
+    if (m) out.imgPrompt = m[1].trim();
+    m = out.text.match(/^VIDEO PROMPT:\s*(.+)$/im);
+    if (m) out.vidPrompt = m[1].trim();
+    out.text = out.text
+      .replace(/^[ \t]*\[?VOICE:(male|female)\]?[ \t]*$/gim, "")
+      .replace(/^[ \t]*\[?PACKAGE:[a-z0-9][a-z0-9-]*\]?[ \t]*$/gim, "")
+      .replace(/^IMAGE PROMPT:\s*.+$/gim, "")
+      .replace(/^VIDEO PROMPT:\s*.+$/gim, "")
+      .replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").replace(/^\s+|\s+$/g, "");
+    return out;
+  }
+  function isSongText(text){
+    var lines = String(text || "").split("\n");
+    var n = 0;
+    for (var i = 0; i < lines.length; i++) {
+      if (/^\s*(Intro|Verse 1|Verse 2|Pre-Chorus|Chorus|Bridge|Final Chorus|Outro|Instrumental|Rap)(\s*[–\-]\s*.*)?\s*$/.test(lines[i])) n++;
+    }
+    return n >= 2;
+  }
+  function parseSong(text, source){
+    var title = "";
+    var m = text.match(/^Title:\s*(.+)$/m);
+    if (m) title = m[1].trim();
+    var style = "";
+    var m2 = text.match(/^Music Style:\s*(.+)$/m);
+    if (m2) style = m2[1].trim();
+    if (!style) {
+      var m3 = text.match(/^\s*Intro\s*[–\-]\s*(.+)$/m);
+      if (m3) style = m3[1].trim();
+    }
+    var lyrics = text.replace(/^Title:.*$/m, "").replace(/^Music Style:.*$/m, "").replace(/^\s+/, "").replace(/\s+$/, "");
+    return { title: title, style: style, lyrics: lyrics, source: source || "" };
+  }
+
+  /* ---- rendering ---- */
+  function copyText(text, btn){
+    var done = function(){
+      if (!btn) return;
+      var old = btn.textContent;
+      btn.textContent = t("copied");
+      setTimeout(function(){ btn.textContent = old; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(String(text || "")).then(done, function(){ fallbackCopy(text, done); });
+    } else fallbackCopy(text, done);
+  }
+  function fallbackCopy(text, done){
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = String(text || "");
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e) {}
+    if (done) done();
+  }
+  function showStyleRow(m, row){
+    if (row.parentNode && row.parentNode.querySelector(".style-row")) return;
+    var sr = el("div", "style-row");
+    var inp = el("input");
+    inp.type = "text";
+    inp.setAttribute("placeholder", t("stylePh"));
+    var go = el("button", "act-btn", t("apply"));
+    go.type = "button";
+    go.addEventListener("click", function(){
+      var v = inp.value.trim();
+      if (!v) return;
+      var txt = lang === "en"
+        ? "Change the style of this song to " + v + " but keep the lyrics the same"
+        : "ប្ដូរស្ទាយបទនេះទៅជា " + v + " តែរក្សាអត្ថបទដដែល";
+      sendUser(txt);
+    });
+    sr.appendChild(inp);
+    sr.appendChild(go);
+    row.parentNode.insertBefore(sr, row.nextSibling);
+    inp.focus();
+  }
+  function songActs(m){
+    var song = m.song;
+    var row = el("div", "song-acts");
+    function mkBtn(key, fn){
+      var b = el("button", "act-btn", t(key));
+      b.type = "button";
+      b.addEventListener("click", function(){ fn(b); });
+      row.appendChild(b);
+      return b;
+    }
+    mkBtn("copyLyrics", function(b){ copyText(song.lyrics || m.content, b); });
+    mkBtn("copyStyle", function(b){ copyText(song.style || "", b); });
+    mkBtn("copyTitle", function(b){ copyText(song.title || "", b); });
+    mkBtn("regenerate", function(){
+      var extra = lang === "en" ? "Write a new version" : "សរសេរម្ដងទៀតបែបថ្មី";
+      sendUser((song.source || "") + "\n" + extra);
+    });
+    mkBtn("changeStyle", function(){ showStyleRow(m, row); });
+    return row;
+  }
+  function renderMessages(){
+    msgsEl.innerHTML = "";
+    if (!cur.messages.length) {
+      msgsEl.appendChild(el("div", "msg ai", t("welcome")));
+      scrollBottom();
+      return;
+    }
+    cur.messages.forEach(function(m){
+      var div = el("div", "msg " + (m.role === "user" ? "user" : "ai"));
+      if (m.err) div.classList.add("err");
+      if (m.content) div.appendChild(document.createTextNode(m.content));
+      if (m.voice) div.appendChild(el("div", "prog", t(m.voice === "female" ? "voiceChangedF" : "voiceChangedM")));
+      if (m.pkg) {
+        var prow = el("div", "song-acts");
+        var pb = el("button", "act-btn", t("viewPackage"));
+        pb.type = "button";
+        pb.addEventListener("click", function(){ window.location.href = "movai-new-market.html"; });
+        prow.appendChild(pb);
+        div.appendChild(prow);
+      }
+      if (m.media && m.media.length) {
+        m.media.forEach(function(md){
+          var wrap = el("div", "msg-media");
+          if (md.kind === "image") {
+            var img = el("img", "chat-img");
+            img.src = md.url; img.alt = "";
+            wrap.appendChild(img);
+          } else if (md.kind === "video") {
+            var v = el("video", "chat-vid");
+            v.src = md.url; v.controls = true; v.playsInline = true;
+            wrap.appendChild(v);
+          }
+          var dl = el("a", "dl-link", t("download"));
+          dl.href = md.url; dl.target = "_blank"; dl.rel = "noopener";
+          dl.setAttribute("download", "");
+          wrap.appendChild(dl);
+          div.appendChild(wrap);
+        });
+      }
+      if (m.song) div.appendChild(songActs(m));
+      if (m.err) {
+        var rrow = el("div", "song-acts");
+        var rb = el("button", "act-btn", t("retry"));
+        rb.type = "button";
+        rb.addEventListener("click", function(){ retryLast(); });
+        rrow.appendChild(rb);
+        div.appendChild(rrow);
+      }
+      msgsEl.appendChild(div);
+    });
+    scrollBottom();
+  }
+  function addError(text){
+    cur.messages.push({ role: "assistant", content: String(text || t("noServer")), at: Date.now(), err: true });
+    touchSession();
+    renderMessages();
+  }
+  function retryLast(){
+    if (busy) return;
+    for (var i = cur.messages.length - 1; i >= 0; i--) {
+      if (cur.messages[i].role === "user") {
+        while (cur.messages.length && cur.messages[cur.messages.length - 1].err) cur.messages.pop();
+        touchSession();
+        renderMessages();
+        busy = true;
+        runSend(cur.messages[i].content, function(){ busy = false; });
+        return;
+      }
+    }
+  }
+
+  /* ---- intent + send ---- */
+  function detectKind(text){
+    var s = String(text || "");
+    if (/វីដេអូ|ភាពយន្ត|\bvideo\b|\bmovie\b|\bfilm\b/i.test(s)) return "video";
+    if (/រូបភាព|រូបថត|\bimage\b|\bphoto\b|\bpicture\b/i.test(s)) return "image";
+    return "chat";
+  }
+  function lastImageUrl(){
+    for (var i = cur.messages.length - 1; i >= 0; i--) {
+      var m = cur.messages[i];
+      if (m && m.media) {
+        for (var j = m.media.length - 1; j >= 0; j--) {
+          if (m.media[j].kind === "image" && m.media[j].url) return m.media[j].url;
+        }
+      }
+    }
+    return "";
+  }
+  function wantsLastImage(text){
+    return /រូប(ហ្នឹង|នេះ|នោះ)|that image|this image|turn (it|that|this) into/i.test(String(text || ""));
+  }
+  function imageSizeFor(text){
+    var s = String(text || "");
+    if (/9\s*:\s*16/.test(s)) return { w: 432, h: 768 };
+    if (/1\s*:\s*1/.test(s)) return { w: 768, h: 768 };
+    return { w: 768, h: 432 };
+  }
+  function sendChat(text, done){
+    showTyping();
+    var hist = [];
+    var ms = cur.messages;
+    var start = Math.max(0, ms.length - 11);
+    for (var i = start; i < ms.length - 1; i++) {
+      var mm = ms[i];
+      if (!mm || (mm.role !== "user" && mm.role !== "assistant")) continue;
+      var c = String(mm.content || "").trim();
+      if (!c) continue;
+      hist.push({ role: mm.role, content: c.slice(0, 2000) });
+    }
+    apiPost("/api/chat", { email: getEmail(), message: text, history: hist }, 60000).then(function(j){
+      hideTyping();
+      if (done) done();
+      if (!j || j.ok !== true) { addError((j && j.error) ? j.error : t("noServer")); return; }
+      handleReply(String(j.reply || ""), text);
+    }).catch(function(){
+      hideTyping();
+      if (done) done();
+      addError(t("noServer"));
+    });
+  }
+  function handleReply(raw, userText){
+    var p = parseActions(raw);
+    var msg = { role: "assistant", content: p.text, at: Date.now(), media: [] };
+    if (p.voice) {
+      msg.voice = p.voice;
+      try { localStorage.setItem(VOICE_KEY, p.voice); } catch (e) {}
+    }
+    if (p.pkg) msg.pkg = p.pkg;
+    if (isSongText(p.text)) msg.song = parseSong(p.text, userText);
+    cur.messages.push(msg);
+    touchSession();
+    renderMessages();
+    if (p.imgPrompt) genImage(p.imgPrompt, msg, function(){});
+    if (p.vidPrompt) askVideo(p.vidPrompt, "", function(){});
+  }
+  function runSend(text, done){
+    var d = done || function(){};
+    var kind = detectKind(text);
+    if (kind === "image") { genImage(text, null, d); return; }
+    if (kind === "video") {
+      var img = wantsLastImage(text) ? lastImageUrl() : "";
+      askVideo(text, img, d);
+      return;
+    }
+    sendChat(text, d);
+  }
+  function sendUser(text){
+    text = String(text || "").trim();
+    if (!text || busy) return;
+    if (!getEmail()) return;
+    busy = true;
+    var m = { role: "user", content: text, at: Date.now() };
+    cur.messages.push(m);
+    if (!cur.title) cur.title = text.slice(0, 40);
+    touchSession();
+    renderMessages();
+    inputEl.value = "";
+    autoGrow();
+    runSend(text, function(){ busy = false; });
+  }
+
+  /* ---- image / video generation (existing endpoints only) ---- */
+  function makeProgressBubble(labelKey){
+    var div = el("div", "msg ai");
+    var label = el("div", null, t(labelKey));
+    var prog = el("div", "prog");
+    var secs = el("span", "secs", "0s");
+    prog.appendChild(secs);
+    div.appendChild(label);
+    div.appendChild(prog);
+    msgsEl.appendChild(div);
+    var t0 = Date.now();
+    var timer = setInterval(function(){
+      secs.textContent = Math.floor((Date.now() - t0) / 1000) + "s";
+    }, 1000);
+    scrollBottom();
+    return { el: div, stop: function(){ clearInterval(timer); } };
+  }
+  function pollJob(kind, provider, jobId, onDone){
+    var t0 = Date.now();
+    var timer = setInterval(function(){
+      if (Date.now() - t0 > 10 * 60 * 1000) { clearInterval(timer); onDone({ ok: false, error: t("noServer") }); return; }
+      apiPost(kind === "image" ? "/api/gen/image/status" : "/api/gen/video/status", { email: getEmail(), provider: provider, jobId: jobId }, 30000).then(function(j){
+        if (!j) return;
+        if (j.ok !== true) { clearInterval(timer); onDone({ ok: false, error: j.error || t("noServer") }); return; }
+        if (j.status === "done") {
+          var url = kind === "image" ? (j.imageUrl || "") : (j.videoUrl || "");
+          clearInterval(timer);
+          if (url) onDone({ ok: true, url: url });
+          else onDone({ ok: false, error: t("noServer") });
+        } else if (j.status === "failed") {
+          clearInterval(timer);
+          onDone({ ok: false, error: j.error || t("noServer") });
+        }
+      }).catch(function(){ /* transient error: keep polling */ });
+    }, 5000);
+  }
+  function genImage(prompt, attachTo, done){
+    var sz = imageSizeFor(prompt);
+    var prog = makeProgressBubble("creatingImage");
+    function finish(url){
+      prog.stop(); prog.el.remove();
+      var m = { kind: "image", url: url, prompt: prompt };
+      if (attachTo) { attachTo.media = attachTo.media || []; attachTo.media.push(m); }
+      else { cur.messages.push({ role: "assistant", content: "", at: Date.now(), media: [m] }); }
+      touchSession();
+      renderMessages();
+      if (done) done();
+    }
+    function fail(err){
+      prog.stop(); prog.el.remove();
+      addError(err);
+      if (done) done();
+    }
+    apiPost("/api/gen/image", { email: getEmail(), provider: "auto", prompt: prompt, width: sz.w, height: sz.h }, 300000).then(function(j){
+      if (!j) { fail(t("noServer")); return; }
+      var url = j.imageUrl || j.image_url || j.url || "";
+      if (url) { finish(url); return; }
+      if (j.jobId) {
+        pollJob("image", j.provider || "agnes", j.jobId, function(r){
+          if (r.ok) finish(r.url);
+          else fail(r.error);
+        });
+        return;
+      }
+      fail(j.error || t("noServer"));
+    }).catch(function(){ fail(t("noServer")); });
+  }
+  function askVideo(prompt, imageUrl, done){
+    var div = el("div", "msg ai");
+    var row = el("div", "confirm-row");
+    var tx = el("span", "confirm-text", t("videoConfirm"));
+    var ok = el("button", "act-btn", t("approve"));
+    ok.type = "button";
+    var no = el("button", "act-btn", t("cancel"));
+    no.type = "button";
+    row.appendChild(tx); row.appendChild(ok); row.appendChild(no);
+    div.appendChild(row);
+    msgsEl.appendChild(div);
+    scrollBottom();
+    ok.addEventListener("click", function(){
+      div.remove();
+      runVideo(prompt, imageUrl, done);
+    });
+    no.addEventListener("click", function(){
+      div.remove();
+      if (done) done();
+    });
+  }
+  function runVideo(prompt, imageUrl, done){
+    var prog = makeProgressBubble("creatingVideo");
+    var body = { email: getEmail(), provider: "magichour", tier: "normal", model: "ltx-2.5", prompt: prompt, duration: 5, width: 768, height: 432 };
+    if (imageUrl) body.imageUrl = imageUrl;
+    function finish(url){
+      prog.stop(); prog.el.remove();
+      cur.messages.push({ role: "assistant", content: "", at: Date.now(), media: [{ kind: "video", url: url, prompt: prompt }] });
+      touchSession();
+      renderMessages();
+      if (done) done();
+    }
+    function fail(err){
+      prog.stop(); prog.el.remove();
+      addError(err);
+      if (done) done();
+    }
+    apiPost("/api/gen/video", body, 180000).then(function(j){
+      if (!j) { fail(t("noServer")); return; }
+      var url = j.videoUrl || j.video_url || j.url || "";
+      if (url) { finish(url); return; }
+      if (j.jobId) {
+        pollJob("video", "magichour", j.jobId, function(r){
+          if (r.ok) finish(r.url);
+          else fail(r.error);
+        });
+        return;
+      }
+      fail(j.error || t("noServer"));
+    }).catch(function(){ fail(t("noServer")); });
+  }
+
+  /* ---- input ---- */
+  function autoGrow(){
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+  }
+  inputEl.addEventListener("input", autoGrow);
+  inputEl.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendUser(inputEl.value); }
+  });
+  sendBtn.addEventListener("click", function(){ sendUser(inputEl.value); });
+  sessToggle.addEventListener("click", function(){
+    sessListEl.hidden = !sessListEl.hidden;
+    if (!sessListEl.hidden) renderSessList();
+  });
+  newChatBtn.addEventListener("click", newSession);
+
+  function gateGuest(){
+    var em = getEmail();
+    inputEl.disabled = !em;
+    sendBtn.disabled = !em;
+    signinBar.hidden = !!em;
+  }
+
+  applyLang();
+  renderSessList();
+  renderMessages();
+  gateGuest();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  /* ---- Chat button: slides in from the right edge on app open (blurry to
+     clear); if untouched for 10s it fades back to blurry, slides out to the
+     right and disappears completely; it returns on the next app open. ---- */
+  var fab = document.getElementById("chatFab");
+  if (!fab) return;
+  var HIDE_MS = 10000;
+  var hideTimer = null;
+  function openChat(){
+    if (window.location.pathname && window.location.pathname.indexOf("movai-new-chat.html") !== -1) {
+      var inp = document.getElementById("chatInput");
+      if (inp) { inp.focus(); }
+      window.scrollTo(0, document.body.scrollHeight);
+      return;
+    }
+    window.location.href = "movai-new-chat.html";
+  }
+  function hideFab(){
+    fab.classList.remove("in");
+    fab.classList.add("out");
+    setTimeout(function(){ fab.style.display = "none"; }, 500);
+  }
+  function cancelHide(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  fab.addEventListener("pointerdown", cancelHide);
+  fab.addEventListener("mouseenter", cancelHide);
+  fab.addEventListener("touchstart", cancelHide, { passive: true });
+  fab.addEventListener("focus", cancelHide);
+  fab.addEventListener("click", function(e){ e.preventDefault(); cancelHide(); openChat(); });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      fab.classList.add("in");
+      hideTimer = setTimeout(hideFab, HIDE_MS);
+    });
+  });
+})();
+</script>
+</body>
+</html>

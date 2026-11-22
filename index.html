@@ -120,15 +120,15 @@
   .player .p-close{border:0;font-size:1.05rem;padding:6px 8px}
 
   /* ---- Contact footer: real logo images, plain rows ---- */
-  .contact{border-top:1px solid #e5e7eb;margin-top:18px;padding:18px 16px 96px}
-  .contact-title{font-size:1rem;font-weight:700;color:#1f2937;margin-bottom:6px}
-  .contact-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
-    padding:12px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .contact{border-top:1px solid #e5e7eb;margin-top:14px;padding:14px 16px 96px}
+  .contact-title{font-size:.9rem;font-weight:700;color:#1f2937;margin-bottom:4px}
+  .contact-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:8px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
   .contact-row:active{background:#eef1f0}
-  .contact-logo{width:40px;height:40px;flex:none;border-radius:8px;object-fit:cover}
+  .contact-logo{width:32px;height:32px;flex:none;border-radius:7px;object-fit:cover}
   .contact-text{flex:1;min-width:0}
-  .contact-text b{display:block;font-size:.95rem;font-weight:600;color:#1f2937}
-  .contact-text span{display:block;font-size:.82rem;color:#6b7280;margin-top:2px;
+  .contact-text b{display:block;font-size:.85rem;font-weight:600;color:#1f2937}
+  .contact-text span{display:block;font-size:.75rem;color:#6b7280;margin-top:2px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   /* ---- Gift sheet ---- */
   .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
@@ -153,6 +153,21 @@
     border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
   .seg-mini button:active{background:#e5e7eb}
   .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Chat button: bottom-right, slides in from the right edge ---- */
+  .chat-fab{position:fixed;right:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#0f766e;border:1px solid #0f766e;
+    color:#ffffff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.18);
+    transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);
+    transition:transform .45s ease-out,opacity .45s ease-out,filter .45s ease-out;
+    pointer-events:none}
+  .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
+  .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
+  .chat-fab:active{opacity:.85}
+  .chat-fab svg{width:24px;height:24px;flex:none}
+  .player-on .chat-fab{bottom:84px}
+  html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
   html[data-theme="dark"]{background:#0e1a15}
   html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
@@ -261,6 +276,7 @@
       <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
       <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
       <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+      <a href="movai-new-chat.html" data-i18n="navChat">ឆាត</a>
     <div class="menu-set">
       <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
       <div class="seg-mini" id="themeSeg">
@@ -282,6 +298,7 @@
     <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
   </nav>
   <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
+  <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
 
   <main>
     <div class="feed" id="feed"></div>
@@ -412,7 +429,7 @@
       noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
       contactTitle: "ទំនាក់ទំនង",
       fbPage: "ទំព័រហ្វេសប៊ុក",
-      fbAccount: "គណនីហ្វេសប៊ុក",
+      fbAccount: "ហ្វេសប៊ុក",
       tgAdmin: "តេឡេក្រាម (Admin)",
       theme: "រូបរាង",
       themeDay: "ថ្ងៃ",
@@ -424,6 +441,8 @@
       navMarket: "ផ្សារ",
       navSongs: "ចម្រៀងរបស់ខ្ញុំ",
       navProfile: "ប្រវត្តិរូប",
+      navChat: "ឆាត",
+      chatFabAria: "ឆាត",
       menuSignIn: "ចូលប្រើ",
       menuSignOut: "ចាកចេញ",
       signedInAs: "បានចូលជា ",
@@ -452,7 +471,7 @@
       noServer: "Could not reach the server. Please try again.",
       contactTitle: "Contact",
       fbPage: "Facebook Page",
-      fbAccount: "Facebook Account",
+      fbAccount: "Facebook",
       tgAdmin: "Telegram Admin",
       theme: "Theme",
       themeDay: "Day",
@@ -464,6 +483,8 @@
       navMarket: "Marketplace",
       navSongs: "My Songs",
       navProfile: "Profile",
+      navChat: "AI Chat",
+      chatFabAria: "AI Chat",
       menuSignIn: "Sign In",
       menuSignOut: "Sign out",
       signedInAs: "Signed in as ",
@@ -750,6 +771,44 @@
   applyLang();
   loadFeed();
   giftInit();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  /* ---- Chat button: slides in from the right edge on app open (blurry to
+     clear); if untouched for 10s it fades back to blurry, slides out to the
+     right and disappears completely; it returns on the next app open. ---- */
+  var fab = document.getElementById("chatFab");
+  if (!fab) return;
+  var HIDE_MS = 10000;
+  var hideTimer = null;
+  function openChat(){
+    if (window.location.pathname && window.location.pathname.indexOf("movai-new-chat.html") !== -1) {
+      var inp = document.getElementById("chatInput");
+      if (inp) { inp.focus(); }
+      window.scrollTo(0, document.body.scrollHeight);
+      return;
+    }
+    window.location.href = "movai-new-chat.html";
+  }
+  function hideFab(){
+    fab.classList.remove("in");
+    fab.classList.add("out");
+    setTimeout(function(){ fab.style.display = "none"; }, 500);
+  }
+  function cancelHide(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  fab.addEventListener("pointerdown", cancelHide);
+  fab.addEventListener("mouseenter", cancelHide);
+  fab.addEventListener("touchstart", cancelHide, { passive: true });
+  fab.addEventListener("focus", cancelHide);
+  fab.addEventListener("click", function(e){ e.preventDefault(); cancelHide(); openChat(); });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      fab.classList.add("in");
+      hideTimer = setTimeout(hideFab, HIDE_MS);
+    });
+  });
 })();
 </script>
 </body>

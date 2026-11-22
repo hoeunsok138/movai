@@ -164,6 +164,21 @@
     border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
   .seg-mini button:active{background:#e5e7eb}
   .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Chat button: bottom-right, slides in from the right edge ---- */
+  .chat-fab{position:fixed;right:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#0f766e;border:1px solid #0f766e;
+    color:#ffffff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.18);
+    transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);
+    transition:transform .45s ease-out,opacity .45s ease-out,filter .45s ease-out;
+    pointer-events:none}
+  .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
+  .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
+  .chat-fab:active{opacity:.85}
+  .chat-fab svg{width:24px;height:24px;flex:none}
+  .player-on .chat-fab{bottom:84px}
+  html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
   html[data-theme="dark"]{background:#0e1a15}
   html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
@@ -272,6 +287,7 @@
       <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
       <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
       <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+      <a href="movai-new-chat.html" data-i18n="navChat">ឆាត</a>
     <div class="menu-set">
       <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
       <div class="seg-mini" id="themeSeg">
@@ -293,6 +309,7 @@
     <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
   </nav>
   <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
+  <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
 
   <main>
     <div class="count" id="count"></div>
@@ -459,6 +476,8 @@
       navMarket: "ផ្សារ",
       navSongs: "ចម្រៀងរបស់ខ្ញុំ",
       navProfile: "ប្រវត្តិរូប",
+      navChat: "ឆាត",
+      chatFabAria: "ឆាត",
       menuSignIn: "ចូលប្រើ",
       menuSignOut: "ចាកចេញ",
       signedInAs: "បានចូលជា ",
@@ -519,6 +538,8 @@
       navMarket: "Marketplace",
       navSongs: "My Songs",
       navProfile: "Profile",
+      navChat: "AI Chat",
+      chatFabAria: "AI Chat",
       menuSignIn: "Sign In",
       menuSignOut: "Sign out",
       signedInAs: "Signed in as ",
@@ -1380,6 +1401,44 @@
     pendingJobs.forEach(function(job){ pollJob(job); });
   }
   loadSongs();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  /* ---- Chat button: slides in from the right edge on app open (blurry to
+     clear); if untouched for 10s it fades back to blurry, slides out to the
+     right and disappears completely; it returns on the next app open. ---- */
+  var fab = document.getElementById("chatFab");
+  if (!fab) return;
+  var HIDE_MS = 10000;
+  var hideTimer = null;
+  function openChat(){
+    if (window.location.pathname && window.location.pathname.indexOf("movai-new-chat.html") !== -1) {
+      var inp = document.getElementById("chatInput");
+      if (inp) { inp.focus(); }
+      window.scrollTo(0, document.body.scrollHeight);
+      return;
+    }
+    window.location.href = "movai-new-chat.html";
+  }
+  function hideFab(){
+    fab.classList.remove("in");
+    fab.classList.add("out");
+    setTimeout(function(){ fab.style.display = "none"; }, 500);
+  }
+  function cancelHide(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  fab.addEventListener("pointerdown", cancelHide);
+  fab.addEventListener("mouseenter", cancelHide);
+  fab.addEventListener("touchstart", cancelHide, { passive: true });
+  fab.addEventListener("focus", cancelHide);
+  fab.addEventListener("click", function(e){ e.preventDefault(); cancelHide(); openChat(); });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      fab.classList.add("in");
+      hideTimer = setTimeout(hideFab, HIDE_MS);
+    });
+  });
 })();
 </script>
 </body>
