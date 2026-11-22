@@ -174,6 +174,9 @@
     border:1px solid #d1d5db;border-radius:8px;padding:6px 11px;background:transparent}
   .player button:active{background:#e5e7eb}
   .player .p-close{border:0;font-size:1.05rem;padding:6px 8px}
+  .player-err{max-width:720px;margin:6px auto 0;font-size:.82rem;font-weight:600;color:#b91c1c;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+  .player-err[hidden]{display:none}
   /* ---- Drawer settings: theme + language ---- */
   .menu-set{padding:12px 20px 6px}
   .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
@@ -231,6 +234,7 @@
   html[data-theme="dark"] .player-title{color:#e7f0ec}
   html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
   html[data-theme="dark"] .player button:active{background:#1d2f28}
+  html[data-theme="dark"] .player-err{color:#fca5a5}
   html[data-theme="dark"] .player img{background:#24362f}
   html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
   html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
@@ -354,6 +358,7 @@
     <button id="pNext" type="button" data-i18n="next">បន្ទាប់</button>
     <button class="p-close" id="pClose" type="button" aria-label="Close" data-i18n-aria="close">&#10005;</button>
   </div>
+  <div class="player-err" id="pErr" hidden></div>
 </div>
 <audio id="au" preload="none"></audio>
 
@@ -400,6 +405,7 @@
   var pNext = document.getElementById("pNext");
   var pClose = document.getElementById("pClose");
   var au = document.getElementById("au");
+  var pErr = document.getElementById("pErr");
 
   var songs = [];
   var cur = -1; // index of the song now playing, -1 = none
@@ -521,6 +527,12 @@
       next: "បន្ទាប់",
       close: "បិទ",
       playSong: "ចាក់ចម្រៀង ",
+      playFail: "ចាក់មិនបាន · ចុចដើម្បីចាក់ម្ដងទៀត",
+      playErrNetwork: "គ្មានអ៊ីនធឺណិត",
+      playErrDecode: "ឯកសារខូច",
+      playErrUnsupported: "មិនគាំទ្រឯកសារនេះ",
+      playErrBlocked: "ត្រូវចុចចាក់សិន",
+      playErrAborted: "បានឈប់",
       deleteBtn: "លុប"
     },
     en: {
@@ -586,6 +598,12 @@
       next: "Next",
       close: "Close",
       playSong: "Play song ",
+      playFail: "Could not play — tap to retry",
+      playErrNetwork: "no network",
+      playErrDecode: "bad file",
+      playErrUnsupported: "unsupported file",
+      playErrBlocked: "tap to play",
+      playErrAborted: "aborted",
       deleteBtn: "Delete"
     }
   };
@@ -908,6 +926,7 @@
   }
   function playFinished(slot){
     if (!slot || !slot.url) return;
+    clearPlayErr();
     au.src = playUrl(slot.url);
     try { au.currentTime = 0; } catch (e) {}
     pCover.src = "movai-logo-mark.png";
@@ -916,7 +935,7 @@
     playerEl.hidden = false;
     cur = -1;
     markPlaying();
-    au.play().then(function(){ syncPlayBtn(); }).catch(function(){ syncPlayBtn(); });
+    au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ showPlayErr(err); syncPlayBtn(); });
   }
 
   /* ---- local delete tombstones (no server delete endpoint exists) ----
@@ -949,6 +968,11 @@
   function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
   if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
   if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
+  /* Menu links close the drawer at once, before navigation starts. */
+  if (menuEl) menuEl.addEventListener("click", function(e){
+    var a = e.target && e.target.closest ? e.target.closest("a") : null;
+    if (a) setMenu(false);
+  });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
   function menuAuthState(){
     var em = "";
@@ -1450,6 +1474,28 @@
       .catch(function(){ showError(); });
   }
 
+  /* ---- playback errors: shown on the bar itself, never swallowed ---- */
+  function playErrReason(err){
+    var code = 0, name = "";
+    if (err && typeof err === "object") {
+      if (typeof err.code === "number") code = err.code;
+      if (typeof err.name === "string") name = err.name;
+    }
+    if (code === 2 || name === "NetworkError") return t("playErrNetwork");
+    if (code === 3) return t("playErrDecode");
+    if (code === 4 || name === "NotSupportedError" || name === "SrcNotSupportedError") return t("playErrUnsupported");
+    if (name === "NotAllowedError") return t("playErrBlocked");
+    if (code === 1 || name === "AbortError") return t("playErrAborted");
+    return "";
+  }
+  function showPlayErr(err){
+    if (!pErr) return;
+    var r = playErrReason(err);
+    pErr.textContent = t("playFail") + (r ? " · " + r : "");
+    pErr.hidden = false;
+  }
+  function clearPlayErr(){ if (pErr) pErr.hidden = true; }
+
   /* ---- playback ---- */
   function markPlaying(){
     var rows = listEl.querySelectorAll(".row");
@@ -1464,6 +1510,7 @@
   function playSong(i){
     if (i < 0 || i >= songs.length) return;
     cur = i;
+    clearPlayErr();
     var song = songs[i];
     au.src = playUrl(songUrl(song));
     try { au.currentTime = 0; } catch (e) {}
@@ -1472,23 +1519,32 @@
     pTitle.textContent = song.title || t("untitled");
     playerEl.hidden = false;
     markPlaying();
-    au.play().then(function(){ syncPlayBtn(); }).catch(function(){ syncPlayBtn(); });
+    au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ showPlayErr(err); syncPlayBtn(); });
   }
   function playNext(){
     if (!songs.length) return;
     playSong((cur + 1) % songs.length);
   }
   pPlay.addEventListener("click", function(){
-    if (au.paused) { au.play().catch(function(){}); } else { au.pause(); }
+    if (au.paused) {
+      if (au.error && cur >= 0 && cur < songs.length) {
+        au.src = playUrl(songUrl(songs[cur]));
+        try { au.load(); } catch (e) {}
+      }
+      clearPlayErr();
+      au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ showPlayErr(err); syncPlayBtn(); });
+    } else { au.pause(); }
     syncPlayBtn();
   });
   pNext.addEventListener("click", playNext);
   pClose.addEventListener("click", function(){
     au.pause(); au.removeAttribute("src"); au.load();
-    cur = -1; playerEl.hidden = true; markPlaying();
+    cur = -1; playerEl.hidden = true; markPlaying(); clearPlayErr();
   });
   au.addEventListener("play", syncPlayBtn);
   au.addEventListener("pause", syncPlayBtn);
+  au.addEventListener("playing", function(){ clearPlayErr(); });
+  au.addEventListener("error", function(){ showPlayErr(au.error); syncPlayBtn(); });
   au.addEventListener("ended", function(){
     if (!songs.length) return;
     playSong((cur + 1) % songs.length);
