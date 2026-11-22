@@ -619,7 +619,6 @@
     try { localStorage.removeItem("movai-session"); } catch (e) {}
     location.reload();
   });
-  menuAuthState();
   menuEl.addEventListener("click", function(e){
     if (e.target && e.target.tagName === "A") setMenu(false);
   });
@@ -852,13 +851,13 @@
       pb.addEventListener("click", function(){ togglePlay(i, pb); });
       var text = document.createElement("span");
       text.className = "res-text";
-      var t = document.createElement("span");
-      t.className = "res-title";
-      t.textContent = song.title || ("Song " + (i + 1));
+      var tel = document.createElement("span");
+      tel.className = "res-title";
+      tel.textContent = song.title || ("Song " + (i + 1));
       var sub = document.createElement("span");
       sub.className = "res-sub";
       sub.textContent = isPreview ? "Preview" : "Song " + (i + 1) + " of " + songs.length;
-      text.appendChild(t);
+      text.appendChild(tel);
       text.appendChild(sub);
       var dur = document.createElement("span");
       dur.className = "res-dur";
@@ -1153,6 +1152,9 @@
       delStyle: "Delete style "
     }
   };
+  /* Drawer state, now that STR exists (was a bare call before STR: it threw
+     for signed-in users and killed this whole script). */
+  menuAuthState();
   var LANG_KEY = "movai-lang";
   var lang = "kh";
   try {
@@ -1160,8 +1162,10 @@
     if (_sl === "en" || _sl === "kh") lang = _sl;
   } catch (e) {}
   function t(k){
-    var d = (STR && STR[lang]) || STR.en;
-    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+    /* Never throw before the STR table is assigned (STR is a hoisted var,
+       undefined until its assignment runs): return the key itself. */
+    var d = (STR && STR[lang]) || (STR && STR.en);
+    return (d && d[k]) || (STR && STR.en && STR.en[k]) || k;
   }
 
   function onLangChange(){
@@ -2001,9 +2005,9 @@
   /* ---- generation ---- */
   function showGenErr(msg, showRetry){
     genErr.innerHTML = "";
-    var t = document.createElement("div");
-    t.textContent = cleanErr(msg);
-    genErr.appendChild(t);
+    var el = document.createElement("div");
+    el.textContent = cleanErr(msg);
+    genErr.appendChild(el);
     if (showRetry) {
       var r = document.createElement("button");
       r.type = "button";
@@ -2016,14 +2020,14 @@
   }
   function setProg(sec, stage){
     progEl.innerHTML = "";
-    var t = document.createElement("span");
-    t.textContent = t("generating");
+    var el = document.createElement("span");
+    el.textContent = t("generating");
     var s = document.createElement("span");
     s.className = "secs";
     s.textContent = sec + "s";
     var st = document.createElement("span");
     st.textContent = stage ? t("stageSep") + stage : "";
-    progEl.appendChild(t);
+    progEl.appendChild(el);
     progEl.appendChild(s);
     progEl.appendChild(st);
     progEl.hidden = false;

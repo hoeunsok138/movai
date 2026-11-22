@@ -1026,11 +1026,23 @@
      scrolling stops they fade back in. Never touches the chat button's
      10s slide-away timer or the drawer-open behaviour. */
   var scrollFabTimer = null;
+  var scrollFabLast = 0;
   window.addEventListener("scroll", function(){
     document.body.classList.add("scrolling");
+    scrollFabLast = Date.now();
     if (scrollFabTimer) clearTimeout(scrollFabTimer);
     scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
   }, { passive: true });
+  /* Round 5 (O): the class must never stick. scrollend drops it the moment
+     scrolling truly ends, and a watchdog drops it if no scroll event
+     arrived for 1.2s (stray events from image loads / URL-bar shifts). */
+  window.addEventListener("scrollend", function(){
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    document.body.classList.remove("scrolling");
+  });
+  setInterval(function(){
+    if (document.body.classList.contains("scrolling") && Date.now() - scrollFabLast > 1200) document.body.classList.remove("scrolling");
+  }, 2000);
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
@@ -1078,12 +1090,12 @@
     noteEl.textContent = "";
     listEl.innerHTML = "";
     statusEl.innerHTML = "";
-    var t = document.createElement("span");
-    t.textContent = t("signInToSee") + " ";
+    var el = document.createElement("span");
+    el.textContent = t("signInToSee") + " ";
     var a = document.createElement("a");
     a.href = "movai-new-profile.html";
     a.textContent = t("signIn");
-    statusEl.appendChild(t);
+    statusEl.appendChild(el);
     statusEl.appendChild(a);
   }
   function showError(){
@@ -1091,12 +1103,12 @@
     noteEl.textContent = "";
     listEl.innerHTML = "";
     statusEl.innerHTML = "";
-    var t = document.createElement("div");
-    t.textContent = t("couldNotLoad");
+    var el = document.createElement("div");
+    el.textContent = t("couldNotLoad");
     var b = document.createElement("button");
     b.className = "retry"; b.type = "button"; b.textContent = t("retry");
     b.addEventListener("click", loadSongs);
-    statusEl.appendChild(t);
+    statusEl.appendChild(el);
     statusEl.appendChild(b);
   }
   function probeDuration(song, durEl){
