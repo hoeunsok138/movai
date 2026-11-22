@@ -133,6 +133,24 @@
   .row-dl{font-size:.85rem;color:#1f2937;text-decoration:underline}
   .row-act{font-size:.85rem;color:#1f2937;text-decoration:underline}
   .row-act.armed{color:#991b1b;font-weight:700}
+  .row-icon-btn{flex:none;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;
+    color:#1f2937;background:transparent;border:0;border-radius:8px;padding:0;cursor:pointer}
+  .row-icon-btn:active{background:#e5e7eb}
+  .row-icon-btn svg{width:20px;height:20px;flex:none}
+  /* ---- Song row ⋮ menu: small anchored popup ---- */
+  .song-menu-veil{position:fixed;inset:0;z-index:70;display:none;background:transparent}
+  .song-menu-veil.open{display:block}
+  .song-menu{position:fixed;z-index:71;display:none;min-width:210px;max-width:min(260px,calc(100vw - 24px));
+    max-height:calc(100vh - 16px);overflow-y:auto;
+    background:#ffffff;border:1px solid #d3e5da;border-radius:12px;padding:6px;
+    box-shadow:0 8px 24px rgba(0,0,0,.14)}
+  .song-menu.open{display:block}
+  .song-menu-item{display:flex;width:100%;align-items:center;text-align:left;
+    padding:11px 12px;font-size:.92rem;color:#1f2937;background:transparent;border:0;border-radius:8px;
+    cursor:pointer;text-decoration:none;box-sizing:border-box}
+  .song-menu-item:active{background:#f2faf6}
+  .song-menu-item.danger{color:#991b1b}
+  .song-menu-item.armed{color:#991b1b;font-weight:700}
   .stem-box{padding:4px 16px 14px}
   .stem-box .hint{font-size:.82rem;color:#6b7280;margin:6px 0}
   .stem-msg{font-size:.85rem;color:#6b7280;margin-top:8px;min-height:16px}
@@ -220,6 +238,12 @@
   html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
   html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
   html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .row-icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .row-icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .song-menu{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .song-menu-item{color:#e7f0ec}
+  html[data-theme="dark"] .song-menu-item:active{background:#1d2f28}
+  html[data-theme="dark"] .song-menu-item.danger,html[data-theme="dark"] .song-menu-item.armed{color:#fca5a5}
   html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
   html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
   html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
@@ -449,6 +473,9 @@
       splitDone: "បំបែករួចរាល់។",
       splitFail: "បំបែកមិនបានទេ។",
       post: "ផុស",
+      postPublic: "ផុសទៅសាធារណៈ",
+      split6Menu: "បំបែក · ៦ ស្ទេម",
+      split12Menu: "បំបែក · ១២ ស្ទេម",
       postConfirm: "ផុសទៅសាធារណៈ? ចុចម្ដងទៀត",
       posted: "បានផុស ✓",
       postFail: "ផុសមិនបានទេ។",
@@ -511,6 +538,9 @@
       splitDone: "Split done.",
       splitFail: "Split failed.",
       post: "Post",
+      postPublic: "Post to Public",
+      split6Menu: "Split · 6 stems",
+      split12Menu: "Split · 12 stems",
       postConfirm: "Post to public? Tap again",
       posted: "Posted ✓",
       postFail: "Could not post.",
@@ -890,7 +920,7 @@
   }
 
   /* ---- local delete tombstones (no server delete endpoint exists) ----
-     An item disappears ONLY when its own ✕ is tapped (two taps). */
+     An item disappears ONLY when its own Delete is tapped (two taps). */
   function tombKey(em){ return "movai-history-" + String(em || "guest").toLowerCase() + "-deleted"; }
   function tombGet(em){
     try {
@@ -980,6 +1010,7 @@
     } catch (e) { /* leave the placeholder */ }
   }
   function renderList(){
+    closeSongMenu();
     listEl.innerHTML = "";
     noteEl.textContent = "";
     if (!songs.length) {
@@ -1020,28 +1051,21 @@
       var acts = document.createElement("span");
       acts.className = "row-acts";
       var dl = document.createElement("a");
-      dl.className = "row-dl";
+      dl.className = "row-icon-btn";
       dl.href = playUrl(songUrl(song));
-      dl.textContent = t("download");
       dl.setAttribute("download", "");
+      dl.setAttribute("aria-label", t("download"));
+      dl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>';
       dl.addEventListener("click", function(e){ e.stopPropagation(); });
-      var sp = document.createElement("button");
-      sp.type = "button"; sp.className = "row-act"; sp.textContent = t("split");
-      sp.addEventListener("click", function(e){ e.stopPropagation(); toggleStemBox(song, itemEl); });
-      var pst = document.createElement("button");
-      pst.type = "button"; pst.className = "row-act"; pst.textContent = t("post");
-      pst.addEventListener("click", function(e){
+      var more = document.createElement("button");
+      more.type = "button"; more.className = "row-icon-btn";
+      more.setAttribute("aria-label", t("menuAria"));
+      more.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>';
+      more.addEventListener("click", function(e){
         e.stopPropagation();
-        postSong(song, pst);
+        toggleSongMenu(song, i, itemEl, more);
       });
-      var del = document.createElement("button");
-      del.type = "button"; del.className = "row-act"; del.textContent = "✕";
-      del.setAttribute("aria-label", t("deleteBtn"));
-      del.addEventListener("click", function(e){
-        e.stopPropagation();
-        deleteSong(song, i, del);
-      });
-      acts.appendChild(dl); acts.appendChild(sp); acts.appendChild(pst); acts.appendChild(del);
+      acts.appendChild(dl); acts.appendChild(more);
 
       row.appendChild(img); row.appendChild(text); row.appendChild(dur); row.appendChild(acts);
       row.addEventListener("click", function(){ playSong(i); });
@@ -1063,7 +1087,7 @@
         if (btn.getAttribute("data-armed") === "1") {
           btn.setAttribute("data-armed", "");
           btn.classList.remove("armed");
-          btn.textContent = t("post");
+          btn.textContent = t("postPublic");
         }
       }, 4000);
       return;
@@ -1083,12 +1107,12 @@
         noteEl.textContent = "";
       } else {
         btn.disabled = false;
-        btn.textContent = t("post");
+        btn.textContent = t("postPublic");
         noteEl.textContent = cleanErr(j && j.error ? j.error : t("postFail"));
       }
     }).catch(function(){
       btn.disabled = false;
-      btn.textContent = t("post");
+      btn.textContent = t("postPublic");
       noteEl.textContent = t("noServer");
     });
   }
@@ -1101,7 +1125,7 @@
         if (btn.getAttribute("data-armed") === "1") {
           btn.setAttribute("data-armed", "");
           btn.classList.remove("armed");
-          btn.textContent = "✕";
+          btn.textContent = t("deleteBtn");
         }
       }, 3000);
       return;
@@ -1116,6 +1140,87 @@
     songs.splice(idx, 1);
     renderList();
   }
+  /* ---- Song row ⋮ menu: Download, Split 6/12, Post to Public, Delete ---- */
+  var songMenu = null, songMenuVeil = null, songMenuFor = -1;
+  function ensureSongMenu(){
+    if (songMenu) return;
+    songMenuVeil = document.createElement("div");
+    songMenuVeil.className = "song-menu-veil";
+    songMenuVeil.addEventListener("click", closeSongMenu);
+    songMenu = document.createElement("div");
+    songMenu.className = "song-menu";
+    songMenu.setAttribute("role", "menu");
+    document.body.appendChild(songMenuVeil);
+    document.body.appendChild(songMenu);
+  }
+  function closeSongMenu(){
+    if (songMenu) songMenu.classList.remove("open");
+    if (songMenuVeil) songMenuVeil.classList.remove("open");
+    songMenuFor = -1;
+  }
+  function openStemBox(song, itemEl){
+    var box = itemEl.querySelector(".stem-box");
+    if (box) { box.hidden = false; return box; }
+    toggleStemBox(song, itemEl);
+    return itemEl.querySelector(".stem-box");
+  }
+  function toggleSongMenu(song, idx, itemEl, btn){
+    ensureSongMenu();
+    if (songMenu.classList.contains("open") && songMenuFor === idx) { closeSongMenu(); return; }
+    buildSongMenu(song, idx, itemEl);
+    var r = btn.getBoundingClientRect();
+    var vw = window.innerWidth || document.documentElement.clientWidth;
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    songMenu.classList.add("open");
+    songMenuVeil.classList.add("open");
+    var mw = songMenu.offsetWidth, mh = songMenu.offsetHeight;
+    var left = Math.max(8, Math.min(r.right - mw, vw - mw - 8));
+    var top = r.bottom + 6;
+    if (top + mh > vh - 8) top = Math.max(8, r.top - mh - 6);
+    songMenu.style.left = left + "px";
+    songMenu.style.top = top + "px";
+    songMenuFor = idx;
+  }
+  function buildSongMenu(song, idx, itemEl){
+    songMenu.innerHTML = "";
+    var dl = document.createElement("a");
+    dl.className = "song-menu-item";
+    dl.href = playUrl(songUrl(song));
+    dl.setAttribute("download", "");
+    dl.textContent = t("download");
+    dl.addEventListener("click", function(e){ e.stopPropagation(); closeSongMenu(); });
+    var s6 = document.createElement("button");
+    s6.type = "button"; s6.className = "song-menu-item"; s6.textContent = t("split6Menu");
+    s6.addEventListener("click", function(){
+      closeSongMenu();
+      var box = openStemBox(song, itemEl);
+      var b6 = box && box.querySelector("[data-stem='6']");
+      if (b6) b6.click();
+    });
+    var s12 = document.createElement("button");
+    s12.type = "button"; s12.className = "song-menu-item"; s12.textContent = t("split12Menu");
+    s12.addEventListener("click", function(){
+      closeSongMenu();
+      var box = openStemBox(song, itemEl);
+      var b12 = box && box.querySelector("[data-stem='12']");
+      if (b12) b12.click();
+    });
+    var pst = document.createElement("button");
+    pst.type = "button"; pst.className = "song-menu-item"; pst.textContent = t("postPublic");
+    pst.addEventListener("click", function(){ postSong(song, pst); });
+    var del = document.createElement("button");
+    del.type = "button"; del.className = "song-menu-item danger"; del.textContent = t("deleteBtn");
+    del.addEventListener("click", function(){
+      var armed = del.getAttribute("data-armed") === "1";
+      deleteSong(song, idx, del);
+      if (armed) closeSongMenu();
+    });
+    songMenu.appendChild(dl);
+    songMenu.appendChild(s6);
+    songMenu.appendChild(s12);
+    songMenu.appendChild(pst);
+    songMenu.appendChild(del);
+  }
   /* ---- Split Stem (old site chooser: 6 stems at once, 12 stems asks first) ---- */
   function toggleStemBox(song, itemEl){
     var box = itemEl.querySelector(".stem-box");
@@ -1129,9 +1234,9 @@
     rowBtns.className = "rowline";
     rowBtns.style.cssText = "display:flex;gap:8px;flex-wrap:wrap";
     var b6 = document.createElement("button");
-    b6.type = "button"; b6.className = "mini-btn dark"; b6.textContent = t("split6");
+    b6.type = "button"; b6.className = "mini-btn dark"; b6.textContent = t("split6"); b6.setAttribute("data-stem", "6");
     var b12 = document.createElement("button");
-    b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12");
+    b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12"); b12.setAttribute("data-stem", "12");
     rowBtns.appendChild(b6); rowBtns.appendChild(b12);
     var n6 = document.createElement("div");
     n6.className = "hint"; n6.textContent = t("split6Note");
