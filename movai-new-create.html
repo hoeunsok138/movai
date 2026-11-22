@@ -137,7 +137,7 @@
   .res-dur{flex:none;font-size:.85rem;color:#6b7280}
   .res-dl{flex:none;font-size:.85rem;color:#1f2937;text-decoration:underline}
   .sec-title{font-size:1rem;font-weight:700;color:#1f2937;margin:26px 0 4px}
-  .divider{border:0;border-top:1px solid #e5e7eb;margin:26px 0 0}
+  .divider{border:0;border-top:1px solid #e5e7eb;margin:10px 0 0}
   .mini-btn{font-size:.88rem;font-weight:600;color:#1f2937;
     border:1px solid #d1d5db;border-radius:8px;padding:8px 12px;background:transparent}
   .mini-btn:active{background:#e5e7eb}
@@ -335,7 +335,7 @@
     <hr class="divider">
 
     <!-- Cover (old site: collapsible box above the title) -->
-    <div class="field" style="margin-top:22px" id="coverField">
+    <div class="field" style="margin-top:10px" id="coverField">
       <button class="cover-toggle" id="coverToggle" type="button" aria-expanded="false">
         <span data-i18n="coverLbl">🎵 ខូវើ</span><span id="coverChev">&#9662;</span>
       </button>
@@ -370,7 +370,7 @@
       <div class="rowline" style="justify-content:space-between;margin-bottom:7px">
         <label class="lbl" for="lyrics" style="margin-bottom:0" data-i18n="lyricsLbl">អត្ថបទចម្រៀង</label>
         <span class="rowline">
-          <button class="mini-btn" id="aiLangBtn" type="button" aria-pressed="false">&#127464;&#127469; Khmer &#9662;</button>
+          <button class="mini-btn" id="aiLangBtn" type="button" aria-pressed="false">&#127472;&#127469; Khmer &#9662;</button>
           <button class="mini-btn dark" id="aiLyricsBtn" type="button">AI Lyrics</button>
         </span>
       </div>
@@ -383,7 +383,7 @@
     <!-- Style presets -->
     <div class="field">
       <span class="lbl" id="styleLbl" data-i18n="styleLbl">រចនាបថ</span>
-      <div class="preset-strip" id="presetRow" role="group" aria-labelledby="styleLbl"></div>
+      <div class="preset-strip" id="presetRow" role="group" aria-labelledby="styleLbl"><button type="button" class="chip" aria-pressed="false">🥹Sad.Trap💔</button><button type="button" class="chip" aria-pressed="false">😔 Sad Trap 💔</button><button type="button" class="chip" aria-pressed="false">😭 Sad💔</button><button type="button" class="chip" aria-pressed="false">💔Sad Drama😔</button><button type="button" class="chip" aria-pressed="false">💔Pop Ballad ♥️</button><button type="button" class="chip" aria-pressed="false">♥️បទបែបស្រែ🥰</button><button type="button" class="chip" aria-pressed="false">😔Trap Sad Hip-hop💔</button><button type="button" class="chip" aria-pressed="false">😈Freestyle Rep BassTrap🫨</button><button type="button" class="chip" aria-pressed="false">🤙កន្ទ្រឹម💃</button><button type="button" class="chip" aria-pressed="false">😭Sad Emotional Rap💔</button><button type="button" class="chip" aria-pressed="false">💃កន្ទ្រឹម EDM🥲</button></div>
       <input class="txt" id="styleText" type="text" style="margin-top:10px"
         placeholder="ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក" data-i18n-ph="stylePh" aria-label="Style text">
       <!-- Add-style: save your own styles (old site) -->
@@ -692,21 +692,19 @@
   lyricsEl.addEventListener("input", function(){ updateCount(); saveDraftSoon(); });
   songTitle.addEventListener("input", saveDraftSoon);
 
-  /* ---- style presets (exact names from the old site) ---- */
-  Object.keys(PRESETS).forEach(function(name){
-    var b = document.createElement("button");
-    b.type = "button";
-    b.className = "chip";
-    b.textContent = name;
-    b.setAttribute("aria-pressed", "false");
-    b.addEventListener("click", function(){
-      selectedPreset = name;
-      styleText.value = PRESETS[name];
-      var chips = presetRow.querySelectorAll(".chip");
-      chips.forEach(function(c){ c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+  /* ---- style presets (exact names from the old site) ----
+     Chips are static HTML so they always show; JS only wires the taps. */
+  (function wirePresetChips(){
+    var chips = presetRow.querySelectorAll(".chip");
+    chips.forEach(function(b){
+      var name = (b.textContent || "").trim();
+      b.addEventListener("click", function(){
+        selectedPreset = name;
+        if (PRESETS[name]) styleText.value = PRESETS[name];
+        chips.forEach(function(c){ c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+      });
     });
-    presetRow.appendChild(b);
-  });
+  })();
   styleText.addEventListener("input", function(){
     if (selectedPreset && styleText.value !== PRESETS[selectedPreset]) {
       selectedPreset = "";
@@ -1380,7 +1378,7 @@
   var aiBusy = false;
   var aiTickTimer = null;
   function syncAiLangBtn(){
-    aiLangBtn.innerHTML = aiLang === "kh" ? "&#127464;&#127469; Khmer &#9662;" : "&#127468;&#127463; English &#9662;";
+    aiLangBtn.innerHTML = aiLang === "kh" ? "&#127472;&#127469; Khmer &#9662;" : "&#127468;&#127463; English &#9662;";
     aiLangBtn.setAttribute("aria-pressed", aiLang === "en" ? "true" : "false");
   }
   aiLangBtn.addEventListener("click", function(){
