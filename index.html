@@ -82,10 +82,11 @@
   .menu .menu-sep{height:1px;background:#e5e7eb;margin:6px 0}
   .menu .menu-user{padding:12px 20px 4px;font-size:.85rem;color:#6b7280}
   .player-on .menu-fab{bottom:84px}
+  body.player-on main{padding-bottom:150px}
   [hidden]{display:none !important}
 
   /* ---- Feed: plain list rows directly on the background ---- */
-  main{padding-bottom:96px}
+  main{padding-bottom:120px}
   .feed{animation:fade .3s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
   .row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
@@ -120,7 +121,7 @@
   .player .p-close{border:0;font-size:1.05rem;padding:6px 8px}
 
   /* ---- Contact footer: real logo images, plain rows ---- */
-  .contact{border-top:1px solid #e5e7eb;margin-top:14px;padding:14px 16px 96px}
+  .contact{border-top:1px solid #e5e7eb;margin-top:14px;padding:14px 16px 120px}
   .contact-title{font-size:.9rem;font-weight:700;color:#1f2937;margin-bottom:4px}
   .contact-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
     padding:8px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
@@ -527,6 +528,10 @@
     var seg = document.getElementById("langSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
     if (typeof onLangChange === "function") onLangChange();
+    /* The "Signed in as ..." line is rendered by JS, not data-i18n, so
+       re-render it here too - otherwise it stays in the previous
+       language after a language switch. */
+    if (typeof menuAuthState === "function") menuAuthState();
   }
   function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
   var langSeg = document.getElementById("langSeg");
@@ -622,6 +627,7 @@
   var menuSignOut = document.getElementById("menuSignOut");
   var menuUser = document.getElementById("menuUser");
   function setMenu(open){
+    if (open) syncDrawerState();
     menuEl.classList.toggle("open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
     if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
@@ -641,6 +647,25 @@
     if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  /* Round 3: re-render the drawer from live stored state every time it
+     opens, so it can never show a stale sign-in state or unselected
+     theme/language buttons. Runs synchronously, before the drawer
+     becomes visible. Never throws - the drawer must always open. */
+  function syncDrawerState(){
+    try {
+      if (typeof applyTheme === "function") applyTheme();
+      var ls = null;
+      try { ls = localStorage.getItem("movai-lang"); } catch (e) {}
+      if ((ls === "en" || ls === "kh") && typeof lang !== "undefined" && ls !== lang) {
+        lang = ls;
+        if (typeof applyLang === "function") applyLang();
+      } else if (typeof lang !== "undefined") {
+        var seg = document.getElementById("langSeg");
+        if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-lang-val") === lang); }
+      }
+      if (typeof menuAuthState === "function") menuAuthState();
+    } catch (e) {}
   }
   if (menuSignOut) menuSignOut.addEventListener("click", function(){
     setMenu(false);
@@ -741,24 +766,67 @@
     pPlay.innerHTML = au.paused ? "&#9654;" : "&#10074;&#10074;";
     pPlay.setAttribute("aria-label", au.paused ? t("play") : t("pause"));
   }
+  /* Round 3 (D): one audio URL can be a dead link (HTTP 200, empty
+     body). Try each URL in turn before giving up. Same guard as My Songs:
+     the error event and the play() rejection can both fire for the same
+     dead URL, so onPlayFailed only advances once per URL. */
+  var playUrls = [];
+  var playUrlIdx = 0;
+  var playTriedSrc = "";
+  function songPlayUrls(it){
+    var urls = [];
+    function push(u){ u = playUrl(u); if (u && urls.indexOf(u) < 0) urls.push(u); }
+    if (it) { push(it.url); push(it.streamUrl); push(it.audioUrl); }
+    return urls;
+  }
+  function playWithUrls(urls){
+    playUrls = urls; playUrlIdx = 0; playTriedSrc = "";
+    if (!urls.length) return false;
+    au.src = urls[0];
+    var srcNow = au.src;
+    au.play().then(function(){ syncPlayBtn(); }).catch(function(err){ onPlayFailed(err, srcNow); });
+    return true;
+  }
+  function onPlayFailed(err, failedSrc){
+    if (playerEl.hidden) return;
+    var failed = failedSrc || au.src || "";
+    if (failed && failed === playTriedSrc) return;
+    if (playUrlIdx + 1 < playUrls.length) {
+      playTriedSrc = failed;
+      playUrlIdx++;
+      au.src = playUrls[playUrlIdx];
+      try { au.load(); } catch (e) {}
+      var srcNow = au.src;
+      au.play().then(function(){ syncPlayBtn(); }).catch(function(e2){ onPlayFailed(e2, srcNow); });
+      return;
+    }
+    syncPlayBtn();
+  }
   function playSong(i){
     if (i < 0 || i >= songs.length) return;
     cur = i;
     var song = songs[i];
-    au.src = playUrl(song.url);
     pCover.src = song.cover || COVER_FALLBACK;
     pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
     pTitle.textContent = song.title || t("untitled");
     playerEl.hidden = false; document.body.classList.add("player-on");
     markPlaying();
-    au.play().then(function(){ syncPlayBtn(); }).catch(function(){ syncPlayBtn(); });
+    playWithUrls(songPlayUrls(song));
   }
   function playNext(){
     if (!songs.length) return;
     playSong((cur + 1) % songs.length);
   }
   pPlay.addEventListener("click", function(){
-    if (au.paused) { au.play().catch(function(){}); } else { au.pause(); }
+    if (au.paused) {
+      if (au.error && playUrls.length) {
+        playUrlIdx = 0; playTriedSrc = "";
+        au.src = playUrls[0];
+        try { au.load(); } catch (e) {}
+      }
+      var srcNow = au.src;
+      au.play().then(function(){ syncPlayBtn(); }).catch(function(err){ onPlayFailed(err, srcNow); });
+    } else { au.pause(); }
     syncPlayBtn();
   });
   pNext.addEventListener("click", playNext);
@@ -768,6 +836,7 @@
   });
   au.addEventListener("play", syncPlayBtn);
   au.addEventListener("pause", syncPlayBtn);
+  au.addEventListener("error", function(){ onPlayFailed(au.error); syncPlayBtn(); });
   au.addEventListener("ended", function(){
     if (cur >= 0 && cur + 1 < songs.length) playSong(cur + 1);
     else { cur = -1; playerEl.hidden = true; document.body.classList.remove("player-on"); markPlaying(); }

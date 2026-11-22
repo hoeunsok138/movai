@@ -85,7 +85,7 @@
   [hidden]{display:none !important}
 
   /* ---- Marketplace: plain rows directly on the background ---- */
-  main{padding-bottom:96px}
+  main{padding-bottom:120px}
   .info{padding:16px 16px 4px;font-size:.92rem;line-height:1.75;color:#1f2937}
   .info p{margin:0 0 8px}
   .sec{padding:20px 16px 4px;font-size:1rem;font-weight:700;color:#1f2937}
@@ -167,6 +167,7 @@
   .chat-fab:active{opacity:.85}
   .chat-fab svg{width:24px;height:24px;flex:none}
   .player-on .chat-fab{bottom:84px}
+  .player-on .menu-fab{bottom:84px}
   html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
   html[data-theme="dark"]{background:#0e1a15}
@@ -582,6 +583,10 @@
     var seg = document.getElementById("langSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
     if (typeof onLangChange === "function") onLangChange();
+    /* The "Signed in as ..." line is rendered by JS, not data-i18n, so
+       re-render it here too - otherwise it stays in the previous
+       language after a language switch. */
+    if (typeof menuAuthState === "function") menuAuthState();
   }
   function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
   var langSeg = document.getElementById("langSeg");
@@ -713,6 +718,7 @@
   var menuSignOut = document.getElementById("menuSignOut");
   var menuUser = document.getElementById("menuUser");
   function setMenu(open){
+    if (open) syncDrawerState();
     menuEl.classList.toggle("open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
     if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
@@ -732,6 +738,25 @@
     if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  /* Round 3: re-render the drawer from live stored state every time it
+     opens, so it can never show a stale sign-in state or unselected
+     theme/language buttons. Runs synchronously, before the drawer
+     becomes visible. Never throws - the drawer must always open. */
+  function syncDrawerState(){
+    try {
+      if (typeof applyTheme === "function") applyTheme();
+      var ls = null;
+      try { ls = localStorage.getItem("movai-lang"); } catch (e) {}
+      if ((ls === "en" || ls === "kh") && typeof lang !== "undefined" && ls !== lang) {
+        lang = ls;
+        if (typeof applyLang === "function") applyLang();
+      } else if (typeof lang !== "undefined") {
+        var seg = document.getElementById("langSeg");
+        if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-lang-val") === lang); }
+      }
+      if (typeof menuAuthState === "function") menuAuthState();
+    } catch (e) {}
   }
   if (menuSignOut) menuSignOut.addEventListener("click", function(){
     setMenu(false);

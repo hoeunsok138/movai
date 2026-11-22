@@ -84,7 +84,7 @@
   [hidden]{display:none !important}
 
   /* ---- My Songs: plain list rows directly on the background ---- */
-  main{padding-bottom:96px}
+  main{padding-bottom:120px}
   .count{padding:16px 16px 4px;font-size:.95rem;font-weight:600;color:#1f2937}
   .count:empty{display:none}
   .note{padding:2px 16px 0;font-size:.8rem;color:#6b7280}
@@ -198,7 +198,9 @@
   .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
   .chat-fab:active{opacity:.85}
   .chat-fab svg{width:24px;height:24px;flex:none}
-  .player-on .chat-fab{bottom:84px}
+  .player-on .chat-fab{bottom:92px}
+  .player-on .menu-fab{bottom:92px}
+  body.player-on main{padding-bottom:150px}
   html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
   html[data-theme="dark"]{background:#0e1a15}
@@ -630,6 +632,10 @@
     var seg = document.getElementById("langSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
     if (typeof onLangChange === "function") onLangChange();
+    /* The "Signed in as ..." line is rendered by JS, not data-i18n, so
+       re-render it here too - otherwise it stays in the previous
+       language after a language switch. */
+    if (typeof menuAuthState === "function") menuAuthState();
   }
   function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
   var langSeg = document.getElementById("langSeg");
@@ -671,9 +677,16 @@
     return arr.map(function(x){
       if (typeof x === "string") return { url: x, title: "" };
       if (!x || typeof x !== "object") return { url: "", title: "" };
+      /* Round 3 (D): the Suno stream link (url / streamAudioUrl) answers
+         HTTP 200 with an EMPTY body - it cannot play. The real audio is
+         audioUrl (tempfile link). Prefer it; keep the stream link as
+         streamUrl so the player can fall back to it. */
+      var stream = x.url || x.streamAudioUrl || x.stream_audio_url || "";
+      var audio = x.audioUrl || x.audio_url ||
+                  x.permanentMp3Url || x.permanent_mp3_url || "";
       return {
-        url: x.url || x.audio_url || x.audioUrl || x.streamAudioUrl ||
-             x.stream_audio_url || x.permanentMp3Url || x.permanent_mp3_url || "",
+        url: audio || stream,
+        streamUrl: (stream && stream !== (audio || stream)) ? stream : "",
         title: x.title || "",
         image: x.image || x.cover || "",
         audioId: x.audioId || x.audio_id || x.id || "",
@@ -703,6 +716,7 @@
         prompt: (meta.lyrics || "").slice(0, 400),
         model: meta.model || "", style: meta.style || "",
         image: song.image || "",
+        streamUrl: song.streamUrl || "",
         audioId: song.audioId || meta.audioId || "",
         taskId: meta.jobId || "",
         ts: Date.now(), createdAt: new Date().toISOString(), origin: "created"
@@ -841,6 +855,7 @@
         var slot = job.slots[i];
         if (!slot || slot.url === s.url) return;
         slot.url = s.url;
+        slot.streamUrl = s.streamUrl || "";
         slot.title = s.title || job.title;
         slot.audioId = s.audioId;
         slot.taskId = s.taskId;
@@ -864,7 +879,7 @@
         job.slots.forEach(function(slot, i){
           if (slot.done && slot.url && !slot.saved) {
             saveSongToHistory({ url: slot.url, title: slot.title, audioId: slot.audioId,
-              taskId: slot.taskId, image: slot.image },
+              taskId: slot.taskId, image: slot.image, streamUrl: slot.streamUrl || "" },
               { jobId: job.jobId, idx: i, email: job.email, title: job.title,
                 model: job.model, style: job.style, lyrics: job.lyrics
               }).then(function(ok){ slot.saved = ok === true; if (ok) loadSongsQuiet(); });
@@ -927,15 +942,13 @@
   function playFinished(slot){
     if (!slot || !slot.url) return;
     clearPlayErr();
-    au.src = playUrl(slot.url);
-    try { au.currentTime = 0; } catch (e) {}
     pCover.src = "movai-logo-mark.png";
     pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
     pTitle.textContent = slot.title || t("untitled");
-    playerEl.hidden = false;
+    playerEl.hidden = false; document.body.classList.add("player-on");
     cur = -1;
     markPlaying();
-    au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ showPlayErr(err); syncPlayBtn(); });
+    playWithUrls(songPlayUrls(slot));
   }
 
   /* ---- local delete tombstones (no server delete endpoint exists) ----
@@ -961,6 +974,7 @@
   var menuSignOut = document.getElementById("menuSignOut");
   var menuUser = document.getElementById("menuUser");
   function setMenu(open){
+    if (open) syncDrawerState();
     menuEl.classList.toggle("open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
     if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
@@ -980,6 +994,25 @@
     if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  /* Round 3: re-render the drawer from live stored state every time it
+     opens, so it can never show a stale sign-in state or unselected
+     theme/language buttons. Runs synchronously, before the drawer
+     becomes visible. Never throws - the drawer must always open. */
+  function syncDrawerState(){
+    try {
+      if (typeof applyTheme === "function") applyTheme();
+      var ls = null;
+      try { ls = localStorage.getItem("movai-lang"); } catch (e) {}
+      if ((ls === "en" || ls === "kh") && typeof lang !== "undefined" && ls !== lang) {
+        lang = ls;
+        if (typeof applyLang === "function") applyLang();
+      } else if (typeof lang !== "undefined") {
+        var seg = document.getElementById("langSeg");
+        if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-lang-val") === lang); }
+      }
+      if (typeof menuAuthState === "function") menuAuthState();
+    } catch (e) {}
   }
   if (menuSignOut) menuSignOut.addEventListener("click", function(){
     setMenu(false);
@@ -1507,19 +1540,55 @@
     pPlay.innerHTML = au.paused ? "&#9654;" : "&#10074;&#10074;";
     pPlay.setAttribute("aria-label", au.paused ? t("play") : t("pause"));
   }
+  /* Round 3 (D): one audio URL can be a dead link (HTTP 200, empty
+     body). Try each URL in turn; only show the error when every URL has
+     failed. The <audio> error event and the play() rejection can both
+     fire for the same dead URL, so onPlayFailed only advances once per
+     URL (tracked by playTriedSrc). Never retries once the bar is closed. */
+  var playUrls = [];   // candidates for the song now playing
+  var playUrlIdx = 0;  // index into playUrls loaded in <audio>
+  var playTriedSrc = ""; // src already advanced past by onPlayFailed
+  function songPlayUrls(it){
+    var urls = [];
+    function push(u){ u = playUrl(u); if (u && urls.indexOf(u) < 0) urls.push(u); }
+    if (it) { push(songUrl(it)); push(it.streamUrl); push(it.audioUrl); }
+    return urls;
+  }
+  function playWithUrls(urls){
+    playUrls = urls; playUrlIdx = 0; playTriedSrc = "";
+    if (!urls.length) return false;
+    au.src = urls[0];
+    try { au.currentTime = 0; } catch (e) {}
+    var srcNow = au.src;
+    au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ onPlayFailed(err, srcNow); });
+    return true;
+  }
+  function onPlayFailed(err, failedSrc){
+    if (playerEl.hidden) return;
+    var failed = failedSrc || au.src || "";
+    if (failed && failed === playTriedSrc) return; // same dead URL, reported twice
+    if (playUrlIdx + 1 < playUrls.length) {
+      playTriedSrc = failed;
+      playUrlIdx++;
+      au.src = playUrls[playUrlIdx];
+      try { au.load(); } catch (e) {}
+      var srcNow = au.src;
+      au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(e2){ onPlayFailed(e2, srcNow); });
+      return;
+    }
+    showPlayErr(err); syncPlayBtn();
+  }
   function playSong(i){
     if (i < 0 || i >= songs.length) return;
     cur = i;
     clearPlayErr();
     var song = songs[i];
-    au.src = playUrl(songUrl(song));
-    try { au.currentTime = 0; } catch (e) {}
     pCover.src = songCover(song) || COVER_FALLBACK;
     pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
     pTitle.textContent = song.title || t("untitled");
-    playerEl.hidden = false;
+    playerEl.hidden = false; document.body.classList.add("player-on");
     markPlaying();
-    au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ showPlayErr(err); syncPlayBtn(); });
+    playWithUrls(songPlayUrls(song));
   }
   function playNext(){
     if (!songs.length) return;
@@ -1527,24 +1596,31 @@
   }
   pPlay.addEventListener("click", function(){
     if (au.paused) {
-      if (au.error && cur >= 0 && cur < songs.length) {
-        au.src = playUrl(songUrl(songs[cur]));
-        try { au.load(); } catch (e) {}
-      }
       clearPlayErr();
-      au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ showPlayErr(err); syncPlayBtn(); });
+      if (au.error && playUrls.length) {
+        /* Retry from the first URL - a tap retries the whole list. */
+        playUrlIdx = 0; playTriedSrc = "";
+        au.src = playUrls[0];
+        try { au.load(); } catch (e) {}
+      } else if (au.error && cur >= 0 && cur < songs.length) {
+        playWithUrls(songPlayUrls(songs[cur]));
+        syncPlayBtn();
+        return;
+      }
+      var srcNow = au.src;
+      au.play().then(function(){ clearPlayErr(); syncPlayBtn(); }).catch(function(err){ onPlayFailed(err, srcNow); });
     } else { au.pause(); }
     syncPlayBtn();
   });
   pNext.addEventListener("click", playNext);
   pClose.addEventListener("click", function(){
     au.pause(); au.removeAttribute("src"); au.load();
-    cur = -1; playerEl.hidden = true; markPlaying(); clearPlayErr();
+    cur = -1; playerEl.hidden = true; document.body.classList.remove("player-on"); markPlaying(); clearPlayErr();
   });
   au.addEventListener("play", syncPlayBtn);
   au.addEventListener("pause", syncPlayBtn);
   au.addEventListener("playing", function(){ clearPlayErr(); });
-  au.addEventListener("error", function(){ showPlayErr(au.error); syncPlayBtn(); });
+  au.addEventListener("error", function(){ onPlayFailed(au.error); syncPlayBtn(); });
   au.addEventListener("ended", function(){
     if (!songs.length) return;
     playSong((cur + 1) % songs.length);
