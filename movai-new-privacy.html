@@ -9,6 +9,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
 <link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Privacy Policy</title>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
   *{box-sizing:border-box}
@@ -87,6 +88,97 @@
   p{margin:8px 0}
   ul{margin:6px 0;padding-left:20px}
   [hidden]{display:none !important}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .status{color:#8fa89e}
+  html[data-theme="dark"] .retry{color:#e7f0ec}
+  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
+  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
+  html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
+  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
+  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
+  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .player-title{color:#e7f0ec}
+  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .player button:active{background:#1d2f28}
+  html[data-theme="dark"] .player img{background:#24362f}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
+  html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
+  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
+  html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  html[data-theme="dark"] .tagchip button{color:#8fa89e}
+  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
+  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
+  html[data-theme="dark"] .bar{background:#24362f}
+  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
+  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
+  html[data-theme="dark"] .gift-later{color:#8fa89e}
+  html[data-theme="dark"] .contact{border-top-color:#24362f}
+  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .contact-text b{color:#e7f0ec}
+  html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
+  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
+  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
+  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
+  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
+  html[data-theme="dark"] .amt{color:#e7f0ec}
+  html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
+  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
+  html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
+  html[data-theme="dark"] .row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row-sub{color:#8fa89e}
+  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
+  html[data-theme="dark"] .field-label{color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
 </style>
 </head>
 <body>
@@ -111,6 +203,14 @@
       <a href="movai-new-market.html">Marketplace</a>
       <a href="movai-new-songs.html">My Songs</a>
       <a href="movai-new-profile.html">Profile</a>
+    <div class="menu-set">
+      <div class="menu-set-label">Theme</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day">Day</button>
+        <button type="button" data-theme-val="night">Night</button>
+        <button type="button" data-theme-val="auto">Auto</button>
+      </div>
+    </div>
     <div class="menu-sep"></div>
     <div class="menu-user" id="menuUser" hidden></div>
     <a href="movai-new-profile.html" id="menuSignIn">Sign In</a>
@@ -150,6 +250,27 @@
 (function(){
   "use strict";
   if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
   var menuEl = document.getElementById("menu");
   var menuFab = document.getElementById("menuFab");
   var menuVeil = document.getElementById("menuVeil");

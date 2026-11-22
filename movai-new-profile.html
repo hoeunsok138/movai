@@ -9,6 +9,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
 <link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Profile</title>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
   *{box-sizing:border-box}
@@ -114,6 +115,97 @@
     padding:0}
   .status{padding:28px 16px;text-align:center;color:#6b7280;font-size:.95rem}
   [hidden]{display:none !important}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .status{color:#8fa89e}
+  html[data-theme="dark"] .retry{color:#e7f0ec}
+  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
+  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
+  html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
+  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
+  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
+  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .player-title{color:#e7f0ec}
+  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .player button:active{background:#1d2f28}
+  html[data-theme="dark"] .player img{background:#24362f}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
+  html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
+  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
+  html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  html[data-theme="dark"] .tagchip button{color:#8fa89e}
+  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
+  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
+  html[data-theme="dark"] .bar{background:#24362f}
+  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
+  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
+  html[data-theme="dark"] .gift-later{color:#8fa89e}
+  html[data-theme="dark"] .contact{border-top-color:#24362f}
+  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .contact-text b{color:#e7f0ec}
+  html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
+  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
+  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
+  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
+  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
+  html[data-theme="dark"] .amt{color:#e7f0ec}
+  html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
+  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
+  html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
+  html[data-theme="dark"] .row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row-sub{color:#8fa89e}
+  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
+  html[data-theme="dark"] .field-label{color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
 </style>
 </head>
 <body>
@@ -127,43 +219,58 @@
     </div>
     <div class="hdr-row hdr-sub">
       <span class="hdr-sec">
-        <span class="hdr-sec-name">Profile</span>
+        <span class="hdr-sec-name" data-i18n="secProfile">ប្រវត្តិរូប</span>
       </span>
-      <button class="outline-btn" id="signOutBtn" type="button" hidden>Sign out</button>
+      <button class="outline-btn" id="signOutBtn" type="button" hidden data-i18n="signOut">ចាកចេញ</button>
     </div>
   </header>
   <div class="menu-veil" id="menuVeil"></div>
-  <nav class="menu" id="menu" aria-label="Menu">
-      <a href="index.html">Home</a>
-      <a href="movai-new-create.html">Create Song</a>
-      <a href="movai-new-market.html">Marketplace</a>
-      <a href="movai-new-songs.html">My Songs</a>
-      <a href="movai-new-profile.html">Profile</a>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="index.html" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="movai-new-create.html" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
+      <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en">English</button>
+      </div>
+    </div>
     <div class="menu-sep"></div>
     <div class="menu-user" id="menuUser" hidden></div>
-    <a href="movai-new-profile.html" id="menuSignIn">Sign In</a>
-    <button class="menu-link" id="menuSignOut" type="button" hidden>Sign out</button>
+    <a href="movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
   </nav>
-  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
 
   <main>
-    <div class="status" id="status" hidden>Loading profile&hellip;</div>
+    <div class="status" id="status" hidden>កំពុងផ្ទុកប្រវត្តិរូប…</div>
 
     <!-- Not logged in -->
     <div class="sect" id="loginView" hidden>
-      <div class="sect-title">Sign in</div>
-      <label class="field-label" for="emailInput">Gmail</label>
+      <div class="sect-title" data-i18n="signinTitle">ចូលប្រើ</div>
+      <label class="field-label" for="emailInput" data-i18n="gmailLbl">Gmail</label>
       <input class="field" id="emailInput" type="email" inputmode="email" autocomplete="email"
         placeholder="you@gmail.com">
-      <label class="field-label" for="passwordInput">Password</label>
+      <label class="field-label" for="passwordInput" data-i18n="passwordLbl">ពាក្យសម្ងាត់</label>
       <input class="field" id="passwordInput" type="password" autocomplete="current-password"
-        placeholder="Your MovAi password">
-      <button class="primary-btn" id="signInBtn" type="button">Sign In</button>
-      <p class="note" style="text-align:center;margin:12px 0 0">or</p>
+        placeholder="ពាក្យសម្ងាត់ MovAi របស់អ្នក" data-i18n-ph="passwordPh">
+      <button class="primary-btn" id="signInBtn" type="button" data-i18n="signInBtn">ចូលប្រើ</button>
+      <p class="note" style="text-align:center;margin:12px 0 0" data-i18n="orTxt">ឬ</p>
       <div id="googleBtn" style="margin-top:10px"></div>
-      <button class="primary-btn" id="googleFallbackBtn" type="button" hidden>Continue with Google</button>
+      <button class="primary-btn" id="googleFallbackBtn" type="button" hidden data-i18n="googleFallback">បន្តជាមួយ Google</button>
       <p class="msg" id="loginMsg" role="alert"></p>
-      <p class="note">Sign in with the Gmail and password of your MovAi account.</p>
+      <p class="note" data-i18n="signinNote">សូមចូលប្រើដោយ Gmail និងពាក្យសម្ងាត់នៃគណនី MovAi របស់អ្នក។</p>
     </div>
 
     <!-- Logged in -->
@@ -171,23 +278,23 @@
       <div class="who-name" id="whoName">&mdash;</div>
       <div class="who-email" id="whoEmail">&mdash;</div>
 
-      <div class="sect-title">Credits</div>
-      <div class="row"><span class="row-label">Song credits</span><span class="row-value" id="songCredits">&mdash;</span></div>
-      <div class="row"><span class="row-label">Media credits</span><span class="row-value" id="mediaCredits">&mdash;</span></div>
+      <div class="sect-title" data-i18n="creditsTitle">ក្រេឌីត</div>
+      <div class="row"><span class="row-label" data-i18n="songCredits">ក្រេឌីតចម្រៀង</span><span class="row-value" id="songCredits">&mdash;</span></div>
+      <div class="row"><span class="row-label" data-i18n="mediaCredits">ក្រេឌីតមេឌៀ</span><span class="row-value" id="mediaCredits">&mdash;</span></div>
 
-      <div class="sect-title">Wallet</div>
-      <div class="row"><span class="row-label">Wallet Balance</span><span class="row-value" id="walletBalance">&mdash;</span></div>
-      <div class="row"><span class="row-label">Earn Money</span><span class="row-value" id="earnBalance">&mdash;</span></div>
+      <div class="sect-title" data-i18n="walletTitle">កាបូប</div>
+      <div class="row"><span class="row-label" data-i18n="walletBalance">សមតុល្យកាបូប</span><span class="row-value" id="walletBalance">&mdash;</span></div>
+      <div class="row"><span class="row-label" data-i18n="earnMoney">ប្រាក់រកបាន</span><span class="row-value" id="earnBalance">&mdash;</span></div>
 
-      <div class="sect-title">Community</div>
-      <div class="row"><span class="row-label">Followers</span><span class="row-value" id="followers">&mdash;</span></div>
+      <div class="sect-title" data-i18n="communityTitle">សហគមន៍</div>
+      <div class="row"><span class="row-label" data-i18n="followers">អ្នកតាមដាន</span><span class="row-value" id="followers">&mdash;</span></div>
 
       <!-- Owner-only Suno balance section is built here by script, only for admin emails. -->
       <div id="adminSection"></div>
 
-      <div class="sect-title">Account</div>
-      <div class="row"><span class="row-label">User ID</span><span class="row-value" id="userId">&mdash;</span></div>
-      <div class="row"><span class="row-label">&nbsp;</span><button class="link-btn" id="signOutLink" type="button">Sign out</button></div>
+      <div class="sect-title" data-i18n="accountTitle">គណនី</div>
+      <div class="row"><span class="row-label" data-i18n="userId">លេខសម្គាល់អ្នកប្រើ</span><span class="row-value" id="userId">&mdash;</span></div>
+      <div class="row"><span class="row-label">&nbsp;</span><button class="link-btn" id="signOutLink" type="button" data-i18n="signOut">ចាកចេញ</button></div>
       <p class="msg" id="profileMsg" role="status"></p>
     </div>
   </main>
@@ -197,7 +304,160 @@
 (function(){
   "use strict";
   if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
   var API = "https://movai-proxy-wasr.onrender.com";
+  /* ---- i18n: Khmer / English, strictly separated ---- */
+  var STR = {
+    kh: {
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      secProfile: "ប្រវត្តិរូប",
+      signOut: "ចាកចេញ",
+      loadingProfile: "កំពុងផ្ទុកប្រវត្តិរូប…",
+      loadingShort: "កំពុងផ្ទុក…",
+      signinTitle: "ចូលប្រើ",
+      gmailLbl: "Gmail",
+      passwordLbl: "ពាក្យសម្ងាត់",
+      passwordPh: "ពាក្យសម្ងាត់ MovAi របស់អ្នក",
+      signInBtn: "ចូលប្រើ",
+      signingIn: "កំពុងចូលប្រើ…",
+      orTxt: "ឬ",
+      googleFallback: "បន្តជាមួយ Google",
+      signinNote: "សូមចូលប្រើដោយ Gmail និងពាក្យសម្ងាត់នៃគណនី MovAi របស់អ្នក។",
+      creditsTitle: "ក្រេឌីត",
+      songCredits: "ក្រេឌីតចម្រៀង",
+      mediaCredits: "ក្រេឌីតមេឌៀ",
+      walletTitle: "កាបូប",
+      walletBalance: "សមតុល្យកាបូប",
+      earnMoney: "ប្រាក់រកបាន",
+      communityTitle: "សហគមន៍",
+      followers: "អ្នកតាមដាន",
+      accountTitle: "គណនី",
+      userId: "លេខសម្គាល់អ្នកប្រើ",
+      sunoTitle: "សមតុល្យ Suno",
+      buyMore: "ទិញក្រេឌីតបន្ថែម",
+      buyCredit: "ទិញក្រេឌីត",
+      savedDetails: "កំពុងបង្ហាញព័ត៌មានដែលបានរក្សាទុក — ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។",
+      validEmail: "សូមបញ្ចូលអាសយដ្ឋាន Gmail ដែលត្រឹមត្រូវ។",
+      needPassword: "សូមបញ្ចូលពាក្យសម្ងាត់របស់អ្នក។",
+      noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      wrongLogin: "Gmail ឬពាក្យសម្ងាត់ខុស។",
+      googleFail: "ការចូលប្រើតាម Google មិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      googleLoadFail: "មិនអាចផ្ទុកការចូលប្រើតាម Google បានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      googleNoOpen: "ការចូលប្រើតាម Google មិនអាចបើកបានទេ។ សូមប្រើប៊ូតុង «ចូលប្រើជាមួយ Google» ខាងលើ ឬព្យាយាមម្ដងទៀត។"
+    },
+    en: {
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      secProfile: "Profile",
+      signOut: "Sign out",
+      loadingProfile: "Loading profile…",
+      loadingShort: "Loading…",
+      signinTitle: "Sign in",
+      gmailLbl: "Gmail",
+      passwordLbl: "Password",
+      passwordPh: "Your MovAi password",
+      signInBtn: "Sign In",
+      signingIn: "Signing in…",
+      orTxt: "or",
+      googleFallback: "Continue with Google",
+      signinNote: "Sign in with the Gmail and password of your MovAi account.",
+      creditsTitle: "Credits",
+      songCredits: "Song credits",
+      mediaCredits: "Media credits",
+      walletTitle: "Wallet",
+      walletBalance: "Wallet Balance",
+      earnMoney: "Earn Money",
+      communityTitle: "Community",
+      followers: "Followers",
+      accountTitle: "Account",
+      userId: "User ID",
+      sunoTitle: "Suno balance",
+      buyMore: "Buy more credit",
+      buyCredit: "Buy Credit",
+      savedDetails: "Showing saved details — could not reach the server.",
+      validEmail: "Please enter a valid Gmail address.",
+      needPassword: "Please enter your password.",
+      noServer: "Could not reach the server — please try again.",
+      wrongLogin: "Wrong Gmail or password.",
+      googleFail: "Google sign-in failed. Please try again.",
+      googleLoadFail: "Could not load Google sign-in. Please try again.",
+      googleNoOpen: "Google sign-in could not open. Please use the \"Sign in with Google\" button above, or try again."
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+  function onLangChange(){ if (currentUser) { renderUser(currentUser); renderAdminSection(currentEmail); } }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    if (typeof onLangChange === "function") onLangChange();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
   var SESSION_KEY = "movai-session";       // same key as the old site: stores the email string
   var USERS_KEY = "movai-users";           // same key as the old site: per-email user cache
   var SAVED_KEY = "movai_saved_account";   // same key as the old site: {email, rememberToken, ...}
@@ -238,7 +498,7 @@
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
-    if (menuUser) { menuUser.textContent = em ? ("Signed in as " + em) : ""; menuUser.hidden = !em; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
   }
@@ -324,7 +584,7 @@
     profileView.hidden = true;
     signOutBtn.hidden = true;
     statusEl.hidden = false;
-    statusEl.textContent = "Loading profile\u2026";
+    statusEl.textContent = t("loadingProfile");
   }
 
   /* ---- render ---- */
@@ -354,17 +614,17 @@
     if (!email || ADMIN_EMAILS.indexOf(String(email).toLowerCase()) < 0) return;
     var title = document.createElement("div");
     title.className = "sect-title";
-    title.textContent = "Suno balance";
+    title.textContent = t("sunoTitle");
     host.appendChild(title);
     var row = document.createElement("div");
     row.className = "row";
     var label = document.createElement("span");
     label.className = "row-label";
-    label.textContent = "Suno balance";
+    label.textContent = t("sunoTitle");
     var value = document.createElement("span");
     value.className = "row-value";
     value.id = "sunoBalance";
-    value.textContent = "Loading\u2026";
+    value.textContent = t("loadingShort");
     row.appendChild(label);
     row.appendChild(value);
     host.appendChild(row);
@@ -372,13 +632,13 @@
     linkRow.className = "row";
     var linkLabel = document.createElement("span");
     linkLabel.className = "row-label";
-    linkLabel.textContent = "Buy more credit";
+    linkLabel.textContent = t("buyMore");
     var link = document.createElement("a");
     link.className = "link-btn";
     link.href = BILLING_URL;
     link.target = "_blank";
     link.rel = "noopener";
-    link.textContent = "Buy Credit";
+    link.textContent = t("buyCredit");
     linkRow.appendChild(linkLabel);
     linkRow.appendChild(link);
     host.appendChild(linkRow);
@@ -445,23 +705,23 @@
     var email = String(emailInput.value || "").trim().toLowerCase();
     var password = String(passwordInput.value || "");
     if (!email || email.indexOf("@") < 0) {
-      loginMsg.textContent = "Please enter a valid Gmail address.";
+      loginMsg.textContent = t("validEmail");
       return;
     }
     if (!password) {
-      loginMsg.textContent = "Please enter your password.";
+      loginMsg.textContent = t("needPassword");
       return;
     }
     loginMsg.textContent = "";
     signInBtn.disabled = true;
-    signInBtn.textContent = "Signing in\u2026";
+    signInBtn.textContent = t("signingIn");
     apiJson("/api/auth/signin", "POST", { email: email, password: password })
       .then(function(d){
         signInBtn.disabled = false;
-        signInBtn.textContent = "Sign In";
-        if (!d) { loginMsg.textContent = "Could not reach the server — please try again."; return; }
+        signInBtn.textContent = t("signInBtn");
+        if (!d) { loginMsg.textContent = t("noServer"); return; }
         if (d.ok !== true || !d.user) {
-          loginMsg.textContent = d.error ? String(d.error) : "Wrong Gmail or password.";
+          loginMsg.textContent = d.error ? String(d.error) : t("wrongLogin");
           return;
         }
         passwordInput.value = "";
@@ -469,8 +729,8 @@
       })
       .catch(function(){
         signInBtn.disabled = false;
-        signInBtn.textContent = "Sign In";
-        loginMsg.textContent = "Could not reach the server — please try again.";
+        signInBtn.textContent = t("signInBtn");
+        loginMsg.textContent = t("noServer");
       });
   }
   signInBtn.addEventListener("click", doSignIn);
@@ -497,7 +757,7 @@
   }
   function gisOnCredential(resp){
     var p = resp && resp.credential ? gisDecodeJwt(resp.credential) : null;
-    if (!p || !p.email) { loginMsg.textContent = "Google sign-in failed. Please try again."; return; }
+    if (!p || !p.email) { loginMsg.textContent = t("googleFail"); return; }
     var email = String(p.email).toLowerCase();
     var name = (p.name || email.split("@")[0] || "").toString().slice(0, 100);
     loginMsg.textContent = "";
@@ -506,7 +766,7 @@
       .then(function(d){
         signInBtn.disabled = false;
         if (!d || d.ok !== true || !d.user) {
-          loginMsg.textContent = d && d.error ? String(d.error) : "Google sign-in failed. Please try again.";
+          loginMsg.textContent = d && d.error ? String(d.error) : t("googleFail");
           return;
         }
         passwordInput.value = "";
@@ -514,7 +774,7 @@
       })
       .catch(function(){
         signInBtn.disabled = false;
-        loginMsg.textContent = "Could not reach the server — please try again.";
+        loginMsg.textContent = t("noServer");
       });
   }
   function gisRenderButton(){
@@ -555,14 +815,14 @@
   }
   if (googleFallbackBtn) googleFallbackBtn.addEventListener("click", function(){
     gisEnsure(function(ok){
-      if (!ok) { loginMsg.textContent = "Could not load Google sign-in. Please try again."; return; }
+      if (!ok) { loginMsg.textContent = t("googleLoadFail"); return; }
       try {
         google.accounts.id.prompt(function(n){
           if (n && ((n.isNotDisplayed && n.isNotDisplayed()) || (n.isSkippedMoment && n.isSkippedMoment()))) {
-            loginMsg.textContent = "Google sign-in could not open. Please use the \"Sign in with Google\" button above, or try again.";
+            loginMsg.textContent = t("googleNoOpen");
           }
         });
-      } catch (e) { loginMsg.textContent = "Google sign-in failed. Please try again."; }
+      } catch (e) { loginMsg.textContent = t("googleFail"); }
     });
   });
   gisEnsure(function(){ /* button rendered when ready; fallback shows on failure */ });
@@ -605,7 +865,7 @@
             showProfile();
             renderAdminSection(cached.email || sess);
             loadFollowers(cached.email || sess);
-            profileMsg.textContent = "Showing saved details — could not reach the server.";
+            profileMsg.textContent = t("savedDetails");
           } else {
             storeRemove(SESSION_KEY);
             showLogin();
@@ -617,7 +877,7 @@
             showProfile();
             renderAdminSection(cached.email || sess);
             loadFollowers(cached.email || sess);
-            profileMsg.textContent = "Showing saved details — could not reach the server.";
+            profileMsg.textContent = t("savedDetails");
           } else {
             showLogin();
           }
@@ -639,6 +899,7 @@
     }
     showLogin();
   }
+  applyLang();
   boot();
 })();
 </script>

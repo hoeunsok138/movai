@@ -9,6 +9,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
 <link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Songs</title>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
   *{box-sizing:border-box}
@@ -117,6 +118,124 @@
     border:1px solid #d1d5db;border-radius:8px;padding:6px 11px;background:transparent}
   .player button:active{background:#e5e7eb}
   .player .p-close{border:0;font-size:1.05rem;padding:6px 8px}
+
+  /* ---- Contact footer: real logo images, plain rows ---- */
+  .contact{border-top:1px solid #e5e7eb;margin-top:18px;padding:18px 16px 96px}
+  .contact-title{font-size:1rem;font-weight:700;color:#1f2937;margin-bottom:6px}
+  .contact-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    padding:12px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .contact-row:active{background:#eef1f0}
+  .contact-logo{width:40px;height:40px;flex:none;border-radius:8px;object-fit:cover}
+  .contact-text{flex:1;min-width:0}
+  .contact-text b{display:block;font-size:.95rem;font-weight:600;color:#1f2937}
+  .contact-text span{display:block;font-size:.82rem;color:#6b7280;margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* ---- Gift sheet ---- */
+  .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+    background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
+  .gift-card{width:100%;max-width:360px;text-align:center;
+    background:#ffffff;border:1px solid #d3e5da;border-radius:16px;padding:24px 20px}
+  .gift-ico{font-size:3rem;line-height:1.1}
+  .gift-card h3{margin:12px 0 0;font-size:1.2rem;font-weight:800;color:#1f2937}
+  .gift-card p{margin:10px 0 0;font-size:.95rem;line-height:1.6;color:#1f2937}
+  .gift-claim{display:block;width:100%;margin-top:20px;font-size:1rem;font-weight:700;
+    color:#ffffff;background:#0f766e;border-radius:10px;padding:13px 16px}
+  .gift-claim:active{opacity:.85}
+  .gift-later{display:inline-block;margin-top:12px;font-size:.9rem;color:#6b7280;
+    text-decoration:underline}
+  .gift-msg{font-size:.9rem;color:#991b1b;margin-top:10px;min-height:16px}
+  .gift-msg.ok-t{color:#0f766e;font-weight:600}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .status{color:#8fa89e}
+  html[data-theme="dark"] .retry{color:#e7f0ec}
+  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
+  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
+  html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
+  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
+  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
+  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .player-title{color:#e7f0ec}
+  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .player button:active{background:#1d2f28}
+  html[data-theme="dark"] .player img{background:#24362f}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
+  html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
+  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
+  html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  html[data-theme="dark"] .tagchip button{color:#8fa89e}
+  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
+  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
+  html[data-theme="dark"] .bar{background:#24362f}
+  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
+  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
+  html[data-theme="dark"] .gift-later{color:#8fa89e}
+  html[data-theme="dark"] .contact{border-top-color:#24362f}
+  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .contact-text b{color:#e7f0ec}
+  html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
+  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
+  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
+  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
+  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
+  html[data-theme="dark"] .amt{color:#e7f0ec}
+  html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
+  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
+  html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
+  html[data-theme="dark"] .row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row-sub{color:#8fa89e}
+  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
+  html[data-theme="dark"] .field-label{color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
 </style>
 </head>
 <body>
@@ -130,38 +249,85 @@
     </div>
     <div class="hdr-row hdr-sub">
       <span class="hdr-sec">
-        <span class="hdr-sec-name">Songs</span>
+        <span class="hdr-sec-name" data-i18n="secSongs">ចម្រៀង</span>
       </span>
-      <button class="sell-btn" id="sellBtn" type="button">Sell Song</button>
+      <button class="sell-btn" id="sellBtn" type="button" data-i18n="sellSong">លក់ចម្រៀង</button>
     </div>
   </header>
   <div class="menu-veil" id="menuVeil"></div>
-  <nav class="menu" id="menu" aria-label="Menu">
-      <a href="#" id="mHome">Home</a>
-      <a href="movai-new-create.html">Create Song</a>
-      <a href="movai-new-market.html">Marketplace</a>
-      <a href="movai-new-songs.html">My Songs</a>
-      <a href="movai-new-profile.html">Profile</a>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="#" id="mHome" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="movai-new-create.html" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
+      <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en">English</button>
+      </div>
+    </div>
     <div class="menu-sep"></div>
     <div class="menu-user" id="menuUser" hidden></div>
-    <a href="movai-new-profile.html" id="menuSignIn">Sign In</a>
-    <button class="menu-link" id="menuSignOut" type="button" hidden>Sign out</button>
+    <a href="movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
   </nav>
-  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
 
   <main>
     <div class="feed" id="feed"></div>
-    <div class="status" id="status">Loading songs&hellip;</div>
+    <div class="status" id="status">កំពុងផ្ទុកចម្រៀង…</div>
   </main>
+
+  <!-- Contact footer (owner order): real logo images, never code-drawn.
+       Profile photos could not be fetched from Facebook (the Page photo
+       is only the default silhouette; the Account photo is blocked), so
+       the photo slots stay out until the owner sends the photo file. -->
+  <footer class="contact">
+    <div class="contact-title" data-i18n="contactTitle">ទំនាក់ទំនង</div>
+    <a class="contact-row" href="https://www.facebook.com/share/1diwbcCkNs/" target="_blank" rel="noopener">
+      <img class="contact-logo" src="facebook-logo.png" alt="Facebook">
+      <span class="contact-text"><b data-i18n="fbPage">ទំព័រហ្វេសប៊ុក</b><span>បងម៉ូវ</span></span>
+    </a>
+    <a class="contact-row" href="https://www.facebook.com/share/1CDRBqwGU2/" target="_blank" rel="noopener">
+      <img class="contact-logo" src="facebook-logo.png" alt="Facebook">
+      <span class="contact-text"><b data-i18n="fbAccount">គណនីហ្វេសប៊ុក</b><span>បង មូវ</span></span>
+    </a>
+    <a class="contact-row" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+      <img class="contact-logo" src="telegram-logo.png" alt="Telegram">
+      <span class="contact-text"><b data-i18n="tgAdmin">តេឡេក្រាម (Admin)</b><span>@yemsokhoeun_9999</span></span>
+    </a>
+  </footer>
+</div>
+
+<!-- Gift CLAIM popup (new-user gift: 24 Song Credits, once per Gmail) -->
+<div class="gift-veil" id="giftSheet" hidden role="dialog" aria-modal="true">
+  <div class="gift-card">
+    <div class="gift-ico">&#127873;</div>
+    <h3 data-i18n="claimTitle">អំណោយឥតគិតថ្លៃ</h3>
+    <p data-i18n="claimBody">អ្នកទទួលបាន ២៤ ក្រេឌីតចម្រៀងឥតគិតថ្លៃ — មួយ Gmail បានម្ដងតែប៉ុណ្ណោះ។ ចុចទទួលយកឥឡូវនេះ រួចចាប់ផ្ដើមបង្កើត។</p>
+    <button class="gift-claim" id="giftClaimBtn" type="button" data-i18n="claimBtn">ទទួលយក</button>
+    <button class="gift-later" id="giftLaterBtn" type="button" data-i18n="claimLater">មិនទាន់ទេ</button>
+    <div class="gift-msg" id="giftMsg"></div>
+  </div>
 </div>
 
 <div class="player" id="player" hidden>
   <div class="player-in">
     <img id="pCover" alt="" src="">
     <span class="player-title" id="pTitle"></span>
-    <button id="pPlay" type="button" aria-label="Play or pause">&#10074;&#10074;</button>
-    <button id="pNext" type="button">Next</button>
-    <button class="p-close" id="pClose" type="button" aria-label="Close">&#10005;</button>
+    <button id="pPlay" type="button" aria-label="Play or pause" data-i18n-aria="playPause">&#10074;&#10074;</button>
+    <button id="pNext" type="button" data-i18n="next">បន្ទាប់</button>
+    <button class="p-close" id="pClose" type="button" aria-label="Close" data-i18n-aria="close">&#10005;</button>
   </div>
 </div>
 <audio id="au" preload="none"></audio>
@@ -170,6 +336,27 @@
 (function(){
   "use strict";
   if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
   var FEED_URL = "https://movai-proxy-wasr.onrender.com/api/public/feed";
   var COVER_FALLBACK = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24"><rect width="24" height="24" fill="#dfe7e2"/><path d="M9 18V5l10-2v11" stroke="#1f2937" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.2" fill="#1f2937"/><circle cx="16.5" cy="16" r="2.2" fill="#1f2937"/></svg>');
@@ -213,6 +400,202 @@
     return s;
   }
 
+  /* ---- i18n: Khmer / English, strictly separated ---- */
+  var STR = {
+    kh: {
+      claimTitle: "អំណោយឥតគិតថ្លៃ",
+      claimBody: "អ្នកទទួលបាន ២៤ ក្រេឌីតចម្រៀងឥតគិតថ្លៃ — មួយ Gmail បានម្ដងតែប៉ុណ្ណោះ។ ចុចទទួលយកឥឡូវនេះ រួចចាប់ផ្ដើមបង្កើត។",
+      claimBtn: "ទទួលយក",
+      claimLater: "មិនទាន់ទេ",
+      claimedOk: "បានទទួលហើយ — បន្ថែម ២៤ ក្រេឌីតចម្រៀង។",
+      claimFail: "ទទួលអំណោយមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      contactTitle: "ទំនាក់ទំនង",
+      fbPage: "ទំព័រហ្វេសប៊ុក",
+      fbAccount: "គណនីហ្វេសប៊ុក",
+      tgAdmin: "តេឡេក្រាម (Admin)",
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      secSongs: "ចម្រៀង",
+      sellSong: "លក់ចម្រៀង",
+      loadingSongs: "កំពុងផ្ទុកចម្រៀង…",
+      noSongs: "មិនទាន់មានចម្រៀងទេ។",
+      loadFail: "ផ្ទុកចម្រៀងមិនបានទេ — សូមព្យាយាមម្ដងទៀត។",
+      retry: "ព្យាយាមម្ដងទៀត",
+      untitled: "គ្មានចំណងជើង",
+      views: "ដងមើល",
+      play: "ចាក់",
+      pause: "ផ្អាក",
+      playPause: "ចាក់ ឬផ្អាក",
+      next: "បន្ទាប់",
+      close: "បិទ"
+    },
+    en: {
+      claimTitle: "Free Gift",
+      claimBody: "You get 24 Song Credits free — one gift per Gmail, forever. Claim it now and start creating.",
+      claimBtn: "Claim",
+      claimLater: "Not now",
+      claimedOk: "Claimed — 24 Song Credits added.",
+      claimFail: "Could not claim the gift. Please try again.",
+      noServer: "Could not reach the server. Please try again.",
+      contactTitle: "Contact",
+      fbPage: "Facebook Page",
+      fbAccount: "Facebook Account",
+      tgAdmin: "Telegram Admin",
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      secSongs: "Songs",
+      sellSong: "Sell Song",
+      loadingSongs: "Loading songs…",
+      noSongs: "No songs yet.",
+      loadFail: "Could not load songs — please try again.",
+      retry: "Retry",
+      untitled: "Untitled",
+      views: "views",
+      play: "Play",
+      pause: "Pause",
+      playPause: "Play or pause",
+      next: "Next",
+      close: "Close"
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+
+  function onLangChange(){ renderFeed(); }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    if (typeof onLangChange === "function") onLangChange();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
+  var API_BASE = "https://movai-proxy-wasr.onrender.com";
+  function apiPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      var ms = timeoutMs || 60000;
+      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
+    }
+    return fetch(API_BASE + path, opts).then(function(r){
+      if (timer) clearTimeout(timer);
+      return r.json().catch(function(){ return null; });
+    }).catch(function(e){
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
+  }
+
+  /* ---- gift CLAIM popup (same as Create: 24 Song Credits, once per Gmail) ---- */
+  var giftSheet = document.getElementById("giftSheet");
+  var giftClaimBtn = document.getElementById("giftClaimBtn");
+  var giftLaterBtn = document.getElementById("giftLaterBtn");
+  var giftMsg = document.getElementById("giftMsg");
+  var giftEmail = "";
+  function giftFlagKey(em){ return "movai-gift-claimed-" + String(em || "").toLowerCase(); }
+  function giftDismissKey(em){ return "movai-gift-dismissed-" + String(em || "").toLowerCase(); }
+  function maybeShowGift(user){
+    if (!user || !user.email) return;
+    giftEmail = user.email;
+    if (user.giftClaimed === true) {
+      try { localStorage.setItem(giftFlagKey(user.email), "1"); } catch (e) {}
+      return;
+    }
+    try { if (localStorage.getItem(giftFlagKey(user.email)) === "1") return; } catch (e) {}
+    try { if (sessionStorage.getItem(giftDismissKey(user.email)) === "1") return; } catch (e) {}
+    giftMsg.textContent = "";
+    giftMsg.className = "gift-msg";
+    giftMsg.hidden = true;
+    giftSheet.hidden = false;
+  }
+  function hideGift(){ giftSheet.hidden = true; }
+  giftLaterBtn.addEventListener("click", function(){
+    try { sessionStorage.setItem(giftDismissKey(giftEmail), "1"); } catch (e) {}
+    hideGift();
+  });
+  giftClaimBtn.addEventListener("click", function(){
+    if (!giftEmail) return;
+    giftClaimBtn.disabled = true;
+    giftClaimBtn.textContent = "…";
+    giftMsg.hidden = true;
+    apiPost("/api/admin/sync", { email: giftEmail, giftClaimed: true }, 30000).then(function(j){
+      giftClaimBtn.disabled = false;
+      giftClaimBtn.textContent = t("claimBtn");
+      if (j && j.ok === true && j.user) {
+        try { localStorage.setItem(giftFlagKey(giftEmail), "1"); } catch (e) {}
+        giftMsg.textContent = t("claimedOk");
+        giftMsg.className = "gift-msg ok-t";
+        giftMsg.hidden = false;
+        setTimeout(hideGift, 2500);
+      } else {
+        giftMsg.textContent = (j && j.error) ? j.error : t("claimFail");
+        giftMsg.className = "gift-msg";
+        giftMsg.hidden = false;
+      }
+    }).catch(function(){
+      giftClaimBtn.disabled = false;
+      giftClaimBtn.textContent = t("claimBtn");
+      giftMsg.textContent = t("noServer");
+      giftMsg.className = "gift-msg";
+      giftMsg.hidden = false;
+    });
+  });
+  function giftInit(){
+    var em = "";
+    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
+    if (!em) return;
+    apiPost("/api/admin/sync", { email: em }, 30000).then(function(j){
+      if (j && j.ok === true && j.user) maybeShowGift(j.user);
+    }).catch(function(){});
+  }
+
   /* ---- menu ---- */
   var menuSignIn = document.getElementById("menuSignIn");
   var menuSignOut = document.getElementById("menuSignOut");
@@ -229,7 +612,7 @@
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
-    if (menuUser) { menuUser.textContent = em ? ("Signed in as " + em) : ""; menuUser.hidden = !em; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
   }
@@ -258,9 +641,9 @@
   function showError(){
     var wrap = document.createElement("div");
     var t = document.createElement("div");
-    t.textContent = "Could not load songs — please try again.";
+    t.textContent = t("loadFail");
     var b = document.createElement("button");
-    b.className = "retry"; b.type = "button"; b.textContent = "Retry";
+    b.className = "retry"; b.type = "button"; b.textContent = t("retry");
     b.addEventListener("click", loadFeed);
     wrap.appendChild(t); wrap.appendChild(b);
     setStatus(wrap);
@@ -277,7 +660,7 @@
   }
   function renderFeed(){
     feedEl.innerHTML = "";
-    if (!songs.length) { setStatus("No songs yet."); return; }
+    if (!songs.length) { setStatus(t("noSongs")); return; }
     statusEl.textContent = "";
     songs.forEach(function(song, i){
       var row = document.createElement("button");
@@ -291,10 +674,10 @@
       var text = document.createElement("span");
       text.className = "row-text";
       var title = document.createElement("span");
-      title.className = "row-title"; title.textContent = song.title || "Untitled";
+      title.className = "row-title"; title.textContent = song.title || t("untitled");
       var sub = document.createElement("span");
       sub.className = "row-sub";
-      sub.textContent = (song.name || "MovAi") + " \u2022 " + fmtCount(song.views) + " views";
+      sub.textContent = (song.name || "MovAi") + " \u2022 " + fmtCount(song.views) + " " + t("views");
       text.appendChild(title); text.appendChild(sub);
 
       var dur = document.createElement("span");
@@ -307,7 +690,7 @@
     });
   }
   function loadFeed(){
-    setStatus("Loading songs\u2026");
+    setStatus(t("loadingSongs"));
     feedEl.innerHTML = "";
     fetch(FEED_URL, { cache: "no-store" })
       .then(function(r){ return r.json(); })
@@ -330,7 +713,7 @@
   }
   function syncPlayBtn(){
     pPlay.innerHTML = au.paused ? "&#9654;" : "&#10074;&#10074;";
-    pPlay.setAttribute("aria-label", au.paused ? "Play" : "Pause");
+    pPlay.setAttribute("aria-label", au.paused ? t("play") : t("pause"));
   }
   function playSong(i){
     if (i < 0 || i >= songs.length) return;
@@ -339,7 +722,7 @@
     au.src = playUrl(song.url);
     pCover.src = song.cover || COVER_FALLBACK;
     pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
-    pTitle.textContent = song.title || "Untitled";
+    pTitle.textContent = song.title || t("untitled");
     playerEl.hidden = false; document.body.classList.add("player-on");
     markPlaying();
     au.play().then(function(){ syncPlayBtn(); }).catch(function(){ syncPlayBtn(); });
@@ -364,7 +747,9 @@
     else { cur = -1; playerEl.hidden = true; document.body.classList.remove("player-on"); markPlaying(); }
   });
 
+  applyLang();
   loadFeed();
+  giftInit();
 })();
 </script>
 </body>

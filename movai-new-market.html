@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Marketplace</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
   *{box-sizing:border-box}
@@ -144,6 +145,97 @@
   .buy-msg.ok{color:#0f766e}
   .signin-link{text-decoration:underline}
   .divider{border:0;border-top:1px solid #e5e7eb;margin:18px 0 0}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .status{color:#8fa89e}
+  html[data-theme="dark"] .retry{color:#e7f0ec}
+  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
+  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
+  html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
+  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
+  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
+  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .player-title{color:#e7f0ec}
+  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .player button:active{background:#1d2f28}
+  html[data-theme="dark"] .player img{background:#24362f}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
+  html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
+  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
+  html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  html[data-theme="dark"] .tagchip button{color:#8fa89e}
+  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
+  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
+  html[data-theme="dark"] .bar{background:#24362f}
+  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
+  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
+  html[data-theme="dark"] .gift-later{color:#8fa89e}
+  html[data-theme="dark"] .contact{border-top-color:#24362f}
+  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .contact-text b{color:#e7f0ec}
+  html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
+  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
+  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
+  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
+  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
+  html[data-theme="dark"] .amt{color:#e7f0ec}
+  html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
+  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
+  html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
+  html[data-theme="dark"] .row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row-sub{color:#8fa89e}
+  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
+  html[data-theme="dark"] .field-label{color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
 </style>
 </head>
 <body>
@@ -157,78 +249,93 @@
     </div>
     <div class="hdr-row hdr-sub">
       <span class="hdr-sec">
-        <span class="hdr-sec-name">Marketplace</span>
+        <span class="hdr-sec-name" data-i18n="secMarket">ផ្សារ</span>
       </span>
-      <button class="sell-btn" id="sellBtn" type="button">Sell Song</button>
+      <button class="sell-btn" id="sellBtn" type="button" data-i18n="sellSong">លក់ចម្រៀង</button>
     </div>
   </header>
   <div class="menu-veil" id="menuVeil"></div>
-  <nav class="menu" id="menu" aria-label="Menu">
-      <a href="index.html">Home</a>
-      <a href="movai-new-create.html">Create Song</a>
-      <a href="movai-new-market.html">Marketplace</a>
-      <a href="movai-new-songs.html">My Songs</a>
-      <a href="movai-new-profile.html">Profile</a>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="index.html" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="movai-new-create.html" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
+      <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en">English</button>
+      </div>
+    </div>
     <div class="menu-sep"></div>
     <div class="menu-user" id="menuUser" hidden></div>
-    <a href="movai-new-profile.html" id="menuSignIn">Sign In</a>
-    <button class="menu-link" id="menuSignOut" type="button" hidden>Sign out</button>
+    <a href="movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
   </nav>
-  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
 
   <main>
     <div class="info">
-      <p><b>How it works:</b> sellers list bundles of their own songs. When you buy a bundle, the seller gets 95% and MovAi keeps 5%.</p>
-      <p>Bought songs expire 3 months after purchase — download them before then.</p>
-      <p>Pay by KHQR or QR USDT, then upload your payment receipt. The admin approves it and the songs become yours.</p>
+      <p><b data-i18n="howTitle">របៀបធ្វើការ៖</b> <span data-i18n="how1">អ្នកលក់ដាក់លក់ជាបាច់ចម្រៀងរបស់ខ្លួន។ ពេលអ្នកទិញបាច់មួយ អ្នកលក់ទទួលបាន ៩៥% ហើយ MovAi ទទួលបាន ៥%។</span></p>
+      <p data-i18n="how2">ចម្រៀងដែលទិញនឹងផុតកំណត់ ៣ ខែបន្ទាប់ពីទិញ — សូមទាញយកមុនពេលនោះ។</p>
+      <p data-i18n="how3">បង់ប្រាក់តាម KHQR ឬ QR USDT រួចអាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក។ Admin អនុម័ត រួចចម្រៀងក្លាយជារបស់អ្នក។</p>
     </div>
 
-    <div class="sec">Song bundles for sale</div>
-    <div class="sec-sub">Tap a bundle to see its songs.</div>
+    <div class="sec" data-i18n="secBundles">បាច់ចម្រៀងសម្រាប់លក់</div>
+    <div class="sec-sub" data-i18n="secBundlesSub">ចុចលើបាច់មួយដើម្បីមើលចម្រៀងរបស់វា។</div>
     <div id="market"></div>
 
-    <div class="sec">Bundle prices</div>
-    <div class="sec-sub">Fixed prices set by the company.</div>
+    <div class="sec" data-i18n="secTiers">តម្លៃបាច់</div>
+    <div class="sec-sub" data-i18n="secTiersSub">តម្លៃថេរដែលក្រុមហ៊ុនកំណត់។</div>
     <div id="tiers"></div>
 
     <hr class="divider">
     <section id="buyPanel" hidden>
-      <div class="sec" id="buyTitle">Buy this bundle</div>
+      <div class="sec" id="buyTitle" data-i18n="buyTitle">ទិញបាច់នេះ</div>
       <div class="buybox">
         <p id="buySummary"></p>
-        <p id="buySignin" hidden>Sign in to buy. <a class="signin-link" href="movai-new-profile.html">Go to Profile to sign in</a></p>
+        <p id="buySignin" hidden><span data-i18n="signinToBuy">សូមចូលប្រើជាមុនសិនដើម្បីទិញ។</span> <a class="signin-link" href="movai-new-profile.html" data-i18n="goProfileSignin">ទៅកាន់ប្រវត្តិរូបដើម្បីចូលប្រើ</a></p>
         <div id="buySteps" hidden>
-          <p class="buylabel">Choose how to pay:</p>
+          <p class="buylabel" data-i18n="choosePay">ជ្រើសរើសរបៀបបង់ប្រាក់៖</p>
           <div class="methodrow">
             <button id="mKhqr" type="button">KHQR</button>
             <button id="mUsdt" type="button">QR USDT</button>
           </div>
 
           <div id="payKhqr" hidden>
-            <p>Amount to pay</p>
+            <p data-i18n="amtToPay">ចំនួនត្រូវបង់</p>
             <p class="amt" id="khqrAmt"></p>
             <div class="qrwrap" id="khqrQr"></div>
-            <p>Scan with any bank app — the amount is already filled in. Pay to YEM SOKHOEUN.</p>
-            <p id="khqrPayloadWrap" hidden>KHQR code: <span class="payload" id="khqrPayload"></span></p>
+            <p data-i18n="scanBank">ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — ចំនួនបានបំពេញរួចហើយ។ បង់ទៅឲ្យ YEM SOKHOEUN។</p>
+            <p id="khqrPayloadWrap" hidden><span data-i18n="khqrCode">កូដ KHQR៖ </span><span class="payload" id="khqrPayload"></span></p>
             <p><a class="signin-link" id="khqrLink" href="#">Open KHQR payment link</a></p>
           </div>
 
           <div id="payUsdt" hidden>
-            <p>Amount to pay</p>
+            <p data-i18n="amtToPay">ចំនួនត្រូវបង់</p>
             <p class="amt" id="usdtAmt"></p>
             <div class="qrwrap" id="usdtQr"></div>
-            <p>Send exactly this amount in USDT (TRC20 only) to:</p>
+            <p data-i18n="sendUsdt">សូមផ្ញើចំនួននេះឲ្យត្រឹមត្រូវជា USDT (TRC20 តែប៉ុណ្ណោះ) ទៅកាន់៖</p>
             <p class="addr" id="usdtAddr"></p>
-            <p><button class="plain-btn" id="copyAddr" type="button">Copy address</button>
+            <p><button class="plain-btn" id="copyAddr" type="button" data-i18n="copyAddr">ចម្លងអាសយដ្ឋាន</button>
             <span class="fine" id="copyMsg"></span></p>
           </div>
 
           <div id="receiptBox" hidden>
-            <p class="buylabel">Upload your payment receipt (after you pay):</p>
+            <p class="buylabel" data-i18n="receiptLbl">អាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក (បន្ទាប់ពីបង់ប្រាក់)៖</p>
             <input type="file" id="receiptFile" accept="image/jpeg,image/png,image/webp">
-            <p class="fine">JPG, PNG or WebP, max 5 MB.</p>
+            <p class="fine" data-i18n="receiptHint">JPG, PNG ឬ WebP, អតិបរមា ៥ MB។</p>
             <p id="receiptName" class="fine"></p>
-            <p><button class="plain-btn" id="submitBuy" type="button">I have paid — send receipt for approval</button></p>
+            <p><button class="plain-btn" id="submitBuy" type="button" data-i18n="submitBuy">ខ្ញុំបានបង់ហើយ — ផ្ញើវិក្កយបត្រឲ្យអនុម័ត</button></p>
             <p class="buy-msg" id="buyMsg"></p>
           </div>
         </div>
@@ -236,12 +343,12 @@
     </section>
 
     <section id="mineWrap" hidden>
-      <div class="sec">My purchases</div>
-      <div class="sec-sub">Bundles you bought, with their download deadline.</div>
+      <div class="sec" data-i18n="secMine">ការទិញរបស់ខ្ញុំ</div>
+      <div class="sec-sub" data-i18n="secMineSub">បាច់ដែលអ្នកបានទិញ ជាមួយកាលបរិច្ឆេទផុតកំណត់សម្រាប់ទាញយក។</div>
       <div id="mine"></div>
     </section>
 
-    <div class="status" id="status">Loading marketplace&hellip;</div>
+    <div class="status" id="status">កំពុងផ្ទុកផ្សារ…</div>
   </main>
 </div>
 
@@ -249,7 +356,216 @@
 (function(){
   "use strict";
   if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
   var API = "https://movai-proxy-wasr.onrender.com";
+  /* ---- i18n: Khmer / English, strictly separated ---- */
+  var STR = {
+    kh: {
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      secMarket: "ផ្សារ",
+      sellSong: "លក់ចម្រៀង",
+      howTitle: "របៀបធ្វើការ៖",
+      how1: "អ្នកលក់ដាក់លក់ជាបាច់ចម្រៀងរបស់ខ្លួន។ ពេលអ្នកទិញបាច់មួយ អ្នកលក់ទទួលបាន ៩៥% ហើយ MovAi ទទួលបាន ៥%។",
+      how2: "ចម្រៀងដែលទិញនឹងផុតកំណត់ ៣ ខែបន្ទាប់ពីទិញ — សូមទាញយកមុនពេលនោះ។",
+      how3: "បង់ប្រាក់តាម KHQR ឬ QR USDT រួចអាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក។ Admin អនុម័ត រួចចម្រៀងក្លាយជារបស់អ្នក។",
+      secBundles: "បាច់ចម្រៀងសម្រាប់លក់",
+      secBundlesSub: "ចុចលើបាច់មួយដើម្បីមើលចម្រៀងរបស់វា។",
+      secTiers: "តម្លៃបាច់",
+      secTiersSub: "តម្លៃថេរដែលក្រុមហ៊ុនកំណត់។",
+      buyTitle: "ទិញបាច់នេះ",
+      choosePay: "ជ្រើសរើសរបៀបបង់ប្រាក់៖",
+      amtToPay: "ចំនួនត្រូវបង់",
+      scanBank: "ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — ចំនួនបានបំពេញរួចហើយ។ បង់ទៅឲ្យ YEM SOKHOEUN។",
+      khqrLinkTxt: "បើកលីងបង់ប្រាក់ KHQR",
+      khqrCode: "កូដ KHQR៖ ",
+      sendUsdt: "សូមផ្ញើចំនួននេះឲ្យត្រឹមត្រូវជា USDT (TRC20 តែប៉ុណ្ណោះ) ទៅកាន់៖",
+      copyAddr: "ចម្លងអាសយដ្ឋាន",
+      copied: "បានចម្លងហើយ។",
+      copyFail: "ចម្លងមិនបានទេ — សូមចុចឲ្យយូរលើអាសយដ្ឋានដើម្បីចម្លង។",
+      receiptLbl: "អាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក (បន្ទាប់ពីបង់ប្រាក់)៖",
+      receiptHint: "JPG, PNG ឬ WebP, អតិបរមា ៥ MB។",
+      submitBuy: "ខ្ញុំបានបង់ហើយ — ផ្ញើវិក្កយបត្រឲ្យអនុម័ត",
+      signinToBuy: "សូមចូលប្រើជាមុនសិនដើម្បីទិញ។",
+      goProfileSignin: "ទៅកាន់ប្រវត្តិរូបដើម្បីចូលប្រើ",
+      secMine: "ការទិញរបស់ខ្ញុំ",
+      secMineSub: "បាច់ដែលអ្នកបានទិញ ជាមួយកាលបរិច្ឆេទផុតកំណត់សម្រាប់ទាញយក។",
+      loadingMarket: "កំពុងផ្ទុកផ្សារ…",
+      noBundles: "មិនទាន់មានបាច់សម្រាប់លក់ទេ។",
+      loadFail: "ផ្ទុកផ្សារមិនបានទេ — សូមព្យាយាមម្ដងទៀត។",
+      retry: "ព្យាយាមម្ដងទៀត",
+      songsWord: "ចម្រៀង",
+      fromSeller: "ពី",
+      tapSee: " — ចុចដើម្បីមើលចម្រៀង",
+      yourListing: " · នេះជាបាច់របស់អ្នក",
+      bonusWord: "បន្ថែម",
+      includesBonus: "រួមបញ្ចូល ",
+      noPreview: "គ្មានការស្ដាប់មុននៅទីនេះទេ — ចម្រៀងនឹងត្រូវបានចែករំលែកឲ្យអ្នកបន្ទាប់ពីទិញ។",
+      ownNote: "នេះជាបាច់របស់អ្នក — អ្នកមិនអាចទិញចម្រៀងរបស់ខ្លួនឯងបានទេ។",
+      buyFor: "ទិញក្នុងតម្លៃ ",
+      seller95: "អ្នកលក់ទទួលបាន ៩៥% — MovAi ទទួលបាន ៥%",
+      onEverySale: "លើការលក់នីមួយៗ",
+      chooseMethodFirst: "សូមជ្រើសរើស KHQR ឬ QR USDT ជាមុនសិន។",
+      uploadReceiptFirst: "សូមអាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នកជាមុនសិន (JPG, PNG ឬ WebP, អតិបរមា ៥ MB)។",
+      uploadingReceipt: "កំពុងអាប់ឡូតវិក្កយបត្រ…",
+      receiptUploaded: "បានអាប់ឡូតវិក្កយបត្ររួចហើយ — កំពុងផ្ញើសំណើទិញរបស់អ្នក…",
+      waitingApproval1: "កំពុងរង់ចាំ Admin អនុម័ត — សំណើ ",
+      waitingApproval2: "។ ចម្រៀងរបស់អ្នកនឹងបង្ហាញក្នុងចម្រៀងរបស់ខ្ញុំបន្ទាប់ពីអនុម័ត។",
+      receiptUploadFail: "អាប់ឡូតវិក្កយបត្រមិនបានទេ — សូមព្យាយាមម្ដងទៀត។",
+      purchaseFail: "សំណើទិញមិនបានទេ — សូមព្យាយាមម្ដងទៀត។",
+      somethingWrong: "មានអ្វីមួយខុស — សូមព្យាយាមម្ដងទៀត។",
+      readImageFail: "អានរូបភាពនោះមិនបានទេ — សូមព្យាយាមជាមួយឯកសារផ្សេង។",
+      receiptBadType: "សូមជ្រើសរើសរូបភាព JPG, PNG ឬ WebP។",
+      receiptTooBig: "រូបភាពនោះធំពេក (អតិបរមា ៥ MB)។",
+      receiptName: "វិក្កយបត្រ៖ ",
+      qrFailKhqr: "មិនអាចគូរ QR បានទេ — សូមប្រើលីងបង់ប្រាក់ KHQR ខាងក្រោម ហើយបង់ ",
+      qrFailEnd: "។",
+      qrFailUsdt: "មិនអាចគូរ QR បានទេ — សូមចម្លងអាសយដ្ឋានខាងលើ។",
+      expired: "ផុតកំណត់ ",
+      downloadBy: "ទាញយកត្រឹម ",
+      untitled: "គ្មានចំណងជើង",
+      songFallback: "ចម្រៀង"
+    },
+    en: {
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      secMarket: "Marketplace",
+      sellSong: "Sell Song",
+      howTitle: "How it works:",
+      how1: "sellers list bundles of their own songs. When you buy a bundle, the seller gets 95% and MovAi keeps 5%.",
+      how2: "Bought songs expire 3 months after purchase — download them before then.",
+      how3: "Pay by KHQR or QR USDT, then upload your payment receipt. The admin approves it and the songs become yours.",
+      secBundles: "Song bundles for sale",
+      secBundlesSub: "Tap a bundle to see its songs.",
+      secTiers: "Bundle prices",
+      secTiersSub: "Fixed prices set by the company.",
+      buyTitle: "Buy this bundle",
+      choosePay: "Choose how to pay:",
+      amtToPay: "Amount to pay",
+      scanBank: "Scan with any bank app — the amount is already filled in. Pay to YEM SOKHOEUN.",
+      khqrLinkTxt: "Open KHQR payment link",
+      khqrCode: "KHQR code: ",
+      sendUsdt: "Send exactly this amount in USDT (TRC20 only) to:",
+      copyAddr: "Copy address",
+      copied: "Copied.",
+      copyFail: "Copy failed — long-press the address to copy it.",
+      receiptLbl: "Upload your payment receipt (after you pay):",
+      receiptHint: "JPG, PNG or WebP, max 5 MB.",
+      submitBuy: "I have paid — send receipt for approval",
+      signinToBuy: "Sign in to buy.",
+      goProfileSignin: "Go to Profile to sign in",
+      secMine: "My purchases",
+      secMineSub: "Bundles you bought, with their download deadline.",
+      loadingMarket: "Loading marketplace…",
+      noBundles: "No bundles for sale yet.",
+      loadFail: "Could not load the marketplace — please try again.",
+      retry: "Retry",
+      songsWord: "songs",
+      fromSeller: "from",
+      tapSee: " — tap to see the songs",
+      yourListing: " · this is your listing",
+      bonusWord: "bonus",
+      includesBonus: "includes ",
+      noPreview: "No preview here — the songs are shared with you after purchase.",
+      ownNote: "This is your listing — you cannot buy your own songs.",
+      buyFor: "Buy for ",
+      seller95: "Seller gets 95% — MovAi keeps 5%",
+      onEverySale: "on every sale",
+      chooseMethodFirst: "Please choose KHQR or QR USDT first.",
+      uploadReceiptFirst: "Please upload your payment receipt first (JPG, PNG or WebP, max 5 MB).",
+      uploadingReceipt: "Uploading receipt…",
+      receiptUploaded: "Receipt uploaded — sending your purchase request…",
+      waitingApproval1: "Waiting for admin approval — request ",
+      waitingApproval2: ". Your songs will appear in My Songs after approval.",
+      receiptUploadFail: "Receipt upload failed — please try again.",
+      purchaseFail: "Purchase request failed — please try again.",
+      somethingWrong: "Something went wrong — please try again.",
+      readImageFail: "Could not read that image — please try another file.",
+      receiptBadType: "Please choose a JPG, PNG or WebP image.",
+      receiptTooBig: "That image is too big (max 5 MB).",
+      receiptName: "Receipt: ",
+      qrFailKhqr: "QR image could not be drawn — use the KHQR payment link below and pay ",
+      qrFailEnd: ".",
+      qrFailUsdt: "QR image could not be drawn — copy the address above.",
+      expired: "Expired ",
+      downloadBy: "Download by ",
+      untitled: "Untitled",
+      songFallback: "Song"
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+  function onLangChange(){ loadMarket(); loadTiers(); loadMyPurchases(); }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    if (typeof onLangChange === "function") onLangChange();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
   var MARKET_URL = API + "/api/public/sell/market";
   var TIERS_URL = API + "/api/public/sell/tiers";
   var SETTINGS_URL = API + "/api/admin/settings";
@@ -385,7 +701,7 @@
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
-    if (menuUser) { menuUser.textContent = em ? ("Signed in as " + em) : ""; menuUser.hidden = !em; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
   }
@@ -454,10 +770,10 @@
       var row = document.createElement("div");
       row.className = "trow";
       var left = document.createElement("b");
-      left.textContent = fmtMoney(t.price) + " — " + (t.songs || 0) + " songs";
+      left.textContent = fmtMoney(t.price) + " — " + (t.songs || 0) + " " + t("songsWord");
       var right = document.createElement("span");
       var extra = "";
-      if (t.bonus) extra = "includes " + t.bonus + " bonus";
+      if (t.bonus) extra = t("includesBonus") + t.bonus + " " + t("bonusWord");
       right.textContent = extra;
       row.appendChild(left);
       row.appendChild(right);
@@ -466,9 +782,9 @@
     var note = document.createElement("div");
     note.className = "trow";
     var n1 = document.createElement("b");
-    n1.textContent = "Seller gets 95% — MovAi keeps 5%";
+    n1.textContent = t("seller95");
     var n2 = document.createElement("span");
-    n2.textContent = "on every sale";
+    n2.textContent = t("onEverySale");
     note.appendChild(n1);
     note.appendChild(n2);
     tiersEl.appendChild(note);
@@ -492,9 +808,9 @@
   function showError(){
     statusEl.innerHTML = "";
     var t = document.createElement("div");
-    t.textContent = "Could not load the marketplace — please try again.";
+    t.textContent = t("loadFail");
     var b = document.createElement("button");
-    b.className = "retry"; b.type = "button"; b.textContent = "Retry";
+    b.className = "retry"; b.type = "button"; b.textContent = t("retry");
     b.addEventListener("click", loadMarket);
     statusEl.appendChild(t);
     statusEl.appendChild(b);
@@ -503,7 +819,7 @@
     marketEl.innerHTML = "";
     var total = 0;
     sellers.forEach(function(s){ total += (s.listings || []).length; });
-    if (!total) { setStatus("No bundles for sale yet."); return; }
+    if (!total) { setStatus(t("noBundles")); return; }
     setStatus("");
     sellers.forEach(function(seller){
       var listings = Array.isArray(seller.listings) ? seller.listings : [];
@@ -521,7 +837,7 @@
         top.className = "listing-top";
         var count = document.createElement("span");
         count.className = "listing-count";
-        count.textContent = (l.songCount || (Array.isArray(l.songs) ? l.songs.length : 0)) + " songs";
+        count.textContent = (l.songCount || (Array.isArray(l.songs) ? l.songs.length : 0)) + " " + t("songsWord");
         var price = document.createElement("span");
         price.className = "listing-price";
         price.textContent = fmtMoney(l.price);
@@ -529,8 +845,8 @@
         top.appendChild(price);
         var sub = document.createElement("span");
         sub.className = "listing-sub";
-        var bonusTxt = l.bonus ? " · " + l.bonus + " bonus" : "";
-        sub.textContent = "Tier $" + (l.tier || "") + bonusTxt + (isMine ? " · this is your listing" : "") + " — tap to see the songs";
+        var bonusTxt = l.bonus ? " · " + l.bonus + " " + t("bonusWord") : "";
+        sub.textContent = "Tier $" + (l.tier || "") + bonusTxt + (isMine ? t("yourListing") : "") + t("tapSee");
         btn.appendChild(top);
         btn.appendChild(sub);
         var songsWrap = document.createElement("div");
@@ -543,10 +859,10 @@
           stext.className = "song-text";
           var stitle = document.createElement("span");
           stitle.className = "song-title";
-          stitle.textContent = sg.title || "Untitled";
+          stitle.textContent = sg.title || t("untitled");
           var sstyle = document.createElement("span");
           sstyle.className = "song-style";
-          sstyle.textContent = sg.style || "Song";
+          sstyle.textContent = sg.style || t("songFallback");
           stext.appendChild(stitle);
           stext.appendChild(sstyle);
           var dur = document.createElement("span");
@@ -558,20 +874,20 @@
         });
         var note = document.createElement("div");
         note.className = "song-note";
-        note.textContent = "No preview here — the songs are shared with you after purchase.";
+        note.textContent = t("noPreview");
         songsWrap.appendChild(note);
         var buyrow = document.createElement("div");
         buyrow.className = "buyrow";
         if (isMine) {
           var own = document.createElement("div");
           own.className = "own-note";
-          own.textContent = "This is your listing — you cannot buy your own songs.";
+          own.textContent = t("ownNote");
           buyrow.appendChild(own);
         } else {
           var buyBtn = document.createElement("button");
           buyBtn.type = "button";
           buyBtn.className = "plain-btn";
-          buyBtn.textContent = "Buy for " + fmtMoney(l.price);
+          buyBtn.textContent = t("buyFor") + fmtMoney(l.price);
           buyBtn.addEventListener("click", function(e){
             e.stopPropagation();
             startBuy({
@@ -595,7 +911,7 @@
     });
   }
   function loadMarket(){
-    setStatus("Loading marketplace…");
+    setStatus(t("loadingMarket"));
     marketEl.innerHTML = "";
     fetch(MARKET_URL, { cache: "no-store" })
       .then(function(r){ return r.json(); })
@@ -628,8 +944,8 @@
     curListing = listing;
     resetBuyPanel();
     buyPanel.hidden = false;
-    document.getElementById("buyTitle").textContent = "Buy this bundle";
-    buySummary.textContent = listing.songCount + " songs from " + listing.sellerName + " — " + fmtMoney(listing.price) + ".";
+    document.getElementById("buyTitle").textContent = t("buyTitle");
+    buySummary.textContent = listing.songCount + " " + t("songsWord") + " " + t("fromSeller") + " " + listing.sellerName + " — " + fmtMoney(listing.price) + ".";
     if (!myEmail) {
       buySignin.hidden = false;
       buySteps.hidden = true;
@@ -664,11 +980,11 @@
         khqrPayloadWrap.hidden = false;
         var warn = document.createElement("p");
         warn.className = "fine";
-        warn.textContent = "QR image could not be drawn — use the KHQR payment link below and pay " + fmtMoney(amt) + ".";
+        warn.textContent = t("qrFailKhqr") + fmtMoney(amt) + t("qrFailEnd");
         khqrQr.appendChild(warn);
       }
       khqrLink.href = PAY.khqrLink;
-      khqrLink.textContent = "Open KHQR payment link";
+      khqrLink.textContent = t("khqrLinkTxt");
     } else {
       usdtAmt.textContent = fmtMoney(curListing.price);
       usdtAddr.textContent = PAY.usdtAddress;
@@ -678,7 +994,7 @@
       else {
         var w2 = document.createElement("p");
         w2.className = "fine";
-        w2.textContent = "QR image could not be drawn — copy the address above.";
+        w2.textContent = t("qrFailUsdt");
         usdtQr.appendChild(w2);
       }
     }
@@ -689,7 +1005,7 @@
   copyAddrBtn.addEventListener("click", function(){
     var addr = PAY.usdtAddress;
     function done(ok){
-      copyMsg.textContent = ok ? "Copied." : "Copy failed — long-press the address to copy it.";
+      copyMsg.textContent = ok ? t("copied") : t("copyFail");
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(addr).then(function(){ done(true); }, function(){ done(false); });
@@ -715,33 +1031,33 @@
     var okType = /^(image\/jpeg|image\/png|image\/webp)$/.test(f.type) ||
       /\.(jpe?g|png|webp)$/i.test(f.name || "");
     if (!okType) {
-      receiptName.textContent = "Please choose a JPG, PNG or WebP image.";
+      receiptName.textContent = t("receiptBadType");
       receiptFile.value = "";
       return;
     }
     if (f.size > MAX_RECEIPT_BYTES) {
-      receiptName.textContent = "That image is too big (max 5 MB).";
+      receiptName.textContent = t("receiptTooBig");
       receiptFile.value = "";
       return;
     }
     receiptFileObj = f;
-    receiptName.textContent = "Receipt: " + f.name;
+    receiptName.textContent = t("receiptName") + f.name;
   });
 
   submitBuy.addEventListener("click", function(){
     if (!curListing || !myEmail) return;
     if (!curMethod) {
-      buyMsg.textContent = "Please choose KHQR or QR USDT first.";
+      buyMsg.textContent = t("chooseMethodFirst");
       buyMsg.className = "buy-msg";
       return;
     }
     if (!receiptFileObj) {
-      buyMsg.textContent = "Please upload your payment receipt first (JPG, PNG or WebP, max 5 MB).";
+      buyMsg.textContent = t("uploadReceiptFirst");
       buyMsg.className = "buy-msg";
       return;
     }
     submitBuy.disabled = true;
-    buyMsg.textContent = "Uploading receipt…";
+    buyMsg.textContent = t("uploadingReceipt");
     buyMsg.className = "buy-msg";
     var reader = new FileReader();
     reader.onload = function(){
@@ -750,9 +1066,9 @@
       postJSON(RECEIPT_URL, { email: myEmail, filename: receiptFileObj.name, data: b64 })
         .then(function(rd){
           if (!rd || rd.ok !== true || !rd.url) {
-            throw new Error(serverMsg(rd, "Receipt upload failed — please try again."));
+            throw new Error(serverMsg(rd, t("receiptUploadFail")));
           }
-          buyMsg.textContent = "Receipt uploaded — sending your purchase request…";
+          buyMsg.textContent = t("receiptUploaded");
           return postJSON(BUY_URL, {
             email: myEmail,
             listingId: curListing.id,
@@ -762,21 +1078,21 @@
         })
         .then(function(bd){
           if (!bd || bd.ok !== true) {
-            throw new Error(serverMsg(bd, "Purchase request failed — please try again."));
+            throw new Error(serverMsg(bd, t("purchaseFail")));
           }
-          buyMsg.textContent = "Waiting for admin approval — request " + (bd.requestId || "") + ". Your songs will appear in My Songs after approval.";
+          buyMsg.textContent = t("waitingApproval1") + (bd.requestId || "") + t("waitingApproval2");
           buyMsg.className = "buy-msg ok";
           submitBuy.disabled = false;
           loadMarket();
         })
         .catch(function(err){
-          buyMsg.textContent = (err && err.message) ? err.message : "Something went wrong — please try again.";
+          buyMsg.textContent = (err && err.message) ? err.message : t("somethingWrong");
           buyMsg.className = "buy-msg";
           submitBuy.disabled = false;
         });
     };
     reader.onerror = function(){
-      buyMsg.textContent = "Could not read that image — please try another file.";
+      buyMsg.textContent = t("readImageFail");
       buyMsg.className = "buy-msg";
       submitBuy.disabled = false;
     };
@@ -797,11 +1113,11 @@
           row.className = "trow";
           var left = document.createElement("b");
           var n = p.songCount || (Array.isArray(p.songs) ? p.songs.length : 0);
-          left.textContent = fmtMoney(p.price) + " — " + n + " songs from " + (p.sellerName || "");
+          left.textContent = fmtMoney(p.price) + " — " + n + " " + t("songsWord") + " " + t("fromSeller") + " " + (p.sellerName || "");
           var right = document.createElement("span");
           var exp = p.expiry || {};
-          if (exp.expired) right.textContent = "Expired " + fmtDate(exp.expiresAt);
-          else right.textContent = "Download by " + fmtDate(exp.expiresAt);
+          if (exp.expired) right.textContent = t("expired") + fmtDate(exp.expiresAt);
+          else right.textContent = t("downloadBy") + fmtDate(exp.expiresAt);
           row.appendChild(left);
           row.appendChild(right);
           mineEl.appendChild(row);
@@ -811,9 +1127,7 @@
   }
 
   loadSettings();
-  loadTiers();
-  loadMarket();
-  loadMyPurchases();
+  applyLang();
 })();
 </script>
 </body>

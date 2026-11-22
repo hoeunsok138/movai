@@ -9,6 +9,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
 <link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi — Create Song</title>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
   *{box-sizing:border-box}
@@ -137,6 +138,134 @@
   .res-dl{flex:none;font-size:.85rem;color:#1f2937;text-decoration:underline}
   .sec-title{font-size:1rem;font-weight:700;color:#1f2937;margin:26px 0 4px}
   .divider{border:0;border-top:1px solid #e5e7eb;margin:26px 0 0}
+  .mini-btn{font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 12px;background:transparent}
+  .mini-btn:active{background:#e5e7eb}
+  .mini-btn.dark{background:#1f2937;color:#ffffff;border-color:#1f2937}
+  .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  /* ---- Cover: collapsible box, plain rows ---- */
+  .cover-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;
+    font-size:.95rem;font-weight:700;color:#1f2937;padding:2px 0}
+  .cover-box{border:1px dashed #d1d5db;border-radius:12px;padding:12px;margin-top:8px}
+  .cover-fileinfo{font-size:.85rem;color:#1f2937;margin-top:8px}
+  .cover-msg{font-size:.85rem;color:#6b7280;margin-top:8px;min-height:16px}
+  .cover-msg.err-t{color:#991b1b}
+  .cover-msg.ok-t{color:#0f766e;font-weight:600}
+  .bar{height:6px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:8px}
+  .bar>div{height:100%;width:0;background:#0f766e}
+  /* ---- Custom style chips (Add-style) ---- */
+  .tagchip{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:999px;padding:6px 6px 6px 12px;background:transparent}
+  .tagchip button{font-size:.85rem;color:#6b7280;padding:2px 6px;border-radius:50%}
+  .tagchip button:active{background:#e5e7eb}
+  .chk-row{display:flex;align-items:center;gap:8px;font-size:.92rem;color:#1f2937;margin-top:12px}
+  .chk-row input{width:18px;height:18px;accent-color:#0f766e}
+  /* ---- Gift sheet ---- */
+  .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+    background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
+  .gift-card{width:100%;max-width:360px;text-align:center;
+    background:#ffffff;border:1px solid #d3e5da;border-radius:16px;padding:24px 20px}
+  .gift-ico{font-size:3rem;line-height:1.1}
+  .gift-card h3{margin:12px 0 0;font-size:1.2rem;font-weight:800;color:#1f2937}
+  .gift-card p{margin:10px 0 0;font-size:.95rem;line-height:1.6;color:#1f2937}
+  .gift-claim{display:block;width:100%;margin-top:20px;font-size:1rem;font-weight:700;
+    color:#ffffff;background:#0f766e;border-radius:10px;padding:13px 16px}
+  .gift-claim:active{opacity:.85}
+  .gift-later{display:inline-block;margin-top:12px;font-size:.9rem;color:#6b7280;
+    text-decoration:underline}
+  .gift-msg{font-size:.9rem;color:#991b1b;margin-top:10px;min-height:16px}
+  .gift-msg.ok-t{color:#0f766e;font-weight:600}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .status{color:#8fa89e}
+  html[data-theme="dark"] .retry{color:#e7f0ec}
+  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
+  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
+  html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
+  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
+  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
+  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .player-title{color:#e7f0ec}
+  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .player button:active{background:#1d2f28}
+  html[data-theme="dark"] .player img{background:#24362f}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
+  html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
+  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
+  html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  html[data-theme="dark"] .tagchip button{color:#8fa89e}
+  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
+  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
+  html[data-theme="dark"] .bar{background:#24362f}
+  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
+  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
+  html[data-theme="dark"] .gift-later{color:#8fa89e}
+  html[data-theme="dark"] .contact{border-top-color:#24362f}
+  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .contact-text b{color:#e7f0ec}
+  html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
+  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
+  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
+  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
+  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
+  html[data-theme="dark"] .amt{color:#e7f0ec}
+  html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
+  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
+  html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
+  html[data-theme="dark"] .row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .row-sub{color:#8fa89e}
+  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
+  html[data-theme="dark"] .field-label{color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
+  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
 </style>
 </head>
 <body>
@@ -150,54 +279,108 @@
     </div>
     <div class="hdr-row hdr-sub">
       <span class="hdr-sec">
-        <span class="hdr-sec-name">Create Song</span>
+        <span class="hdr-sec-name" data-i18n="secCreate">បង្កើតចម្រៀង</span>
       </span>
-      <a class="hdr-btn" href="movai-new-songs.html">My Songs</a>
+      <a class="hdr-btn" href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
     </div>
   </header>
   <div class="menu-veil" id="menuVeil"></div>
-  <nav class="menu" id="menu" aria-label="Menu">
-      <a href="index.html">Home</a>
-      <a href="movai-new-create.html" aria-current="page">Create Song</a>
-      <a href="movai-new-market.html">Marketplace</a>
-      <a href="movai-new-songs.html">My Songs</a>
-      <a href="movai-new-profile.html">Profile</a>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="index.html" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="movai-new-create.html" aria-current="page" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <a href="movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
+      <a href="movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en">English</button>
+      </div>
+    </div>
     <div class="menu-sep"></div>
     <div class="menu-user" id="menuUser" hidden></div>
-    <a href="movai-new-profile.html" id="menuSignIn">Sign In</a>
-    <button class="menu-link" id="menuSignOut" type="button" hidden>Sign out</button>
+    <a href="movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
   </nav>
-  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
 
   <main>
 
     <hr class="divider">
 
+    <!-- Cover (old site: collapsible box above the title) -->
+    <div class="field" style="margin-top:22px" id="coverField">
+      <button class="cover-toggle" id="coverToggle" type="button" aria-expanded="false">
+        <span data-i18n="coverLbl">🎵 ខូវើ</span><span id="coverChev">&#9662;</span>
+      </button>
+      <div class="cover-box" id="coverBox" hidden>
+        <div class="lbl" style="margin-bottom:4px" data-i18n="coverSub">ខូវើចម្រៀងដែលអ្នកមានរួចហើយ</div>
+        <div class="hint" style="margin:0 0 10px" data-i18n="coverHint">អតិបរមា ៨ នាទី · MP3 · ខូវើច្រៀងចម្រៀងដដែល តន្ត្រីដដែល</div>
+        <div class="rowline">
+          <input type="file" id="coverFileInput" accept="audio/mpeg,.mp3" hidden>
+          <button class="mini-btn dark" id="coverPickBtn" type="button" data-i18n="coverChoose">📁 ជ្រើសរើសចម្រៀង</button>
+          <button class="mini-btn" id="coverClearBtn" type="button" hidden data-i18n="coverRemove">✕ លុបចេញ</button>
+          <button class="mini-btn" id="coverListenBtn" type="button" hidden data-i18n="coverListen">▶ ស្ដាប់</button>
+        </div>
+        <div class="cover-fileinfo" id="coverFileInfo"></div>
+        <div class="bar" id="coverProg" hidden><div id="coverProgFill"></div></div>
+        <div class="rowline" style="margin-top:10px">
+          <input class="txt" id="coverUrl" type="url" placeholder="https://...mp3" style="flex:1;min-width:0">
+          <button class="mini-btn dark" id="coverUseUrlBtn" type="button" data-i18n="coverUseLink">ប្រើលីងនេះ</button>
+        </div>
+        <div class="cover-msg" id="coverMsg"></div>
+        <div class="hint" data-i18n="coverCost">១២ ក្រេឌីតចម្រៀង · អ្នកទទួលបានចម្រៀងខូវើ ២ បទ។</div>
+      </div>
+    </div>
+
     <!-- Title -->
     <div class="field" style="margin-top:22px">
-      <label class="lbl" for="songTitle">Song title</label>
-      <input class="txt" id="songTitle" type="text" maxlength="80" placeholder="Song title">
+      <label class="lbl" for="songTitle" data-i18n="titleLbl">ចំណងជើងចម្រៀង</label>
+      <input class="txt" id="songTitle" type="text" maxlength="80" placeholder="ចំណងជើងចម្រៀង" data-i18n-ph="titlePh">
     </div>
 
     <!-- Lyrics -->
     <div class="field">
-      <label class="lbl" for="lyrics">Lyrics</label>
+      <div class="rowline" style="justify-content:space-between;margin-bottom:7px">
+        <label class="lbl" for="lyrics" style="margin-bottom:0" data-i18n="lyricsLbl">អត្ថបទចម្រៀង</label>
+        <span class="rowline">
+          <button class="mini-btn" id="aiLangBtn" type="button" aria-pressed="false">&#127464;&#127469; Khmer &#9662;</button>
+          <button class="mini-btn dark" id="aiLyricsBtn" type="button">AI Lyrics</button>
+        </span>
+      </div>
       <textarea class="txt" id="lyrics" maxlength="5000"
-        placeholder="Write your lyrics here&#8230;"></textarea>
+        placeholder="សរសេរអត្ថបទចម្រៀងរបស់អ្នកនៅទីនេះ…" data-i18n-ph="lyricsPh"></textarea>
       <div class="count" id="lyrCount">0 / 5000</div>
+      <div class="hint" id="aiLyricsMsg"></div>
     </div>
 
     <!-- Style presets -->
     <div class="field">
-      <span class="lbl" id="styleLbl">Style</span>
+      <span class="lbl" id="styleLbl" data-i18n="styleLbl">រចនាបថ</span>
       <div class="preset-strip" id="presetRow" role="group" aria-labelledby="styleLbl"></div>
       <input class="txt" id="styleText" type="text" style="margin-top:10px"
-        placeholder="Tap a style above, or type your own style" aria-label="Style text">
+        placeholder="ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក" data-i18n-ph="stylePh" aria-label="Style text">
+      <!-- Add-style: save your own styles (old site) -->
+      <div class="rowline" style="margin-top:10px">
+        <input class="txt" id="styleAddText" type="text" style="flex:1;min-width:0"
+          placeholder="វាយរចនាបថ រួចចុចបន្ថែម" data-i18n-ph="addStylePh" aria-label="Add a custom style">
+        <button class="mini-btn dark" id="styleAddBtn" type="button" data-i18n="addBtn">បន្ថែម</button>
+      </div>
+      <div class="rowline" id="customStyleRow" style="margin-top:8px"></div>
     </div>
 
     <!-- Model -->
     <div class="field">
-      <span class="lbl" id="modelLbl">Model</span>
+      <span class="lbl" id="modelLbl" data-i18n="modelLbl">ម៉ូដែល</span>
       <div class="seg" id="modelRow" role="group" aria-labelledby="modelLbl">
         <button class="seg-btn" type="button" data-model="v6" aria-pressed="true">V6 Ultra</button>
         <button class="seg-btn" type="button" data-model="v6-wild" aria-pressed="false">V6 Pro</button>
@@ -208,30 +391,62 @@
 
     <!-- Voice -->
     <div class="field">
-      <span class="lbl" id="voiceLbl">Voice</span>
+      <span class="lbl" id="voiceLbl" data-i18n="voiceLbl">សំឡេង</span>
       <div class="seg" id="voiceRow" role="group" aria-labelledby="voiceLbl">
-        <button class="seg-btn" type="button" data-voice="male" aria-pressed="true">Male</button>
-        <button class="seg-btn" type="button" data-voice="female" aria-pressed="false">Female</button>
+        <button class="seg-btn" type="button" data-voice="male" aria-pressed="true" data-i18n="male">បុរស</button>
+        <button class="seg-btn" type="button" data-voice="female" aria-pressed="false" data-i18n="female">ស្រី</button>
+        <button class="seg-btn" type="button" data-voice="random" aria-pressed="false" data-i18n="random">ចៃដន្យ</button>
+        <button class="seg-btn" type="button" data-voice="myvoice" aria-pressed="false" data-i18n="myVoice">សំឡេងខ្ញុំ</button>
       </div>
+      <!-- My Voice setup (old site flow) -->
+      <div id="myVoiceBox" hidden style="margin-top:12px">
+        <div class="hint" id="myVoiceStatus" style="margin-top:0" data-i18n="mvNotSetup">សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ។</div>
+        <div class="rowline" style="margin-top:10px">
+          <button class="mini-btn dark" id="mvRecBtn" type="button" data-i18n="mvRecordSample">● ថតសំឡេងគំរូ</button>
+          <button class="mini-btn" id="mvDeleteBtn" type="button" hidden data-i18n="mvDelete">លុបសំឡេងខ្ញុំ</button>
+        </div>
+        <div class="hint" id="mvStepHint" data-i18n="mvStep1">ជំហានទី ១៖ ថតសំឡេងច្រៀង ឬនិយាយរបស់អ្នក ១៥ វិនាទី រួចយើងនឹងពិនិត្យសំឡេង។</div>
+        <div id="mvPhraseBox" hidden style="margin-top:10px">
+          <div class="lbl" style="margin-bottom:4px" data-i18n="mvReadPhrase">សូមអានឃ្លានេះឮៗ ជាភាសាអង់គ្លេស៖</div>
+          <div class="hint" id="mvPhrase" style="font-size:.95rem;color:#1f2937"></div>
+          <div class="rowline" style="margin-top:10px">
+            <button class="mini-btn dark" id="mvPhraseRecBtn" type="button" data-i18n="mvRecordPhrase">● ថតឃ្លា</button>
+            <button class="mini-btn green" id="mvSaveBtn" type="button" hidden data-i18n="mvSaveBtn">រក្សាទុកសំឡេងខ្ញុំ</button>
+          </div>
+        </div>
+        <div class="cover-msg" id="mvMsg"></div>
+      </div>
+      <label class="chk-row"><input type="checkbox" id="instrumentalChk"> <span data-i18n="instrumental">ឧបករណ៍ភ្លេងតែប៉ុណ្ណោះ (គ្មានសំឡេងច្រៀង)</span></label>
     </div>
 
     <!-- Balance + Generate -->
     <div class="field">
-      <div class="bal" id="balLine">Song credits: &hellip;</div>
-      <div class="hint" style="margin-bottom:12px">One creation costs 12 credits and makes 2 songs.</div>
-      <button class="gen-btn" id="genBtn" type="button" disabled>Generate</button>
-      <div class="hint" id="genHint">Sign in to create a song.</div>
+      <div class="bal" id="balLine">ក្រេឌីតចម្រៀង៖ …</div>
+      <div class="hint" style="margin-bottom:12px" data-i18n="costHint">ការបង្កើតម្ដងត្រូវការ ១២ ក្រេឌីត ហើយបង្កើតចម្រៀង ២ បទ។</div>
+      <button class="gen-btn" id="genBtn" type="button" disabled data-i18n="genBtn">បង្កើត</button>
+      <div class="hint" id="genHint" data-i18n="genHint">សូមចូលប្រើជាមុនសិន ទើបបង្កើតចម្រៀងបាន។</div>
       <div class="prog" id="prog" hidden></div>
       <div class="err" id="genErr" hidden></div>
     </div>
 
     <!-- Results -->
     <div id="resultBox" hidden>
-      <div class="sec-title" id="resultTitle">Your songs</div>
+      <div class="sec-title" id="resultTitle" data-i18n="resultTitle">ចម្រៀងរបស់អ្នក</div>
       <div id="results"></div>
       <div class="ok-note" id="resultNote" hidden></div>
     </div>
   </main>
+</div>
+<!-- Gift CLAIM popup (new-user gift: 24 Song Credits, once per Gmail) -->
+<div class="gift-veil" id="giftSheet" hidden role="dialog" aria-modal="true">
+  <div class="gift-card">
+    <div class="gift-ico">&#127873;</div>
+    <h3 data-i18n="claimTitle">អំណោយឥតគិតថ្លៃ</h3>
+    <p data-i18n="claimBody">អ្នកទទួលបាន ២៤ ក្រេឌីតចម្រៀងឥតគិតថ្លៃ — មួយ Gmail បានម្ដងតែប៉ុណ្ណោះ។ ចុចទទួលយកឥឡូវនេះ រួចចាប់ផ្ដើមបង្កើត។</p>
+    <button class="gift-claim" id="giftClaimBtn" type="button" data-i18n="claimBtn">ទទួលយក</button>
+    <button class="gift-later" id="giftLaterBtn" type="button" data-i18n="claimLater">មិនទាន់ទេ</button>
+    <div class="gift-msg" id="giftMsg"></div>
+  </div>
 </div>
 <audio id="au" preload="none"></audio>
 
@@ -239,6 +454,27 @@
 (function(){
   "use strict";
   if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
   var API = "https://movai-proxy-wasr.onrender.com";
   var SONG_COST = 12; // song credits per creation (server: 12 flat, 2 songs)
   var POLL_EVERY_MS = 5000;
@@ -246,6 +482,10 @@
   var SESSION_KEY = "movai-session"; // old site: plain email string
   var USER_KEY = "movai-user"; // cached user object (name + balances)
   var MODEL_KEY = "movai-song-model"; // old site key, shared with the old site
+  var PENDING_KEY = "movai-pending-gens"; // pending generations, handed to My Songs
+  var LASTSONGS_KEY = "movai-lastsongs-"; // + email — last finished pair (old site)
+  function draftKey(em){ return "movai-create-draft-" + String(em || "guest").toLowerCase(); }
+  function stylesKey(em){ return "movai-custom-styles-" + String(em || "guest").toLowerCase(); }
 
   // Style presets — exact names + style text copied from the old site.
   var PRESETS = {"🥹Sad.Trap💔": "Emotional Sad Melodic Trap, Deep Heartbreak Ballad, 72 BPM, minor key, haunting soft piano intro, emotional cinematic violin strings, atmospheric pads, deep warm 808 bass, slow trap drums, subtle hi-hats, emotional male vocal with slightly raspy and trembling voice, intimate verses, powerful heartbreaking chorus, vulnerable crying vocal delivery, beautiful melodic hooks, dramatic instrumental drop, piano-only emotional bridge, cinematic outro, melancholic atmosphere, deeply touching, tearjerking, professional studio production, modern emotional trap sound.", "😔 Sad Trap 💔": "Sad Emotional Melodic Hip Hop, Fast Male Rap Flow, Slow 72 BPM Instrumental, Deep Heartbroken Male Voice, Rapid Double-Time Rap Verses, Slow Melancholic Piano Melody, Soft Emotional Strings, Deep 808 Bass, Slow Hip Hop Drums, Atmospheric Pads, Clear English Pronunciation, Rhythmic Fast Rap Delivery, Emotional Melodic Singing Chorus, Lonely Night Mood, One-Sided Love, Painful Storytelling, Crying Vocal Texture, Cinematic Piano Bridge, Powerful Final Chorus, Professional Studio Quality.", "😭 Sad💔": "Male Khmer emotional sad ballad, heartbreaking vocal, deep sorrowful male voice, emotional melodic singing, crying vocal delivery, painful storytelling rap, melodic rap, slow tempo 68-74 BPM, minor key, cinematic piano, acoustic guitar, emotional strings, atmospheric pads, deep bass, soft trap drums, powerful emotional chorus, dramatic vocal climax, intimate verse, tearjerking outro, high quality studio production.", "💔Sad Drama😔": "Extremely Sad Khmer Emotional Ballad, Deep Mature Male Solo Vocal, Slow Tempo  sixty-two BPM, Heartbreaking Piano Intro, Emotional Acoustic Guitar, Sad Cinematic Violin, Deep Warm Male Voice, Emotional Storytelling, Painful and Melancholic Atmosphere, Soft Whispering Intro, Powerful Emotional Chorus, Dramatic Violin Instrumental Solo, Emotional Vocal Expression, Slow Piano Outro, Khmer Language Lyrics, 5-6 Minutes Song, No Female Vocal, No Duet.", "💔Pop Ballad ♥️": "Khmer Countryside Sad Song, Traditional Khmer Rural Ballad, Deep Emotional Male Solo Vocal, Heartbroken Love Story, Painful Family Conflict, Feeling Worthless and Broken, Extremely Sad Melancholic Mood, Slow Khmer Country Rhythm, Traditional Khmer Acoustic Guitar, Sad Tro Sau and Khmer Flute, Emotional Violin, Soft Traditional Khmer Instrumentation, Rural Village Atmosphere, Lonely Male Singing, Crying and Trembling Vocal, Deep Emotional Storytelling, Powerful Heartbreaking Chorus, Slow Tempo 60-65 BPM, Nostalgic Countryside Feeling, No Female Vocal, No Rap, Authentic Khmer Sad Music.", "♥️បទបែបស្រែ🥰": "Authentic Traditional Khmer Countryside Sad Ballad, Deep Emotional Male Solo Vocal, Extremely Heartbreaking Tearful Singing, Crying and Trembling Voice, Slow Tempo 58-62 BPM, Traditional Khmer Khloy Flute, Khmer Tro Sau, Tro Khmer, Chapey Dang Veng, Soft Acoustic Guitar, Traditional Khmer Wind Instruments, Emotional Violin, Gentle Piano, Rural Cambodian Village Atmosphere, Rice Fields at Sunset, Poor Man's Unrequited Love Story, Deep Sad Storytelling, Powerful Crying Chorus, Dramatic Final Chorus, Long Traditional Instrumental Solo, No Female Vocal, No Rap, No Electronic Dance Beat, Pure Khmer Rural Music.", "😔Trap Sad Hip-hop💔": "Slow Tempo 58-62 BPM, Trap, Sad, Hip-hop Reaper, male vocals", "😈Freestyle Rep BassTrap🫨": "Hip-hop, Freestyle, Rep, Bass, Trap", "🤙កន្ទ្រឹម💃": "Authentic Traditional Khmer Kantreum Folk Music, Joyful Cambodian Folk Dance Song, Ramvong Circle Dance Rhythm, Jrochak Traditional Dance Beat, Lam Lao Singing Style, Saravan Dance Rhythm, Deep Emotional Male Solo Vocal, Traditional Khmer Tro Sau, Tro Khmer, Khloy Flute, Chapey Dang Veng, Traditional Khmer Drums, Festive Village Celebration Atmosphere, Upbeat Danceable Tempo, Khmer Language Lyrics, No Female Vocal, No Rap, Pure Traditional Khmer Folk Music.", "😭Sad Emotional Rap💔": "Khmer Male Emotional Vocal, Deep Sad Trap, Emotional Hip Hop, Cinematic Piano, Dark Ambient Pads, Heavy 808 Bass, Powerful Drums, Melodic Rap, Raw Heartbroken Male Voice, Deep Expressive Vocal, Soft Intimate Verses, Explosive Screaming Chorus, Aggressive Emotional Belting, Crying Vocal Texture, Dynamic Vocal Build-up, Dramatic Strings, Atmospheric Sound Design, Powerful Final Chorus, Slow Emotional Intro, Modern Khmer Music Production, 75 BPM, High Quality Studio Production.", "💃កន្ទ្រឹម EDM🥲": "Khmer Traditional Kantrem Remix Dance, Modern Khmer Kantrem EDM, High Energy Dance Beat, Bouncy Rhythmic Drums, Catchy Synth Melody, Traditional Khmer Instrument Fusion, Deep Punchy Bass, Playful Melodic Vocal Runs, Male Khmer Vocal, Emotional Romantic Lyrics with a Happy Dance Feeling, Catchy Repeating Chorus, Melodic Call and Response, Energetic Instrumental Breaks, Creative Melody Variations, Festival Party Atmosphere, Professional Studio Production, 130 BPM, 4:30 to 5:00 minutes."};
@@ -272,6 +512,11 @@
   var model = "v6";
   var voice = "male";
   var selectedPreset = "";
+  var instrumental = false;
+  var aiLang = "kh";
+  var coverState = { url: "", name: "", duration: 0, checkJobId: "", checkParams: null, checkState: "none" };
+  var myVoice = { hasVoice: false, available: false, name: "" };
+  var customStyles = [];
   var busy = false;
   var cancelGen = false;
   var tickTimer = null;
@@ -299,7 +544,7 @@
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
-    if (menuUser) { menuUser.textContent = em ? ("Signed in as " + em) : ""; menuUser.hidden = !em; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
     if (menuSignIn) menuSignIn.hidden = !!em;
     if (menuSignOut) menuSignOut.hidden = !em;
   }
@@ -378,17 +623,17 @@
 
   /* ---- account ---- */
   function showBalance(){
-    if (!user) { balLine.textContent = "Song credits: —"; return; }
+    if (!user) { balLine.textContent = t("balLabel") + "—"; return; }
     var c = Math.floor(Number(user.songCredits) || 0);
     balLine.innerHTML = "";
     var b = document.createElement("b");
-    b.textContent = "Song credits: " + c;
+    b.textContent = t("balLabel") + c;
     balLine.appendChild(b);
   }
   function renderAccount(){
     var loggedIn = !!(user && user.email);
     genBtn.disabled = !loggedIn || busy;
-    genHint.textContent = loggedIn ? "" : "Sign in to create a song.";
+    genHint.textContent = loggedIn ? "" : t("genHint");
     showBalance();
     menuAuthState();
   }
@@ -427,7 +672,8 @@
   function updateCount(){
     lyrCount.textContent = String((lyricsEl.value || "").length) + " / 5000";
   }
-  lyricsEl.addEventListener("input", updateCount);
+  lyricsEl.addEventListener("input", function(){ updateCount(); saveDraftSoon(); });
+  songTitle.addEventListener("input", saveDraftSoon);
 
   /* ---- style presets (exact names from the old site) ---- */
   Object.keys(PRESETS).forEach(function(name){
@@ -450,6 +696,7 @@
       var chips = presetRow.querySelectorAll(".chip");
       chips.forEach(function(c){ c.setAttribute("aria-pressed", "false"); });
     }
+    saveDraftSoon();
   });
 
   /* ---- model + voice ---- */
@@ -470,16 +717,22 @@
     model = b.getAttribute("data-model");
     try { localStorage.setItem(MODEL_KEY, model); } catch (err) {}
     syncModelRow();
+    saveDraftSoon();
   });
   syncModelRow();
+  function syncVoiceRow(){
+    var btns = voiceRow.querySelectorAll(".seg-btn");
+    btns.forEach(function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-voice") === voice ? "true" : "false");
+    });
+    if (typeof myVoiceBox !== "undefined" && myVoiceBox) myVoiceBox.hidden = voice !== "myvoice";
+  }
   voiceRow.addEventListener("click", function(e){
     var b = e.target && e.target.closest ? e.target.closest("[data-voice]") : null;
     if (!b) return;
     voice = b.getAttribute("data-voice");
-    var btns = voiceRow.querySelectorAll(".seg-btn");
-    btns.forEach(function(x){
-      x.setAttribute("aria-pressed", x === b ? "true" : "false");
-    });
+    syncVoiceRow();
+    saveDraftSoon();
   });
 
   /* ---- results ---- */
@@ -495,7 +748,10 @@
       return {
         url: x.url || x.audio_url || x.audioUrl || x.streamAudioUrl ||
              x.stream_audio_url || x.permanentMp3Url || x.permanent_mp3_url || "",
-        title: x.title || ""
+        title: x.title || "",
+        image: x.image || x.cover || "",
+        audioId: x.audioId || x.audio_id || x.id || "",
+        taskId: x.taskId || x.task_id || ""
       };
     }).filter(function(x){ return !!x.url; });
   }
@@ -523,7 +779,7 @@
       pb.type = "button";
       pb.className = "play-btn";
       pb.textContent = "▶";
-      pb.setAttribute("aria-label", "Play song " + (i + 1));
+      pb.setAttribute("aria-label", t("playSong") + (i + 1));
       pb.addEventListener("click", function(){ togglePlay(i, pb); });
       var text = document.createElement("span");
       text.className = "res-text";
@@ -541,7 +797,7 @@
       var dl = document.createElement("a");
       dl.className = "res-dl";
       dl.href = playUrl(song.url);
-      dl.textContent = "Download";
+      dl.textContent = t("download");
       dl.setAttribute("download", "");
       row.appendChild(pb);
       row.appendChild(text);
@@ -579,6 +835,1050 @@
     btns.forEach(function(b, i){ if (i === playingIdx) b.textContent = "▶"; });
   });
 
+  /* ---- i18n: Khmer / English, strictly separated ----
+     Every UI string goes through t(). Default is Khmer. */
+  var STR = {
+    kh: {
+      claimTitle: "អំណោយឥតគិតថ្លៃ",
+      claimBody: "អ្នកទទួលបាន ២៤ ក្រេឌីតចម្រៀងឥតគិតថ្លៃ — មួយ Gmail បានម្ដងតែប៉ុណ្ណោះ។ ចុចទទួលយកឥឡូវនេះ រួចចាប់ផ្ដើមបង្កើត។",
+      claimBtn: "ទទួលយក",
+      claimLater: "មិនទាន់ទេ",
+      claimedOk: "បានទទួលហើយ — បន្ថែម ២៤ ក្រេឌីតចម្រៀង។",
+      claimFail: "ទទួលអំណោយមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      signInFirst: "សូមចូលប្រើជាមុនសិន។",
+      coverChecking: "កំពុងពិនិត្យចម្រៀង… ",
+      coverReady: "បានពិនិត្យរួចរាល់ — អាចខូវើបានហើយ។",
+      coverRejected: "ចម្រៀងនេះខូវើមិនបានទេ — វាត្រូវនឹងចម្រៀងដែលបានចេញផ្សាយរួចហើយ។ សូមប្រើការថតផ្សេង។",
+      coverCheckFail: "ពិនិត្យចម្រៀងមិនបានទេ។ ពេលបង្កើត នឹងពិនិត្យម្ដងទៀត។",
+      coverUploading: "កំពុងអាប់ឡូត…",
+      coverNeedMp3: "សូមជ្រើសរើសឯកសារ MP3។",
+      coverTooLong: "ចម្រៀងនោះវែងជាង ៨ នាទី។",
+      coverReadFail: "អានឯកសារនោះមិនបានទេ។",
+      coverNeedLink: "សូមដាក់លីង https:// ពេញលេញទៅកាន់ MP3។",
+      coverListen: "▶ ស្ដាប់",
+      coverStop: "❚❚ ឈប់",
+      aiWriting: "កំពុងសរសេរ… ",
+      aiNeedTitle: "សូមដាក់ចំណងជើងចម្រៀងជាមុនសិន។",
+      aiHasLyrics: "អត្ថបទបានសរសេររួចហើយ — លុបប្រអប់ជាមុនសិន ទើបប្រើ AI Lyrics បាន។",
+      aiFail: "សរសេរអត្ថបទមិនបានទេ។",
+      mvNotReady: "សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ — សូមបើកផ្នែក My Voice ខាងក្រោម រួចថតសំឡេងជាមុនសិន។",
+      mvReady: "សំឡេងខ្ញុំរួចរាល់ហើយ។",
+      mvNotSetup: "សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ។",
+      mvRecordSample: "● ថតសំឡេងគំរូ",
+      mvStopRec: "■ ឈប់ថត",
+      mvRecordPhrase: "● ថតឃ្លា",
+      mvRecording: "កំពុងថត… ចុចឈប់ពេលអ្នកថតរួច។",
+      mvNoMic: "មីក្រូហ្វូនត្រូវបានប្លុក — សូមអនុញ្ញាត រួចព្យាយាមម្ដងទៀត។",
+      mvNoRec: "ឧបករណ៍នេះថតសំឡេងមិនបានទេ។",
+      mvUploadingSample: "កំពុងអាប់ឡូតសំឡេងគំរូ…",
+      mvCheckingVoice: "កំពុងពិនិត្យសំឡេង…",
+      mvWaitingPhrase: "កំពុងរង់ចាំឃ្លា… ",
+      mvPhraseSlow: "ឃ្លាយូរពេក — សូមព្យាយាមម្ដងទៀត។",
+      mvStep2: "ជំហានទី ២៖ ថតសំឡេងអ្នកអានឃ្លាខាងលើ រួចចុចរក្សាទុក។",
+      mvUploadingPhrase: "កំពុងអាប់ឡូតឃ្លា…",
+      mvPhraseSaved: "បានថតឃ្លារួចហើយ — ចុចរក្សាទុកសំឡេងខ្ញុំ។",
+      mvSaving: "កំពុងរក្សាទុកសំឡេង…",
+      mvCreating: "កំពុងបង្កើតសំឡេង… ",
+      mvSlow: "សំឡេងរបស់អ្នកយូរពេក — សូមព្យាយាមម្ដងទៀត។",
+      mvDeleted: "បានលុបសំឡេងរបស់អ្នកហើយ។",
+      mvDeleteFail: "លុបសំឡេងមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      mvSaveFail: "រក្សាទុកមិនបានទេ។",
+      mvCheckFail: "ពិនិត្យសំឡេងមិនបានទេ។",
+      mvStep1: "ជំហានទី ១៖ ថតសំឡេងច្រៀង ឬនិយាយរបស់អ្នក ១៥ វិនាទី រួចយើងនឹងពិនិត្យសំឡេង។",
+      mvYourSongsVoice: "ចម្រៀងរបស់អ្នកនឹងច្រៀងដោយសំឡេងរបស់អ្នក។",
+      mvSaveBtn: "រក្សាទុកសំឡេងខ្ញុំ",
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      secCreate: "បង្កើតចម្រៀង",
+      coverLbl: "🎵 ខូវើ",
+      coverSub: "ខូវើចម្រៀងដែលអ្នកមានរួចហើយ",
+      coverHint: "អតិបរមា ៨ នាទី · MP3 · ខូវើច្រៀងចម្រៀងដដែល តន្ត្រីដដែល",
+      coverChoose: "📁 ជ្រើសរើសចម្រៀង",
+      coverRemove: "✕ លុបចេញ",
+      coverUseLink: "ប្រើលីងនេះ",
+      coverCost: "១២ ក្រេឌីតចម្រៀង · អ្នកទទួលបានចម្រៀងខូវើ ២ បទ។",
+      titleLbl: "ចំណងជើងចម្រៀង",
+      titlePh: "ចំណងជើងចម្រៀង",
+      lyricsLbl: "អត្ថបទចម្រៀង",
+      lyricsPh: "សរសេរអត្ថបទចម្រៀងរបស់អ្នកនៅទីនេះ…",
+      styleLbl: "រចនាបថ",
+      stylePh: "ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក",
+      addStylePh: "វាយរចនាបថ រួចចុចបន្ថែម",
+      addBtn: "បន្ថែម",
+      modelLbl: "ម៉ូដែល",
+      voiceLbl: "សំឡេង",
+      male: "បុរស",
+      female: "ស្រី",
+      random: "ចៃដន្យ",
+      myVoice: "សំឡេងខ្ញុំ",
+      mvDelete: "លុបសំឡេងខ្ញុំ",
+      mvReadPhrase: "សូមអានឃ្លានេះឮៗ ជាភាសាអង់គ្លេស៖",
+      instrumental: "ឧបករណ៍ភ្លេងតែប៉ុណ្ណោះ (គ្មានសំឡេងច្រៀង)",
+      balLabel: "ក្រេឌីតចម្រៀង៖ ",
+      costHint: "ការបង្កើតម្ដងត្រូវការ ១២ ក្រេឌីត ហើយបង្កើតចម្រៀង ២ បទ។",
+      genBtn: "បង្កើត",
+      genHint: "សូមចូលប្រើជាមុនសិន ទើបបង្កើតចម្រៀងបាន។",
+      resultTitle: "ចម្រៀងរបស់អ្នក",
+      download: "ទាញយក",
+      generating: "កំពុងបង្កើត… ",
+      genBusy: "កំពុងបង្កើត…",
+      retry: "ព្យាយាមម្ដងទៀត",
+      needTitle: "សូមដាក់ចំណងជើងចម្រៀងជាមុនសិន។",
+      needLyrics: "សូមសរសេរអត្ថបទចម្រៀងជាមុនសិន។",
+      needCredits1: "ក្រេឌីតចម្រៀងមិនគ្រប់ទេ — ត្រូវការ ",
+      needCredits2: " ក្រេឌីតសម្រាប់ការបង្កើតម្ដង។ សូមទិញក្រេឌីតបន្ថែមជាមុនសិន។",
+      startFail: "ចាប់ផ្ដើមការបង្កើតមិនបានទេ។",
+      noJob: "ម៉ាស៊ីនមេឆ្លើយមកដោយគ្មានការងារឲ្យតាមដាន។",
+      genNoServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមពិនិត្យអ៊ីនធឺណិត រួចព្យាយាមម្ដងទៀត។",
+      stageSep: " — ដំណាក់កាល៖ ",
+      playSong: "ចាក់ចម្រៀង ",
+      delStyle: "លុបរចនាបថ "
+    },
+    en: {
+      claimTitle: "Free Gift",
+      claimBody: "You get 24 Song Credits free — one gift per Gmail, forever. Claim it now and start creating.",
+      claimBtn: "Claim",
+      claimLater: "Not now",
+      claimedOk: "Claimed — 24 Song Credits added.",
+      claimFail: "Could not claim the gift. Please try again.",
+      noServer: "Could not reach the server. Please try again.",
+      signInFirst: "Please sign in first.",
+      coverChecking: "Checking the song… ",
+      coverReady: "Checked — ready to cover.",
+      coverRejected: "This song cannot be covered — it matches a song already released. Please use a different recording.",
+      coverCheckFail: "Could not check the song. Generate will check it again.",
+      coverUploading: "Uploading…",
+      coverNeedMp3: "Please choose an MP3 file.",
+      coverTooLong: "That song is longer than 8 minutes.",
+      coverReadFail: "Could not read that file.",
+      coverNeedLink: "Please paste a full https:// link to an MP3.",
+      coverListen: "▶ Listen",
+      coverStop: "❚❚ Stop",
+      aiWriting: "Writing… ",
+      aiNeedTitle: "Please enter a song title first.",
+      aiHasLyrics: "Lyrics are already written — clear the box first to use AI Lyrics.",
+      aiFail: "Could not write the lyrics.",
+      mvNotReady: "My Voice is not set up yet — open My Voice below and record your sample first.",
+      mvReady: "My Voice is ready.",
+      mvNotSetup: "My Voice is not set up yet.",
+      mvRecordSample: "● Record a sample",
+      mvStopRec: "■ Stop recording",
+      mvRecordPhrase: "● Record the phrase",
+      mvRecording: "Recording… tap Stop when you finish.",
+      mvNoMic: "Microphone is blocked — please allow it and try again.",
+      mvNoRec: "Recording is not supported on this device.",
+      mvUploadingSample: "Uploading your sample…",
+      mvCheckingVoice: "Checking your voice…",
+      mvWaitingPhrase: "Waiting for your phrase… ",
+      mvPhraseSlow: "The phrase is taking too long — please try again.",
+      mvStep2: "Step 2: record yourself reading the phrase above, then tap Save.",
+      mvUploadingPhrase: "Uploading the phrase…",
+      mvPhraseSaved: "Phrase recorded — tap Save my voice.",
+      mvSaving: "Saving your voice…",
+      mvCreating: "Creating your voice… ",
+      mvSlow: "Your voice is taking too long — please try again.",
+      mvDeleted: "Your voice was deleted.",
+      mvDeleteFail: "Could not delete your voice. Please try again.",
+      mvSaveFail: "Save failed.",
+      mvCheckFail: "Voice check failed.",
+      mvStep1: "Step 1: record 15 seconds of your singing or talking, then we check your voice.",
+      mvYourSongsVoice: "Your songs will now sing in your voice.",
+      mvSaveBtn: "Save my voice",
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      secCreate: "Create Song",
+      coverLbl: "🎵 Cover",
+      coverSub: "Cover a song you already have",
+      coverHint: "Max 8 min · MP3 · the cover sings the same song, same music",
+      coverChoose: "📁 Choose song",
+      coverRemove: "✕ Remove",
+      coverUseLink: "Use this link",
+      coverCost: "12 Song Credits · you get 2 cover songs.",
+      titleLbl: "Song title",
+      titlePh: "Song title",
+      lyricsLbl: "Lyrics",
+      lyricsPh: "Write your lyrics here…",
+      styleLbl: "Style",
+      stylePh: "Tap a style above, or type your own style",
+      addStylePh: "Type a style, then Add",
+      addBtn: "Add",
+      modelLbl: "Model",
+      voiceLbl: "Voice",
+      male: "Male",
+      female: "Female",
+      random: "Random",
+      myVoice: "My Voice",
+      mvDelete: "Delete my voice",
+      mvReadPhrase: "Read this out loud, in English:",
+      instrumental: "Instrumental (no singing)",
+      balLabel: "Song credits: ",
+      costHint: "One creation costs 12 credits and makes 2 songs.",
+      genBtn: "Generate",
+      genHint: "Sign in to create a song.",
+      resultTitle: "Your songs",
+      download: "Download",
+      generating: "Generating… ",
+      genBusy: "Generating…",
+      retry: "Retry",
+      needTitle: "Please enter a song title.",
+      needLyrics: "Please write your lyrics first.",
+      needCredits1: "Not enough Song Credits — you need ",
+      needCredits2: " credits for one creation. Please buy more credit first.",
+      startFail: "Could not start the creation.",
+      noJob: "The server answered without a job to follow.",
+      genNoServer: "Could not reach the server. Please check your connection and try again.",
+      stageSep: " — Stage: ",
+      playSong: "Play song ",
+      delStyle: "Delete style "
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+
+  function onLangChange(){
+    renderAccount();
+    syncModelRow();
+    syncVoiceRow();
+    renderCustomStyles();
+    restoreLastSongs();
+    mvSetStatus();
+  }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    if (typeof onLangChange === "function") onLangChange();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
+
+  /* ---- draft persistence (owner rule: nothing disappears on refresh) ----
+     Every field on Create is saved to localStorage as a draft, per Gmail,
+     and restored on load. An item disappears ONLY when its own delete
+     button is tapped (custom style chips / cover Remove / song ✕). */
+  var draftTimer = null;
+  var instrumentalChk = document.getElementById("instrumentalChk");
+  function draftEmail(){ return (user && user.email) || sessionEmail() || "guest"; }
+  function readDraft(){
+    try { return JSON.parse(localStorage.getItem(draftKey(draftEmail())) || "null"); } catch (e) { return null; }
+  }
+  function saveDraft(){
+    try {
+      var d = {
+        title: songTitle.value || "",
+        lyrics: lyricsEl.value || "",
+        styleText: styleText.value || "",
+        selectedPreset: selectedPreset || "",
+        model: model, voice: voice, instrumental: instrumental, aiLang: aiLang,
+        cover: coverState.url ? { url: coverState.url, name: coverState.name || "",
+          duration: coverState.duration || 0, checkJobId: coverState.checkJobId || "",
+          checkParams: coverState.checkParams || null } : null
+      };
+      localStorage.setItem(draftKey(draftEmail()), JSON.stringify(d));
+    } catch (e) {}
+  }
+  function saveDraftSoon(){
+    if (draftTimer) clearTimeout(draftTimer);
+    draftTimer = setTimeout(saveDraft, 300);
+  }
+  function restoreDraft(){
+    var d = readDraft();
+    if (!d) return;
+    if (typeof d.title === "string") songTitle.value = d.title;
+    if (typeof d.lyrics === "string") lyricsEl.value = d.lyrics;
+    if (typeof d.styleText === "string") styleText.value = d.styleText;
+    if (typeof d.selectedPreset === "string" && d.selectedPreset && PRESETS[d.selectedPreset]) {
+      selectedPreset = d.selectedPreset;
+      var chips = presetRow.querySelectorAll(".chip");
+      chips.forEach(function(c){ c.setAttribute("aria-pressed", c.textContent === selectedPreset ? "true" : "false"); });
+    }
+    if (d.model === "v6" || d.model === "v6-wild" || d.model === "v6-mini" || d.model === "v5_5") model = d.model;
+    if (d.voice === "male" || d.voice === "female" || d.voice === "random" || d.voice === "myvoice") voice = d.voice;
+    if (typeof d.instrumental === "boolean") instrumental = d.instrumental;
+    if (d.aiLang === "kh" || d.aiLang === "en") aiLang = d.aiLang;
+    if (d.cover && typeof d.cover === "object" && d.cover.url) {
+      coverState.url = d.cover.url;
+      coverState.name = d.cover.name || "";
+      coverState.duration = Number(d.cover.duration) || 0;
+      coverState.checkJobId = d.cover.checkJobId || "";
+      coverState.checkParams = d.cover.checkParams || null;
+      coverState.checkState = coverState.checkJobId ? "ok" : "none";
+      coverRenderFile();
+    }
+    updateCount();
+    syncAiLangBtn();
+  }
+  document.addEventListener("visibilitychange", function(){ if (document.hidden) saveDraft(); });
+  window.addEventListener("beforeunload", saveDraft);
+
+  /* ---- Add-style: your own saved styles (old site songStyleAdd) ---- */
+  var styleAddText = document.getElementById("styleAddText");
+  var styleAddBtn = document.getElementById("styleAddBtn");
+  var customStyleRow = document.getElementById("customStyleRow");
+  function loadCustomStyles(){
+    try {
+      var a = JSON.parse(localStorage.getItem(stylesKey(draftEmail())) || "[]");
+      customStyles = Array.isArray(a) ? a.filter(function(x){ return typeof x === "string" && x.trim(); }) : [];
+    } catch (e) { customStyles = []; }
+  }
+  function saveCustomStyles(){
+    try { localStorage.setItem(stylesKey(draftEmail()), JSON.stringify(customStyles)); } catch (e) {}
+  }
+  function renderCustomStyles(){
+    customStyleRow.innerHTML = "";
+    customStyles.forEach(function(name){
+      var chip = document.createElement("span");
+      chip.className = "tagchip";
+      var tx = document.createElement("span");
+      tx.textContent = name;
+      tx.addEventListener("click", function(){
+        selectedPreset = "";
+        var chips = presetRow.querySelectorAll(".chip");
+        chips.forEach(function(c){ c.setAttribute("aria-pressed", "false"); });
+        styleText.value = name;
+        saveDraftSoon();
+      });
+      var x = document.createElement("button");
+      x.type = "button";
+      x.textContent = "✕";
+      x.setAttribute("aria-label", t("delStyle") + name);
+      x.addEventListener("click", function(e){
+        e.stopPropagation();
+        customStyles = customStyles.filter(function(s){ return s !== name; });
+        saveCustomStyles();
+        renderCustomStyles();
+      });
+      chip.appendChild(tx);
+      chip.appendChild(x);
+      customStyleRow.appendChild(chip);
+    });
+  }
+  function addCustomStyles(){
+    var raw = (styleAddText.value || "").trim();
+    if (!raw) return;
+    raw.split(",").forEach(function(part){
+      var s = part.trim().slice(0, 120);
+      if (s && customStyles.indexOf(s) < 0) customStyles.push(s);
+    });
+    styleAddText.value = "";
+    saveCustomStyles();
+    renderCustomStyles();
+  }
+  styleAddBtn.addEventListener("click", addCustomStyles);
+  styleAddText.addEventListener("keydown", function(e){ if (e.key === "Enter") { e.preventDefault(); addCustomStyles(); } });
+
+  /* ---- gift CLAIM popup ----
+     New-user gift: 24 Song Credits, once per Gmail, forever (server lock).
+     The server grants it when POST /api/admin/sync carries giftClaimed:true
+     and the account has not claimed yet (gift50 toggle OFF, so 24, not 50).
+     The popup shows once per device until claimed; "Not now" dismisses it
+     for this session only. */
+  var giftSheet = document.getElementById("giftSheet");
+  var giftClaimBtn = document.getElementById("giftClaimBtn");
+  var giftLaterBtn = document.getElementById("giftLaterBtn");
+  var giftMsg = document.getElementById("giftMsg");
+  function giftFlagKey(em){ return "movai-gift-claimed-" + String(em || "").toLowerCase(); }
+  function giftDismissKey(em){ return "movai-gift-dismissed-" + String(em || "").toLowerCase(); }
+  function giftAlreadyClaimed(em){
+    try { return localStorage.getItem(giftFlagKey(em)) === "1"; } catch (e) { return false; }
+  }
+  function giftDismissedThisSession(em){
+    try { return sessionStorage.getItem(giftDismissKey(em)) === "1"; } catch (e) { return false; }
+  }
+  function maybeShowGift(){
+    if (!user || !user.email) return;
+    if (user.giftClaimed === true) {
+      try { localStorage.setItem(giftFlagKey(user.email), "1"); } catch (e) {}
+      return;
+    }
+    if (giftAlreadyClaimed(user.email)) return;
+    if (giftDismissedThisSession(user.email)) return;
+    giftMsg.textContent = "";
+    giftMsg.className = "gift-msg";
+    giftMsg.hidden = true;
+    giftSheet.hidden = false;
+  }
+  function hideGift(){ giftSheet.hidden = true; }
+  giftLaterBtn.addEventListener("click", function(){
+    try { sessionStorage.setItem(giftDismissKey(user.email), "1"); } catch (e) {}
+    hideGift();
+  });
+  giftClaimBtn.addEventListener("click", function(){
+    if (!user || !user.email) return;
+    giftClaimBtn.disabled = true;
+    giftClaimBtn.textContent = "…";
+    giftMsg.hidden = true;
+    apiPost("/api/admin/sync", { email: user.email, giftClaimed: true }, 30000).then(function(j){
+      giftClaimBtn.disabled = false;
+      giftClaimBtn.textContent = t("claimBtn");
+      if (j && j.ok === true && j.user) {
+        user = j.user;
+        saveStored(user);
+        renderAccount();
+        try { localStorage.setItem(giftFlagKey(user.email), "1"); } catch (e) {}
+        giftMsg.textContent = t("claimedOk");
+        giftMsg.className = "gift-msg ok-t";
+        giftMsg.hidden = false;
+        setTimeout(hideGift, 2500);
+      } else {
+        giftMsg.textContent = cleanErr(j && j.error ? j.error : t("claimFail"));
+        giftMsg.className = "gift-msg";
+        giftMsg.hidden = false;
+      }
+    }).catch(function(){
+      giftClaimBtn.disabled = false;
+      giftClaimBtn.textContent = t("claimBtn");
+      giftMsg.textContent = t("noServer");
+      giftMsg.className = "gift-msg";
+      giftMsg.hidden = false;
+    });
+  });
+
+  /* ---- history save (THE FIX for "My Songs = 0") ----
+     The server never saves generated songs by itself — the CLIENT must
+     POST each finished song to /api/public/history the moment it
+     finishes, one song at a time, first-finished first. My Songs reads
+     exactly this history, so a song that is never posted here never
+     appears there. Items use a stable id (gen_<jobId>_<i>) so a retry
+     or a refresh can never save the same song twice. The server refuses
+     items whose ts is older than 5 minutes, so ts is stamped at save time. */
+  function songStoreUrl(url, title){
+    if (!/^https:/i.test(url) || url.indexOf("res.cloudinary.com") >= 0 || url.indexOf("/uploads/") >= 0) {
+      return Promise.resolve(url);
+    }
+    // POST /api/public/song-store {url, title} -> {ok, url} (permanent Cloudinary URL)
+    return apiPost("/api/public/song-store", { url: url, title: title || "" }, 60000).then(function(j){
+      if (j && j.ok && j.url) return j.url;
+      return url;
+    }).catch(function(){ return url; });
+  }
+  function saveSongToHistory(song, meta){
+    var id = "gen_" + meta.jobId + "_" + meta.idx;
+    return songStoreUrl(song.url, song.title || meta.title || "").then(function(permUrl){
+      var item = {
+        id: id, type: "song", mode: "song", url: permUrl,
+        title: song.title || meta.title || "Untitled",
+        prompt: (meta.lyrics || "").slice(0, 400),
+        model: meta.model || "", style: meta.style || "",
+        image: song.image || "",
+        audioId: song.audioId || meta.audioId || "",
+        taskId: meta.jobId || "",
+        ts: Date.now(), createdAt: new Date().toISOString(), origin: "created"
+      };
+      return apiPost("/api/public/history", { email: meta.email, items: [item] }, 30000)
+        .then(function(j){ return !!(j && j.ok !== false); })
+        .catch(function(){ return false; });
+    });
+  }
+  function saveLastSongs(title, modelText, songs){
+    try {
+      var keep = songs.filter(function(s){ return /^https:/i.test(s.url); }).map(function(s){
+        return { url: s.url, title: s.title || "", model: s.model || modelText || "",
+          image: s.image || null, audioId: s.audioId || "", taskId: s.taskId || "" };
+      });
+      if (keep.length) localStorage.setItem(LASTSONGS_KEY + draftEmail(),
+        JSON.stringify({ ts: Date.now(), title: title || "", model: modelText || "", songs: keep }));
+    } catch (e) {}
+  }
+  function restoreLastSongs(){
+    try {
+      var raw = localStorage.getItem(LASTSONGS_KEY + draftEmail());
+      if (!raw) return;
+      var j = JSON.parse(raw);
+      if (!j || !Array.isArray(j.songs) || !j.songs.length) return;
+      renderResults(j.songs.slice(0, 2), false);
+    } catch (e) {}
+  }
+
+  /* ---- pending generations: hand off to My Songs ----
+     Tapping Generate jumps to the songs room (My Songs page), which shows
+     two creating rows and fills each one in the moment its song finishes. */
+  function loadPendingGens(){
+    try {
+      var a = JSON.parse(localStorage.getItem(PENDING_KEY + "-" + draftEmail()) || "[]");
+      return Array.isArray(a) ? a : [];
+    } catch (e) { return []; }
+  }
+  function savePendingGens(list){
+    try { localStorage.setItem(PENDING_KEY + "-" + draftEmail(), JSON.stringify(list)); } catch (e) {}
+  }
+  function handOffToSongs(job){
+    var list = loadPendingGens();
+    list.unshift(job);
+    savePendingGens(list.slice(0, 3));
+    window.location.href = "movai-new-songs.html";
+  }
+
+  /* ---- AI Lyrics (old site: free 2/day, Groq) ---- */
+  var aiLangBtn = document.getElementById("aiLangBtn");
+  var aiLyricsBtn = document.getElementById("aiLyricsBtn");
+  var aiLyricsMsg = document.getElementById("aiLyricsMsg");
+  var aiBusy = false;
+  var aiTickTimer = null;
+  function syncAiLangBtn(){
+    aiLangBtn.innerHTML = aiLang === "kh" ? "&#127464;&#127469; Khmer &#9662;" : "&#127468;&#127463; English &#9662;";
+    aiLangBtn.setAttribute("aria-pressed", aiLang === "en" ? "true" : "false");
+  }
+  aiLangBtn.addEventListener("click", function(){
+    aiLang = aiLang === "kh" ? "en" : "kh";
+    syncAiLangBtn();
+    saveDraftSoon();
+  });
+  function aiLyricsSetMsg(text, isErr){
+    aiLyricsMsg.textContent = text || "";
+    aiLyricsMsg.style.color = isErr ? "#991b1b" : "#6b7280";
+  }
+  aiLyricsBtn.addEventListener("click", function(){
+    if (aiBusy) return;
+    if (!user || !user.email) { aiLyricsSetMsg(t("signInFirst"), true); return; }
+    var title = (songTitle.value || "").trim();
+    if (!title) { aiLyricsSetMsg(t("aiNeedTitle"), true); songTitle.focus(); return; }
+    if ((lyricsEl.value || "").trim()) {
+      aiLyricsSetMsg(t("aiHasLyrics"), true);
+      return;
+    }
+    aiBusy = true;
+    aiLyricsBtn.disabled = true;
+    var sec = 0;
+    aiLyricsSetMsg(t("aiWriting") + "0s");
+    aiTickTimer = setInterval(function(){
+      sec++;
+      aiLyricsSetMsg(t("aiWriting") + sec + "s");
+    }, 1000);
+    // POST /api/gen/lyrics {email, title, language, voice} -> {ok, lyrics}
+    apiPost("/api/gen/lyrics", { email: user.email, title: title,
+      language: aiLang, voice: (voice === "myvoice" || voice === "random") ? "random" : voice }, 70000).then(function(j){
+      if (aiTickTimer) { clearInterval(aiTickTimer); aiTickTimer = null; }
+      aiBusy = false;
+      aiLyricsBtn.disabled = false;
+      if (j && j.ok === true && typeof j.lyrics === "string" && j.lyrics.trim()) {
+        lyricsEl.value = j.lyrics.slice(0, 5000);
+        updateCount();
+        saveDraft();
+        aiLyricsSetMsg("");
+      } else {
+        aiLyricsSetMsg(cleanErr(j && j.error ? j.error : t("aiFail")), true);
+      }
+    }).catch(function(){
+      if (aiTickTimer) { clearInterval(aiTickTimer); aiTickTimer = null; }
+      aiBusy = false;
+      aiLyricsBtn.disabled = false;
+      aiLyricsSetMsg(t("noServer"), true);
+    });
+  });
+
+  /* ---- Cover (old site flow) ----
+     Upload an MP3 (max 8 min) or paste a link -> the server checks it
+     (catalog + copyright, NO deduction) -> Generate reuses the checked
+     job when the title/style/lyrics/voice still match, else submits fresh.
+     The cover sings the SAME song with the SAME music. */
+  var coverToggle = document.getElementById("coverToggle");
+  var coverBox = document.getElementById("coverBox");
+  var coverChev = document.getElementById("coverChev");
+  var coverFileInput = document.getElementById("coverFileInput");
+  var coverPickBtn = document.getElementById("coverPickBtn");
+  var coverClearBtn = document.getElementById("coverClearBtn");
+  var coverListenBtn = document.getElementById("coverListenBtn");
+  var coverFileInfo = document.getElementById("coverFileInfo");
+  var coverProg = document.getElementById("coverProg");
+  var coverProgFill = document.getElementById("coverProgFill");
+  var coverUrlInput = document.getElementById("coverUrl");
+  var coverUseUrlBtn = document.getElementById("coverUseUrlBtn");
+  var coverMsg = document.getElementById("coverMsg");
+  var coverAudio = null;
+  var coverCheckSeq = 0;
+  var coverCheckTick = null;
+  function coverSetMsg(text, kind){
+    coverMsg.textContent = text || "";
+    coverMsg.className = "cover-msg" + (kind === "err" ? " err-t" : kind === "ok" ? " ok-t" : "");
+  }
+  function coverRenderFile(){
+    var has = !!coverState.url;
+    coverClearBtn.hidden = !has;
+    coverListenBtn.hidden = !has;
+    coverFileInfo.textContent = has
+      ? ((coverState.name || "Song") + (coverState.duration > 0 ? " · " + fmtTime(coverState.duration) : ""))
+      : "";
+    if (has) {
+      coverBox.hidden = false;
+      coverToggle.setAttribute("aria-expanded", "true");
+      coverChev.textContent = "▴";
+    }
+  }
+  coverToggle.addEventListener("click", function(){
+    var open = coverBox.hidden;
+    coverBox.hidden = !open;
+    coverToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    coverChev.textContent = open ? "▴" : "▾";
+  });
+  coverPickBtn.addEventListener("click", function(){ coverFileInput.click(); });
+  coverClearBtn.addEventListener("click", function(){
+    if (coverAudio) { try { coverAudio.pause(); } catch (e) {} coverAudio = null; }
+    coverState = { url: "", name: "", duration: 0, checkJobId: "", checkParams: null, checkState: "none" };
+    coverFileInput.value = "";
+    coverUrlInput.value = "";
+    coverListenBtn.textContent = t("coverListen");
+    coverSetMsg("");
+    coverRenderFile();
+    saveDraft();
+  });
+  coverListenBtn.addEventListener("click", function(){
+    if (!coverState.url) return;
+    if (coverAudio && !coverAudio.paused) {
+      coverAudio.pause();
+      coverListenBtn.textContent = t("coverListen");
+      return;
+    }
+    if (!coverAudio) {
+      coverAudio = new Audio(playUrl(coverState.url));
+      coverAudio.addEventListener("ended", function(){ coverListenBtn.textContent = t("coverListen"); });
+    }
+    coverListenBtn.textContent = t("coverStop");
+    coverAudio.play().catch(function(){ coverListenBtn.textContent = t("coverListen"); });
+  });
+  function coverVocalGender(){
+    if (instrumental) return "";
+    if (voice === "female") return "f";
+    if (voice === "myvoice" || voice === "random") return "";
+    return "m";
+  }
+  function coverParams(){
+    return {
+      title: (songTitle.value || "").trim(),
+      style: (styleText.value || "").trim(),
+      lyrics: (lyricsEl.value || "").trim(),
+      vocalGender: coverVocalGender(),
+      model: model,
+      instrumental: instrumental,
+      myVoice: voice === "myvoice"
+    };
+  }
+  function coverParamsMatch(a, b){
+    if (!a || !b) return false;
+    return a.title === b.title && a.style === b.style && a.lyrics === b.lyrics &&
+      a.vocalGender === b.vocalGender && a.model === b.model &&
+      a.instrumental === b.instrumental && a.myVoice === b.myVoice;
+  }
+  coverFileInput.addEventListener("change", function(){
+    var f = coverFileInput.files && coverFileInput.files[0];
+    if (!f) return;
+    if (!/\.mp3$/i.test(f.name || "") && f.type !== "audio/mpeg") {
+      coverSetMsg(t("coverNeedMp3"), "err");
+      return;
+    }
+    var a = new Audio();
+    var objUrl = URL.createObjectURL(f);
+    a.preload = "metadata";
+    a.onloadedmetadata = function(){
+      var dur = a.duration || 0;
+      try { URL.revokeObjectURL(objUrl); } catch (e) {}
+      if (dur > 8 * 60) { coverSetMsg(t("coverTooLong"), "err"); return; }
+      var rd = new FileReader();
+      rd.onload = function(){
+        var b64 = String(rd.result || "").split(",")[1] || "";
+        if (!b64) { coverSetMsg(t("coverReadFail"), "err"); return; }
+        coverUploadB64(b64, f.name || "song.mp3", dur);
+      };
+      rd.onerror = function(){ coverSetMsg(t("coverReadFail"), "err"); };
+      rd.readAsDataURL(f);
+    };
+    a.onerror = function(){ coverSetMsg(t("coverReadFail"), "err"); };
+    a.src = objUrl;
+  });
+  function coverUploadB64(b64, filename, duration){
+    if (!user || !user.email) { coverSetMsg(t("signInFirst"), "err"); return; }
+    coverSetMsg(t("coverUploading"));
+    coverProg.hidden = false;
+    coverProgFill.style.width = "0%";
+    // XHR so the upload shows real progress (old site).
+    // POST /api/gen/song/cover-upload {email, filename, data} -> {ok, url}
+    var xhr = new XMLHttpRequest();
+    var done = false;
+    xhr.open("POST", API + "/api/gen/song/cover-upload", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.timeout = 120000;
+    if (xhr.upload) xhr.upload.onprogress = function(e){
+      if (e.lengthComputable && e.total > 0) coverProgFill.style.width = Math.round(e.loaded / e.total * 100) + "%";
+    };
+    xhr.onload = function(){
+      if (done) return;
+      done = true;
+      coverProg.hidden = true;
+      var j = null;
+      try { j = JSON.parse(xhr.responseText || ""); } catch (e) {}
+      if (j && j.ok && j.url) {
+        coverState.url = j.url;
+        coverState.name = filename;
+        coverState.duration = Math.round(duration || 0);
+        coverState.checkJobId = "";
+        coverState.checkParams = null;
+        coverState.checkState = "none";
+        coverRenderFile();
+        saveDraft();
+        coverCheck();
+      } else {
+        coverSetMsg(cleanErr(j && j.error ? j.error : t("coverReadFail")), "err");
+      }
+    };
+    xhr.onerror = function(){
+      if (done) return;
+      done = true;
+      coverProg.hidden = true;
+      coverSetMsg(t("noServer"), "err");
+    };
+    xhr.ontimeout = xhr.onerror;
+    xhr.send(JSON.stringify({ email: user.email, filename: filename, data: b64 }));
+  }
+  coverUseUrlBtn.addEventListener("click", function(){
+    var u = (coverUrlInput.value || "").trim();
+    if (!/^https:\/\//i.test(u)) { coverSetMsg(t("coverNeedLink"), "err"); return; }
+    coverState.url = u;
+    coverState.name = u.split("/").pop().split("?")[0] || "Song";
+    coverState.duration = 0;
+    coverState.checkJobId = "";
+    coverState.checkParams = null;
+    coverState.checkState = "none";
+    coverRenderFile();
+    saveDraft();
+    coverCheck();
+  });
+  function coverCheckStopTick(){
+    if (coverCheckTick) { clearInterval(coverCheckTick); coverCheckTick = null; }
+  }
+  function coverCheck(){
+    if (!coverState.url || !user || !user.email) return;
+    var seq = ++coverCheckSeq;
+    var params = coverParams();
+    coverState.checkState = "checking";
+    coverState.checkParams = params;
+    coverSetMsg(t("coverChecking") + "0s");
+    var sec = 0;
+    coverCheckStopTick();
+    coverCheckTick = setInterval(function(){
+      sec++;
+      if (coverState.checkState === "checking") coverSetMsg(t("coverChecking") + sec + "s");
+    }, 1000);
+    // POST /api/gen/song/cover-check {email, uploadUrl, title, style,
+    // lyrics, vocalGender, model, instrumental, myVoice}
+    // -> {ok, jobId, lyrics} or a rejection (no deduction).
+    apiPost("/api/gen/song/cover-check", {
+      email: user.email, uploadUrl: coverState.url,
+      title: params.title, style: params.style, lyrics: params.lyrics,
+      vocalGender: params.vocalGender, model: params.model,
+      instrumental: params.instrumental, myVoice: params.myVoice
+    }, 120000).then(function(j){
+      if (seq !== coverCheckSeq) return;
+      coverCheckStopTick();
+      if (j && j.ok && j.jobId) {
+        coverState.checkJobId = j.jobId;
+        coverState.checkParams = params;
+        coverState.checkState = "ok";
+        if (j.lyrics && typeof j.lyrics === "string" && j.lyrics.trim() && !(lyricsEl.value || "").trim()) {
+          lyricsEl.value = j.lyrics.slice(0, 5000);
+          updateCount();
+        }
+        coverSetMsg(t("coverReady"), "ok");
+        saveDraft();
+      } else {
+        coverState.checkJobId = "";
+        coverState.checkState = "error";
+        var code = j && j.code ? String(j.code) : "";
+        if (code === "cover_rejected_413" || code === "cover_rejected_catalog") {
+          coverSetMsg(t("coverRejected"), "err");
+        } else {
+          coverSetMsg(cleanErr(j && j.error ? j.error : t("coverCheckFail")), "err");
+        }
+        saveDraft();
+      }
+    }).catch(function(){
+      if (seq !== coverCheckSeq) return;
+      coverCheckStopTick();
+      coverState.checkState = "none";
+      coverSetMsg(t("coverCheckFail"), "err");
+    });
+  }
+
+  /* ---- My Voice (old site flow) ----
+     Record a 15s sample -> validate (Suno gives an English phrase) ->
+     record the phrase -> save. The voice itself lives on the server;
+     generations only send myVoice:true (model forced to V5.5 server-side). */
+  var myVoiceBox = document.getElementById("myVoiceBox");
+  var myVoiceStatus = document.getElementById("myVoiceStatus");
+  var mvRecBtn = document.getElementById("mvRecBtn");
+  var mvDeleteBtn = document.getElementById("mvDeleteBtn");
+  var mvStepHint = document.getElementById("mvStepHint");
+  var mvPhraseBox = document.getElementById("mvPhraseBox");
+  var mvPhrase = document.getElementById("mvPhrase");
+  var mvPhraseRecBtn = document.getElementById("mvPhraseRecBtn");
+  var mvSaveBtn = document.getElementById("mvSaveBtn");
+  var mvMsg = document.getElementById("mvMsg");
+  var mvValidateTaskId = "";
+  var mvVoiceTaskId = "";
+  var mvVerifyUrl = "";
+  var mvRecorder = null;
+  var mvChunks = [];
+  var mvRecording = null; // 'sample' | 'phrase' | null
+  function mvSetMsg(text, kind){
+    mvMsg.textContent = text || "";
+    mvMsg.className = "cover-msg" + (kind === "err" ? " err-t" : kind === "ok" ? " ok-t" : "");
+  }
+  function mvSetStatus(){
+    if (myVoice.hasVoice) {
+      myVoiceStatus.textContent = t("mvReady") + (myVoice.name ? " (" + myVoice.name + ")" : "");
+      mvDeleteBtn.hidden = false;
+      mvStepHint.textContent = t("mvYourSongsVoice");
+    } else {
+      myVoiceStatus.textContent = t("mvNotSetup");
+      mvDeleteBtn.hidden = true;
+    }
+  }
+  function myVoiceCheck(){
+    if (!user || !user.email) return Promise.resolve();
+    return fetch(API + "/api/voice/status?email=" + encodeURIComponent(user.email), { cache: "no-store" })
+      .then(function(r){ return r.json(); }).then(function(j){
+        if (j && j.ok) {
+          myVoice.hasVoice = j.hasVoice === true;
+          myVoice.available = j.available !== false;
+          myVoice.name = typeof j.voiceName === "string" ? j.voiceName : "";
+          mvSetStatus();
+        }
+      }).catch(function(){});
+  }
+  function wav16kMono(blob){
+    // MediaRecorder gives webm/opus; Suno takes mp3/wav — decode and
+    // re-encode as 16 kHz mono WAV (old site does the same).
+    var AudioCtx = window.AudioContext || window.webkitAudioContext;
+    var ctx = new AudioCtx();
+    return blob.arrayBuffer().then(function(buf){
+      return ctx.decodeAudioData(buf);
+    }).then(function(ab){
+      var ch = ab.getChannelData(0);
+      var ratio = ab.sampleRate / 16000;
+      var len = Math.floor(ch.length / ratio);
+      var out = new Int16Array(len);
+      for (var i = 0; i < len; i++) {
+        var s = ch[Math.floor(i * ratio)] || 0;
+        out[i] = Math.max(-1, Math.min(1, s)) * 32767;
+      }
+      var buf = new ArrayBuffer(44 + out.length * 2);
+      var v = new DataView(buf);
+      function ws(o, s){ for (var k = 0; k < s.length; k++) v.setUint8(o + k, s.charCodeAt(k)); }
+      ws(0, "RIFF"); v.setUint32(4, 36 + out.length * 2, true); ws(8, "WAVE");
+      ws(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+      v.setUint16(22, 1, true); v.setUint32(24, 16000, true); v.setUint32(28, 32000, true);
+      v.setUint16(32, 2, true); v.setUint16(34, 16, true); ws(36, "data");
+      v.setUint32(40, out.length * 2, true);
+      for (var j = 0; j < out.length; j++) v.setInt16(44 + j * 2, out[j], true);
+      return new Blob([buf], { type: "audio/wav" });
+    });
+  }
+  function blobToB64(blob){
+    return new Promise(function(resolve, reject){
+      var rd = new FileReader();
+      rd.onload = function(){ resolve(String(rd.result || "").split(",")[1] || ""); };
+      rd.onerror = function(){ reject(new Error("read failed")); };
+      rd.readAsDataURL(blob);
+    });
+  }
+  function mvUploadVoice(blob, filename){
+    return blobToB64(blob).then(function(b64){
+      // POST /api/voice/upload {email, filename, data} -> {ok, url}
+      return apiPost("/api/voice/upload", { email: user.email, filename: filename, data: b64 }, 120000);
+    });
+  }
+  function mvStartRecording(kind){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      mvSetMsg(t("mvNoRec"), "err");
+      return;
+    }
+    if (mvRecording) { mvStopRecording(); return; }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+      try {
+        mvChunks = [];
+        mvRecorder = new MediaRecorder(stream);
+        mvRecorder.ondataavailable = function(e){ if (e.data && e.data.size) mvChunks.push(e.data); };
+        mvRecorder.onstop = function(){
+          try { stream.getTracks().forEach(function(x){ x.stop(); }); } catch (e) {}
+          var blob = new Blob(mvChunks, { type: (mvRecorder && mvRecorder.mimeType) || "audio/webm" });
+          var doneKind = mvRecording;
+          mvRecording = null;
+          mvRecBtn.textContent = t("mvRecordSample");
+          mvPhraseRecBtn.textContent = t("mvRecordPhrase");
+          if (doneKind === "sample") mvUploadSample(blob);
+          else mvUploadPhrase(blob);
+        };
+        mvRecorder.start();
+        mvRecording = kind;
+        if (kind === "sample") mvRecBtn.textContent = t("mvStopRec");
+        else mvPhraseRecBtn.textContent = t("mvStopRec");
+        mvSetMsg(t("mvRecording"), "");
+      } catch (e) {
+        mvSetMsg(t("mvCheckFail"), "err");
+      }
+    }).catch(function(){
+      mvSetMsg(t("mvNoMic"), "err");
+    });
+  }
+  function mvStopRecording(){
+    try { if (mvRecorder && mvRecorder.state !== "inactive") mvRecorder.stop(); } catch (e) {}
+  }
+  mvRecBtn.addEventListener("click", function(){ mvStartRecording("sample"); });
+  mvPhraseRecBtn.addEventListener("click", function(){ mvStartRecording("phrase"); });
+  function mvUploadSample(blob){
+    mvSetMsg(t("mvUploadingSample"));
+    wav16kMono(blob).then(function(wav){
+      return mvUploadVoice(wav, "voice-sample.wav");
+    }).then(function(j){
+      if (!j || !j.ok || !j.url) throw new Error(j && j.error ? j.error : "Upload failed.");
+      mvSetMsg(t("mvCheckingVoice"));
+      // POST /api/voice/validate {email, voiceUrl, vocalStartS:0, vocalEndS:15, language:'en'}
+      return apiPost("/api/voice/validate", { email: user.email, voiceUrl: j.url,
+        vocalStartS: 0, vocalEndS: 15, language: "en" }, 60000);
+    }).then(function(j){
+      if (!j || !j.ok || !j.taskId) throw new Error(j && j.error ? j.error : t("mvCheckFail"));
+      mvValidateTaskId = j.taskId;
+      mvSetMsg(t("mvWaitingPhrase") + "0s");
+      mvPollPhrase(0);
+    }).catch(function(e){
+      mvSetMsg(cleanErr(e && e.message ? e.message : t("mvCheckFail")), "err");
+    });
+  }
+  function mvPollPhrase(n){
+    if (n >= 20) { mvSetMsg(t("mvPhraseSlow"), "err"); return; }
+    setTimeout(function(){
+      fetch(API + "/api/voice/validate-info?email=" + encodeURIComponent(user.email) +
+        "&taskId=" + encodeURIComponent(mvValidateTaskId), { cache: "no-store" })
+        .then(function(r){ return r.json(); }).then(function(j){
+          var phrase = j && j.ok ? String(j.validateInfo || "").trim() : "";
+          if (phrase) {
+            mvPhrase.textContent = phrase;
+            mvPhraseBox.hidden = false;
+            mvStepHint.textContent = t("mvStep2");
+            mvSetMsg("");
+          } else {
+            mvSetMsg(t("mvWaitingPhrase") + ((n + 1) * 15) + "s");
+            mvPollPhrase(n + 1);
+          }
+        }).catch(function(){
+          mvSetMsg(t("mvWaitingPhrase") + ((n + 1) * 15) + "s");
+          mvPollPhrase(n + 1);
+        });
+    }, 15000);
+  }
+  function mvUploadPhrase(blob){
+    mvSetMsg(t("mvUploadingPhrase"));
+    wav16kMono(blob).then(function(wav){
+      return mvUploadVoice(wav, "voice-phrase.wav");
+    }).then(function(j){
+      if (!j || !j.ok || !j.url) throw new Error(j && j.error ? j.error : "Upload failed.");
+      mvVerifyUrl = j.url;
+      mvSaveBtn.hidden = false;
+      mvSetMsg(t("mvPhraseSaved"), "ok");
+    }).catch(function(e){
+      mvSetMsg(cleanErr(e && e.message ? e.message : t("mvSaveFail")), "err");
+    });
+  }
+  mvSaveBtn.addEventListener("click", function(){
+    if (!mvValidateTaskId || !mvVerifyUrl) return;
+    mvSaveBtn.disabled = true;
+    mvSetMsg(t("mvSaving"));
+    // POST /api/voice/generate {email, taskId, verifyUrl, voiceName} -> {ok, taskId}
+    apiPost("/api/voice/generate", { email: user.email, taskId: mvValidateTaskId,
+      verifyUrl: mvVerifyUrl, voiceName: "My Voice" }, 60000).then(function(j){
+      if (!j || !j.ok || !j.taskId) throw new Error(j && j.error ? j.error : t("mvSaveFail"));
+      mvVoiceTaskId = j.taskId;
+      mvSetMsg(t("mvCreating") + "0s");
+      mvPollVoice(0);
+    }).catch(function(e){
+      mvSaveBtn.disabled = false;
+      mvSetMsg(cleanErr(e && e.message ? e.message : t("mvSaveFail")), "err");
+    });
+  });
+  function mvPollVoice(n){
+    if (n >= 30) {
+      mvSaveBtn.disabled = false;
+      mvSetMsg(t("mvSlow"), "err");
+      return;
+    }
+    setTimeout(function(){
+      fetch(API + "/api/voice/record-info?email=" + encodeURIComponent(user.email) +
+        "&taskId=" + encodeURIComponent(mvVoiceTaskId), { cache: "no-store" })
+        .then(function(r){ return r.json(); }).then(function(j){
+          if (j && j.ok && j.ready === true) {
+            mvSaveBtn.disabled = false;
+            mvSaveBtn.hidden = true;
+            mvPhraseBox.hidden = true;
+            myVoiceCheck().then(function(){
+              mvSetMsg(t("mvReady"), "ok");
+            });
+          } else {
+            mvSetMsg(t("mvCreating") + ((n + 1) * 15) + "s");
+            mvPollVoice(n + 1);
+          }
+        }).catch(function(){
+          mvSetMsg(t("mvCreating") + ((n + 1) * 15) + "s");
+          mvPollVoice(n + 1);
+        });
+    }, 15000);
+  }
+  mvDeleteBtn.addEventListener("click", function(){
+    if (!user || !user.email) return;
+    apiPost("/api/voice/delete", { email: user.email }, 30000).then(function(){
+      myVoice.hasVoice = false;
+      myVoice.available = false;
+      myVoice.name = "";
+      mvPhraseBox.hidden = true;
+      mvSaveBtn.hidden = true;
+      mvSetStatus();
+      mvSetMsg(t("mvDeleted"), "");
+      if (voice === "myvoice") { voice = "male"; syncVoiceRow(); }
+      saveDraftSoon();
+    }).catch(function(){ mvSetMsg(t("mvDeleteFail"), "err"); });
+  });
+
   /* ---- generation ---- */
   function showGenErr(msg, showRetry){
     genErr.innerHTML = "";
@@ -589,7 +1889,7 @@
       var r = document.createElement("button");
       r.type = "button";
       r.className = "retry";
-      r.textContent = "Retry";
+      r.textContent = t("retry");
       r.addEventListener("click", function(){ genErr.hidden = true; doGenerate(); });
       genErr.appendChild(r);
     }
@@ -598,12 +1898,12 @@
   function setProg(sec, stage){
     progEl.innerHTML = "";
     var t = document.createElement("span");
-    t.textContent = "Generating… ";
+    t.textContent = t("generating");
     var s = document.createElement("span");
     s.className = "secs";
     s.textContent = sec + "s";
     var st = document.createElement("span");
-    st.textContent = stage ? " — Stage: " + stage : "";
+    st.textContent = stage ? t("stageSep") + stage : "";
     progEl.appendChild(t);
     progEl.appendChild(s);
     progEl.appendChild(st);
@@ -623,26 +1923,30 @@
   function setBusy(b){
     busy = b;
     genBtn.disabled = b || !user;
-    genBtn.textContent = b ? "Generating…" : "Generate";
+    genBtn.textContent = b ? t("genBusy") : t("genBtn");
   }
   function doGenerate(){
     if (busy) return;
     if (!user || !user.email) {
-      showGenErr("Please sign in first.", false);
+      showGenErr(t("signInFirst"), false);
       return;
     }
     var title = (songTitle.value || "").trim();
     var lyrics = (lyricsEl.value || "").trim();
     var style = (styleText.value || "").trim();
     genErr.hidden = true;
-    if (!title) { showGenErr("Please enter a song title.", false); songTitle.focus(); return; }
-    if (!lyrics) { showGenErr("Please write your lyrics first.", false); lyricsEl.focus(); return; }
+    if (!title) { showGenErr(t("needTitle"), false); songTitle.focus(); return; }
+    if (!lyrics) { showGenErr(t("needLyrics"), false); lyricsEl.focus(); return; }
     if (Math.floor(Number(user.songCredits) || 0) < SONG_COST) {
-      showGenErr("Not enough Song Credits — you need " + SONG_COST +
-        " credits for one creation. Please buy more credit first.", false);
+      showGenErr(t("needCredits1") + SONG_COST + t("needCredits2"), false);
       return;
     }
-    var styleFull = [style, voice === "male" ? "male vocals" : "female vocals"]
+    if (voice === "myvoice" && !myVoice.hasVoice) {
+      showGenErr(t("mvNotReady"), false);
+      return;
+    }
+    var styleFull = [style,
+        voice === "male" ? "male vocals" : voice === "female" ? "female vocals" : ""]
       .filter(function(x){ return !!x; }).join(", ");
     var body = {
       provider: "suno",
@@ -655,8 +1959,9 @@
       tags: styleFull,
       voice: voice,
       model: model,
-      instrumental: false,
-      make_instrumental: false
+      instrumental: instrumental,
+      make_instrumental: instrumental,
+      myVoice: voice === "myvoice"
     };
     var stage = "sending";
     var stageOf = function(){ return stage; };
@@ -668,14 +1973,27 @@
     resultSongs = [];
     setProg(0, stage);
     startTick(stageOf);
-    // POST /api/gen/song -> {ok:true, jobId, songCredits} or {ok:false, error}
-    apiPost("/api/gen/song", body, 60000).then(function(j){
+    var genCall;
+    if (coverState.url) {
+      // Cover: POST /api/gen/song/cover -> {ok:true, jobId} (12 credits, refunded on failure)
+      var cp = coverParams();
+      var cbody = { email: user.email, uploadUrl: coverState.url,
+        title: title, style: styleFull, lyrics: lyrics, model: model,
+        instrumental: instrumental, vocalGender: coverVocalGender(),
+        myVoice: voice === "myvoice" };
+      if (coverState.checkJobId && coverParamsMatch(coverState.checkParams, cp)) cbody.reuseJobId = coverState.checkJobId;
+      genCall = apiPost("/api/gen/song/cover", cbody, 60000);
+    } else {
+      // POST /api/gen/song -> {ok:true, jobId, songCredits} or {ok:false, error}
+      genCall = apiPost("/api/gen/song", body, 60000);
+    }
+    genCall.then(function(j){
       if (cancelGen) return;
       if (!j || j.ok !== true) {
         stopTick();
         progEl.hidden = true;
         setBusy(false);
-        showGenErr(j && j.error ? j.error : "Could not start the creation.", true);
+        showGenErr(j && j.error ? j.error : t("startFail"), true);
         return;
       }
       if (typeof j.songCredits === "number") {
@@ -689,96 +2007,53 @@
         progEl.hidden = true;
         setBusy(false);
         var early = normSongs(j);
-        if (early.length) { renderResults(early.slice(0, 2), false); refreshBalance(); return; }
-        showGenErr("The server answered without a job to follow.", true);
+        if (early.length) {
+          // No job to follow, but songs came back at once: save each one
+          // to history immediately, then show them.
+          var earlySongs = early.slice(0, 2);
+          var meta0 = { jobId: "direct_" + Date.now().toString(36), email: user.email,
+            title: title, model: model, style: style, lyrics: lyrics };
+          var doneCount = 0;
+          earlySongs.forEach(function(s, i){
+            saveSongToHistory(s, { jobId: meta0.jobId, idx: i, email: user.email,
+              title: title, model: model, style: style, lyrics: lyrics }).then(function(){
+              doneCount++;
+              if (doneCount >= earlySongs.length) saveLastSongs(title, model, earlySongs);
+            });
+          });
+          renderResults(earlySongs, false);
+          refreshBalance();
+          return;
+        }
+        showGenErr(t("noJob"), true);
         return;
       }
       curJobId = jobId;
-      pollStatus(jobId, stageOf, function(s){ stage = s; });
+      stopTick();
+      progEl.hidden = true;
+      // Jump to the songs room: My Songs shows two creating rows and
+      // fills each one in the moment its song finishes.
+      handOffToSongs({
+        jobId: jobId, mode: coverState.url ? "cover" : "song",
+        title: title, model: model, voice: voice,
+        email: user.email, startedAt: Date.now(),
+        style: style, lyrics: lyrics, coverUrl: coverState.url || ""
+      });
     }).catch(function(e){
       if (cancelGen) return;
       stopTick();
       progEl.hidden = true;
       setBusy(false);
-      showGenErr("Could not reach the server. Please check your connection and try again.", true);
+      showGenErr(t("genNoServer"), true);
     });
-  }
-  function pollStatus(jobId, stageOf, setStage){
-    var t0 = Date.now();
-    var fails = 0;
-    var earlyKey = "";
-    function step(){
-      if (cancelGen) return;
-      if (Date.now() - t0 > POLL_MAX_MS) {
-        // Timed out: tell the server so it can refund the credits.
-        apiPost("/api/gen/song/timeout", { provider: "suno", jobId: jobId }, 30000)
-          .catch(function(){})
-          .then(function(r){
-            stopTick();
-            progEl.hidden = true;
-            setBusy(false);
-            var msg = "The creation took too long and was stopped.";
-            if (r && r.refunded) msg += " Your credits were refunded.";
-            showGenErr(msg, true);
-            refreshBalance();
-          });
-        return;
-      }
-      // POST /api/gen/song/status {provider, jobId} every 5s
-      apiPost("/api/gen/song/status", { provider: "suno", jobId: jobId }, 30000).then(function(j){
-        if (cancelGen) return;
-        fails = 0;
-        if (!j) { fails++; if (fails >= 4) { finishFail("The server stopped answering."); return; } sleep(POLL_EVERY_MS).then(step); return; }
-        if (j.ok === false) { finishFail(j.error || "Creation failed."); return; }
-        var st = String(j.status || j.state || "").toLowerCase();
-        var stageText = String(j.providerStatus || j.status || "working");
-        setStage(stageText);
-        setProg(Math.floor((Date.now() - genStart) / 1000), stageText);
-        if (st === "failed" || st === "error") { finishFail(j.error || "Creation failed."); return; }
-        var songs = normSongs(j);
-        if (songs.length) {
-          var key = songs.map(function(x){ return x.url; }).join("|");
-          if (key !== earlyKey) {
-            earlyKey = key;
-            renderResults(songs.slice(0, 2), st !== "done" && st !== "complete" &&
-              st !== "completed" && st !== "succeeded" && st !== "success" && st !== "finished");
-          }
-        }
-        if (st === "done" || st === "complete" || st === "completed" ||
-            st === "succeeded" || st === "success" || st === "finished" || j.done === true) {
-          stopTick();
-          progEl.hidden = true;
-          setBusy(false);
-          if (!songs.length) { showGenErr("The creation finished but returned no songs.", true); return; }
-          renderResults(songs.slice(0, 2), false);
-          resultNote.hidden = false;
-          resultNote.textContent = "Done — your 2 songs are ready. " +
-            "They were made with " + SONG_COST + " credits.";
-          refreshBalance();
-          return;
-        }
-        sleep(POLL_EVERY_MS).then(step);
-      }).catch(function(){
-        if (cancelGen) return;
-        fails++;
-        if (fails >= 4) { finishFail("Could not reach the server while waiting."); return; }
-        sleep(POLL_EVERY_MS).then(step);
-      });
-    }
-    function finishFail(msg){
-      stopTick();
-      progEl.hidden = true;
-      setBusy(false);
-      showGenErr(msg, true);
-      refreshBalance();
-    }
-    sleep(POLL_EVERY_MS).then(step);
   }
   genBtn.addEventListener("click", doGenerate);
 
   /* ---- restore session on load ---- */
   (function init(){
+    applyLang();
     updateCount();
+    loadCustomStyles();
     var em = sessionEmail();
     var cached = loadStored();
     if (em && cached && cached.email && String(cached.email).toLowerCase() === em.toLowerCase()) {
@@ -787,7 +2062,22 @@
       user = { email: em, name: "", songCredits: 0 };
     }
     renderAccount();
-    if (user && user.email) refreshBalance();
+    restoreDraft();
+    renderCustomStyles();
+    syncModelRow();
+    syncVoiceRow();
+    if (instrumentalChk) {
+      instrumentalChk.checked = instrumental;
+      instrumentalChk.addEventListener("change", function(){
+        instrumental = !!instrumentalChk.checked;
+        saveDraftSoon();
+      });
+    }
+    restoreLastSongs();
+    if (user && user.email) {
+      refreshBalance().then(function(){ maybeShowGift(); });
+      myVoiceCheck();
+    }
   })();
 })();
 </script>
