@@ -60,7 +60,7 @@
     background:#f2faf6;border:1px solid #d1d5db;
     font-size:1.4rem;line-height:1;color:#1f2937;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 2px 10px rgba(0,0,0,.12)}
+    box-shadow:0 2px 10px rgba(0,0,0,.12);transition:opacity .25s ease}
   .menu-fab:active{background:#e5e7eb}
   .menu-veil{position:fixed;inset:0;z-index:55;display:none;
     background:rgba(242,250,246,.55);
@@ -195,6 +195,14 @@
   .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
   .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
   .chat-fab:active{opacity:.85}
+  /* Round 4 (G): hide the chat button while the drawer is open, same as
+     the menu button (which the drawer already hides). The 10s slide-away
+     timer is untouched - this only covers the button while the drawer is
+     open, and it returns to whatever state the timer left it in. */
+  body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
+  /* Round 4 (H): fade both floating buttons out while the user is
+     actively scrolling, so they never cover content mid-scroll. */
+  body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
   .chat-fab svg{width:24px;height:24px;flex:none}
   .player-on .chat-fab{bottom:84px}
   .player-on .menu-fab{bottom:84px}
@@ -321,8 +329,8 @@
     <div class="menu-set">
       <div class="menu-set-label" data-i18n="lang">ភាសា</div>
       <div class="seg-mini" id="langSeg">
-        <button type="button" data-lang-val="kh">ខ្មែរ</button>
-        <button type="button" data-lang-val="en">English</button>
+        <button type="button" data-lang-val="kh" data-i18n="langNameKh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en" data-i18n="langNameEn">English</button>
       </div>
     </div>
     <div class="menu-sep"></div>
@@ -373,8 +381,8 @@
       <div class="rowline" style="justify-content:space-between;margin-bottom:7px">
         <label class="lbl" for="lyrics" style="margin-bottom:0" data-i18n="lyricsLbl">អត្ថបទចម្រៀង</label>
         <span class="rowline">
-          <button class="mini-btn" id="aiLangBtn" type="button" aria-pressed="false">&#127472;&#127469; Khmer &#9662;</button>
-          <button class="mini-btn dark" id="aiLyricsBtn" type="button">AI Lyrics</button>
+          <button class="mini-btn" id="aiLangBtn" type="button" aria-pressed="false">&#127472;&#127469; ខ្មែរ &#9662;</button>
+          <button class="mini-btn dark" id="aiLyricsBtn" type="button" data-i18n="aiLyrics">អត្ថបទ AI</button>
         </span>
       </div>
       <textarea class="txt" id="lyrics" maxlength="5000"
@@ -555,6 +563,7 @@
   function setMenu(open){
     if (open) syncDrawerState();
     menuEl.classList.toggle("open", !!open);
+    document.body.classList.toggle("drawer-open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
     if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
   }
@@ -567,6 +576,16 @@
     if (a) setMenu(false);
   });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  /* Round 4 (H): while the user is actively scrolling, fade the floating
+     buttons out so they never cover content mid-scroll; ~1s after
+     scrolling stops they fade back in. Never touches the chat button's
+     10s slide-away timer or the drawer-open behaviour. */
+  var scrollFabTimer = null;
+  window.addEventListener("scroll", function(){
+    document.body.classList.add("scrolling");
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
+  }, { passive: true });
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
@@ -928,6 +947,7 @@
       aiWriting: "កំពុងសរសេរ… ",
       aiNeedTitle: "សូមដាក់ចំណងជើងចម្រៀងជាមុនសិន។",
       aiHasLyrics: "អត្ថបទបានសរសេររួចហើយ — លុបប្រអប់ជាមុនសិន ទើបប្រើ AI Lyrics បាន។",
+      aiLyrics: "អត្ថបទ AI",
       aiFail: "សរសេរអត្ថបទមិនបានទេ។",
       mvNotReady: "សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ — សូមបើកផ្នែក My Voice ខាងក្រោម រួចថតសំឡេងជាមុនសិន។",
       mvReady: "សំឡេងខ្ញុំរួចរាល់ហើយ។",
@@ -960,6 +980,8 @@
       themeNight: "យប់",
       themeAuto: "ស្វ័យប្រវត្តិ",
       lang: "ភាសា",
+      langNameKh: "ខ្មែរ",
+      langNameEn: "អង់គ្លេស",
       navHome: "ទំព័រដើម",
       navCreate: "បង្កើតចម្រៀង",
       navMarket: "ផ្សារ",
@@ -1039,6 +1061,7 @@
       aiWriting: "Writing… ",
       aiNeedTitle: "Please enter a song title first.",
       aiHasLyrics: "Lyrics are already written — clear the box first to use AI Lyrics.",
+      aiLyrics: "AI Lyrics",
       aiFail: "Could not write the lyrics.",
       mvNotReady: "My Voice is not set up yet — open My Voice below and record your sample first.",
       mvReady: "My Voice is ready.",
@@ -1071,6 +1094,8 @@
       themeNight: "Night",
       themeAuto: "Auto",
       lang: "Language",
+      langNameKh: "Khmer",
+      langNameEn: "English",
       navHome: "Home",
       navCreate: "Create Song",
       navMarket: "Marketplace",
@@ -1162,6 +1187,7 @@
        re-render it here too - otherwise it stays in the previous
        language after a language switch. */
     if (typeof menuAuthState === "function") menuAuthState();
+    if (typeof syncAiLangBtn === "function") syncAiLangBtn();
   }
   function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
   var langSeg = document.getElementById("langSeg");
@@ -1180,9 +1206,15 @@
   function readDraft(){
     try { return JSON.parse(localStorage.getItem(draftKey(draftEmail())) || "null"); } catch (e) { return null; }
   }
+  /* Round 4 (J): the draft also carries the scroll position and the
+     time it was saved, so a return within the 4-minute grace restores
+     the exact scroll position too. The draft itself still lives forever. */
+  var GRACE_MS = 4 * 60 * 1000;
   function saveDraft(){
     try {
       var d = {
+        savedAt: Date.now(),
+        scrollY: window.scrollY || 0,
         title: songTitle.value || "",
         lyrics: lyricsEl.value || "",
         styleText: styleText.value || "",
@@ -1225,9 +1257,16 @@
     }
     updateCount();
     syncAiLangBtn();
+    /* Round 4 (J): restore the scroll position only on a fresh return
+       (within the grace); the draft fields above restore regardless. */
+    if (typeof d.savedAt === "number" && Date.now() - d.savedAt <= GRACE_MS && typeof d.scrollY === "number" && d.scrollY > 0) {
+      requestAnimationFrame(function(){ try { window.scrollTo(0, d.scrollY); } catch (e) {} });
+    }
   }
   document.addEventListener("visibilitychange", function(){ if (document.hidden) saveDraft(); });
   window.addEventListener("beforeunload", saveDraft);
+  window.addEventListener("pagehide", saveDraft);
+  setInterval(function(){ if (!document.hidden) saveDraft(); }, 10000);
 
   /* ---- Add-style: your own saved styles (old site songStyleAdd) ---- */
   var styleAddText = document.getElementById("styleAddText");
@@ -1435,7 +1474,11 @@
   var aiBusy = false;
   var aiTickTimer = null;
   function syncAiLangBtn(){
-    aiLangBtn.innerHTML = aiLang === "kh" ? "&#127472;&#127469; Khmer &#9662;" : "&#127468;&#127463; English &#9662;";
+    /* Round 4 (F): the language NAME follows the current UI language,
+       never the other one: Khmer UI shows «ខ្មែរ» / «អង់គ្លេស», English UI «Khmer» / «English». */
+    var khName = (typeof lang !== "undefined" && lang === "en") ? "Khmer" : "ខ្មែរ";
+    var enName = (typeof lang !== "undefined" && lang === "en") ? "English" : "អង់គ្លេស";
+    aiLangBtn.innerHTML = aiLang === "kh" ? "&#127472;&#127469; " + khName + " &#9662;" : "&#127468;&#127463; " + enName + " &#9662;";
     aiLangBtn.setAttribute("aria-pressed", aiLang === "en" ? "true" : "false");
   }
   aiLangBtn.addEventListener("click", function(){

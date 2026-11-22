@@ -60,7 +60,7 @@
     background:#f2faf6;border:1px solid #d1d5db;
     font-size:1.4rem;line-height:1;color:#1f2937;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 2px 10px rgba(0,0,0,.12)}
+    box-shadow:0 2px 10px rgba(0,0,0,.12);transition:opacity .25s ease}
   .menu-fab:active{background:#e5e7eb}
   .menu-veil{position:fixed;inset:0;z-index:55;display:none;
     background:rgba(242,250,246,.55);
@@ -165,6 +165,14 @@
   .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
   .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
   .chat-fab:active{opacity:.85}
+  /* Round 4 (G): hide the chat button while the drawer is open, same as
+     the menu button (which the drawer already hides). The 10s slide-away
+     timer is untouched - this only covers the button while the drawer is
+     open, and it returns to whatever state the timer left it in. */
+  body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
+  /* Round 4 (H): fade both floating buttons out while the user is
+     actively scrolling, so they never cover content mid-scroll. */
+  body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
   .chat-fab svg{width:24px;height:24px;flex:none}
   .player-on .chat-fab{bottom:84px}
   .player-on .menu-fab{bottom:84px}
@@ -291,8 +299,8 @@
     <div class="menu-set">
       <div class="menu-set-label" data-i18n="lang">ភាសា</div>
       <div class="seg-mini" id="langSeg">
-        <button type="button" data-lang-val="kh">ខ្មែរ</button>
-        <button type="button" data-lang-val="en">English</button>
+        <button type="button" data-lang-val="kh" data-i18n="langNameKh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en" data-i18n="langNameEn">English</button>
       </div>
     </div>
     <div class="menu-sep"></div>
@@ -337,7 +345,7 @@
             <div class="qrwrap" id="khqrQr"></div>
             <p data-i18n="scanBank">ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — ចំនួនបានបំពេញរួចហើយ។ បង់ទៅឲ្យ YEM SOKHOEUN។</p>
             <p id="khqrPayloadWrap" hidden><span data-i18n="khqrCode">កូដ KHQR៖ </span><span class="payload" id="khqrPayload"></span></p>
-            <p><a class="signin-link" id="khqrLink" href="#">Open KHQR payment link</a></p>
+            <p><a class="signin-link" id="khqrLink" href="#">បើកលីង់បំង់ប្រាក់ KHQR</a></p>
           </div>
 
           <div id="payUsdt" hidden>
@@ -406,6 +414,8 @@
       themeNight: "យប់",
       themeAuto: "ស្វ័យប្រវត្តិ",
       lang: "ភាសា",
+      langNameKh: "ខ្មែរ",
+      langNameEn: "អង់គ្លេស",
       navHome: "ទំព័រដើម",
       navCreate: "បង្កើតចម្រៀង",
       navMarket: "ផ្សារ",
@@ -486,6 +496,8 @@
       themeNight: "Night",
       themeAuto: "Auto",
       lang: "Language",
+      langNameKh: "Khmer",
+      langNameEn: "English",
       navHome: "Home",
       navCreate: "Create Song",
       navMarket: "Marketplace",
@@ -571,7 +583,7 @@
     var d = (STR && STR[lang]) || STR.en;
     return (d && d[k]) || (STR.en && STR.en[k]) || k;
   }
-  function onLangChange(){ loadMarket(); loadTiers(); loadMyPurchases(); }
+  function onLangChange(){ if (snapHoldFetch) return; loadMarket(); loadTiers(); loadMyPurchases(); }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
@@ -620,6 +632,7 @@
     { tier: 20, price: 20, songs: 132, bonus: 12 },
     { tier: 25, price: 25, songs: 165, bonus: 15 }
   ];
+  var lastTiers = null; // Round 4 (J): tiers last rendered, for the return snapshot
 
   /* KHQR base payload (owner's Canadia Bank KHQR, same payload the main
      site uses). The amount is inserted at runtime — never 0.00. */
@@ -627,6 +640,7 @@
   var MAX_RECEIPT_BYTES = 5 * 1024 * 1024;
 
   var marketEl = document.getElementById("market");
+  var lastSellers = null; // Round 4 (J): listings last rendered, for the return snapshot
   var tiersEl = document.getElementById("tiers");
   var statusEl = document.getElementById("status");
   var menuEl = document.getElementById("menu");
@@ -720,6 +734,7 @@
   function setMenu(open){
     if (open) syncDrawerState();
     menuEl.classList.toggle("open", !!open);
+    document.body.classList.toggle("drawer-open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
     if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
   }
@@ -732,6 +747,16 @@
     if (a) setMenu(false);
   });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  /* Round 4 (H): while the user is actively scrolling, fade the floating
+     buttons out so they never cover content mid-scroll; ~1s after
+     scrolling stops they fade back in. Never touches the chat button's
+     10s slide-away timer or the drawer-open behaviour. */
+  var scrollFabTimer = null;
+  window.addEventListener("scroll", function(){
+    document.body.classList.add("scrolling");
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
+  }, { passive: true });
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
@@ -818,6 +843,7 @@
 
   /* ---- tiers ---- */
   function renderTiers(tiers){
+    lastTiers = tiers;
     tiersEl.innerHTML = "";
     tiers.forEach(function(t){
       var row = document.createElement("div");
@@ -843,6 +869,10 @@
     tiersEl.appendChild(note);
   }
   function loadTiers(){
+    /* Round 4 (I): show the built-in 9 tiers at once, before any fetch,
+       so the prices never sit blank while the request is in flight; the
+       live result replaces them when it arrives. */
+    renderTiers(FALLBACK_TIERS);
     fetch(TIERS_URL, { cache: "no-store" })
       .then(function(r){ return r.json(); })
       .then(function(d){
@@ -869,6 +899,7 @@
     statusEl.appendChild(b);
   }
   function renderMarket(sellers){
+    lastSellers = sellers;
     marketEl.innerHTML = "";
     var total = 0;
     sellers.forEach(function(s){ total += (s.listings || []).length; });
@@ -1179,8 +1210,54 @@
       .catch(function(){ /* purchases stay hidden on error */ });
   }
 
+
+  /* ---- Round 4 (J): return-to-app snapshot (listings + tiers) ---- */
+  var SNAP_KEY = "movai-snap-market";
+  var snapHoldFetch = true; // set false once the init restore decision is made
+  /* ---- Round 4 (J): return-to-app snapshot, 4-minute grace ----
+     A weak phone's Chrome discards the background tab and reloads it on
+     return. This site never reloads itself on return - instead it saves
+     a small snapshot (scroll + rendered list + player state) when the
+     page hides and every 10s, and restores it instantly when the return
+     is within GRACE_MS. Older than that: normal fresh load. */
+  var GRACE_MS = 4 * 60 * 1000;
+  function snapLoad(){
+    try {
+      var raw = localStorage.getItem(SNAP_KEY);
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (!s || typeof s.savedAt !== "number") return null;
+      if (Date.now() - s.savedAt > GRACE_MS) return null;
+      return s;
+    } catch (e) { return null; }
+  }
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "hidden") snapSave(); });
+  window.addEventListener("pagehide", snapSave);
+  window.addEventListener("beforeunload", snapSave);
+  setInterval(function(){ if (!document.hidden) snapSave(); }, 10000);
+  function snapSave(){
+    try {
+      localStorage.setItem(SNAP_KEY, JSON.stringify({ savedAt: Date.now(), scrollY: window.scrollY || 0, sellers: lastSellers, tiers: lastTiers || FALLBACK_TIERS }));
+    } catch (e) {}
+  }
+  function snapRestore(){
+    var s = snapLoad();
+    if (!s) return false;
+    var ok = false;
+    if (Array.isArray(s.tiers) && s.tiers.length) { renderTiers(s.tiers); ok = true; }
+    if (Array.isArray(s.sellers) && s.sellers.length) { renderMarket(s.sellers); ok = true; }
+    if (!ok) return false;
+    if (typeof s.scrollY === "number" && s.scrollY > 0) {
+      requestAnimationFrame(function(){ try { window.scrollTo(0, s.scrollY); } catch (e) {} });
+    }
+    return true;
+  }
+
   loadSettings();
   applyLang();
+  var snapOk = snapRestore();
+  snapHoldFetch = false;
+  if (!snapOk) { loadMarket(); loadTiers(); loadMyPurchases(); }
 })();
 </script>
 <script>

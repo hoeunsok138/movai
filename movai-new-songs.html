@@ -59,7 +59,7 @@
     background:#f2faf6;border:1px solid #d1d5db;
     font-size:1.4rem;line-height:1;color:#1f2937;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 2px 10px rgba(0,0,0,.12)}
+    box-shadow:0 2px 10px rgba(0,0,0,.12);transition:opacity .25s ease}
   .menu-fab:active{background:#e5e7eb}
   .menu-veil{position:fixed;inset:0;z-index:55;display:none;
     background:rgba(242,250,246,.55);
@@ -167,6 +167,10 @@
     padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));}
   .player[hidden]{display:none}
   .player-in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .player-modes{max-width:720px;margin:8px auto 0;display:flex;gap:8px}
+  .player-modes .mode-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 10px;border:1px solid #d1d5db;border-radius:999px;background:#ffffff;font-size:.82rem;font-weight:600;color:#4b5563;cursor:pointer}
+  .player-modes .mode-btn .mode-ico{font-size:1rem;line-height:1}
+  .player-modes .mode-btn.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
   .player img{width:40px;height:40px;flex:none;border-radius:6px;object-fit:cover;background:#dfe7e2}
   .player-title{flex:1;min-width:0;font-size:.92rem;font-weight:600;color:#1f2937;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -197,10 +201,18 @@
   .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
   .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
   .chat-fab:active{opacity:.85}
+  /* Round 4 (G): hide the chat button while the drawer is open, same as
+     the menu button (which the drawer already hides). The 10s slide-away
+     timer is untouched - this only covers the button while the drawer is
+     open, and it returns to whatever state the timer left it in. */
+  body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
+  /* Round 4 (H): fade both floating buttons out while the user is
+     actively scrolling, so they never cover content mid-scroll. */
+  body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
   .chat-fab svg{width:24px;height:24px;flex:none}
-  .player-on .chat-fab{bottom:92px}
-  .player-on .menu-fab{bottom:92px}
-  body.player-on main{padding-bottom:150px}
+  .player-on .chat-fab{bottom:132px}
+  .player-on .menu-fab{bottom:132px}
+  body.player-on main{padding-bottom:190px}
   html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
   html[data-theme="dark"]{background:#0e1a15}
@@ -331,8 +343,8 @@
     <div class="menu-set">
       <div class="menu-set-label" data-i18n="lang">ភាសា</div>
       <div class="seg-mini" id="langSeg">
-        <button type="button" data-lang-val="kh">ខ្មែរ</button>
-        <button type="button" data-lang-val="en">English</button>
+        <button type="button" data-lang-val="kh" data-i18n="langNameKh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en" data-i18n="langNameEn">English</button>
       </div>
     </div>
     <div class="menu-sep"></div>
@@ -359,6 +371,10 @@
     <button id="pPlay" type="button" aria-label="Play or pause" data-i18n-aria="playPause">&#10074;&#10074;</button>
     <button id="pNext" type="button" data-i18n="next">បន្ទាប់</button>
     <button class="p-close" id="pClose" type="button" aria-label="Close" data-i18n-aria="close">&#10005;</button>
+  </div>
+  <div class="player-modes">
+    <button id="pRepeat" type="button" class="mode-btn"><span class="mode-ico">&#8635;</span><span id="pRepeatLbl">ធ្វើម្តងទៀត</span></button>
+    <button id="pShuffle" type="button" class="mode-btn"><span class="mode-ico">&#8646;</span><span id="pShuffleLbl">ចៃដន្យ</span></button>
   </div>
   <div class="player-err" id="pErr" hidden></div>
 </div>
@@ -508,6 +524,8 @@
       themeNight: "យប់",
       themeAuto: "ស្វ័យប្រវត្តិ",
       lang: "ភាសា",
+      langNameKh: "ខ្មែរ",
+      langNameEn: "អង់គ្លេស",
       navHome: "ទំព័រដើម",
       navCreate: "បង្កើតចម្រៀង",
       navMarket: "ផ្សារ",
@@ -527,6 +545,10 @@
       pause: "ផ្អាក",
       playPause: "ចាក់ ឬផ្អាក",
       next: "បន្ទាប់",
+      repeatOff: "ធ្វើម្តងទៀត",
+      repeatAll: "ធ្វើទាំងអស់",
+      repeatOne: "បទនេះម្តងទៀត",
+      shuffle: "ចៃដន្យ",
       close: "បិទ",
       playSong: "ចាក់ចម្រៀង ",
       playFail: "ចាក់មិនបាន · ចុចដើម្បីចាក់ម្ដងទៀត",
@@ -579,6 +601,8 @@
       themeNight: "Night",
       themeAuto: "Auto",
       lang: "Language",
+      langNameKh: "Khmer",
+      langNameEn: "English",
       navHome: "Home",
       navCreate: "Create Song",
       navMarket: "Marketplace",
@@ -598,6 +622,10 @@
       pause: "Pause",
       playPause: "Play or pause",
       next: "Next",
+      repeatOff: "Repeat",
+      repeatAll: "Repeat All",
+      repeatOne: "Repeat One",
+      shuffle: "Shuffle",
       close: "Close",
       playSong: "Play song ",
       playFail: "Could not play — tap to retry",
@@ -636,6 +664,9 @@
        re-render it here too - otherwise it stays in the previous
        language after a language switch. */
     if (typeof menuAuthState === "function") menuAuthState();
+    /* Round 4 (L): the Repeat label depends on the mode, so re-label the
+       mode buttons in the new language after every switch. */
+    if (typeof syncModeBtns === "function") syncModeBtns();
   }
   function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
   var langSeg = document.getElementById("langSeg");
@@ -940,6 +971,7 @@
     });
   }
   function playFinished(slot){
+    snapRestoring = false; // a real generation finishing ends the quiet restore window
     if (!slot || !slot.url) return;
     clearPlayErr();
     pCover.src = "movai-logo-mark.png";
@@ -976,6 +1008,7 @@
   function setMenu(open){
     if (open) syncDrawerState();
     menuEl.classList.toggle("open", !!open);
+    document.body.classList.toggle("drawer-open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
     if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
   }
@@ -988,6 +1021,16 @@
     if (a) setMenu(false);
   });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  /* Round 4 (H): while the user is actively scrolling, fade the floating
+     buttons out so they never cover content mid-scroll; ~1s after
+     scrolling stops they fade back in. Never touches the chat button's
+     10s slide-away timer or the drawer-open behaviour. */
+  var scrollFabTimer = null;
+  window.addEventListener("scroll", function(){
+    document.body.classList.add("scrolling");
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
+  }, { passive: true });
   function menuAuthState(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
@@ -1545,6 +1588,7 @@
      failed. The <audio> error event and the play() rejection can both
      fire for the same dead URL, so onPlayFailed only advances once per
      URL (tracked by playTriedSrc). Never retries once the bar is closed. */
+  var snapRestoring = false; // Round 4 (J): quiet while restoring the player
   var playUrls = [];   // candidates for the song now playing
   var playUrlIdx = 0;  // index into playUrls loaded in <audio>
   var playTriedSrc = ""; // src already advanced past by onPlayFailed
@@ -1565,6 +1609,7 @@
   }
   function onPlayFailed(err, failedSrc){
     if (playerEl.hidden) return;
+    if (snapRestoring) { syncPlayBtn(); return; } // Round 4 (J): silent during restore
     var failed = failedSrc || au.src || "";
     if (failed && failed === playTriedSrc) return; // same dead URL, reported twice
     if (playUrlIdx + 1 < playUrls.length) {
@@ -1581,6 +1626,7 @@
   function playSong(i){
     if (i < 0 || i >= songs.length) return;
     cur = i;
+    snapRestoring = false; // a real tap ends the quiet restore window
     clearPlayErr();
     var song = songs[i];
     pCover.src = songCover(song) || COVER_FALLBACK;
@@ -1592,9 +1638,59 @@
   }
   function playNext(){
     if (!songs.length) return;
-    playSong((cur + 1) % songs.length);
+    var n = pickNextIndex();
+    if (n >= 0) playSong(n);
   }
+  /* ---- Round 4 (L): Repeat + Shuffle under the now-playing bar ----
+     Repeat cycles Off -> Repeat All -> Repeat One -> Off; Shuffle picks a
+     random different song for Next / auto-advance. Both persist in
+     localStorage and survive the (J) 4-minute restore. Tapping either
+     button only changes the mode - the song now playing is never touched. */
+  var REPEAT_KEY = "movai-repeat";   /* "off" | "all" | "one" */
+  var SHUFFLE_KEY = "movai-shuffle"; /* "off" | "on" */
+  var repeatMode = "off";
+  var shuffleOn = false;
+  try { var _rm = localStorage.getItem(REPEAT_KEY); if (_rm === "all" || _rm === "one") repeatMode = _rm; } catch (e) {}
+  try { shuffleOn = localStorage.getItem(SHUFFLE_KEY) === "on"; } catch (e) {}
+  var pRepeat = document.getElementById("pRepeat");
+  var pRepeatLbl = document.getElementById("pRepeatLbl");
+  var pShuffle = document.getElementById("pShuffle");
+  var pShuffleLbl = document.getElementById("pShuffleLbl");
+  function repeatLblKey(){ return repeatMode === "all" ? "repeatAll" : repeatMode === "one" ? "repeatOne" : "repeatOff"; }
+  function syncModeBtns(){
+    if (pRepeatLbl) pRepeatLbl.textContent = t(repeatLblKey());
+    if (pRepeat) { pRepeat.classList.toggle("on", repeatMode !== "off"); pRepeat.setAttribute("aria-label", t(repeatLblKey())); }
+    if (pShuffleLbl) pShuffleLbl.textContent = t("shuffle");
+    if (pShuffle) { pShuffle.classList.toggle("on", shuffleOn); pShuffle.setAttribute("aria-label", t("shuffle")); }
+  }
+  function pickNextIndex(){
+    if (!songs.length) return -1;
+    if (shuffleOn && songs.length > 1) {
+      var r = cur;
+      while (r === cur) r = Math.floor(Math.random() * songs.length);
+      return r;
+    }
+    return (cur + 1) % songs.length;
+  }
+  function playEnded(){
+    if (!songs.length) return;
+    if (repeatMode === "one") { playSong(cur); return; }
+    if (shuffleOn) { playSong(pickNextIndex()); return; }
+    playSong((cur + 1) % songs.length); /* Off and Repeat All both wrap, as today */
+  }
+  if (pRepeat) pRepeat.addEventListener("click", function(){
+    repeatMode = repeatMode === "off" ? "all" : repeatMode === "all" ? "one" : "off";
+    try { localStorage.setItem(REPEAT_KEY, repeatMode); } catch (e) {}
+    syncModeBtns();
+  });
+  if (pShuffle) pShuffle.addEventListener("click", function(){
+    shuffleOn = !shuffleOn;
+    try { localStorage.setItem(SHUFFLE_KEY, shuffleOn ? "on" : "off"); } catch (e) {}
+    syncModeBtns();
+  });
+  syncModeBtns();
   pPlay.addEventListener("click", function(){
+    snapRestoring = false; // a real tap ends the quiet restore window
     if (au.paused) {
       clearPlayErr();
       if (au.error && playUrls.length) {
@@ -1614,6 +1710,7 @@
   });
   pNext.addEventListener("click", playNext);
   pClose.addEventListener("click", function(){
+    snapRestoring = false;
     au.pause(); au.removeAttribute("src"); au.load();
     cur = -1; playerEl.hidden = true; document.body.classList.remove("player-on"); markPlaying(); clearPlayErr();
   });
@@ -1621,10 +1718,7 @@
   au.addEventListener("pause", syncPlayBtn);
   au.addEventListener("playing", function(){ clearPlayErr(); });
   au.addEventListener("error", function(){ onPlayFailed(au.error); syncPlayBtn(); });
-  au.addEventListener("ended", function(){
-    if (!songs.length) return;
-    playSong((cur + 1) % songs.length);
-  });
+  au.addEventListener("ended", playEnded);
 
   applyLang();
   // Resume any generation handed off by Create (or left by a refresh):
@@ -1639,7 +1733,83 @@
     renderCreating();
     pendingJobs.forEach(function(job){ pollJob(job); });
   }
-  loadSongs();
+
+  /* ---- Round 4 (J): return-to-app snapshot (My Songs list + player) ---- */
+  var SNAP_KEY = "movai-snap-songs";
+  /* ---- Round 4 (J): return-to-app snapshot, 4-minute grace ----
+     A weak phone's Chrome discards the background tab and reloads it on
+     return. This site never reloads itself on return - instead it saves
+     a small snapshot (scroll + rendered list + player state) when the
+     page hides and every 10s, and restores it instantly when the return
+     is within GRACE_MS. Older than that: normal fresh load. */
+  var GRACE_MS = 4 * 60 * 1000;
+  function snapLoad(){
+    try {
+      var raw = localStorage.getItem(SNAP_KEY);
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (!s || typeof s.savedAt !== "number") return null;
+      if (Date.now() - s.savedAt > GRACE_MS) return null;
+      return s;
+    } catch (e) { return null; }
+  }
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "hidden") snapSave(); });
+  window.addEventListener("pagehide", snapSave);
+  window.addEventListener("beforeunload", snapSave);
+  setInterval(function(){ if (!document.hidden) snapSave(); }, 10000);
+  function snapSave(){
+    try {
+      var p = null;
+      if (cur >= 0 && songs[cur]) {
+        p = { songId: String(songs[cur].id || songs[cur].audioId || ""), currentTime: au.currentTime || 0, wasPlaying: !au.paused && !playerEl.hidden };
+      }
+      localStorage.setItem(SNAP_KEY, JSON.stringify({ savedAt: Date.now(), scrollY: window.scrollY || 0, items: songs.slice(0, 100), player: p }));
+    } catch (e) {}
+  }
+  function snapRestorePlayer(p){
+    if (!p || typeof p.songId !== "string") return;
+    var idx = -1;
+    for (var i = 0; i < songs.length; i++) { if (String(songs[i].id || songs[i].audioId || "") === p.songId) { idx = i; break; } }
+    if (idx < 0) return;
+    cur = idx;
+    var song = songs[idx];
+    clearPlayErr();
+    pCover.src = songCover(song) || COVER_FALLBACK;
+    pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
+    pTitle.textContent = song.title || t("untitled");
+    playerEl.hidden = false; document.body.classList.add("player-on");
+    markPlaying();
+    syncModeBtns(); /* Round 4 (L): modes come back from localStorage */
+    playUrls = songPlayUrls(song); playUrlIdx = 0; playTriedSrc = "";
+    if (!playUrls.length) return;
+    snapRestoring = true;
+    au.src = playUrls[0];
+    var wantTime = (typeof p.currentTime === "number" && p.currentTime > 0) ? p.currentTime : 0;
+    var seeked = false;
+    function doSeek(){
+      if (seeked) return; seeked = true; snapRestoring = false;
+      try { if (wantTime > 0 && isFinite(au.duration) && wantTime < au.duration) au.currentTime = wantTime; } catch (e) {}
+      /* Resume only if it was playing; if the browser blocks autoplay the
+         rejection is swallowed silently - never an error for that. */
+      if (p.wasPlaying) { try { var pr = au.play(); if (pr && pr.catch) pr.catch(function(){}); } catch (e) {} }
+    }
+    au.addEventListener("loadedmetadata", doSeek, { once: true });
+    try { au.load(); } catch (e) {}
+    setTimeout(function(){ if (!seeked) { seeked = true; snapRestoring = false; } }, 10000);
+  }
+  function snapRestore(){
+    var s = snapLoad();
+    if (!s || !Array.isArray(s.items) || !s.items.length) return false;
+    songs = s.items.slice(0, 100);
+    renderList();
+    if (s.player) snapRestorePlayer(s.player);
+    if (typeof s.scrollY === "number" && s.scrollY > 0) {
+      requestAnimationFrame(function(){ try { window.scrollTo(0, s.scrollY); } catch (e) {} });
+    }
+    return true;
+  }
+
+  if (!snapRestore()) loadSongs();
 })();
 </script>
 <script>
