@@ -506,6 +506,7 @@
       split6Note: "៦ ស្ទេម៖ សំឡេង, ស្គរ, បាស, ផ្សេងៗ, ព្យាណូ, ហ្គីតា។ ប្រើសិទ្ធិ Vocal Studio ឥតគិតថ្លៃ (២ ដង)។",
       split12Note: "១២ ស្ទេម៖ ត្រូវការ ៥០ ក្រេឌីតចម្រៀង។ លីងស្ទេមប្រើបាន ១៤ ថ្ងៃ។",
       splitWorking: "កំពុងបំបែក… ",
+      splitChecked: "ពិនិត្យ ",
       splitDone: "បំបែករួចរាល់។",
       splitFail: "បំបែកមិនបានទេ។",
       post: "ផុស",
@@ -586,6 +587,7 @@
       split6Note: "6 stems: vocals, drums, bass, other, piano, guitar. Uses a free Vocal Studio split (2 free).",
       split12Note: "12 stems: costs 50 song credits. Stem links work for 14 days.",
       splitWorking: "Splitting… ",
+      splitChecked: "check ",
       splitDone: "Split done.",
       splitFail: "Split failed.",
       post: "Post",
@@ -1481,8 +1483,9 @@
   }
   function pollStem6(hash, msg, res, t0){
     var n = 0;
+    var checks = 0; // every answered /status poll — visible proof the server is still working on the job
     var tick = setInterval(function(){
-      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s" + (checks ? " · " + t("splitChecked") + checks : ""));
     }, 1000);
     function step(){
       if (n++ >= 60) {
@@ -1502,6 +1505,7 @@
             clearInterval(tick);
             stemSetMsg(msg, cleanErr(j.error || t("splitFail")), true);
           } else {
+            checks++;
             setTimeout(step, 10000);
           }
         }).catch(function(){ setTimeout(step, 10000); });
