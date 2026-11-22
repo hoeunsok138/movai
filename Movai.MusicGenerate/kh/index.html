@@ -2,13 +2,2336 @@
 <html lang="km">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/movai-icon-512.png">
+<link rel="apple-touch-icon" href="/movai-icon-192.png">
 <title>MovAi Music Generate Kh</title>
-<meta http-equiv="refresh" content="0; url=../../movai-new-create.html">
-<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f2faf6;color:#1c2b25;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center;padding:24px;box-sizing:border-box}a{color:#0f766e}</style>
-<script>location.replace("../../movai-new-create.html");</script>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
+<style>
+  /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;overflow-x:hidden}
+  html{
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    -webkit-text-size-adjust:100%;
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:#1f2937;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  a{color:#1f2937;text-decoration:none}
+  button{font:inherit;color:inherit;background:transparent;border:0;padding:0;cursor:pointer}
+  button:disabled{opacity:.45;cursor:default}
+  img{display:block;max-width:100%}
+
+  .wrap{max-width:720px;margin:0 auto}
+
+  /* ---- Header: two rows, directly on the background (transparent) ---- */
+  header{position:sticky;top:0;z-index:20;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;}
+  .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-left:16px;padding-right:16px}
+  .hdr-top{padding-top:14px;padding-bottom:10px;border-bottom:1px solid #e5e7eb}
+  .hdr-sub{padding-top:11px;padding-bottom:11px;border-bottom:1px solid #e5e7eb}
+  .hdr-logo{display:flex;align-items:center;gap:8px;color:#1f2937;min-width:0}
+  .hdr-logo svg,.hdr-logo img{flex:none}
+  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:#1f2937;line-height:1}
+  .hdr-right{display:flex;align-items:center;gap:4px}
+  .icon-btn{font-size:1.35rem;line-height:1;color:#1f2937;padding:4px 9px;border-radius:8px}
+  .icon-btn:active{background:#e5e7eb}
+  .hdr-sec{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .hdr-sec .icon-btn{padding:4px 8px}
+  .hdr-sec-name{font-size:1rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hdr-btn{flex:none;font-size:.9rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;background:transparent}
+  .hdr-btn:active{background:#e5e7eb}
+  .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
+
+  /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
+  .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#f2faf6;border:1px solid #d1d5db;
+    font-size:1.4rem;line-height:1;color:#1f2937;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);transition:opacity .25s ease}
+  .menu-fab:active{background:#e5e7eb}
+  .menu-veil{position:fixed;inset:0;z-index:55;display:none;
+    background:rgba(242,250,246,.55);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .menu-veil.open{display:block;animation:veilIn .18s ease-out}
+  @keyframes veilIn{from{opacity:0}to{opacity:1}}
+  .menu{position:fixed;left:0;right:0;bottom:0;z-index:56;
+    max-height:70vh;overflow-y:auto;
+    background:#f2faf6;border-top:1px solid #e5e7eb;border-radius:16px 16px 0 0;
+    padding:6px 0 calc(10px + env(safe-area-inset-bottom,0px));
+    transform:translateY(105%);transition:transform .22s ease-out;
+    visibility:hidden}
+  .menu.open{transform:translateY(0);visibility:visible;animation:sheetIn .25s ease-out}
+  @keyframes sheetIn{from{filter:blur(6px)}to{filter:blur(0)}}
+  .menu.open + .menu-fab{display:none}
+  .menu a,.menu button.menu-link{display:block;width:100%;text-align:left;
+    padding:13px 20px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0;background:transparent}
+  .menu a:last-child,.menu button.menu-link:last-child{border-bottom:0}
+  .menu a:active,.menu button.menu-link:active{background:#e5e7eb}
+  .menu .menu-sep{height:1px;background:#e5e7eb;margin:6px 0}
+  .menu .menu-user{padding:12px 20px 4px;font-size:.85rem;color:#6b7280}
+  [hidden]{display:none !important}
+  .menu a[aria-current="page"]{font-weight:700}
+
+  /* ---- Create form: plain elements directly on the background ---- */
+  main{padding:20px 16px 120px}
+  .field{margin-bottom:22px}
+  .lbl{display:block;font-size:.92rem;font-weight:700;color:#1f2937;margin-bottom:7px}
+  .hint{font-size:.82rem;color:#6b7280;margin-top:6px}
+  .txt{width:100%;font:inherit;font-size:.95rem;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:8px;
+    padding:10px 12px}
+  .txt:focus{outline:2px solid #1f2937;outline-offset:0;border-color:#1f2937}
+  textarea.txt{resize:vertical;min-height:150px;line-height:1.5}
+  .count{text-align:right;font-size:.82rem;color:#6b7280;margin-top:5px}
+  .rowline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg-btn{font-size:.92rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 14px;background:transparent}
+  .seg-btn:active{background:#e5e7eb}
+  .seg-btn[aria-pressed="true"]{background:#1f2937;color:#ffffff;border-color:#1f2937}
+  #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .acct{font-size:.95rem;color:#1f2937}
+  .acct b{font-weight:700}
+  .linklike{font-size:.92rem;color:#1f2937;text-decoration:underline;padding:0}
+  .bal{font-size:.95rem;color:#1f2937}
+  .bal b{font-weight:700}
+  .gen-btn{display:block;width:100%;font-size:1rem;font-weight:700;color:#ffffff;
+    background:#0f766e;border-radius:10px;padding:13px 16px}
+  .gen-btn:active{opacity:.85}
+  .prog{font-size:.95rem;color:#1f2937;margin-top:14px}
+  .prog .secs{font-weight:700}
+  .err{font-size:.95rem;color:#991b1b;margin-top:14px}
+  .err .retry{margin-top:8px;color:#1f2937;text-decoration:underline;font-size:.95rem;display:inline-block}
+  .ok-note{font-size:.95rem;color:#1f2937;margin-top:14px}
+  .res-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    padding:12px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .play-btn{flex:none;width:44px;height:44px;border:1px solid #d1d5db;border-radius:50%;
+    font-size:1rem;color:#1f2937;line-height:1}
+  .play-btn:active{background:#e5e7eb}
+  .res-text{flex:1;min-width:0}
+  .res-title{display:block;font-size:.95rem;font-weight:600;color:#1f2937;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .res-sub{display:block;font-size:.8rem;color:#6b7280;margin-top:3px}
+  .res-dur{flex:none;font-size:.85rem;color:#6b7280}
+  .res-dl{flex:none;font-size:.85rem;color:#1f2937;text-decoration:underline}
+  .sec-title{font-size:1rem;font-weight:700;color:#1f2937;margin:26px 0 4px}
+  .divider{border:0;border-top:1px solid #e5e7eb;margin:10px 0 0}
+  .mini-btn{font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 12px;background:transparent}
+  .mini-btn:active{background:#e5e7eb}
+  .mini-btn.dark{background:#1f2937;color:#ffffff;border-color:#1f2937}
+  .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  /* ---- Cover: collapsible box, plain rows ---- */
+  .cover-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;
+    font-size:.95rem;font-weight:700;color:#1f2937;padding:2px 0}
+  .cover-box{border:1px dashed #d1d5db;border-radius:12px;padding:12px;margin-top:8px}
+  .cover-fileinfo{font-size:.85rem;color:#1f2937;margin-top:8px}
+  .cover-msg{font-size:.85rem;color:#6b7280;margin-top:8px;min-height:16px}
+  .cover-msg.err-t{color:#991b1b}
+  .cover-msg.ok-t{color:#0f766e;font-weight:600}
+  .bar{height:6px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:8px}
+  .bar>div{height:100%;width:0;background:#0f766e}
+  .chk-row{display:flex;align-items:center;gap:8px;font-size:.92rem;color:#1f2937;margin-top:12px}
+  .chk-row input{width:18px;height:18px;accent-color:#0f766e}
+  /* ---- Gift sheet ---- */
+  .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+    background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
+  .gift-card{width:100%;max-width:360px;text-align:center;
+    background:#ffffff;border:1px solid #d3e5da;border-radius:16px;padding:24px 20px}
+  .gift-ico{font-size:3rem;line-height:1.1}
+  .gift-card h3{margin:12px 0 0;font-size:1.2rem;font-weight:800;color:#1f2937}
+  .gift-card p{margin:10px 0 0;font-size:.95rem;line-height:1.6;color:#1f2937}
+  .gift-claim{display:block;width:100%;margin-top:20px;font-size:1rem;font-weight:700;
+    color:#ffffff;background:#0f766e;border-radius:10px;padding:13px 16px}
+  .gift-claim:active{opacity:.85}
+  .gift-later{display:inline-block;margin-top:12px;font-size:.9rem;color:#6b7280;
+    text-decoration:underline}
+  .gift-msg{font-size:.9rem;color:#991b1b;margin-top:10px;min-height:16px}
+  .gift-msg.ok-t{color:#0f766e;font-weight:600}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Chat button: bottom-right, slides in from the right edge ---- */
+  .chat-fab{position:fixed;right:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#0f766e;border:1px solid #0f766e;
+    color:#ffffff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.18);
+    transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);
+    transition:transform .45s ease-out,opacity .45s ease-out,filter .45s ease-out;
+    pointer-events:none}
+  .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
+  .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
+  .chat-fab:active{opacity:.85}
+  body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
+  body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
+  .chat-fab svg{width:24px;height:24px;flex:none}
+  html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  /* ---- Style picker (old-site style, rebuilt) ---- */
+  .style-preset-wrap{position:relative}
+  .style-preset-field{width:100%;display:flex;align-items:center;gap:10px;
+    min-height:48px;padding:10px 14px;text-align:left;cursor:pointer;
+    font-family:inherit;font-size:.9375rem;font-weight:800;line-height:1.2;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px}
+  .style-preset-field .spf-label{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .style-preset-field .spf-label.ph{color:#6b7280;font-weight:700}
+  .style-preset-field .spf-count{flex:none;display:inline-flex;align-items:center;justify-content:center;
+    min-width:24px;height:24px;padding:0 7px;border-radius:999px;
+    background:#0f766e;color:#ffffff;font-size:.8125rem;font-weight:900;line-height:1}
+  .style-preset-field .spf-chev{flex:none;color:#6b7280;font-size:.75rem;transition:transform .2s}
+  .style-preset-wrap.open .spf-chev{transform:rotate(180deg)}
+  .style-preset-drop{position:absolute;top:100%;left:0;right:0;z-index:30;
+    max-height:17.25rem;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:thin;
+    margin-top:6px;padding:6px;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px;
+    box-shadow:0 16px 40px rgba(0,0,0,.35)}
+  .style-preset-drop::-webkit-scrollbar{width:5px}
+  .style-preset-drop::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:99px}
+  .style-preset-row{display:flex;align-items:center;gap:10px;width:100%;
+    min-height:48px;padding:10px 14px;text-align:left;cursor:pointer;
+    font-family:inherit;font-size:.9375rem;font-weight:800;line-height:1.2;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px}
+  .style-preset-row + .style-preset-row{margin-top:6px}
+  .style-preset-row .preset-check{flex:none;display:inline-flex;align-items:center;justify-content:center;
+    width:26px;height:26px;border:2px solid #d1d5db;border-radius:8px;
+    background:transparent;color:transparent;font-size:1rem;font-weight:900;line-height:1}
+  .style-preset-row.on{border-color:#0f766e}
+  .style-preset-row.on .preset-check{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .style-preset-row .row-name{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .style-preset-row .row-del{flex:none;font-size:.9rem;color:#6b7280;padding:2px 8px;border-radius:50%}
+  .style-preset-row .row-del:active{background:#e5e7eb}
+  /* ---- Night theme: same layout, dark green-tinted background ---- */
+  html[data-theme="dark"]{background:#0e1a15}
+  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#0e1a15}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
+  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .hdr-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .hdr-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
+  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
+  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
+  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .res-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .res-title,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count{color:#e7f0ec}
+  html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .hint,html[data-theme="dark"] .cover-msg{color:#8fa89e}
+  html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .gift-msg{color:#fca5a5}
+  html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn{color:#e7f0ec;border-color:#3a524a}
+  html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
+  html[data-theme="dark"] .res-dl,html[data-theme="dark"] .linklike{color:#e7f0ec}
+  html[data-theme="dark"] .play-btn{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
+  html[data-theme="dark"] .bar{background:#24362f}
+  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
+  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
+  html[data-theme="dark"] .gift-later{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-field{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .style-preset-field .spf-label.ph{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-field .spf-chev{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-drop{background:#16261f;border-color:#3a524a}
+  html[data-theme="dark"] .style-preset-row{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .style-preset-row .preset-check{border-color:#3a524a}
+  html[data-theme="dark"] .style-preset-row.on{border-color:#0f766e}
+  html[data-theme="dark"] .style-preset-row.on .preset-check{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .style-preset-row .row-del{color:#8fa89e}
+  html[data-theme="dark"] .style-preset-row .row-del:active{background:#1d2f28}
+</style>
 </head>
 <body>
-<p>កំពុងបើក MovAi Music Generate…<br><a href="../../movai-new-create.html">ចុចទីនេះបើមិនប្ដូរទៅដោយស្វ័យប្រវត្តិ</a></p>
+<div class="wrap">
+  <header id="hdr">
+    <div class="hdr-row hdr-top">
+      <a class="hdr-logo" href="/index.html">
+        <img src="/movai-logo-mark.png" width="26" height="26" alt="MovAi logo">
+        <b>MovAi Music Generate Kh</b>
+      </a>
+    </div>
+    <div class="hdr-row hdr-sub">
+      <a class="hdr-back" href="/index.html" aria-label="Back">&#8249;</a>
+      <span class="hdr-sec">
+        <span class="hdr-sec-name">MovAi Music Generate</span>
+      </span>
+      <a class="hdr-btn" href="/movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+    </div>
+  </header>
+  <div class="menu-veil" id="menuVeil"></div>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="/index.html" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="/Movai.MusicGenerate/kh" aria-current="page" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <a href="/movai-new-market.html" data-i18n="navMarket">ផ្សារ</a>
+      <a href="/movai-new-songs.html" data-i18n="navSongs">ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="/movai-new-profile.html" data-i18n="navProfile">ប្រវត្តិរូប</a>
+      <a href="/movai-new-chat.html" data-i18n="navChat">ឆាត</a>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh" data-i18n="langNameKh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en" data-i18n="langNameEn">English</button>
+      </div>
+    </div>
+    <div class="menu-sep"></div>
+    <div class="menu-user" id="menuUser" hidden></div>
+    <a href="/movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
+  </nav>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
+  <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+
+  <main>
+    <hr class="divider">
+
+    <!-- Title -->
+    <div class="field" style="margin-top:22px">
+      <label class="lbl" for="songTitle" data-i18n="titleLbl">ចំណងជើងចម្រៀង</label>
+      <input class="txt" id="songTitle" type="text" maxlength="80" placeholder="ចំណងជើងចម្រៀង" data-i18n-ph="titlePh">
+    </div>
+
+    <!-- Lyrics -->
+    <div class="field">
+      <div class="rowline" style="justify-content:space-between;margin-bottom:7px">
+        <label class="lbl" for="lyrics" style="margin-bottom:0" data-i18n="lyricsLbl">អត្ថបទចម្រៀង</label>
+        <span class="rowline">
+          <button class="mini-btn" id="aiLangBtn" type="button" aria-pressed="false">&#127472;&#127469; ខ្មែរ &#9662;</button>
+          <button class="mini-btn dark" id="aiLyricsBtn" type="button" data-i18n="aiLyrics">អត្ថបទ AI</button>
+        </span>
+      </div>
+      <textarea class="txt" id="lyrics" maxlength="5000"
+        placeholder="សរសេរអត្ថបទចម្រៀងរបស់អ្នកនៅទីនេះ…" data-i18n-ph="lyricsPh"></textarea>
+      <div class="count" id="lyrCount">0 / 5000</div>
+      <div class="hint" id="aiLyricsMsg"></div>
+    </div>
+
+    <!-- Style picker (old-site dropdown, rebuilt) -->
+    <div class="field">
+      <span class="lbl" id="styleLbl" data-i18n="styleLbl">រចនាបថ</span>
+      <div class="style-preset-wrap" id="styleWrap">
+        <button type="button" class="style-preset-field" id="styleField" aria-haspopup="listbox" aria-expanded="false">
+          <span class="spf-label ph" id="styleFieldLabel">ជ្រើសរើសរចនាបថ</span>
+          <span class="spf-count" id="styleCount">11</span>
+          <span class="spf-chev" id="styleChev">&#9662;</span>
+        </button>
+        <div class="style-preset-drop" id="styleDrop" hidden role="listbox" aria-labelledby="styleLbl"></div>
+      </div>
+      <input class="txt" id="styleText" type="text" style="margin-top:10px"
+        placeholder="ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក" data-i18n-ph="stylePh" aria-label="Style text">
+      <!-- Add-style: save your own styles; they appear as extra rows in the dropdown above -->
+      <div class="rowline" style="margin-top:10px">
+        <input class="txt" id="styleAddText" type="text" style="flex:1;min-width:0"
+          placeholder="វាយរចនាបថ រួចចុចបន្ថែម" data-i18n-ph="addStylePh" aria-label="Add a custom style">
+        <button class="mini-btn dark" id="styleAddBtn" type="button" data-i18n="addBtn">បន្ថែម</button>
+      </div>
+    </div>
+
+    <!-- Model -->
+    <div class="field">
+      <span class="lbl" id="modelLbl" data-i18n="modelLbl">ម៉ូដែល</span>
+      <div class="seg" id="modelRow" role="group" aria-labelledby="modelLbl">
+        <button class="seg-btn" type="button" data-model="v6" aria-pressed="true">V6 Ultra</button>
+        <button class="seg-btn" type="button" data-model="v6-wild" aria-pressed="false">V6 Pro</button>
+        <button class="seg-btn" type="button" data-model="v6-mini" aria-pressed="false">V6 Mini</button>
+        <button class="seg-btn" type="button" data-model="v5_5" aria-pressed="false">V5.5</button>
+      </div>
+    </div>
+
+    <!-- Voice -->
+    <div class="field">
+      <span class="lbl" id="voiceLbl" data-i18n="voiceLbl">សំឡេង</span>
+      <div class="seg" id="voiceRow" role="group" aria-labelledby="voiceLbl">
+        <button class="seg-btn" type="button" data-voice="male" aria-pressed="true" data-i18n="male">បុរស</button>
+        <button class="seg-btn" type="button" data-voice="female" aria-pressed="false" data-i18n="female">ស្រី</button>
+        <button class="seg-btn" type="button" data-voice="random" aria-pressed="false" data-i18n="random">ចៃដន្យ</button>
+        <button class="seg-btn" type="button" data-voice="myvoice" aria-pressed="false" data-i18n="myVoice">សំឡេងខ្ញុំ</button>
+      </div>
+      <!-- My Voice setup (old site flow) -->
+      <div id="myVoiceBox" hidden style="margin-top:12px">
+        <div class="hint" id="myVoiceStatus" style="margin-top:0" data-i18n="mvNotSetup">សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ។</div>
+        <div class="rowline" style="margin-top:10px">
+          <button class="mini-btn dark" id="mvRecBtn" type="button" data-i18n="mvRecordSample">● ថតសំឡេងគំរូ</button>
+          <button class="mini-btn" id="mvDeleteBtn" type="button" hidden data-i18n="mvDelete">លុបសំឡេងខ្ញុំ</button>
+        </div>
+        <div class="hint" id="mvStepHint" data-i18n="mvStep1">ជំហានទី ១៖ ថតសំឡេងច្រៀង ឬនិយាយរបស់អ្នក ១៥ វិនាទី រួចយើងនឹងពិនិត្យសំឡេង។</div>
+        <div id="mvPhraseBox" hidden style="margin-top:10px">
+          <div class="lbl" style="margin-bottom:4px" data-i18n="mvReadPhrase">សូមអានឃ្លានេះឮៗ ជាភាសាអង់គ្លេស៖</div>
+          <div class="hint" id="mvPhrase" style="font-size:.95rem;color:#1f2937"></div>
+          <div class="rowline" style="margin-top:10px">
+            <button class="mini-btn dark" id="mvPhraseRecBtn" type="button" data-i18n="mvRecordPhrase">● ថតឃ្លា</button>
+            <button class="mini-btn green" id="mvSaveBtn" type="button" hidden data-i18n="mvSaveBtn">រក្សាទុកសំឡេងខ្ញុំ</button>
+          </div>
+        </div>
+        <div class="cover-msg" id="mvMsg"></div>
+      </div>
+      <label class="chk-row"><input type="checkbox" id="instrumentalChk"> <span data-i18n="instrumental">ឧបករណ៍ភ្លេងតែប៉ុណ្ណោះ (គ្មានសំឡេងច្រៀង)</span></label>
+    </div>
+
+    <!-- Cover (collapsible box) -->
+    <div class="field" id="coverField">
+      <button class="cover-toggle" id="coverToggle" type="button" aria-expanded="false">
+        <span data-i18n="coverLbl">🎵 ខូវើ</span><span id="coverChev">&#9662;</span>
+      </button>
+      <div class="cover-box" id="coverBox" hidden>
+        <div class="lbl" style="margin-bottom:4px" data-i18n="coverSub">ខូវើចម្រៀងដែលអ្នកមានរួចហើយ</div>
+        <div class="hint" style="margin:0 0 10px" data-i18n="coverHint">អតិបរមា ៨ នាទី · MP3 · ខូវើច្រៀងចម្រៀងដដែល តន្ត្រីដដែល</div>
+        <div class="rowline">
+          <input type="file" id="coverFileInput" accept="audio/mpeg,.mp3" hidden>
+          <button class="mini-btn dark" id="coverPickBtn" type="button" data-i18n="coverChoose">📁 ជ្រើសរើសចម្រៀង</button>
+          <button class="mini-btn" id="coverClearBtn" type="button" hidden data-i18n="coverRemove">✕ លុបចេញ</button>
+          <button class="mini-btn" id="coverListenBtn" type="button" hidden data-i18n="coverListen">▶ ស្ដាប់</button>
+        </div>
+        <div class="cover-fileinfo" id="coverFileInfo"></div>
+        <div class="bar" id="coverProg" hidden><div id="coverProgFill"></div></div>
+        <div class="rowline" style="margin-top:10px">
+          <input class="txt" id="coverUrl" type="url" placeholder="https://...mp3" style="flex:1;min-width:0">
+          <button class="mini-btn dark" id="coverUseUrlBtn" type="button" data-i18n="coverUseLink">ប្រើលីងនេះ</button>
+        </div>
+        <div class="cover-msg" id="coverMsg"></div>
+        <div class="hint" data-i18n="coverCost">១២ ក្រេឌីតចម្រៀង · អ្នកទទួលបានចម្រៀងខូវើ ២ បទ។</div>
+      </div>
+    </div>
+
+    <!-- Balance + Generate -->
+    <div class="field">
+      <div class="bal" id="balLine">ក្រេឌីតចម្រៀង៖ …</div>
+      <div class="hint" style="margin-bottom:12px" data-i18n="costHint">ការបង្កើតម្ដងត្រូវការ ១២ ក្រេឌីត ហើយបង្កើតចម្រៀង ២ បទ។</div>
+      <button class="gen-btn" id="genBtn" type="button" disabled data-i18n="genBtn">បង្កើត</button>
+      <div class="hint" id="genHint" data-i18n="genHint">សូមចូលប្រើជាមុនសិន ទើបបង្កើតចម្រៀងបាន។</div>
+      <div class="prog" id="prog" hidden></div>
+      <div class="err" id="genErr" hidden></div>
+    </div>
+
+    <!-- Results -->
+    <div id="resultBox" hidden>
+      <div class="sec-title" id="resultTitle" data-i18n="resultTitle">ចម្រៀងរបស់អ្នក</div>
+      <div id="results"></div>
+      <div class="ok-note" id="resultNote" hidden></div>
+    </div>
+  </main>
+</div>
+<!-- Gift CLAIM popup (new-user gift: 24 Song Credits, once per Gmail) -->
+<div class="gift-veil" id="giftSheet" hidden role="dialog" aria-modal="true">
+  <div class="gift-card">
+    <div class="gift-ico">&#127873;</div>
+    <h3 data-i18n="claimTitle">អំណោយឥតគិតថ្លៃ</h3>
+    <p data-i18n="claimBody">អ្នកទទួលបាន ២៤ ក្រេឌីតចម្រៀងឥតគិតថ្លៃ — មួយ Gmail បានម្ដងតែប៉ុណ្ណោះ។ ចុចទទួលយកឥឡូវនេះ រួចចាប់ផ្ដើមបង្កើត។</p>
+    <button class="gift-claim" id="giftClaimBtn" type="button" data-i18n="claimBtn">ទទួលយក</button>
+    <button class="gift-later" id="giftLaterBtn" type="button" data-i18n="claimLater">មិនទាន់ទេ</button>
+    <div class="gift-msg" id="giftMsg"></div>
+  </div>
+</div>
+<audio id="au" preload="none"></audio>
+
+<script>
+(function(){
+  "use strict";
+  /* ---- i18n table FIRST: no t() call may run before this assignment. ---- */
+  var STR = {
+    kh: {
+      claimTitle: "អំណោយឥតគិតថ្លៃ",
+      claimBody: "អ្នកទទួលបាន ២៤ ក្រេឌីតចម្រៀងឥតគិតថ្លៃ — មួយ Gmail បានម្ដងតែប៉ុណ្ណោះ។ ចុចទទួលយកឥឡូវនេះ រួចចាប់ផ្ដើមបង្កើត។",
+      claimBtn: "ទទួលយក",
+      claimLater: "មិនទាន់ទេ",
+      claimedOk: "បានទទួលហើយ — បន្ថែម ២៤ ក្រេឌីតចម្រៀង។",
+      claimFail: "ទទួលអំណោយមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      signInFirst: "សូមចូលប្រើជាមុនសិន។",
+      coverChecking: "កំពុងពិនិត្យចម្រៀង… ",
+      coverReady: "បានពិនិត្យរួចរាល់ — អាចខូវើបានហើយ។",
+      coverRejected: "ចម្រៀងនេះខូវើមិនបានទេ — វាត្រូវនឹងចម្រៀងដែលបានចេញផ្សាយរួចហើយ។ សូមប្រើការថតផ្សេង។",
+      coverCheckFail: "ពិនិត្យចម្រៀងមិនបានទេ។ ពេលបង្កើត នឹងពិនិត្យម្ដងទៀត។",
+      coverUploading: "កំពុងអាប់ឡូត…",
+      coverNeedMp3: "សូមជ្រើសរើសឯកសារ MP3។",
+      coverTooLong: "ចម្រៀងនោះវែងជាង ៨ នាទី។",
+      coverReadFail: "អានឯកសារនោះមិនបានទេ។",
+      coverNeedLink: "សូមដាក់លីង https:// ពេញលេញទៅកាន់ MP3។",
+      coverListen: "▶ ស្ដាប់",
+      coverStop: "❚❚ ឈប់",
+      aiWriting: "កំពុងសរសេរ… ",
+      aiNeedTitle: "សូមដាក់ចំណងជើងចម្រៀងជាមុនសិន។",
+      aiHasLyrics: "អត្ថបទបានសរសេររួចហើយ — លុបប្រអប់ជាមុនសិន ទើបប្រើ AI Lyrics បាន។",
+      aiLyrics: "អត្ថបទ AI",
+      aiFail: "សរសេរអត្ថបទមិនបានទេ។",
+      mvNotReady: "សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ — សូមបើកផ្នែក My Voice ខាងក្រោម រួចថតសំឡេងជាមុនសិន។",
+      mvReady: "សំឡេងខ្ញុំរួចរាល់ហើយ។",
+      mvNotSetup: "សំឡេងខ្ញុំមិនទាន់បានរៀបចំទេ។",
+      mvRecordSample: "● ថតសំឡេងគំរូ",
+      mvStopRec: "■ ឈប់ថត",
+      mvRecordPhrase: "● ថតឃ្លា",
+      mvRecording: "កំពុងថត… ចុចឈប់ពេលអ្នកថតរួច។",
+      mvNoMic: "មីក្រូហ្វូនត្រូវបានប្លុក — សូមអនុញ្ញាត រួចព្យាយាមម្ដងទៀត។",
+      mvNoRec: "ឧបករណ៍នេះថតសំឡេងមិនបានទេ។",
+      mvUploadingSample: "កំពុងអាប់ឡូតសំឡេងគំរូ…",
+      mvCheckingVoice: "កំពុងពិនិត្យសំឡេង…",
+      mvWaitingPhrase: "កំពុងរង់ចាំឃ្លា… ",
+      mvPhraseSlow: "ឃ្លាយូរពេក — សូមព្យាយាមម្ដងទៀត។",
+      mvStep2: "ជំហានទី ២៖ ថតសំឡេងអ្នកអានឃ្លាខាងលើ រួចចុចរក្សាទុក។",
+      mvUploadingPhrase: "កំពុងអាប់ឡូតឃ្លា…",
+      mvPhraseSaved: "បានថតឃ្លារួចហើយ — ចុចរក្សាទុកសំឡេងខ្ញុំ។",
+      mvSaving: "កំពុងរក្សាទុកសំឡេង…",
+      mvCreating: "កំពុងបង្កើតសំឡេង… ",
+      mvSlow: "សំឡេងរបស់អ្នកយូរពេក — សូមព្យាយាមម្ដងទៀត។",
+      mvDeleted: "បានលុបសំឡេងរបស់អ្នកហើយ។",
+      mvDeleteFail: "លុបសំឡេងមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      mvSaveFail: "រក្សាទុកមិនបានទេ។",
+      mvCheckFail: "ពិនិត្យសំឡេងមិនបានទេ។",
+      mvStep1: "ជំហានទី ១៖ ថតសំឡេងច្រៀង ឬនិយាយរបស់អ្នក ១៥ វិនាទី រួចយើងនឹងពិនិត្យសំឡេង។",
+      mvYourSongsVoice: "ចម្រៀងរបស់អ្នកនឹងច្រៀងដោយសំឡេងរបស់អ្នក។",
+      mvSaveBtn: "រក្សាទុកសំឡេងខ្ញុំ",
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      langNameKh: "ខ្មែរ",
+      langNameEn: "អង់គ្លេស",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      navChat: "ឆាត",
+      chatFabAria: "ឆាត",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      secCreate: "បង្កើតចម្រៀង",
+      coverLbl: "🎵 ខូវើ",
+      coverSub: "ខូវើចម្រៀងដែលអ្នកមានរួចហើយ",
+      coverHint: "អតិបរមា ៨ នាទី · MP3 · ខូវើច្រៀងចម្រៀងដដែល តន្ត្រីដដែល",
+      coverChoose: "📁 ជ្រើសរើសចម្រៀង",
+      coverRemove: "✕ លុបចេញ",
+      coverUseLink: "ប្រើលីងនេះ",
+      coverCost: "១២ ក្រេឌីតចម្រៀង · អ្នកទទួលបានចម្រៀងខូវើ ២ បទ។",
+      titleLbl: "ចំណងជើងចម្រៀង",
+      titlePh: "ចំណងជើងចម្រៀង",
+      lyricsLbl: "អត្ថបទចម្រៀង",
+      lyricsPh: "សរសេរអត្ថបទចម្រៀងរបស់អ្នកនៅទីនេះ…",
+      styleLbl: "រចនាបថ",
+      stylePh: "ចុចរចនាបថខាងលើ ឬវាយរចនាបថរបស់អ្នក",
+      stylePlaceholder: "ជ្រើសរើសរចនាបថ",
+      addStylePh: "វាយរចនាបថ រួចចុចបន្ថែម",
+      addBtn: "បន្ថែម",
+      modelLbl: "ម៉ូដែល",
+      voiceLbl: "សំឡេង",
+      male: "បុរស",
+      female: "ស្រី",
+      random: "ចៃដន្យ",
+      myVoice: "សំឡេងខ្ញុំ",
+      mvDelete: "លុបសំឡេងខ្ញុំ",
+      mvReadPhrase: "សូមអានឃ្លានេះឮៗ ជាភាសាអង់គ្លេស៖",
+      instrumental: "ឧបករណ៍ភ្លេងតែប៉ុណ្ណោះ (គ្មានសំឡេងច្រៀង)",
+      balLabel: "ក្រេឌីតចម្រៀង៖ ",
+      costHint: "ការបង្កើតម្ដងត្រូវការ ១២ ក្រេឌីត ហើយបង្កើតចម្រៀង ២ បទ។",
+      genBtn: "បង្កើត",
+      genHint: "សូមចូលប្រើជាមុនសិន ទើបបង្កើតចម្រៀងបាន។",
+      resultTitle: "ចម្រៀងរបស់អ្នក",
+      download: "ទាញយក",
+      generating: "កំពុងបង្កើត… ",
+      genBusy: "កំពុងបង្កើត…",
+      retry: "ព្យាយាមម្ដងទៀត",
+      needTitle: "សូមដាក់ចំណងជើងចម្រៀងជាមុនសិន។",
+      needLyrics: "សូមសរសេរអត្ថបទចម្រៀងជាមុនសិន។",
+      needCredits1: "ក្រេឌីតចម្រៀងមិនគ្រប់ទេ — ត្រូវការ ",
+      needCredits2: " ក្រេឌីតសម្រាប់ការបង្កើតម្ដង។ សូមទិញក្រេឌីតបន្ថែមជាមុនសិន។",
+      startFail: "ចាប់ផ្ដើមការបង្កើតមិនបានទេ។",
+      noJob: "ម៉ាស៊ីនមេឆ្លើយមកដោយគ្មានការងារឲ្យតាមដាន។",
+      genNoServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមពិនិត្យអ៊ីនធឺណិត រួចព្យាយាមម្ដងទៀត។",
+      stageSep: " — ដំណាក់កាល៖ ",
+      playSong: "ចាក់ចម្រៀង ",
+      delStyle: "លុបរចនាបថ "
+    },
+    en: {
+      claimTitle: "Free Gift",
+      claimBody: "You get 24 Song Credits free — one gift per Gmail, forever. Claim it now and start creating.",
+      claimBtn: "Claim",
+      claimLater: "Not now",
+      claimedOk: "Claimed — 24 Song Credits added.",
+      claimFail: "Could not claim the gift. Please try again.",
+      noServer: "Could not reach the server. Please try again.",
+      signInFirst: "Please sign in first.",
+      coverChecking: "Checking the song… ",
+      coverReady: "Checked — ready to cover.",
+      coverRejected: "This song cannot be covered — it matches a song already released. Please use a different recording.",
+      coverCheckFail: "Could not check the song. Generate will check it again.",
+      coverUploading: "Uploading…",
+      coverNeedMp3: "Please choose an MP3 file.",
+      coverTooLong: "That song is longer than 8 minutes.",
+      coverReadFail: "Could not read that file.",
+      coverNeedLink: "Please paste a full https:// link to an MP3.",
+      coverListen: "▶ Listen",
+      coverStop: "❚❚ Stop",
+      aiWriting: "Writing… ",
+      aiNeedTitle: "Please enter a song title first.",
+      aiHasLyrics: "Lyrics are already written — clear the box first to use AI Lyrics.",
+      aiLyrics: "AI Lyrics",
+      aiFail: "Could not write the lyrics.",
+      mvNotReady: "My Voice is not set up yet — open My Voice below and record your sample first.",
+      mvReady: "My Voice is ready.",
+      mvNotSetup: "My Voice is not set up yet.",
+      mvRecordSample: "● Record a sample",
+      mvStopRec: "■ Stop recording",
+      mvRecordPhrase: "● Record the phrase",
+      mvRecording: "Recording… tap Stop when you finish.",
+      mvNoMic: "Microphone is blocked — please allow it and try again.",
+      mvNoRec: "Recording is not supported on this device.",
+      mvUploadingSample: "Uploading your sample…",
+      mvCheckingVoice: "Checking your voice…",
+      mvWaitingPhrase: "Waiting for your phrase… ",
+      mvPhraseSlow: "The phrase is taking too long — please try again.",
+      mvStep2: "Step 2: record yourself reading the phrase above, then tap Save.",
+      mvUploadingPhrase: "Uploading the phrase…",
+      mvPhraseSaved: "Phrase recorded — tap Save my voice.",
+      mvSaving: "Saving your voice…",
+      mvCreating: "Creating your voice… ",
+      mvSlow: "Your voice is taking too long — please try again.",
+      mvDeleted: "Your voice was deleted.",
+      mvDeleteFail: "Could not delete your voice. Please try again.",
+      mvSaveFail: "Save failed.",
+      mvCheckFail: "Voice check failed.",
+      mvStep1: "Step 1: record 15 seconds of your singing or talking, then we check your voice.",
+      mvYourSongsVoice: "Your songs will now sing in your voice.",
+      mvSaveBtn: "Save my voice",
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      langNameKh: "Khmer",
+      langNameEn: "English",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      navChat: "AI Chat",
+      chatFabAria: "AI Chat",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      secCreate: "Create Song",
+      coverLbl: "🎵 Cover",
+      coverSub: "Cover a song you already have",
+      coverHint: "Max 8 min · MP3 · the cover sings the same song, same music",
+      coverChoose: "📁 Choose song",
+      coverRemove: "✕ Remove",
+      coverUseLink: "Use this link",
+      coverCost: "12 Song Credits · you get 2 cover songs.",
+      titleLbl: "Song title",
+      titlePh: "Song title",
+      lyricsLbl: "Lyrics",
+      lyricsPh: "Write your lyrics here…",
+      styleLbl: "Style",
+      stylePh: "Tap a style above, or type your own style",
+      stylePlaceholder: "Choose a style",
+      addStylePh: "Type a style, then Add",
+      addBtn: "Add",
+      modelLbl: "Model",
+      voiceLbl: "Voice",
+      male: "Male",
+      female: "Female",
+      random: "Random",
+      myVoice: "My Voice",
+      mvDelete: "Delete my voice",
+      mvReadPhrase: "Read this out loud, in English:",
+      instrumental: "Instrumental (no singing)",
+      balLabel: "Song credits: ",
+      costHint: "One creation costs 12 credits and makes 2 songs.",
+      genBtn: "Generate",
+      genHint: "Sign in to create a song.",
+      resultTitle: "Your songs",
+      download: "Download",
+      generating: "Generating… ",
+      genBusy: "Generating…",
+      retry: "Retry",
+      needTitle: "Please enter a song title.",
+      needLyrics: "Please write your lyrics first.",
+      needCredits1: "Not enough Song Credits — you need ",
+      needCredits2: " credits for one creation. Please buy more credit first.",
+      startFail: "Could not start the creation.",
+      noJob: "The server answered without a job to follow.",
+      genNoServer: "Could not reach the server. Please check your connection and try again.",
+      stageSep: " — Stage: ",
+      playSong: "Play song ",
+      delStyle: "Delete style "
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var storedLang = localStorage.getItem(LANG_KEY) || "";
+    if (storedLang === "en" || storedLang === "kh") lang = storedLang;
+  } catch (e) {}
+  /* Guarded translator: never throws, even if STR were undefined. */
+  function t(key){
+    var dict = (typeof STR !== "undefined" && STR && STR[lang]) || (typeof STR !== "undefined" && STR && STR.en);
+    if (dict && dict[key]) return dict[key];
+    if (typeof STR !== "undefined" && STR && STR.en && STR.en[key]) return STR.en[key];
+    return key;
+  }
+
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("/sw.js"); } catch (e) {} }
+
+  var API = "https://movai-proxy-wasr.onrender.com";
+  var SONG_COST = 12; // song credits per creation (server: 12 flat, 2 songs)
+  var SESSION_KEY = "movai-session"; // plain email string
+  var USER_KEY = "movai-user"; // cached user object (name + balances)
+  var MODEL_KEY = "movai-song-model";
+  var PENDING_KEY = "movai-pending-gens"; // pending generations, handed to My Songs
+  var LASTSONGS_KEY = "movai-lastsongs-"; // + email — last finished pair
+  var GRACE_MS = 4 * 60 * 1000; // 4-minute state-restore grace
+  function draftKey(em){ return "movai-create-draft-" + String(em || "guest").toLowerCase(); }
+  function stylesKey(em){ return "movai-custom-styles-" + String(em || "guest").toLowerCase(); }
+
+  // Style presets — exact names + style text copied from the old site.
+  var PRESETS = {"🥹Sad.Trap💔": "Emotional Sad Melodic Trap, Deep Heartbreak Ballad, 72 BPM, minor key, haunting soft piano intro, emotional cinematic violin strings, atmospheric pads, deep warm 808 bass, slow trap drums, subtle hi-hats, emotional male vocal with slightly raspy and trembling voice, intimate verses, powerful heartbreaking chorus, vulnerable crying vocal delivery, beautiful melodic hooks, dramatic instrumental drop, piano-only emotional bridge, cinematic outro, melancholic atmosphere, deeply touching, tearjerking, professional studio production, modern emotional trap sound.", "😔 Sad Trap 💔": "Sad Emotional Melodic Hip Hop, Fast Male Rap Flow, Slow 72 BPM Instrumental, Deep Heartbroken Male Voice, Rapid Double-Time Rap Verses, Slow Melancholic Piano Melody, Soft Emotional Strings, Deep 808 Bass, Slow Hip Hop Drums, Atmospheric Pads, Clear English Pronunciation, Rhythmic Fast Rap Delivery, Emotional Melodic Singing Chorus, Lonely Night Mood, One-Sided Love, Painful Storytelling, Crying Vocal Texture, Cinematic Piano Bridge, Powerful Final Chorus, Professional Studio Quality.", "😭 Sad💔": "Male Khmer emotional sad ballad, heartbreaking vocal, deep sorrowful male voice, emotional melodic singing, crying vocal delivery, painful storytelling rap, melodic rap, slow tempo 68-74 BPM, minor key, cinematic piano, acoustic guitar, emotional strings, atmospheric pads, deep bass, soft trap drums, powerful emotional chorus, dramatic vocal climax, intimate verse, tearjerking outro, high quality studio production.", "💔Sad Drama😔": "Extremely Sad Khmer Emotional Ballad, Deep Mature Male Solo Vocal, Slow Tempo  sixty-two BPM, Heartbreaking Piano Intro, Emotional Acoustic Guitar, Sad Cinematic Violin, Deep Warm Male Voice, Emotional Storytelling, Painful and Melancholic Atmosphere, Soft Whispering Intro, Powerful Emotional Chorus, Dramatic Violin Instrumental Solo, Emotional Vocal Expression, Slow Piano Outro, Khmer Language Lyrics, 5-6 Minutes Song, No Female Vocal, No Duet.", "💔Pop Ballad ♥️": "Khmer Countryside Sad Song, Traditional Khmer Rural Ballad, Deep Emotional Male Solo Vocal, Heartbroken Love Story, Painful Family Conflict, Feeling Worthless and Broken, Extremely Sad Melancholic Mood, Slow Khmer Country Rhythm, Traditional Khmer Acoustic Guitar, Sad Tro Sau and Khmer Flute, Emotional Violin, Soft Traditional Khmer Instrumentation, Rural Village Atmosphere, Lonely Male Singing, Crying and Trembling Vocal, Deep Emotional Storytelling, Powerful Heartbreaking Chorus, Slow Tempo 60-65 BPM, Nostalgic Countryside Feeling, No Female Vocal, No Rap, Authentic Khmer Sad Music.", "♥️បទបែបស្រែ🥰": "Authentic Traditional Khmer Countryside Sad Ballad, Deep Emotional Male Solo Vocal, Extremely Heartbreaking Tearful Singing, Crying and Trembling Voice, Slow Tempo 58-62 BPM, Traditional Khmer Khloy Flute, Khmer Tro Sau, Tro Khmer, Chapey Dang Veng, Soft Acoustic Guitar, Traditional Khmer Wind Instruments, Emotional Violin, Gentle Piano, Rural Cambodian Village Atmosphere, Rice Fields at Sunset, Poor Man's Unrequited Love Story, Deep Sad Storytelling, Powerful Crying Chorus, Dramatic Final Chorus, Long Traditional Instrumental Solo, No Female Vocal, No Rap, No Electronic Dance Beat, Pure Khmer Rural Music.", "😔Trap Sad Hip-hop💔": "Slow Tempo 58-62 BPM, Trap, Sad, Hip-hop Reaper, male vocals", "😈Freestyle Rep BassTrap🫨": "Hip-hop, Freestyle, Rep, Bass, Trap", "🤙កន្ទ្រឹម💃": "Authentic Traditional Khmer Kantreum Folk Music, Joyful Cambodian Folk Dance Song, Ramvong Circle Dance Rhythm, Jrochak Traditional Dance Beat, Lam Lao Singing Style, Saravan Dance Rhythm, Deep Emotional Male Solo Vocal, Traditional Khmer Tro Sau, Tro Khmer, Khloy Flute, Chapey Dang Veng, Traditional Khmer Drums, Festive Village Celebration Atmosphere, Upbeat Danceable Tempo, Khmer Language Lyrics, No Female Vocal, No Rap, Pure Traditional Khmer Folk Music.", "😭Sad Emotional Rap💔": "Khmer Male Emotional Vocal, Deep Sad Trap, Emotional Hip Hop, Cinematic Piano, Dark Ambient Pads, Heavy 808 Bass, Powerful Drums, Melodic Rap, Raw Heartbroken Male Voice, Deep Expressive Vocal, Soft Intimate Verses, Explosive Screaming Chorus, Aggressive Emotional Belting, Crying Vocal Texture, Dynamic Vocal Build-up, Dramatic Strings, Atmospheric Sound Design, Powerful Final Chorus, Slow Emotional Intro, Modern Khmer Music Production, 75 BPM, High Quality Studio Production.", "💃កន្ទ្រឹម EDM🥲": "Khmer Traditional Kantrem Remix Dance, Modern Khmer Kantrem EDM, High Energy Dance Beat, Bouncy Rhythmic Drums, Catchy Synth Melody, Traditional Khmer Instrument Fusion, Deep Punchy Bass, Playful Melodic Vocal Runs, Male Khmer Vocal, Emotional Romantic Lyrics with a Happy Dance Feeling, Catchy Repeating Chorus, Melodic Call and Response, Energetic Instrumental Breaks, Creative Melody Variations, Festival Party Atmosphere, Professional Studio Production, 130 BPM, 4:30 to 5:00 minutes."};
+  var PRESET_NAMES = Object.keys(PRESETS);
+
+  var songTitle = document.getElementById("songTitle");
+  var lyricsEl = document.getElementById("lyrics");
+  var lyrCount = document.getElementById("lyrCount");
+  var styleWrap = document.getElementById("styleWrap");
+  var styleField = document.getElementById("styleField");
+  var styleFieldLabel = document.getElementById("styleFieldLabel");
+  var styleCount = document.getElementById("styleCount");
+  var styleDrop = document.getElementById("styleDrop");
+  var styleText = document.getElementById("styleText");
+  var modelRow = document.getElementById("modelRow");
+  var voiceRow = document.getElementById("voiceRow");
+  var balLine = document.getElementById("balLine");
+  var genBtn = document.getElementById("genBtn");
+  var genHint = document.getElementById("genHint");
+  var progEl = document.getElementById("prog");
+  var genErr = document.getElementById("genErr");
+  var resultBox = document.getElementById("resultBox");
+  var resultTitle = document.getElementById("resultTitle");
+  var resultsEl = document.getElementById("results");
+  var resultNote = document.getElementById("resultNote");
+  var au = document.getElementById("au");
+
+  var user = null; // {email, name, songCredits, ...} from the server
+  var model = "v6";
+  // Display name for a stored model value: Suno's API value is "v6" but
+  // the owner sees the UI name "V6 Ultra". Never store the raw value.
+  function displayModel(m){
+    var s = String(m || "").trim().toLowerCase();
+    if (s === "v6" || s === "v6 ultra") return "V6 Ultra";
+    if (s === "v6-wild" || s === "v6_wild" || s === "v6 wild" || s === "v6 pro") return "V6 Pro";
+    if (s === "v6-mini" || s === "v6_mini" || s === "v6 mini") return "V6 Mini";
+    if (s === "v5_5" || s === "v5.5") return "V5.5";
+    return String(m || "");
+  }
+  var voice = "male";
+  var selectedPreset = ""; // preset name, or "" when none selected
+  var selectedCustom = ""; // custom style string, or "" when none selected
+  var instrumental = false;
+  var aiLang = "kh";
+  var coverState = { url: "", name: "", duration: 0, checkJobId: "", checkParams: null, checkState: "none" };
+  var myVoice = { hasVoice: false, available: false, name: "" };
+  var customStyles = [];
+  var busy = false;
+  var cancelGen = false;
+  var tickTimer = null;
+  var genStart = 0;
+  var curJobId = "";
+  var playingIdx = -1;
+  var resultSongs = [];
+
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var metaEl = document.querySelector('meta[name="theme-color"]');
+    if (metaEl) metaEl.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var btns = seg.querySelectorAll("button"); for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("on", btns[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (btnEl) setTheme(btnEl.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
+  /* ---- menu (bottom sheet) ---- */
+  var menuEl = document.getElementById("menu");
+  var menuFab = document.getElementById("menuFab");
+  var menuVeil = document.getElementById("menuVeil");
+  var menuSignIn = document.getElementById("menuSignIn");
+  var menuSignOut = document.getElementById("menuSignOut");
+  var menuUser = document.getElementById("menuUser");
+  function setMenu(open){
+    if (open) syncDrawerState();
+    menuEl.classList.toggle("open", !!open);
+    document.body.classList.toggle("drawer-open", !!open);
+    if (menuVeil) menuVeil.classList.toggle("open", !!open);
+    if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
+  if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
+  /* Menu links close the drawer at once, before navigation starts. */
+  if (menuEl) menuEl.addEventListener("click", function(e){
+    var linkEl = e.target && e.target.closest ? e.target.closest("a") : null;
+    if (linkEl) setMenu(false);
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") { setMenu(false); closeStyleDrop(); }
+  });
+  /* Round 4 (H) + Round 5 (O): while the user is actively scrolling, fade
+     the floating buttons out so they never cover content mid-scroll.
+     scrollend drops the class the moment scrolling truly ends, and a 2s
+     watchdog drops it if no scroll event arrived for 1.2s. */
+  var scrollFabTimer = null;
+  var scrollFabLast = 0;
+  window.addEventListener("scroll", function(){
+    document.body.classList.add("scrolling");
+    scrollFabLast = Date.now();
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
+  }, { passive: true });
+  window.addEventListener("scrollend", function(){
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    document.body.classList.remove("scrolling");
+  });
+  setInterval(function(){
+    if (document.body.classList.contains("scrolling") && Date.now() - scrollFabLast > 1200) document.body.classList.remove("scrolling");
+  }, 2000);
+  function menuAuthState(){
+    var em = "";
+    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
+    if (menuSignIn) menuSignIn.hidden = !!em;
+    if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  /* Re-render the drawer from live stored state every time it opens, so it
+     can never show a stale sign-in state or unselected theme/language
+     buttons. Runs synchronously, before the drawer becomes visible. */
+  function syncDrawerState(){
+    try {
+      applyTheme();
+      var stored = null;
+      try { stored = localStorage.getItem("movai-lang"); } catch (e) {}
+      if ((stored === "en" || stored === "kh") && stored !== lang) {
+        lang = stored;
+        applyLang();
+      } else {
+        var seg = document.getElementById("langSeg");
+        if (seg) { var btns = seg.querySelectorAll("button"); for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("on", btns[i].getAttribute("data-lang-val") === lang); }
+      }
+      menuAuthState();
+    } catch (e) {}
+  }
+  if (menuSignOut) menuSignOut.addEventListener("click", function(){
+    setMenu(false);
+    signOutLocal();
+    location.reload();
+  });
+
+  /* ---- helpers ---- */
+  function sleep(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
+  function fmtTime(sec){
+    if (!isFinite(sec) || sec <= 0) return "–:––";
+    sec = Math.floor(sec);
+    return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+  }
+  function playUrl(u){
+    var s = String(u || "");
+    s = s.replace(/,fl_attachment/g, "").replace(/fl_attachment,/g, "");
+    s = s.replace(/\/fl_attachment\//g, "/");
+    s = s.replace(/([?&])fl_attachment=[^&]*&/g, "$1");
+    s = s.replace(/([?&])fl_attachment=[^&]*$/, "");
+    return s;
+  }
+  // Server error text may carry a provider prefix; provider names must
+  // never appear on screen, so strip them from anything shown.
+  function cleanErr(msg){
+    var s = String(msg || "").trim();
+    s = s.replace(/^\s*(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\s*:\s*/i, "");
+    s = s.replace(/\b(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\b/gi, "");
+    s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
+    return s || "Could not create the song. Please try again.";
+  }
+  function apiPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      var ms = timeoutMs || 60000;
+      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
+    }
+    return fetch(API + path, opts).then(function(r){
+      if (timer) clearTimeout(timer);
+      return r.json().catch(function(){ return null; });
+    }).catch(function(e){
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
+  }
+  function loadStored(){
+    try { return JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch (e) { return null; }
+  }
+  function saveStored(u){
+    try {
+      if (u) localStorage.setItem(USER_KEY, JSON.stringify(u));
+      else localStorage.removeItem(USER_KEY);
+    } catch (e) {}
+  }
+  function sessionEmail(){
+    try { return (localStorage.getItem(SESSION_KEY) || "").trim(); } catch (e) { return ""; }
+  }
+  function setSession(email){
+    try {
+      if (email) localStorage.setItem(SESSION_KEY, email);
+      else localStorage.removeItem(SESSION_KEY);
+    } catch (e) {}
+  }
+
+  /* ---- account ---- */
+  function showBalance(){
+    if (!user) { balLine.textContent = t("balLabel") + "—"; return; }
+    var c = Math.floor(Number(user.songCredits) || 0);
+    balLine.innerHTML = "";
+    var boldEl = document.createElement("b");
+    boldEl.textContent = t("balLabel") + c;
+    balLine.appendChild(boldEl);
+  }
+  function renderAccount(){
+    var loggedIn = !!(user && user.email);
+    genBtn.disabled = !loggedIn || busy;
+    genHint.textContent = loggedIn ? "" : t("genHint");
+    showBalance();
+    menuAuthState();
+  }
+  function refreshBalance(){
+    if (!user || !user.email) return Promise.resolve();
+    // POST /api/admin/sync {email} returns {ok:true, user:{...songCredits}}
+    // — the server balance is the only truth, so refresh it from there.
+    return apiPost("/api/admin/sync", { email: user.email }, 30000).then(function(j){
+      if (j && j.ok === true && j.user) {
+        user = j.user;
+        saveStored(user);
+        renderAccount();
+      } else if (j && j.ok === false && j.error) {
+        // Server refused this account (e.g. blocked): sign out locally.
+        signOutLocal();
+        showLoginErr(j.error);
+      }
+    }).catch(function(){ /* offline / server waking: keep the cached balance */ });
+  }
+  function showLoginErr(msg){
+    genHint.textContent = cleanErr(msg);
+  }
+  function signOutLocal(){
+    user = null;
+    setSession("");
+    saveStored(null);
+    renderAccount();
+    menuAuthState();
+    resultBox.hidden = true;
+    resultsEl.innerHTML = "";
+    resultSongs = [];
+  }
+
+  /* ---- language ---- */
+  function onLangChange(){
+    renderAccount();
+    syncModelRow();
+    syncVoiceRow();
+    renderStyleRows();
+    syncStyleField();
+    restoreLastSongs();
+    mvSetStatus();
+  }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var btns = seg.querySelectorAll("button"); for (var q = 0; q < btns.length; q++) btns[q].classList.toggle("on", btns[q].getAttribute("data-lang-val") === lang); }
+    onLangChange();
+    /* The "Signed in as ..." line is rendered by JS, not data-i18n, so
+       re-render it here too - otherwise it stays in the previous
+       language after a language switch. */
+    menuAuthState();
+    syncAiLangBtn();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (btnEl) setLang(btnEl.getAttribute("data-lang-val"));
+  });
+
+  /* ---- lyrics counter ---- */
+  function updateCount(){
+    lyrCount.textContent = String((lyricsEl.value || "").length) + " / 5000";
+  }
+  lyricsEl.addEventListener("input", function(){ updateCount(); saveDraftSoon(); });
+  songTitle.addEventListener("input", saveDraftSoon);
+
+  /* ---- draft persistence (owner rule: nothing disappears on refresh) ----
+     Every field on Create is saved to localStorage as a draft, per Gmail,
+     and restored on load. */
+  var draftTimer = null;
+  var instrumentalChk = document.getElementById("instrumentalChk");
+  function draftEmail(){ return (user && user.email) || sessionEmail() || "guest"; }
+  function readDraft(){
+    try { return JSON.parse(localStorage.getItem(draftKey(draftEmail())) || "null"); } catch (e) { return null; }
+  }
+  function saveDraft(){
+    try {
+      var d = {
+        savedAt: Date.now(),
+        scrollY: window.scrollY || 0,
+        title: songTitle.value || "",
+        lyrics: lyricsEl.value || "",
+        styleText: styleText.value || "",
+        selectedPreset: selectedPreset || "",
+        selectedCustom: selectedCustom || "",
+        model: model, voice: voice, instrumental: instrumental, aiLang: aiLang,
+        cover: coverState.url ? { url: coverState.url, name: coverState.name || "",
+          duration: coverState.duration || 0, checkJobId: coverState.checkJobId || "",
+          checkParams: coverState.checkParams || null } : null
+      };
+      localStorage.setItem(draftKey(draftEmail()), JSON.stringify(d));
+    } catch (e) {}
+  }
+  function saveDraftSoon(){
+    if (draftTimer) clearTimeout(draftTimer);
+    draftTimer = setTimeout(saveDraft, 300);
+  }
+  function restoreDraft(){
+    var d = readDraft();
+    if (!d) return;
+    if (typeof d.title === "string") songTitle.value = d.title;
+    if (typeof d.lyrics === "string") lyricsEl.value = d.lyrics;
+    if (typeof d.styleText === "string") styleText.value = d.styleText;
+    if (typeof d.selectedPreset === "string" && d.selectedPreset && PRESETS[d.selectedPreset]) {
+      selectedPreset = d.selectedPreset;
+      selectedCustom = "";
+    } else if (typeof d.selectedCustom === "string" && d.selectedCustom && customStyles.indexOf(d.selectedCustom) >= 0) {
+      selectedCustom = d.selectedCustom;
+      selectedPreset = "";
+    }
+    if (d.model === "v6" || d.model === "v6-wild" || d.model === "v6-mini" || d.model === "v5_5") model = d.model;
+    if (d.voice === "male" || d.voice === "female" || d.voice === "random" || d.voice === "myvoice") voice = d.voice;
+    if (typeof d.instrumental === "boolean") instrumental = d.instrumental;
+    if (d.aiLang === "kh" || d.aiLang === "en") aiLang = d.aiLang;
+    if (d.cover && typeof d.cover === "object" && d.cover.url) {
+      coverState.url = d.cover.url;
+      coverState.name = d.cover.name || "";
+      coverState.duration = Number(d.cover.duration) || 0;
+      coverState.checkJobId = d.cover.checkJobId || "";
+      coverState.checkParams = d.cover.checkParams || null;
+      coverState.checkState = coverState.checkJobId ? "ok" : "none";
+      coverRenderFile();
+    }
+    updateCount();
+    syncAiLangBtn();
+    renderStyleRows();
+    syncStyleField();
+    /* Restore the scroll position only on a fresh return (within the
+       4-minute grace); the draft fields above restore regardless. */
+    if (typeof d.savedAt === "number" && Date.now() - d.savedAt <= GRACE_MS && typeof d.scrollY === "number" && d.scrollY > 0) {
+      requestAnimationFrame(function(){ try { window.scrollTo(0, d.scrollY); } catch (e) {} });
+    }
+  }
+  document.addEventListener("visibilitychange", function(){ if (document.hidden) saveDraft(); });
+  window.addEventListener("beforeunload", saveDraft);
+  window.addEventListener("pagehide", saveDraft);
+  setInterval(function(){ if (!document.hidden) saveDraft(); }, 10000);
+
+  /* ---- style picker (old-site dropdown, rebuilt) ----
+     Field shows the selected name (or the placeholder), a count badge and
+     a chevron that rotates when open. The dropdown holds 11 preset rows
+     plus any saved custom styles. Each row has a 26px square check box
+     with a ✓ that is only visible when the row is selected. Tap a row to
+     select it (only one at a time); tap the same row again to deselect
+     and clear the style text. Typing in the style text clears the
+     selection. Tapping outside or Escape closes the dropdown. */
+  function clearStyleSelection(){
+    selectedPreset = "";
+    selectedCustom = "";
+    syncStyleField();
+    renderStyleRows();
+  }
+  function syncStyleField(){
+    var name = selectedPreset || selectedCustom || "";
+    if (name) {
+      styleFieldLabel.textContent = name;
+      styleFieldLabel.classList.remove("ph");
+    } else {
+      styleFieldLabel.textContent = t("stylePlaceholder");
+      styleFieldLabel.classList.add("ph");
+    }
+    styleCount.textContent = String(PRESET_NAMES.length + customStyles.length);
+  }
+  function openStyleDrop(){
+    styleWrap.classList.add("open");
+    styleDrop.hidden = false;
+    styleField.setAttribute("aria-expanded", "true");
+  }
+  function closeStyleDrop(){
+    styleWrap.classList.remove("open");
+    styleDrop.hidden = true;
+    styleField.setAttribute("aria-expanded", "false");
+  }
+  function toggleStyleDrop(){
+    if (styleDrop.hidden) openStyleDrop(); else closeStyleDrop();
+  }
+  function renderStyleRows(){
+    styleDrop.innerHTML = "";
+    PRESET_NAMES.forEach(function(name){
+      var rowEl = document.createElement("button");
+      rowEl.type = "button";
+      rowEl.className = "style-preset-row" + (selectedPreset === name ? " on" : "");
+      rowEl.setAttribute("role", "option");
+      rowEl.setAttribute("aria-selected", selectedPreset === name ? "true" : "false");
+      var checkEl = document.createElement("span");
+      checkEl.className = "preset-check";
+      checkEl.textContent = "✓";
+      var nameEl = document.createElement("span");
+      nameEl.className = "row-name";
+      nameEl.textContent = name;
+      rowEl.appendChild(checkEl);
+      rowEl.appendChild(nameEl);
+      rowEl.addEventListener("click", function(){
+        if (selectedPreset === name) {
+          selectedPreset = "";
+          if (styleText.value === PRESETS[name]) styleText.value = "";
+        } else {
+          selectedPreset = name;
+          selectedCustom = "";
+          styleText.value = PRESETS[name];
+        }
+        renderStyleRows();
+        syncStyleField();
+        saveDraftSoon();
+      });
+      styleDrop.appendChild(rowEl);
+    });
+    customStyles.forEach(function(name){
+      var rowEl = document.createElement("button");
+      rowEl.type = "button";
+      rowEl.className = "style-preset-row" + (selectedCustom === name ? " on" : "");
+      rowEl.setAttribute("role", "option");
+      rowEl.setAttribute("aria-selected", selectedCustom === name ? "true" : "false");
+      var checkEl = document.createElement("span");
+      checkEl.className = "preset-check";
+      checkEl.textContent = "✓";
+      var nameEl = document.createElement("span");
+      nameEl.className = "row-name";
+      nameEl.textContent = name;
+      var delEl = document.createElement("span");
+      delEl.className = "row-del";
+      delEl.setAttribute("role", "button");
+      delEl.setAttribute("aria-label", t("delStyle") + name);
+      delEl.textContent = "✕";
+      delEl.addEventListener("click", function(e){
+        e.stopPropagation();
+        customStyles = customStyles.filter(function(s){ return s !== name; });
+        if (selectedCustom === name) {
+          selectedCustom = "";
+          if (styleText.value === name) styleText.value = "";
+        }
+        saveCustomStyles();
+        renderStyleRows();
+        syncStyleField();
+        saveDraftSoon();
+      });
+      rowEl.appendChild(checkEl);
+      rowEl.appendChild(nameEl);
+      rowEl.appendChild(delEl);
+      rowEl.addEventListener("click", function(){
+        if (selectedCustom === name) {
+          selectedCustom = "";
+          if (styleText.value === name) styleText.value = "";
+        } else {
+          selectedCustom = name;
+          selectedPreset = "";
+          styleText.value = name;
+        }
+        renderStyleRows();
+        syncStyleField();
+        saveDraftSoon();
+      });
+      styleDrop.appendChild(rowEl);
+    });
+    styleCount.textContent = String(PRESET_NAMES.length + customStyles.length);
+  }
+  styleField.addEventListener("click", function(e){
+    e.stopPropagation();
+    toggleStyleDrop();
+  });
+  styleDrop.addEventListener("click", function(e){ e.stopPropagation(); });
+  document.addEventListener("click", function(e){
+    if (!styleDrop.hidden && !(e.target && e.target.closest && e.target.closest("#styleWrap"))) closeStyleDrop();
+  });
+  styleText.addEventListener("input", function(){
+    var cur = styleText.value;
+    if (selectedPreset && cur !== PRESETS[selectedPreset]) clearStyleSelection();
+    else if (selectedCustom && cur !== selectedCustom) clearStyleSelection();
+    saveDraftSoon();
+  });
+
+  /* ---- Add-style: your own saved styles (old site songStyleAdd) ---- */
+  var styleAddText = document.getElementById("styleAddText");
+  var styleAddBtn = document.getElementById("styleAddBtn");
+  function loadCustomStyles(){
+    try {
+      var a = JSON.parse(localStorage.getItem(stylesKey(draftEmail())) || "[]");
+      customStyles = Array.isArray(a) ? a.filter(function(x){ return typeof x === "string" && x.trim(); }) : [];
+    } catch (e) { customStyles = []; }
+  }
+  function saveCustomStyles(){
+    try { localStorage.setItem(stylesKey(draftEmail()), JSON.stringify(customStyles)); } catch (e) {}
+  }
+  function addCustomStyles(){
+    var raw = (styleAddText.value || "").trim();
+    if (!raw) return;
+    raw.split(",").forEach(function(part){
+      var s = part.trim().slice(0, 120);
+      if (s && customStyles.indexOf(s) < 0) customStyles.push(s);
+    });
+    styleAddText.value = "";
+    saveCustomStyles();
+    renderStyleRows();
+    syncStyleField();
+  }
+  styleAddBtn.addEventListener("click", addCustomStyles);
+  styleAddText.addEventListener("keydown", function(e){ if (e.key === "Enter") { e.preventDefault(); addCustomStyles(); } });
+
+  /* ---- model + voice ---- */
+  try {
+    var savedModel = localStorage.getItem(MODEL_KEY) || "";
+    if (savedModel === "v6" || savedModel === "v6-wild" ||
+        savedModel === "v6-mini" || savedModel === "v5_5") model = savedModel;
+  } catch (e) {}
+  function syncModelRow(){
+    var btns = modelRow.querySelectorAll(".seg-btn");
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-model") === model ? "true" : "false"); });
+  }
+  modelRow.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("[data-model]") : null;
+    if (!btnEl) return;
+    model = btnEl.getAttribute("data-model");
+    try { localStorage.setItem(MODEL_KEY, model); } catch (err) {}
+    syncModelRow();
+    saveDraftSoon();
+  });
+  syncModelRow();
+  function syncVoiceRow(){
+    var btns = voiceRow.querySelectorAll(".seg-btn");
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-voice") === voice ? "true" : "false"); });
+    var mvBox = document.getElementById("myVoiceBox");
+    if (mvBox) mvBox.hidden = voice !== "myvoice";
+  }
+  voiceRow.addEventListener("click", function(e){
+    var btnEl = e.target && e.target.closest ? e.target.closest("[data-voice]") : null;
+    if (!btnEl) return;
+    voice = btnEl.getAttribute("data-voice");
+    syncVoiceRow();
+    saveDraftSoon();
+  });
+
+  /* ---- results ---- */
+  function normSongs(j){
+    var arr = null;
+    if (j && Array.isArray(j.songs)) arr = j.songs;
+    else if (j && Array.isArray(j.data)) arr = j.data;
+    else if (j && j.data && Array.isArray(j.data.songs)) arr = j.data.songs;
+    if (!arr) return [];
+    return arr.map(function(x){
+      if (typeof x === "string") return { url: x, title: "" };
+      if (!x || typeof x !== "object") return { url: "", title: "" };
+      /* The stream link (url / streamAudioUrl) can answer HTTP 200 with
+         an EMPTY body - it cannot play. The real audio is audioUrl.
+         Prefer it; keep the stream link as streamUrl for fallback. */
+      var stream = x.url || x.streamAudioUrl || x.stream_audio_url || "";
+      var audio = x.audioUrl || x.audio_url ||
+                  x.permanentMp3Url || x.permanent_mp3_url || "";
+      return {
+        url: audio || stream,
+        streamUrl: (stream && stream !== (audio || stream)) ? stream : "",
+        title: x.title || "",
+        image: x.image || x.cover || "",
+        audioId: x.audioId || x.audio_id || x.id || "",
+        taskId: x.taskId || x.task_id || "",
+        duration: Number(x.duration) || 0
+      };
+    }).filter(function(x){ return !!x.url; });
+  }
+  function probeDuration(song, durEl){
+    try {
+      var a = new Audio();
+      a.preload = "metadata";
+      a.onloadedmetadata = function(){ durEl.textContent = fmtTime(a.duration); };
+      a.onerror = function(){};
+      a.src = playUrl(song.url);
+      setTimeout(function(){ try { a.src = ""; } catch (e) {} }, 20000);
+    } catch (e) {}
+  }
+  function renderResults(songs, isPreview){
+    resultSongs = songs;
+    resultsEl.innerHTML = "";
+    playingIdx = -1;
+    resultBox.hidden = false;
+    resultTitle.textContent = isPreview ? "Your songs (preview — still finishing…)" : t("resultTitle");
+    resultNote.hidden = true;
+    songs.forEach(function(song, i){
+      var rowEl = document.createElement("div");
+      rowEl.className = "res-row";
+      var pb = document.createElement("button");
+      pb.type = "button";
+      pb.className = "play-btn";
+      pb.textContent = "▶";
+      pb.setAttribute("aria-label", t("playSong") + (i + 1));
+      pb.addEventListener("click", function(){ togglePlay(i, pb); });
+      var textEl = document.createElement("span");
+      textEl.className = "res-text";
+      var titleEl = document.createElement("span");
+      titleEl.className = "res-title";
+      titleEl.textContent = song.title || ("Song " + (i + 1));
+      var subEl = document.createElement("span");
+      subEl.className = "res-sub";
+      subEl.textContent = isPreview ? "Preview" : "Song " + (i + 1) + " of " + songs.length;
+      textEl.appendChild(titleEl);
+      textEl.appendChild(subEl);
+      var durEl = document.createElement("span");
+      durEl.className = "res-dur";
+      durEl.textContent = "–:––";
+      var dlEl = document.createElement("a");
+      dlEl.className = "res-dl";
+      dlEl.href = playUrl(song.url);
+      dlEl.textContent = t("download");
+      dlEl.setAttribute("download", "");
+      rowEl.appendChild(pb);
+      rowEl.appendChild(textEl);
+      rowEl.appendChild(durEl);
+      rowEl.appendChild(dlEl);
+      resultsEl.appendChild(rowEl);
+      probeDuration(song, durEl);
+    });
+  }
+  /* Result songs carry url + streamUrl - if the first URL is a dead link,
+     try the next one before giving up. */
+  var playAltUrls = [];
+  var playAltIdx = 0;
+  function togglePlay(i, btnEl){
+    var song = resultSongs[i];
+    if (!song) return;
+    if (playingIdx === i && !au.paused) {
+      au.pause();
+      btnEl.textContent = "▶";
+      return;
+    }
+    if (playingIdx !== i) {
+      playAltUrls = [];
+      [song.url, song.streamUrl, song.audioUrl].forEach(function(u){
+        u = playUrl(u);
+        if (u && playAltUrls.indexOf(u) < 0) playAltUrls.push(u);
+      });
+      playAltIdx = 0;
+      au.src = playAltUrls[0] || "";
+      playingIdx = i;
+      var btns = resultsEl.querySelectorAll(".play-btn");
+      btns.forEach(function(b){ b.textContent = "▶"; });
+    }
+    btnEl.textContent = "❚❚";
+    au.play().catch(function(){
+      if (playAltIdx + 1 < playAltUrls.length) {
+        playAltIdx++;
+        au.src = playAltUrls[playAltIdx];
+        try { au.load(); } catch (e) {}
+        au.play().catch(function(){ btnEl.textContent = "▶"; });
+      } else { btnEl.textContent = "▶"; }
+    });
+  }
+  au.addEventListener("ended", function(){
+    playingIdx = -1;
+    var btns = resultsEl.querySelectorAll(".play-btn");
+    btns.forEach(function(b){ b.textContent = "▶"; });
+  });
+  au.addEventListener("pause", function(){
+    var btns = resultsEl.querySelectorAll(".play-btn");
+    btns.forEach(function(b, i){ if (i === playingIdx) b.textContent = "▶"; });
+  });
+
+  /* ---- gift CLAIM popup ----
+     New-user gift: 24 Song Credits, once per Gmail, forever (server lock).
+     The server grants it when POST /api/admin/sync carries giftClaimed:true
+     and the account has not claimed yet. The popup shows once per device
+     until claimed; "Not now" dismisses it for this session only. */
+  var giftSheet = document.getElementById("giftSheet");
+  var giftClaimBtn = document.getElementById("giftClaimBtn");
+  var giftLaterBtn = document.getElementById("giftLaterBtn");
+  var giftMsg = document.getElementById("giftMsg");
+  function giftFlagKey(em){ return "movai-gift-claimed-" + String(em || "").toLowerCase(); }
+  function giftDismissKey(em){ return "movai-gift-dismissed-" + String(em || "").toLowerCase(); }
+  function giftAlreadyClaimed(em){
+    try { return localStorage.getItem(giftFlagKey(em)) === "1"; } catch (e) { return false; }
+  }
+  function giftDismissedThisSession(em){
+    try { return sessionStorage.getItem(giftDismissKey(em)) === "1"; } catch (e) { return false; }
+  }
+  function maybeShowGift(){
+    if (!user || !user.email) return;
+    if (user.giftClaimed === true) {
+      try { localStorage.setItem(giftFlagKey(user.email), "1"); } catch (e) {}
+      return;
+    }
+    if (giftAlreadyClaimed(user.email)) return;
+    if (giftDismissedThisSession(user.email)) return;
+    giftMsg.textContent = "";
+    giftMsg.className = "gift-msg";
+    giftMsg.hidden = true;
+    giftSheet.hidden = false;
+  }
+  function hideGift(){ giftSheet.hidden = true; }
+  giftLaterBtn.addEventListener("click", function(){
+    try { sessionStorage.setItem(giftDismissKey(user.email), "1"); } catch (e) {}
+    hideGift();
+  });
+  giftClaimBtn.addEventListener("click", function(){
+    if (!user || !user.email) return;
+    giftClaimBtn.disabled = true;
+    giftClaimBtn.textContent = "…";
+    giftMsg.hidden = true;
+    apiPost("/api/admin/sync", { email: user.email, giftClaimed: true }, 30000).then(function(j){
+      giftClaimBtn.disabled = false;
+      giftClaimBtn.textContent = t("claimBtn");
+      if (j && j.ok === true && j.user) {
+        user = j.user;
+        saveStored(user);
+        renderAccount();
+        try { localStorage.setItem(giftFlagKey(user.email), "1"); } catch (e) {}
+        giftMsg.textContent = t("claimedOk");
+        giftMsg.className = "gift-msg ok-t";
+        giftMsg.hidden = false;
+        setTimeout(hideGift, 2500);
+      } else {
+        giftMsg.textContent = cleanErr(j && j.error ? j.error : t("claimFail"));
+        giftMsg.className = "gift-msg";
+        giftMsg.hidden = false;
+      }
+    }).catch(function(){
+      giftClaimBtn.disabled = false;
+      giftClaimBtn.textContent = t("claimBtn");
+      giftMsg.textContent = t("noServer");
+      giftMsg.className = "gift-msg";
+      giftMsg.hidden = false;
+    });
+  });
+
+  /* ---- history save (THE FIX for "My Songs = 0") ----
+     The server never saves generated songs by itself — the CLIENT must
+     POST each finished song to /api/public/history the moment it
+     finishes, one song at a time, first-finished first. My Songs reads
+     exactly this history, so a song that is never posted here never
+     appears there. Items use a stable id (gen_<jobId>_<i>) so a retry
+     or a refresh can never save the same song twice. The server refuses
+     items whose ts is older than 5 minutes, so ts is stamped at save time. */
+  function songStoreUrl(url, title){
+    if (!/^https:/i.test(url) || url.indexOf("res.cloudinary.com") >= 0 || url.indexOf("/uploads/") >= 0) {
+      return Promise.resolve(url);
+    }
+    // POST /api/public/song-store {url, title} -> {ok, url} (permanent URL)
+    return apiPost("/api/public/song-store", { url: url, title: title || "" }, 60000).then(function(j){
+      if (j && j.ok && j.url) return j.url;
+      return url;
+    }).catch(function(){ return url; });
+  }
+  function saveSongToHistory(song, meta){
+    var id = "gen_" + meta.jobId + "_" + meta.idx;
+    return songStoreUrl(song.url, song.title || meta.title || "").then(function(permUrl){
+      var item = {
+        id: id, type: "song", mode: "song", url: permUrl,
+        title: song.title || meta.title || "Untitled",
+        prompt: (meta.lyrics || "").slice(0, 400),
+        model: displayModel(meta.model), style: meta.style || "",
+        image: song.image || "",
+        streamUrl: song.streamUrl || "",
+        audioId: song.audioId || meta.audioId || "",
+        taskId: meta.jobId || "",
+        duration: Number(song.duration) || 0,
+        ts: Date.now(), createdAt: new Date().toISOString(), origin: "created"
+      };
+      return apiPost("/api/public/history", { email: meta.email, items: [item] }, 30000)
+        .then(function(j){ return !!(j && j.ok !== false); })
+        .catch(function(){ return false; });
+    });
+  }
+  function saveLastSongs(title, modelText, songs){
+    try {
+      var keep = songs.filter(function(s){ return /^https:/i.test(s.url); }).map(function(s){
+        return { url: s.url, title: s.title || "", model: displayModel(s.model || modelText),
+          image: s.image || null, audioId: s.audioId || "", streamUrl: s.streamUrl || "", taskId: s.taskId || "" };
+      });
+      if (keep.length) localStorage.setItem(LASTSONGS_KEY + draftEmail(),
+        JSON.stringify({ ts: Date.now(), title: title || "", model: displayModel(modelText), songs: keep }));
+    } catch (e) {}
+  }
+  function restoreLastSongs(){
+    try {
+      var raw = localStorage.getItem(LASTSONGS_KEY + draftEmail());
+      if (!raw) return;
+      var j = JSON.parse(raw);
+      if (!j || !Array.isArray(j.songs) || !j.songs.length) return;
+      renderResults(j.songs.slice(0, 2), false);
+    } catch (e) {}
+  }
+
+  /* ---- pending generations: hand off to My Songs ----
+     Tapping Generate jumps to the songs room (My Songs page), which shows
+     two creating rows and fills each one in the moment its song finishes. */
+  function loadPendingGens(){
+    try {
+      var a = JSON.parse(localStorage.getItem(PENDING_KEY + "-" + draftEmail()) || "[]");
+      return Array.isArray(a) ? a : [];
+    } catch (e) { return []; }
+  }
+  function savePendingGens(list){
+    try { localStorage.setItem(PENDING_KEY + "-" + draftEmail(), JSON.stringify(list)); } catch (e) {}
+  }
+  function handOffToSongs(job){
+    var list = loadPendingGens();
+    list.unshift(job);
+    savePendingGens(list.slice(0, 3));
+    window.location.href = "/movai-new-songs.html";
+  }
+
+  /* ---- AI Lyrics (free 2/day) ---- */
+  var aiLangBtn = document.getElementById("aiLangBtn");
+  var aiLyricsBtn = document.getElementById("aiLyricsBtn");
+  var aiLyricsMsg = document.getElementById("aiLyricsMsg");
+  var aiBusy = false;
+  var aiTickTimer = null;
+  function syncAiLangBtn(){
+    /* The language NAME follows the current UI language, never the other
+       one: Khmer UI shows «ខ្មែរ» / «អង់គ្លេស», English UI «Khmer» / «English». */
+    var khName = (lang === "en") ? "Khmer" : "ខ្មែរ";
+    var enName = (lang === "en") ? "English" : "អង់គ្លេស";
+    aiLangBtn.innerHTML = aiLang === "kh" ? "&#127472;&#127469; " + khName + " &#9662;" : "&#127468;&#127463; " + enName + " &#9662;";
+    aiLangBtn.setAttribute("aria-pressed", aiLang === "en" ? "true" : "false");
+  }
+  aiLangBtn.addEventListener("click", function(){
+    aiLang = aiLang === "kh" ? "en" : "kh";
+    syncAiLangBtn();
+    saveDraftSoon();
+  });
+  function aiLyricsSetMsg(text, isErr){
+    aiLyricsMsg.textContent = text || "";
+    aiLyricsMsg.style.color = isErr ? "#991b1b" : "#6b7280";
+  }
+  aiLyricsBtn.addEventListener("click", function(){
+    if (aiBusy) return;
+    if (!user || !user.email) { aiLyricsSetMsg(t("signInFirst"), true); return; }
+    var title = (songTitle.value || "").trim();
+    if (!title) { aiLyricsSetMsg(t("aiNeedTitle"), true); songTitle.focus(); return; }
+    if ((lyricsEl.value || "").trim()) {
+      aiLyricsSetMsg(t("aiHasLyrics"), true);
+      return;
+    }
+    aiBusy = true;
+    aiLyricsBtn.disabled = true;
+    var sec = 0;
+    aiLyricsSetMsg(t("aiWriting") + "0s");
+    aiTickTimer = setInterval(function(){
+      sec++;
+      aiLyricsSetMsg(t("aiWriting") + sec + "s");
+    }, 1000);
+    // POST /api/gen/lyrics {email, title, language, voice} -> {ok, lyrics}
+    apiPost("/api/gen/lyrics", { email: user.email, title: title,
+      language: aiLang, voice: (voice === "myvoice" || voice === "random") ? "random" : voice }, 70000).then(function(j){
+      if (aiTickTimer) { clearInterval(aiTickTimer); aiTickTimer = null; }
+      aiBusy = false;
+      aiLyricsBtn.disabled = false;
+      if (j && j.ok === true && typeof j.lyrics === "string" && j.lyrics.trim()) {
+        lyricsEl.value = j.lyrics.slice(0, 5000);
+        updateCount();
+        saveDraft();
+        aiLyricsSetMsg("");
+      } else {
+        aiLyricsSetMsg(cleanErr(j && j.error ? j.error : t("aiFail")), true);
+      }
+    }).catch(function(){
+      if (aiTickTimer) { clearInterval(aiTickTimer); aiTickTimer = null; }
+      aiBusy = false;
+      aiLyricsBtn.disabled = false;
+      aiLyricsSetMsg(t("noServer"), true);
+    });
+  });
+
+  /* ---- Cover (old site flow) ----
+     Upload an MP3 (max 8 min) or paste a link -> the server checks it
+     (catalog + copyright, NO deduction) -> Generate reuses the checked
+     job when the title/style/lyrics/voice still match, else submits fresh.
+     The cover sings the SAME song with the SAME music. */
+  var coverToggle = document.getElementById("coverToggle");
+  var coverBox = document.getElementById("coverBox");
+  var coverChev = document.getElementById("coverChev");
+  var coverFileInput = document.getElementById("coverFileInput");
+  var coverPickBtn = document.getElementById("coverPickBtn");
+  var coverClearBtn = document.getElementById("coverClearBtn");
+  var coverListenBtn = document.getElementById("coverListenBtn");
+  var coverFileInfo = document.getElementById("coverFileInfo");
+  var coverProg = document.getElementById("coverProg");
+  var coverProgFill = document.getElementById("coverProgFill");
+  var coverUrlInput = document.getElementById("coverUrl");
+  var coverUseUrlBtn = document.getElementById("coverUseUrlBtn");
+  var coverMsg = document.getElementById("coverMsg");
+  var coverAudio = null;
+  var coverCheckSeq = 0;
+  var coverCheckTick = null;
+  function coverSetMsg(text, kind){
+    coverMsg.textContent = text || "";
+    coverMsg.className = "cover-msg" + (kind === "err" ? " err-t" : kind === "ok" ? " ok-t" : "");
+  }
+  function coverRenderFile(){
+    var has = !!coverState.url;
+    coverClearBtn.hidden = !has;
+    coverListenBtn.hidden = !has;
+    coverFileInfo.textContent = has
+      ? ((coverState.name || "Song") + (coverState.duration > 0 ? " · " + fmtTime(coverState.duration) : ""))
+      : "";
+    if (has) {
+      coverBox.hidden = false;
+      coverToggle.setAttribute("aria-expanded", "true");
+      coverChev.textContent = "▴";
+    }
+  }
+  coverToggle.addEventListener("click", function(){
+    var open = coverBox.hidden;
+    coverBox.hidden = !open;
+    coverToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    coverChev.textContent = open ? "▴" : "▾";
+  });
+  coverPickBtn.addEventListener("click", function(){ coverFileInput.click(); });
+  coverClearBtn.addEventListener("click", function(){
+    if (coverAudio) { try { coverAudio.pause(); } catch (e) {} coverAudio = null; }
+    coverState = { url: "", name: "", duration: 0, checkJobId: "", checkParams: null, checkState: "none" };
+    coverFileInput.value = "";
+    coverUrlInput.value = "";
+    coverListenBtn.textContent = t("coverListen");
+    coverSetMsg("");
+    coverRenderFile();
+    saveDraft();
+  });
+  coverListenBtn.addEventListener("click", function(){
+    if (!coverState.url) return;
+    if (coverAudio && !coverAudio.paused) {
+      coverAudio.pause();
+      coverListenBtn.textContent = t("coverListen");
+      return;
+    }
+    if (!coverAudio) {
+      coverAudio = new Audio(playUrl(coverState.url));
+      coverAudio.addEventListener("ended", function(){ coverListenBtn.textContent = t("coverListen"); });
+    }
+    coverListenBtn.textContent = t("coverStop");
+    coverAudio.play().catch(function(){ coverListenBtn.textContent = t("coverListen"); });
+  });
+  function coverVocalGender(){
+    if (instrumental) return "";
+    if (voice === "female") return "f";
+    if (voice === "myvoice" || voice === "random") return "";
+    return "m";
+  }
+  function coverParams(){
+    return {
+      title: (songTitle.value || "").trim(),
+      style: (styleText.value || "").trim(),
+      lyrics: (lyricsEl.value || "").trim(),
+      vocalGender: coverVocalGender(),
+      model: model,
+      instrumental: instrumental,
+      myVoice: voice === "myvoice"
+    };
+  }
+  function coverParamsMatch(a, b){
+    if (!a || !b) return false;
+    return a.title === b.title && a.style === b.style && a.lyrics === b.lyrics &&
+      a.vocalGender === b.vocalGender && a.model === b.model &&
+      a.instrumental === b.instrumental && a.myVoice === b.myVoice;
+  }
+  coverFileInput.addEventListener("change", function(){
+    var f = coverFileInput.files && coverFileInput.files[0];
+    if (!f) return;
+    if (!/\.mp3$/i.test(f.name || "") && f.type !== "audio/mpeg") {
+      coverSetMsg(t("coverNeedMp3"), "err");
+      return;
+    }
+    var a = new Audio();
+    var objUrl = URL.createObjectURL(f);
+    a.preload = "metadata";
+    a.onloadedmetadata = function(){
+      var dur = a.duration || 0;
+      try { URL.revokeObjectURL(objUrl); } catch (e) {}
+      if (dur > 8 * 60) { coverSetMsg(t("coverTooLong"), "err"); return; }
+      var rd = new FileReader();
+      rd.onload = function(){
+        var b64 = String(rd.result || "").split(",")[1] || "";
+        if (!b64) { coverSetMsg(t("coverReadFail"), "err"); return; }
+        coverUploadB64(b64, f.name || "song.mp3", dur);
+      };
+      rd.onerror = function(){ coverSetMsg(t("coverReadFail"), "err"); };
+      rd.readAsDataURL(f);
+    };
+    a.onerror = function(){ coverSetMsg(t("coverReadFail"), "err"); };
+    a.src = objUrl;
+  });
+  function coverUploadB64(b64, filename, duration){
+    if (!user || !user.email) { coverSetMsg(t("signInFirst"), "err"); return; }
+    coverSetMsg(t("coverUploading"));
+    coverProg.hidden = false;
+    coverProgFill.style.width = "0%";
+    // XHR so the upload shows real progress (old site).
+    // POST /api/gen/song/cover-upload {email, filename, data} -> {ok, url}
+    var xhr = new XMLHttpRequest();
+    var done = false;
+    xhr.open("POST", API + "/api/gen/song/cover-upload", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.timeout = 120000;
+    if (xhr.upload) xhr.upload.onprogress = function(e){
+      if (e.lengthComputable && e.total > 0) coverProgFill.style.width = Math.round(e.loaded / e.total * 100) + "%";
+    };
+    xhr.onload = function(){
+      if (done) return;
+      done = true;
+      coverProg.hidden = true;
+      var j = null;
+      try { j = JSON.parse(xhr.responseText || ""); } catch (e) {}
+      if (j && j.ok && j.url) {
+        coverState.url = j.url;
+        coverState.name = filename;
+        coverState.duration = Math.round(duration || 0);
+        coverState.checkJobId = "";
+        coverState.checkParams = null;
+        coverState.checkState = "none";
+        coverRenderFile();
+        saveDraft();
+        coverCheck();
+      } else {
+        coverSetMsg(cleanErr(j && j.error ? j.error : t("coverReadFail")), "err");
+      }
+    };
+    xhr.onerror = function(){
+      if (done) return;
+      done = true;
+      coverProg.hidden = true;
+      coverSetMsg(t("noServer"), "err");
+    };
+    xhr.ontimeout = xhr.onerror;
+    xhr.send(JSON.stringify({ email: user.email, filename: filename, data: b64 }));
+  }
+  coverUseUrlBtn.addEventListener("click", function(){
+    var u = (coverUrlInput.value || "").trim();
+    if (!/^https:\/\//i.test(u)) { coverSetMsg(t("coverNeedLink"), "err"); return; }
+    coverState.url = u;
+    coverState.name = u.split("/").pop().split("?")[0] || "Song";
+    coverState.duration = 0;
+    coverState.checkJobId = "";
+    coverState.checkParams = null;
+    coverState.checkState = "none";
+    coverRenderFile();
+    saveDraft();
+    coverCheck();
+  });
+  function coverCheckStopTick(){
+    if (coverCheckTick) { clearInterval(coverCheckTick); coverCheckTick = null; }
+  }
+  function coverCheck(){
+    if (!coverState.url || !user || !user.email) return;
+    var seq = ++coverCheckSeq;
+    var params = coverParams();
+    coverState.checkState = "checking";
+    coverState.checkParams = params;
+    coverSetMsg(t("coverChecking") + "0s");
+    var sec = 0;
+    coverCheckStopTick();
+    coverCheckTick = setInterval(function(){
+      sec++;
+      if (coverState.checkState === "checking") coverSetMsg(t("coverChecking") + sec + "s");
+    }, 1000);
+    // POST /api/gen/song/cover-check {email, uploadUrl, title, style,
+    // lyrics, vocalGender, model, instrumental, myVoice}
+    // -> {ok, jobId, lyrics} or a rejection (no deduction).
+    apiPost("/api/gen/song/cover-check", {
+      email: user.email, uploadUrl: coverState.url,
+      title: params.title, style: params.style, lyrics: params.lyrics,
+      vocalGender: params.vocalGender, model: params.model,
+      instrumental: params.instrumental, myVoice: params.myVoice
+    }, 120000).then(function(j){
+      if (seq !== coverCheckSeq) return;
+      coverCheckStopTick();
+      if (j && j.ok && j.jobId) {
+        coverState.checkJobId = j.jobId;
+        coverState.checkParams = params;
+        coverState.checkState = "ok";
+        if (j.lyrics && typeof j.lyrics === "string" && j.lyrics.trim() && !(lyricsEl.value || "").trim()) {
+          lyricsEl.value = j.lyrics.slice(0, 5000);
+          updateCount();
+        }
+        coverSetMsg(t("coverReady"), "ok");
+        saveDraft();
+      } else {
+        coverState.checkJobId = "";
+        coverState.checkState = "error";
+        var code = j && j.code ? String(j.code) : "";
+        if (code === "cover_rejected_413" || code === "cover_rejected_catalog") {
+          coverSetMsg(t("coverRejected"), "err");
+        } else {
+          coverSetMsg(cleanErr(j && j.error ? j.error : t("coverCheckFail")), "err");
+        }
+        saveDraft();
+      }
+    }).catch(function(){
+      if (seq !== coverCheckSeq) return;
+      coverCheckStopTick();
+      coverState.checkState = "none";
+      coverSetMsg(t("coverCheckFail"), "err");
+    });
+  }
+
+  /* ---- My Voice (old site flow) ----
+     Record a 15s sample -> validate (server gives an English phrase) ->
+     record the phrase -> save. The voice itself lives on the server;
+     generations only send myVoice:true. */
+  var myVoiceBox = document.getElementById("myVoiceBox");
+  var myVoiceStatus = document.getElementById("myVoiceStatus");
+  var mvRecBtn = document.getElementById("mvRecBtn");
+  var mvDeleteBtn = document.getElementById("mvDeleteBtn");
+  var mvStepHint = document.getElementById("mvStepHint");
+  var mvPhraseBox = document.getElementById("mvPhraseBox");
+  var mvPhrase = document.getElementById("mvPhrase");
+  var mvPhraseRecBtn = document.getElementById("mvPhraseRecBtn");
+  var mvSaveBtn = document.getElementById("mvSaveBtn");
+  var mvMsg = document.getElementById("mvMsg");
+  var mvValidateTaskId = "";
+  var mvVoiceTaskId = "";
+  var mvVerifyUrl = "";
+  var mvRecorder = null;
+  var mvChunks = [];
+  var mvRecording = null; // 'sample' | 'phrase' | null
+  function mvSetMsg(text, kind){
+    mvMsg.textContent = text || "";
+    mvMsg.className = "cover-msg" + (kind === "err" ? " err-t" : kind === "ok" ? " ok-t" : "");
+  }
+  function mvSetStatus(){
+    if (myVoice.hasVoice) {
+      myVoiceStatus.textContent = t("mvReady") + (myVoice.name ? " (" + myVoice.name + ")" : "");
+      mvDeleteBtn.hidden = false;
+      mvStepHint.textContent = t("mvYourSongsVoice");
+    } else {
+      myVoiceStatus.textContent = t("mvNotSetup");
+      mvDeleteBtn.hidden = true;
+    }
+  }
+  function myVoiceCheck(){
+    if (!user || !user.email) return Promise.resolve();
+    return fetch(API + "/api/voice/status?email=" + encodeURIComponent(user.email), { cache: "no-store" })
+      .then(function(r){ return r.json(); }).then(function(j){
+        if (j && j.ok) {
+          myVoice.hasVoice = j.hasVoice === true;
+          myVoice.available = j.available !== false;
+          myVoice.name = typeof j.voiceName === "string" ? j.voiceName : "";
+          mvSetStatus();
+        }
+      }).catch(function(){});
+  }
+  function wav16kMono(blob){
+    // MediaRecorder gives webm/opus; the server takes mp3/wav — decode and
+    // re-encode as 16 kHz mono WAV (old site does the same).
+    var AudioCtx = window.AudioContext || window.webkitAudioContext;
+    var ctx = new AudioCtx();
+    return blob.arrayBuffer().then(function(buf){
+      return ctx.decodeAudioData(buf);
+    }).then(function(ab){
+      var ch = ab.getChannelData(0);
+      var ratio = ab.sampleRate / 16000;
+      var len = Math.floor(ch.length / ratio);
+      var out = new Int16Array(len);
+      for (var i = 0; i < len; i++) {
+        var s = ch[Math.floor(i * ratio)] || 0;
+        out[i] = Math.max(-1, Math.min(1, s)) * 32767;
+      }
+      var buf = new ArrayBuffer(44 + out.length * 2);
+      var v = new DataView(buf);
+      function ws(o, str){ for (var k = 0; k < str.length; k++) v.setUint8(o + k, str.charCodeAt(k)); }
+      ws(0, "RIFF"); v.setUint32(4, 36 + out.length * 2, true); ws(8, "WAVE");
+      ws(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+      v.setUint16(22, 1, true); v.setUint32(24, 16000, true); v.setUint32(28, 32000, true);
+      v.setUint16(32, 2, true); v.setUint16(34, 16, true); ws(36, "data");
+      v.setUint32(40, out.length * 2, true);
+      for (var j = 0; j < out.length; j++) v.setInt16(44 + j * 2, out[j], true);
+      return new Blob([buf], { type: "audio/wav" });
+    });
+  }
+  function blobToB64(blob){
+    return new Promise(function(resolve, reject){
+      var rd = new FileReader();
+      rd.onload = function(){ resolve(String(rd.result || "").split(",")[1] || ""); };
+      rd.onerror = function(){ reject(new Error("read failed")); };
+      rd.readAsDataURL(blob);
+    });
+  }
+  function mvUploadVoice(blob, filename){
+    return blobToB64(blob).then(function(b64){
+      // POST /api/voice/upload {email, filename, data} -> {ok, url}
+      return apiPost("/api/voice/upload", { email: user.email, filename: filename, data: b64 }, 120000);
+    });
+  }
+  function mvStartRecording(kind){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      mvSetMsg(t("mvNoRec"), "err");
+      return;
+    }
+    if (mvRecording) { mvStopRecording(); return; }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+      try {
+        mvChunks = [];
+        mvRecorder = new MediaRecorder(stream);
+        mvRecorder.ondataavailable = function(e){ if (e.data && e.data.size) mvChunks.push(e.data); };
+        mvRecorder.onstop = function(){
+          try { stream.getTracks().forEach(function(tr){ tr.stop(); }); } catch (e) {}
+          var blob = new Blob(mvChunks, { type: (mvRecorder && mvRecorder.mimeType) || "audio/webm" });
+          var doneKind = mvRecording;
+          mvRecording = null;
+          mvRecBtn.textContent = t("mvRecordSample");
+          mvPhraseRecBtn.textContent = t("mvRecordPhrase");
+          if (doneKind === "sample") mvUploadSample(blob);
+          else mvUploadPhrase(blob);
+        };
+        mvRecorder.start();
+        mvRecording = kind;
+        if (kind === "sample") mvRecBtn.textContent = t("mvStopRec");
+        else mvPhraseRecBtn.textContent = t("mvStopRec");
+        mvSetMsg(t("mvRecording"), "");
+      } catch (e) {
+        mvSetMsg(t("mvCheckFail"), "err");
+      }
+    }).catch(function(){
+      mvSetMsg(t("mvNoMic"), "err");
+    });
+  }
+  function mvStopRecording(){
+    try { if (mvRecorder && mvRecorder.state !== "inactive") mvRecorder.stop(); } catch (e) {}
+  }
+  mvRecBtn.addEventListener("click", function(){ mvStartRecording("sample"); });
+  mvPhraseRecBtn.addEventListener("click", function(){ mvStartRecording("phrase"); });
+  function mvUploadSample(blob){
+    mvSetMsg(t("mvUploadingSample"));
+    wav16kMono(blob).then(function(wav){
+      return mvUploadVoice(wav, "voice-sample.wav");
+    }).then(function(j){
+      if (!j || !j.ok || !j.url) throw new Error(j && j.error ? j.error : "Upload failed.");
+      mvSetMsg(t("mvCheckingVoice"));
+      // POST /api/voice/validate {email, voiceUrl, vocalStartS:0, vocalEndS:15, language:'en'}
+      return apiPost("/api/voice/validate", { email: user.email, voiceUrl: j.url,
+        vocalStartS: 0, vocalEndS: 15, language: "en" }, 60000);
+    }).then(function(j){
+      if (!j || !j.ok || !j.taskId) throw new Error(j && j.error ? j.error : t("mvCheckFail"));
+      mvValidateTaskId = j.taskId;
+      mvSetMsg(t("mvWaitingPhrase") + "0s");
+      mvPollPhrase(0);
+    }).catch(function(e){
+      mvSetMsg(cleanErr(e && e.message ? e.message : t("mvCheckFail")), "err");
+    });
+  }
+  function mvPollPhrase(n){
+    if (n >= 20) { mvSetMsg(t("mvPhraseSlow"), "err"); return; }
+    setTimeout(function(){
+      fetch(API + "/api/voice/validate-info?email=" + encodeURIComponent(user.email) +
+        "&taskId=" + encodeURIComponent(mvValidateTaskId), { cache: "no-store" })
+        .then(function(r){ return r.json(); }).then(function(j){
+          var phrase = j && j.ok ? String(j.validateInfo || "").trim() : "";
+          if (phrase) {
+            mvPhrase.textContent = phrase;
+            mvPhraseBox.hidden = false;
+            mvStepHint.textContent = t("mvStep2");
+            mvSetMsg("");
+          } else {
+            mvSetMsg(t("mvWaitingPhrase") + ((n + 1) * 15) + "s");
+            mvPollPhrase(n + 1);
+          }
+        }).catch(function(){
+          mvSetMsg(t("mvWaitingPhrase") + ((n + 1) * 15) + "s");
+          mvPollPhrase(n + 1);
+        });
+    }, 15000);
+  }
+  function mvUploadPhrase(blob){
+    mvSetMsg(t("mvUploadingPhrase"));
+    wav16kMono(blob).then(function(wav){
+      return mvUploadVoice(wav, "voice-phrase.wav");
+    }).then(function(j){
+      if (!j || !j.ok || !j.url) throw new Error(j && j.error ? j.error : "Upload failed.");
+      mvVerifyUrl = j.url;
+      mvSaveBtn.hidden = false;
+      mvSetMsg(t("mvPhraseSaved"), "ok");
+    }).catch(function(e){
+      mvSetMsg(cleanErr(e && e.message ? e.message : t("mvSaveFail")), "err");
+    });
+  }
+  mvSaveBtn.addEventListener("click", function(){
+    if (!mvValidateTaskId || !mvVerifyUrl) return;
+    mvSaveBtn.disabled = true;
+    mvSetMsg(t("mvSaving"));
+    // POST /api/voice/generate {email, taskId, verifyUrl, voiceName} -> {ok, taskId}
+    apiPost("/api/voice/generate", { email: user.email, taskId: mvValidateTaskId,
+      verifyUrl: mvVerifyUrl, voiceName: "My Voice" }, 60000).then(function(j){
+      if (!j || !j.ok || !j.taskId) throw new Error(j && j.error ? j.error : t("mvSaveFail"));
+      mvVoiceTaskId = j.taskId;
+      mvSetMsg(t("mvCreating") + "0s");
+      mvPollVoice(0);
+    }).catch(function(e){
+      mvSaveBtn.disabled = false;
+      mvSetMsg(cleanErr(e && e.message ? e.message : t("mvSaveFail")), "err");
+    });
+  });
+  function mvPollVoice(n){
+    if (n >= 30) {
+      mvSaveBtn.disabled = false;
+      mvSetMsg(t("mvSlow"), "err");
+      return;
+    }
+    setTimeout(function(){
+      fetch(API + "/api/voice/record-info?email=" + encodeURIComponent(user.email) +
+        "&taskId=" + encodeURIComponent(mvVoiceTaskId), { cache: "no-store" })
+        .then(function(r){ return r.json(); }).then(function(j){
+          if (j && j.ok && j.ready === true) {
+            mvSaveBtn.disabled = false;
+            mvSaveBtn.hidden = true;
+            mvPhraseBox.hidden = true;
+            myVoiceCheck().then(function(){
+              mvSetMsg(t("mvReady"), "ok");
+            });
+          } else {
+            mvSetMsg(t("mvCreating") + ((n + 1) * 15) + "s");
+            mvPollVoice(n + 1);
+          }
+        }).catch(function(){
+          mvSetMsg(t("mvCreating") + ((n + 1) * 15) + "s");
+          mvPollVoice(n + 1);
+        });
+    }, 15000);
+  }
+  mvDeleteBtn.addEventListener("click", function(){
+    if (!user || !user.email) return;
+    apiPost("/api/voice/delete", { email: user.email }, 30000).then(function(){
+      myVoice.hasVoice = false;
+      myVoice.available = false;
+      myVoice.name = "";
+      mvPhraseBox.hidden = true;
+      mvSaveBtn.hidden = true;
+      mvSetStatus();
+      mvSetMsg(t("mvDeleted"), "");
+      if (voice === "myvoice") { voice = "male"; syncVoiceRow(); }
+      saveDraftSoon();
+    }).catch(function(){ mvSetMsg(t("mvDeleteFail"), "err"); });
+  });
+
+  /* ---- generation ---- */
+  function showGenErr(msg, showRetry){
+    genErr.innerHTML = "";
+    var msgEl = document.createElement("div");
+    msgEl.textContent = cleanErr(msg);
+    genErr.appendChild(msgEl);
+    if (showRetry) {
+      var r = document.createElement("button");
+      r.type = "button";
+      r.className = "retry";
+      r.textContent = t("retry");
+      r.addEventListener("click", function(){ genErr.hidden = true; doGenerate(); });
+      genErr.appendChild(r);
+    }
+    genErr.hidden = false;
+  }
+  function setProg(sec, stage){
+    progEl.innerHTML = "";
+    var labelEl = document.createElement("span");
+    labelEl.textContent = t("generating");
+    var secsEl = document.createElement("span");
+    secsEl.className = "secs";
+    secsEl.textContent = sec + "s";
+    var stageEl = document.createElement("span");
+    stageEl.textContent = stage ? t("stageSep") + stage : "";
+    progEl.appendChild(labelEl);
+    progEl.appendChild(secsEl);
+    progEl.appendChild(stageEl);
+    progEl.hidden = false;
+  }
+  function stopTick(){
+    if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  }
+  function startTick(getStage){
+    stopTick();
+    genStart = Date.now();
+    tickTimer = setInterval(function(){
+      var sec = Math.floor((Date.now() - genStart) / 1000);
+      setProg(sec, getStage ? getStage() : "");
+    }, 1000);
+  }
+  function setBusy(b){
+    busy = b;
+    genBtn.disabled = b || !user;
+    genBtn.textContent = b ? t("genBusy") : t("genBtn");
+  }
+  function doGenerate(){
+    if (busy) return;
+    if (!user || !user.email) {
+      showGenErr(t("signInFirst"), false);
+      return;
+    }
+    var title = (songTitle.value || "").trim();
+    var lyrics = (lyricsEl.value || "").trim();
+    var style = (styleText.value || "").trim();
+    genErr.hidden = true;
+    if (!title) { showGenErr(t("needTitle"), false); songTitle.focus(); return; }
+    if (!lyrics) { showGenErr(t("needLyrics"), false); lyricsEl.focus(); return; }
+    if (Math.floor(Number(user.songCredits) || 0) < SONG_COST) {
+      showGenErr(t("needCredits1") + SONG_COST + t("needCredits2"), false);
+      return;
+    }
+    if (voice === "myvoice" && !myVoice.hasVoice) {
+      showGenErr(t("mvNotReady"), false);
+      return;
+    }
+    var styleFull = [style,
+        voice === "male" ? "male vocals" : voice === "female" ? "female vocals" : ""]
+      .filter(function(x){ return !!x; }).join(", ");
+    var body = {
+      provider: "suno",
+      email: user.email,
+      title: title,
+      name: title,
+      lyrics: lyrics,
+      prompt: lyrics,
+      style: styleFull,
+      tags: styleFull,
+      voice: voice,
+      vocalGender: coverVocalGender(),
+      model: model,
+      instrumental: instrumental,
+      make_instrumental: instrumental,
+      myVoice: voice === "myvoice"
+    };
+    var stage = "sending";
+    var stageOf = function(){ return stage; };
+    setBusy(true);
+    cancelGen = false;
+    curJobId = "";
+    resultBox.hidden = true;
+    resultsEl.innerHTML = "";
+    resultSongs = [];
+    setProg(0, stage);
+    startTick(stageOf);
+    var genCall;
+    if (coverState.url) {
+      // Cover: POST /api/gen/song/cover -> {ok:true, jobId} (12 credits, refunded on failure)
+      var cp = coverParams();
+      var cbody = { email: user.email, uploadUrl: coverState.url,
+        title: title, style: styleFull, lyrics: lyrics, model: model,
+        instrumental: instrumental, vocalGender: coverVocalGender(),
+        myVoice: voice === "myvoice" };
+      if (coverState.checkJobId && coverParamsMatch(coverState.checkParams, cp)) cbody.reuseJobId = coverState.checkJobId;
+      genCall = apiPost("/api/gen/song/cover", cbody, 60000);
+    } else {
+      // POST /api/gen/song -> {ok:true, jobId, songCredits} or {ok:false, error}
+      genCall = apiPost("/api/gen/song", body, 60000);
+    }
+    genCall.then(function(j){
+      if (cancelGen) return;
+      if (!j || j.ok !== true) {
+        stopTick();
+        progEl.hidden = true;
+        setBusy(false);
+        showGenErr(j && j.error ? j.error : t("startFail"), true);
+        return;
+      }
+      if (typeof j.songCredits === "number") {
+        user.songCredits = j.songCredits;
+        saveStored(user);
+        renderAccount();
+      }
+      var jobId = j.jobId || j.job_id || j.task_id || "";
+      if (!jobId) {
+        stopTick();
+        progEl.hidden = true;
+        setBusy(false);
+        var early = normSongs(j);
+        if (early.length) {
+          // No job to follow, but songs came back at once: save each one
+          // to history immediately, then show them.
+          var earlySongs = early.slice(0, 2);
+          var meta0 = { jobId: "direct_" + Date.now().toString(36), email: user.email,
+            title: title, model: model, style: style, lyrics: lyrics };
+          var doneCount = 0;
+          earlySongs.forEach(function(s, i){
+            saveSongToHistory(s, { jobId: meta0.jobId, idx: i, email: user.email,
+              title: title, model: model, style: style, lyrics: lyrics }).then(function(){
+              doneCount++;
+              if (doneCount >= earlySongs.length) saveLastSongs(title, model, earlySongs);
+            });
+          });
+          renderResults(earlySongs, false);
+          refreshBalance();
+          return;
+        }
+        showGenErr(t("noJob"), true);
+        return;
+      }
+      curJobId = jobId;
+      stopTick();
+      progEl.hidden = true;
+      // Jump to the songs room: My Songs shows two creating rows and
+      // fills each one in the moment its song finishes.
+      handOffToSongs({
+        jobId: jobId, mode: coverState.url ? "cover" : "song",
+        title: title, model: model, voice: voice,
+        email: user.email, startedAt: Date.now(),
+        style: style, lyrics: lyrics, coverUrl: coverState.url || ""
+      });
+    }).catch(function(e){
+      if (cancelGen) return;
+      stopTick();
+      progEl.hidden = true;
+      setBusy(false);
+      showGenErr(t("genNoServer"), true);
+    });
+  }
+  genBtn.addEventListener("click", doGenerate);
+
+  /* ---- restore session on load ---- */
+  (function init(){
+    applyLang();
+    updateCount();
+    loadCustomStyles();
+    var em = sessionEmail();
+    var cached = loadStored();
+    if (em && cached && cached.email && String(cached.email).toLowerCase() === em.toLowerCase()) {
+      user = cached;
+    } else if (em) {
+      user = { email: em, name: "", songCredits: 0 };
+    }
+    renderAccount();
+    restoreDraft();
+    renderStyleRows();
+    syncStyleField();
+    syncModelRow();
+    syncVoiceRow();
+    if (instrumentalChk) {
+      instrumentalChk.checked = instrumental;
+      instrumentalChk.addEventListener("change", function(){
+        instrumental = !!instrumentalChk.checked;
+        saveDraftSoon();
+      });
+    }
+    restoreLastSongs();
+    if (user && user.email) {
+      refreshBalance().then(function(){ maybeShowGift(); });
+      myVoiceCheck();
+    }
+  })();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  /* ---- Chat button: slides in from the right edge on app open (blurry to
+     clear); if untouched for 10s it fades back to blurry, slides out to the
+     right and disappears completely; it returns on the next app open. ---- */
+  var fab = document.getElementById("chatFab");
+  if (!fab) return;
+  var HIDE_MS = 10000;
+  var hideTimer = null;
+  function openChat(){
+    if (window.location.pathname && window.location.pathname.indexOf("movai-new-chat.html") !== -1) {
+      var inp = document.getElementById("chatInput");
+      if (inp) { inp.focus(); }
+      window.scrollTo(0, document.body.scrollHeight);
+      return;
+    }
+    window.location.href = "movai-new-chat.html";
+  }
+  function hideFab(){
+    fab.classList.remove("in");
+    fab.classList.add("out");
+    setTimeout(function(){ fab.style.display = "none"; }, 500);
+  }
+  function cancelHide(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  fab.addEventListener("pointerdown", cancelHide);
+  fab.addEventListener("mouseenter", cancelHide);
+  fab.addEventListener("touchstart", cancelHide, { passive: true });
+  fab.addEventListener("focus", cancelHide);
+  fab.addEventListener("click", function(e){ e.preventDefault(); cancelHide(); openChat(); });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      fab.classList.add("in");
+      hideTimer = setTimeout(hideFab, HIDE_MS);
+    });
+  });
+})();
+</script>
 </body>
 </html>
