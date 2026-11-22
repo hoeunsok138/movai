@@ -527,6 +527,7 @@
       retryLimit: "ខូវើនេះបានសាកច្រើនដងហើយ — សូមបង្កើតខូវើថ្មី។",
       cancel: "បញ្ឈប់",
       noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      splitResume: "បទនេះកំពុងបំបែកនៅលើ server — សូមចុច 6 stems ម្តងទៀតដើម្បីពិនិត្យ",
       signInFirst: "សូមចូលប្រើជាមុនសិន។",
       publicOnly: "បង្ហាញតែចម្រៀងសាធារណៈរបស់អ្នកប៉ុណ្ណោះ។",
       song: "ចម្រៀង",
@@ -606,6 +607,7 @@
       retryLimit: "This cover has been retried too many times — please create a new cover.",
       cancel: "Cancel",
       noServer: "Could not reach the server. Please try again.",
+      splitResume: "Still separating on the server — tap 6 stems again to check",
       signInFirst: "Please sign in first.",
       publicOnly: "Showing your public songs only.",
       song: "song",
@@ -1460,7 +1462,7 @@
     }, 1000);
     // POST /api/studio/separate {email, audioUrl, songTitle} -> {ok, stems} (6 stems, MVSEP)
     apiPost("/api/studio/separate", { email: email, audioUrl: songUrl(song),
-      songTitle: song.title || "" }, 120000).then(function(j){
+      songTitle: song.title || "" }, 360000).then(function(j){
       clearInterval(tick);
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
         stemSetMsg(msg, t("splitDone"));
@@ -1471,9 +1473,10 @@
       } else {
         stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
       }
-    }).catch(function(){
+    }).catch(function(e){
       clearInterval(tick);
-      stemSetMsg(msg, t("noServer"), true);
+      if (e && e.name === "AbortError") stemSetMsg(msg, t("splitResume"), true);
+      else stemSetMsg(msg, t("noServer"), true);
     });
   }
   function pollStem6(hash, msg, res, t0){
