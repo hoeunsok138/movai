@@ -512,7 +512,24 @@
       post: "ផុស",
       postPublic: "ផុសទៅសាធារណៈ",
       split6Menu: "បំបែក · ៦ ស្ទេម",
-      split12Menu: "បំបែក · ១២ ស្ទេម",
+      split12Menu: "Vocal Studio បំបែក ១២ ស្ទេម",
+      splitVrMenu: "Vocal Remover",
+      uploadMp3Menu: "ឯកសារ MP3",
+      vocalRemover: "Vocal Remover",
+      vocalRemoverNote: "បំបែកជា ២ សំឡេង៖ សំឡេងច្រៀង និងសំឡេងភ្លេង។ លឿនខ្លាំង។ ឥតគិតថ្លៃ ២ ដង រួច ៦ ក្រេឌីតចម្រៀង។",
+      vocalFreeLeft: "ឥតគិតថ្លៃនៅសល់ ",
+      vocalCharged: "បានកាត់ ៦ ក្រេឌីត",
+      vocalResume: "បទនេះកំពុងបំបែកនៅលើ server — សូមចុច Vocal Remover ម្ដងទៀតដើម្បីពិនិត្យ",
+      uploadWorking: "កំពុងអាប់ឡូត… ",
+      chooseSplit: "ជ្រើសការបំបែក៖",
+      stemVocals: "សំឡេងច្រៀង",
+      stemMusic: "សំឡេងភ្លេង",
+      stemDrums: "ស្គរ",
+      stemBass: "បាស",
+      stemOther: "ផ្សេងៗ",
+      stemPiano: "ព្យាណូ",
+      stemGuitar: "ហ្គីតា",
+      lockedStem: "ចាក់សោ",
       postConfirm: "ផុសទៅសាធារណៈ? ចុចម្ដងទៀត",
       posted: "បានផុស ✓",
       postFail: "ផុសមិនបានទេ។",
@@ -593,7 +610,24 @@
       post: "Post",
       postPublic: "Post to Public",
       split6Menu: "Split · 6 stems",
-      split12Menu: "Split · 12 stems",
+      split12Menu: "Vocal Studio Split 12",
+      splitVrMenu: "Vocal Remover",
+      uploadMp3Menu: "MP3 Files",
+      vocalRemover: "Vocal Remover",
+      vocalRemoverNote: "Splits into 2 sounds: vocals and music. Very fast. 2 free, then 6 song credits.",
+      vocalFreeLeft: "Free left: ",
+      vocalCharged: "6 credits deducted",
+      vocalResume: "Still separating on the server — tap Vocal Remover again to check",
+      uploadWorking: "Uploading… ",
+      chooseSplit: "Choose a split:",
+      stemVocals: "Vocals",
+      stemMusic: "Music",
+      stemDrums: "Drums",
+      stemBass: "Bass",
+      stemOther: "Other",
+      stemPiano: "Piano",
+      stemGuitar: "Guitar",
+      lockedStem: "Locked",
       postConfirm: "Post to public? Tap again",
       posted: "Posted ✓",
       postFail: "Could not post.",
@@ -1308,6 +1342,24 @@
   }
   /* ---- Song row ⋮ menu: Download, Split 6/12, Post to Public, Delete ---- */
   var songMenu = null, songMenuVeil = null, songMenuFor = -1;
+  // Files MP3 upload (⋮ menu): the row whose menu opened the picker.
+  var vrUpInput = null, vrUpTarget = null;
+  function ensureVrUpInput(){
+    if (vrUpInput) return vrUpInput;
+    vrUpInput = document.createElement("input");
+    vrUpInput.type = "file";
+    vrUpInput.accept = "audio/*,.mp3,.wav,.flac,.m4a";
+    vrUpInput.hidden = true;
+    vrUpInput.addEventListener("change", function(){
+      var f = vrUpInput.files && vrUpInput.files[0];
+      var tg = vrUpTarget; vrUpTarget = null;
+      vrUpInput.value = "";
+      if (!f || !tg) return;
+      vrUploadFile(f, tg);
+    });
+    document.body.appendChild(vrUpInput);
+    return vrUpInput;
+  }
   function ensureSongMenu(){
     if (songMenu) return;
     songMenuVeil = document.createElement("div");
@@ -1371,6 +1423,21 @@
       var b12 = box && box.querySelector("[data-stem='12']");
       if (b12) b12.click();
     });
+    var sVr = document.createElement("button");
+    sVr.type = "button"; sVr.className = "song-menu-item"; sVr.textContent = t("splitVrMenu");
+    sVr.addEventListener("click", function(){
+      closeSongMenu();
+      var box = openStemBox(song, itemEl);
+      var bVr = box && box.querySelector("[data-stem='vr']");
+      if (bVr) bVr.click();
+    });
+    var sUp = document.createElement("button");
+    sUp.type = "button"; sUp.className = "song-menu-item"; sUp.textContent = t("uploadMp3Menu");
+    sUp.addEventListener("click", function(){
+      closeSongMenu();
+      vrUpTarget = { song: song, itemEl: itemEl };
+      ensureVrUpInput().click();
+    });
     var pst = document.createElement("button");
     pst.type = "button"; pst.className = "song-menu-item"; pst.textContent = t("postPublic");
     pst.addEventListener("click", function(){ postSong(song, pst); });
@@ -1382,8 +1449,10 @@
       if (armed) closeSongMenu();
     });
     songMenu.appendChild(dl);
+    songMenu.appendChild(sVr);
     songMenu.appendChild(s6);
     songMenu.appendChild(s12);
+    songMenu.appendChild(sUp);
     songMenu.appendChild(pst);
     songMenu.appendChild(del);
   }
@@ -1399,11 +1468,15 @@
     var rowBtns = document.createElement("div");
     rowBtns.className = "rowline";
     rowBtns.style.cssText = "display:flex;gap:8px;flex-wrap:wrap";
+    var bVr = document.createElement("button");
+    bVr.type = "button"; bVr.className = "mini-btn dark"; bVr.textContent = t("vocalRemover"); bVr.setAttribute("data-stem", "vr");
     var b6 = document.createElement("button");
     b6.type = "button"; b6.className = "mini-btn dark"; b6.textContent = t("split6"); b6.setAttribute("data-stem", "6");
     var b12 = document.createElement("button");
     b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12"); b12.setAttribute("data-stem", "12");
-    rowBtns.appendChild(b6); rowBtns.appendChild(b12);
+    rowBtns.appendChild(bVr); rowBtns.appendChild(b6); rowBtns.appendChild(b12);
+    var nVr = document.createElement("div");
+    nVr.className = "hint"; nVr.textContent = t("vocalRemoverNote");
     var n6 = document.createElement("div");
     n6.className = "hint"; n6.textContent = t("split6Note");
     var n12 = document.createElement("div");
@@ -1411,10 +1484,12 @@
     var msg = document.createElement("div");
     msg.className = "stem-msg";
     var res = document.createElement("div");
+    res.className = "stem-res";
     box.appendChild(lbl); box.appendChild(rowBtns);
-    box.appendChild(n6); box.appendChild(n12);
+    box.appendChild(nVr); box.appendChild(n6); box.appendChild(n12);
     box.appendChild(msg); box.appendChild(res);
     itemEl.appendChild(box);
+    bVr.addEventListener("click", function(){ runVocalRemover(song, msg, res); });
     b6.addEventListener("click", function(){ runStem6(song, msg, res); });
     b12.addEventListener("click", function(){
       if (b12.getAttribute("data-armed") !== "1") {
@@ -1433,6 +1508,10 @@
       runStem12(song, msg, res);
     });
   }
+  function stemName(n){
+    var k = { vocals: "stemVocals", music: "stemMusic", drums: "stemDrums", bass: "stemBass", other: "stemOther", piano: "stemPiano", guitar: "stemGuitar" }[n];
+    return k ? t(k) : (n || "stem");
+  }
   function renderStemLinks(res, stems){
     res.innerHTML = "";
     if (!stems || !stems.length) return;
@@ -1440,13 +1519,21 @@
       var r = document.createElement("div");
       r.className = "stem-row";
       var nm = document.createElement("span");
-      nm.textContent = st.name || "stem";
-      var a = document.createElement("a");
-      a.className = "row-dl";
-      a.href = st.url;
-      a.textContent = t("download");
-      a.setAttribute("download", "");
-      r.appendChild(nm); r.appendChild(a);
+      nm.textContent = stemName(st.name);
+      if (st.locked) {
+        // Admin locked this stem — show the lock, no download link.
+        var lk = document.createElement("span");
+        lk.className = "row-dl";
+        lk.textContent = "🔒 " + t("lockedStem");
+        r.appendChild(nm); r.appendChild(lk);
+      } else {
+        var a = document.createElement("a");
+        a.className = "row-dl";
+        a.href = st.url;
+        a.textContent = t("download");
+        a.setAttribute("download", "");
+        r.appendChild(nm); r.appendChild(a);
+      }
       res.appendChild(r);
     });
   }
@@ -1513,6 +1600,9 @@
     setTimeout(step, 10000);
   }
   function runStem12(song, msg, res){
+    runStem12Url(songUrl(song), song.title || "", msg, res);
+  }
+  function runStem12Url(audioUrl, title, msg, res){
     if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
     stemSetMsg(msg, t("splitWorking") + "0s");
     res.innerHTML = "";
@@ -1521,8 +1611,8 @@
       stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
     }, 1000);
     // POST /api/stem/split {email, audioUrl, title} -> {ok, splitTaskId} (12 stems, 50 credits)
-    apiPost("/api/stem/split", { email: email, audioUrl: songUrl(song),
-      title: song.title || "" }, 60000).then(function(j){
+    apiPost("/api/stem/split", { email: email, audioUrl: audioUrl,
+      title: title }, 60000).then(function(j){
       clearInterval(tick);
       if (j && j.ok === true && j.splitTaskId) {
         stemSetMsg(msg, t("splitWorking") + "0s");
@@ -1534,6 +1624,117 @@
       clearInterval(tick);
       stemSetMsg(msg, t("noServer"), true);
     });
+  }
+  // ---- Vocal Remover (⋮ menu): 2 sounds — vocals + music. The
+  // server picks the model from the Admin locks (2/4/6 stems) and
+  // charges 2 free, then 6 song credits (never Suno credits).
+  function vrDoneMsg(j){
+    var s = t("splitDone");
+    if (j && j.charged === 6) s += " · " + t("vocalCharged");
+    else if (j && typeof j.freeLeft === "number") s += " · " + t("vocalFreeLeft") + j.freeLeft;
+    return s;
+  }
+  function runVocalRemover(song, msg, res){
+    runVocalRemoverUrl(songUrl(song), song.title || "", msg, res);
+  }
+  function runVocalRemoverUrl(audioUrl, title, msg, res){
+    if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
+    stemSetMsg(msg, t("splitWorking") + "0s");
+    res.innerHTML = "";
+    var t0 = Date.now();
+    var tick = setInterval(function(){
+      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+    }, 1000);
+    // POST /api/studio/separate {email, audioUrl, songTitle, stems: 2}
+    // -> {ok, stems} (Vocal Remover rows: unlocked stems + locked rows)
+    apiPost("/api/studio/separate", { email: email, audioUrl: audioUrl,
+      songTitle: title, stems: 2 }, 360000).then(function(j){
+      clearInterval(tick);
+      if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
+        stemSetMsg(msg, vrDoneMsg(j));
+        renderStemLinks(res, j.stems);
+      } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
+        stemSetMsg(msg, t("splitWorking") + "0s");
+        pollStem6(j.hash, msg, res, t0);
+      } else {
+        stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
+      }
+    }).catch(function(e){
+      clearInterval(tick);
+      if (e && e.name === "AbortError") stemSetMsg(msg, t("vocalResume"), true);
+      else stemSetMsg(msg, t("noServer"), true);
+    });
+  }
+  // ---- Files MP3 upload (⋮ menu): pick an external MP3, upload it,
+  // then choose Vocal Remover or Vocal Studio Split 12 for it.
+  function vrReadFile(file){
+    return new Promise(function(resolve, reject){
+      var fr = new FileReader();
+      fr.onload = function(){ var s = String(fr.result || ""); var i = s.indexOf(","); resolve(i >= 0 ? s.slice(i + 1) : s); };
+      fr.onerror = function(){ reject(new Error("read")); };
+      fr.readAsDataURL(file);
+    });
+  }
+  function vrUploadFile(file, target){
+    if (!email) { return; }
+    var box = openStemBox(target.song, target.itemEl);
+    if (!box) return;
+    var msg = box.querySelector(".stem-msg");
+    var res = box.querySelector(".stem-res");
+    if (!msg || !res) return;
+    res.innerHTML = "";
+    var t0 = Date.now();
+    stemSetMsg(msg, t("uploadWorking") + "0s");
+    var tick = setInterval(function(){
+      stemSetMsg(msg, t("uploadWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+    }, 1000);
+    // POST /api/studio/upload {email, filename, data(base64)} -> {ok, url}
+    vrReadFile(file).then(function(b64){
+      return apiPost("/api/studio/upload", { email: email, filename: file.name || "song.mp3", data: b64 }, 120000);
+    }).then(function(j){
+      clearInterval(tick);
+      if (j && j.ok === true && j.url) {
+        showVrChooser(j.url, file.name || "song.mp3", msg, res);
+      } else {
+        stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
+      }
+    }).catch(function(){
+      clearInterval(tick);
+      stemSetMsg(msg, t("noServer"), true);
+    });
+  }
+  function showVrChooser(upUrl, fileName, msg, res){
+    stemSetMsg(msg, fileName);
+    res.innerHTML = "";
+    var lbl = document.createElement("div");
+    lbl.className = "hint";
+    lbl.textContent = t("chooseSplit");
+    var row = document.createElement("div");
+    row.className = "rowline";
+    row.style.cssText = "display:flex;gap:8px;flex-wrap:wrap";
+    var bVr = document.createElement("button");
+    bVr.type = "button"; bVr.className = "mini-btn dark"; bVr.textContent = t("vocalRemover");
+    bVr.addEventListener("click", function(){ runVocalRemoverUrl(upUrl, fileName, msg, res); });
+    var b12 = document.createElement("button");
+    b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12Menu");
+    b12.addEventListener("click", function(){
+      if (b12.getAttribute("data-armed") !== "1") {
+        b12.setAttribute("data-armed", "1");
+        b12.textContent = t("split12Confirm");
+        setTimeout(function(){
+          if (b12.getAttribute("data-armed") === "1") {
+            b12.setAttribute("data-armed", "");
+            b12.textContent = t("split12Menu");
+          }
+        }, 4000);
+        return;
+      }
+      b12.setAttribute("data-armed", "");
+      b12.textContent = t("split12Menu");
+      runStem12Url(upUrl, fileName, msg, res);
+    });
+    row.appendChild(bVr); row.appendChild(b12);
+    res.appendChild(lbl); res.appendChild(row);
   }
   function pollStem12(splitTaskId, msg, res, t0){
     var n = 0;
