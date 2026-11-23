@@ -190,14 +190,21 @@
   .md-note{margin-top:14px;font-size:.82rem;color:#6b7280;line-height:1.6}
   .md-create{display:block;margin-top:16px;text-align:center;font-size:1rem;font-weight:700;color:#fff;background:#0f766e;border-radius:10px;padding:13px 16px;text-decoration:none}
   .md-create:active{opacity:.85}
-  /* ---- Welcome hero (Stage 24): only when the feed is empty ---- */
-  .hero{text-align:center;padding:28px 16px 8px}
+  /* ---- Welcome hero (Stage 25): dark, glowing, like the ad the owner sent ---- */
+  .hero{text-align:center;padding:28px 16px 24px;margin:14px 16px 0;border-radius:16px;overflow:hidden;
+    background:radial-gradient(120% 120% at 50% 0%,#1a0b2e 0%,#000000 60%)}
   .hero[hidden]{display:none}
-  .hero-logo{width:72px;height:72px;object-fit:contain}
-  .hero-tag{margin-top:12px;font-size:1rem;font-weight:700;color:#1f2937;line-height:1.5}
-  .hero-btn{display:inline-block;margin-top:16px;font-size:1rem;font-weight:700;color:#fff;background:#0f766e;border-radius:10px;padding:13px 28px;text-decoration:none}
+  .hero-top{font-size:1.05rem;font-weight:700;color:#f5d0fe}
+  .hero-brand{font-size:3.4rem;font-weight:900;letter-spacing:.02em;line-height:1.1;
+    background:linear-gradient(90deg,#ff2d78 0%,#ff7a18 55%,#ffb800 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 18px rgba(255,90,40,.55))}
+  .hero-sub{margin-top:10px;font-size:1.05rem;font-weight:800;color:#ffffff;line-height:1.4}
+  .hero-btn{display:inline-block;margin-top:16px;font-size:1rem;font-weight:800;color:#fff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:13px 28px;text-decoration:none;
+    box-shadow:0 0 24px rgba(255,90,40,.55)}
   .hero-btn:active{opacity:.85}
-  .hero-hint{margin-top:12px;font-size:.82rem;color:#6b7280}
+  .hero-hint{margin-top:12px;font-size:.82rem;color:#9ca3af}
   /* ---- Gift sheet ---- */
   .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
@@ -323,8 +330,6 @@
   html[data-theme="dark"] .md-feats li{border-bottom-color:#24362f}
   html[data-theme="dark"] .md-panel-close{color:#e7f0ec}
   html[data-theme="dark"] .md-chev{color:#5b6f66}
-  html[data-theme="dark"] .hero-tag{color:#e7f0ec}
-  html[data-theme="dark"] .hero-hint{color:#8fa89e}
   html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
   html[data-theme="dark"] .trow{border-bottom-color:#24362f}
   html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
@@ -395,8 +400,9 @@
 
   <main>
     <div class="hero" id="hero" hidden>
-      <img class="hero-logo" src="movai-logo-mark.png" alt="MovAi">
-      <div class="hero-tag" data-i18n="heroTag">បង្កើតចម្រៀងដោយ AI — ច្រៀងច្បាស់ ពិរោះ ជាងមុន</div>
+      <div class="hero-top" data-i18n="heroTop">បង្កើតចម្រៀងដោយ AI?</div>
+      <div class="hero-brand">MovAi</div>
+      <div class="hero-sub" data-i18n="heroSub">ច្រៀងច្បាស់ ពិរោះ ជាងមុន</div>
       <a class="hero-btn" href="/Movai.MusicGenerate/kh" data-i18n="navCreate">បង្កើតចម្រៀង</a>
       <div class="hero-hint" data-i18n="heroHint">ឬមើលបទ YouTube ខាងក្រោម</div>
     </div>
@@ -618,7 +624,8 @@
       mdFeatTitle: "មុខងារដែលអ្នកអាចធ្វើបាន",
       mdCreate: "បង្កើតចម្រៀងជាមួយម៉ូដែលនេះ",
       mdNote: "បង្កើតម្ដង 12 Song Credits បាន 2 បទ",
-      heroTag: "បង្កើតចម្រៀងដោយ AI — ច្រៀងច្បាស់ ពិរោះ ជាងមុន",
+      heroTop: "បង្កើតចម្រៀងដោយ AI?",
+      heroSub: "ច្រៀងច្បាស់ ពិរោះ ជាងមុន",
       heroHint: "ឬមើលបទ YouTube ខាងក្រោម"
     },
     en: {
@@ -679,7 +686,8 @@
       mdFeatTitle: "What you can do",
       mdCreate: "Create a song with this model",
       mdNote: "12 Song Credits per creation — you get 2 songs",
-      heroTag: "Create songs with AI — clear voices, more beautiful than before",
+      heroTop: "Made a song with AI?",
+      heroSub: "Clearer singing, more beautiful than before",
       heroHint: "Or watch the YouTube songs below"
     }
   };
