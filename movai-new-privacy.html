@@ -33,7 +33,7 @@
   .wrap{max-width:720px;margin:0 auto}
 
   /* ---- Header: two rows, directly on the background (transparent) ---- */
-  header{position:sticky;top:0;z-index:20;
+  header{position:fixed;top:0;left:0;right:0;z-index:50;max-width:720px;margin:auto;
     background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
     background-attachment:fixed;}
   .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -80,7 +80,7 @@
   .menu .menu-user{padding:12px 20px 4px;font-size:.85rem;color:#6b7280}
 
   /* ---- Policy text: plain, directly on the background ---- */
-  main{padding:8px 16px 120px}
+  main{padding:108px 16px 120px}
   h1{font-size:1.25rem;font-weight:800;margin:18px 0 4px}
   .updated{font-size:.85rem;color:#6b7280;margin:0 0 8px}
   h2{font-size:1rem;font-weight:700;margin:22px 0 6px}
