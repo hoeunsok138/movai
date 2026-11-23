@@ -1018,6 +1018,7 @@
       feedEl.appendChild(row);
       probeDuration(song, dur);
     });
+    crossMatchList(); /* a cross-page song may now match the fresh feed */
   }
   /* ---- AI Models section (Stage 23): tap a row -> full panel with the
      model's description + the feature list. The Create button saves the
@@ -1325,6 +1326,7 @@
           return p && p.mode === "song" && p.url;
         });
         renderFeed();
+        crossMatchList(); /* a cross-page song may now match the fresh feed */
       })
       .catch(function(){ showError(); });
   }
@@ -1382,6 +1384,7 @@
     if (i < 0 || i >= songs.length) return;
     cur = i;
     snapRestoring = false; // a real tap ends the quiet restore window
+    nowPlayOff = false; // a real tap starts a live track again
     var song = songs[i];
     pCover.src = song.cover || COVER_FALLBACK;
     pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
@@ -1461,6 +1464,8 @@
   pNext.addEventListener("click", playNext);
   pClose.addEventListener("click", function(){
     snapRestoring = false;
+    nowPlayOff = true; // closed on purpose: no other page may bring it back
+    try { localStorage.removeItem(NOWPLAY_KEY); } catch (e) {}
     au.pause(); au.removeAttribute("src"); au.load();
     cur = -1; playerEl.hidden = true; document.body.classList.remove("player-on"); markPlaying();
   });
@@ -1468,6 +1473,129 @@
   au.addEventListener("pause", syncPlayBtn);
   au.addEventListener("error", function(){ onPlayFailed(au.error); syncPlayBtn(); });
   au.addEventListener("ended", playEnded);
+
+  /* ---- Cross-page now-playing (auto-resume) ----
+     One shared record in localStorage carries the song now playing on ANY
+     page (Home / My Songs / Create). Every page writes it while a song
+     plays; every page with a player bar reads it on load. A page change
+     is a fresh load, so the sound stops for a moment - but the new page
+     picks the same song up by itself at the saved position, no tap. */
+  var NOWPLAY_KEY = "movai-nowplaying";
+  var nowPlayOff = false; // true after Close: a closed player never comes back
+  var nowPlayLastWrite = 0;
+  var crossDone = false;
+  var crossSong = null; // shared record we restored from (for late list match)
+  var ownSnapAt = 0; // savedAt of this page's own snapshot (0 = none)
+  var restoreGen = 0; // guards a restore seek against a newer restore
+  function nowPlayLoad(){
+    try {
+      var raw = localStorage.getItem(NOWPLAY_KEY);
+      if (!raw) return null;
+      var r = JSON.parse(raw);
+      if (!r || typeof r.savedAt !== "number") return null;
+      if (Date.now() - r.savedAt > GRACE_MS) return null;
+      if (!Array.isArray(r.urls) || !r.urls.length) return null;
+      return r;
+    } catch (e) { return null; }
+  }
+  function nowPlaySave(rec){
+    if (nowPlayOff) return;
+    try { localStorage.setItem(NOWPLAY_KEY, JSON.stringify(rec)); } catch (e) {}
+  }
+  function nowPlayUrls(rec){
+    var out = [];
+    (rec.urls || []).forEach(function(u){ u = playUrl(u); if (u && out.indexOf(u) < 0) out.push(u); });
+    return out;
+  }
+  function nowPlayWriteCurrent(){
+    if (nowPlayOff) return;
+    if (cur < 0 || !songs[cur]) return;
+    var s = songs[cur];
+    nowPlaySave({
+      savedAt: Date.now(),
+      songId: String(s.id || ""),
+      title: s.title || "",
+      cover: s.cover || "",
+      urls: [s.url, s.streamUrl, s.audioUrl].filter(function(u){ return !!u; }),
+      currentTime: au.currentTime || 0,
+      wasPlaying: !au.paused && !playerEl.hidden
+    });
+  }
+  au.addEventListener("play", function(){ nowPlayWriteCurrent(); });
+  au.addEventListener("pause", function(){ nowPlayWriteCurrent(); });
+  au.addEventListener("timeupdate", function(){
+    if (au.paused || cur < 0 || playerEl.hidden) return;
+    var now = Date.now();
+    if (now - nowPlayLastWrite < 5000) return;
+    nowPlayLastWrite = now;
+    nowPlayWriteCurrent();
+  });
+  function crossFindIndex(r){
+    if (!r) return -1;
+    var wantId = String(r.songId || "");
+    var wantUrls = nowPlayUrls(r);
+    for (var i = 0; i < songs.length; i++) {
+      var s = songs[i];
+      if (wantId && String(s.id || "") === wantId) return i;
+      var u = playUrl(s.url || s.streamUrl || s.audioUrl || "");
+      if (u && wantUrls.indexOf(u) >= 0) return i;
+    }
+    return -1;
+  }
+  function crossRestoreFrom(r){
+    var urls = nowPlayUrls(r);
+    if (!urls.length) return;
+    var idx = crossFindIndex(r);
+    var song = idx >= 0 ? songs[idx] : null;
+    cur = idx;
+    nowPlayOff = false;
+    crossSong = r;
+    pCover.src = (song && song.cover) || r.cover || COVER_FALLBACK;
+    pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
+    pTitle.textContent = (song && song.title) || r.title || t("untitled");
+    playerEl.hidden = false; document.body.classList.add("player-on");
+    markPlaying();
+    syncModeBtns();
+    playUrls = urls; playUrlIdx = 0; playTriedSrc = "";
+    snapRestoring = true;
+    var myGen = ++restoreGen;
+    au.src = urls[0];
+    var wantTime = (typeof r.currentTime === "number" && r.currentTime > 0) ? r.currentTime : 0;
+    var seeked = false;
+    function doSeek(){
+      if (seeked) return; seeked = true; snapRestoring = false;
+      if (myGen !== restoreGen) return;
+      try {
+        if (isFinite(au.duration) && wantTime >= au.duration - 2) {
+          /* The song ended while the page was changing: advance by the
+             existing rules, or hide the bar when there is nothing to play. */
+          if (cur >= 0) { playEnded(); }
+          else { playerEl.hidden = true; document.body.classList.remove("player-on"); try { localStorage.removeItem(NOWPLAY_KEY); } catch (e) {} }
+          return;
+        }
+        if (wantTime > 0 && isFinite(au.duration) && wantTime < au.duration) au.currentTime = wantTime;
+      } catch (e) {}
+      /* Resume only if it was playing; if the browser blocks autoplay the
+         rejection is swallowed silently - never an error for that. */
+      if (r.wasPlaying) { try { var pr = au.play(); if (pr && pr.catch) pr.catch(function(){}); } catch (e) {} }
+    }
+    au.addEventListener("loadedmetadata", doSeek, { once: true });
+    try { au.load(); } catch (e) {}
+    setTimeout(function(){ if (myGen !== restoreGen) return; if (!seeked) { seeked = true; snapRestoring = false; } }, 10000);
+  }
+  function crossResume(){
+    if (crossDone) return;
+    crossDone = true;
+    var r = nowPlayLoad();
+    if (!r) return;
+    if (ownSnapAt && r.savedAt <= ownSnapAt) return; /* own snapshot is newer - it already restored */
+    crossRestoreFrom(r);
+  }
+  function crossMatchList(){
+    if (!crossSong || cur >= 0) return;
+    var idx = crossFindIndex(crossSong);
+    if (idx >= 0) { cur = idx; markPlaying(); }
+  }
 
 
   /* ---- Round 4 (J): return-to-app snapshot (Home feed + player) ---- */
@@ -1500,6 +1628,7 @@
         p = { songId: String(songs[cur].id || ""), currentTime: au.currentTime || 0, wasPlaying: !au.paused && !playerEl.hidden };
       }
       localStorage.setItem(SNAP_KEY, JSON.stringify({ savedAt: Date.now(), scrollY: window.scrollY || 0, items: songs.slice(0, 100), player: p }));
+      nowPlayWriteCurrent(); /* same state, shared so the next page can resume it */
     } catch (e) {}
   }
   function snapRestorePlayer(p){
@@ -1518,11 +1647,14 @@
     playUrls = songPlayUrls(song); playUrlIdx = 0; playTriedSrc = "";
     if (!playUrls.length) return;
     snapRestoring = true;
+    var myGen = ++restoreGen;
+    nowPlayOff = false;
     au.src = playUrls[0];
     var wantTime = (typeof p.currentTime === "number" && p.currentTime > 0) ? p.currentTime : 0;
     var seeked = false;
     function doSeek(){
       if (seeked) return; seeked = true; snapRestoring = false;
+      if (myGen !== restoreGen) return; /* a newer restore took over */
       try { if (wantTime > 0 && isFinite(au.duration) && wantTime < au.duration) au.currentTime = wantTime; } catch (e) {}
       /* Resume only if it was playing; if the browser blocks autoplay the
          rejection is swallowed silently - never an error for that. */
@@ -1530,10 +1662,11 @@
     }
     au.addEventListener("loadedmetadata", doSeek, { once: true });
     try { au.load(); } catch (e) {}
-    setTimeout(function(){ if (!seeked) { seeked = true; snapRestoring = false; } }, 10000);
+    setTimeout(function(){ if (myGen !== restoreGen) return; if (!seeked) { seeked = true; snapRestoring = false; } }, 10000);
   }
   function snapRestore(){
     var s = snapLoad();
+    ownSnapAt = (s && typeof s.savedAt === "number") ? s.savedAt : 0;
     if (!s || !Array.isArray(s.items) || !s.items.length) return false;
     songs = s.items.slice(0, 100);
     renderFeed();
@@ -1545,7 +1678,7 @@
   }
 
   applyLang();
-  if (!snapRestore()) loadFeed();
+  if (snapRestore()) { crossResume(); } else { loadFeed(); crossResume(); }
   renderYtList();
   ytWireToggle();
   ytSyncToggle();
