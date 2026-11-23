@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
+<link rel="apple-touch-icon" href="movai-icon-192.png">
+<title>MovAi Music Generate Kh — Download Center</title>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
+<style>
+  /* MovAi new — clean look, one single pale background, no layers. */
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;overflow-x:hidden}
+  html{
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    -webkit-text-size-adjust:100%;
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:#1f2937;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  a{color:#1f2937;text-decoration:none}
+  button{font:inherit;color:inherit;background:transparent;border:0;padding:0;cursor:pointer}
+  img{display:block;max-width:100%}
+
+  .wrap{max-width:720px;margin:0 auto}
+
+  /* ---- Header: two rows, directly on the background (transparent) ---- */
+  header{position:fixed;top:0;left:0;right:0;z-index:50;max-width:720px;margin:auto;
+    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
+    background-attachment:fixed;}
+  .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-left:16px;padding-right:16px}
+  .hdr-top{padding-top:14px;padding-bottom:10px;border-bottom:1px solid #e5e7eb}
+  .hdr-sub{padding-top:11px;padding-bottom:11px;border-bottom:1px solid #e5e7eb}
+  .hdr-logo{display:flex;align-items:center;gap:8px;color:#1f2937;min-width:0}
+  .hdr-logo svg,.hdr-logo img{flex:none}
+  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;line-height:1;background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hdr-right{display:flex;align-items:center;gap:4px}
+  .icon-btn{font-size:1.35rem;line-height:1;color:#1f2937;padding:4px 9px;border-radius:8px}
+  .icon-btn:active{background:#e5e7eb}
+  .hdr-sec{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .hdr-sec .icon-btn{padding:4px 8px}
+  .hdr-sec-name{font-size:1rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hdr-btn{flex:none;font-size:.9rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;background:transparent}
+  .hdr-btn:active{background:#e5e7eb}
+
+  /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
+  .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#f2faf6;border:1px solid #d1d5db;
+    font-size:1.4rem;line-height:1;color:#1f2937;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);transition:opacity .25s ease}
+  .menu-fab:active{background:#e5e7eb}
+  .menu-veil{position:fixed;inset:0;z-index:55;display:none;
+    background:rgba(242,250,246,.55);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .menu-veil.open{display:block;animation:veilIn .18s ease-out}
+  @keyframes veilIn{from{opacity:0}to{opacity:1}}
+  .menu{position:fixed;left:0;right:0;bottom:0;z-index:56;
+    max-height:70vh;overflow-y:auto;
+    background:#f2faf6;border-top:1px solid #e5e7eb;border-radius:16px 16px 0 0;
+    padding:6px 0 calc(10px + env(safe-area-inset-bottom,0px));
+    transform:translateY(105%);transition:transform .22s ease-out;
+    visibility:hidden}
+  .menu.open{transform:translateY(0);visibility:visible;animation:sheetIn .25s ease-out}
+  @keyframes sheetIn{from{filter:blur(6px)}to{filter:blur(0)}}
+  .menu.open + .menu-fab{display:none}
+  .menu a,.menu button.menu-link{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:13px 20px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0;background:transparent}
+  .menu a .nav-ic{display:inline-flex;flex:none;line-height:0}
+  .menu a .nav-ic svg{display:block;width:20px;height:20px}
+  .menu a:last-child,.menu button.menu-link:last-child{border-bottom:0}
+  .menu a:active,.menu button.menu-link:active{background:#e5e7eb}
+  .menu .menu-sep{height:1px;background:#e5e7eb;margin:6px 0}
+  .menu .menu-user{padding:12px 20px 4px;font-size:.85rem;color:#6b7280}
+  [hidden]{display:none !important}
+
+  main{padding-top:108px;padding-bottom:120px}
+
+  /* ---- Download Center: plain rows directly on the background ---- */
+  .dl-sec{padding:16px}
+  .dl-urlrow{display:flex;gap:8px;align-items:stretch}
+  .dl-input{flex:1;min-width:0;font:inherit;font-size:.95rem;color:#1f2937;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:10px;padding:12px 12px}
+  .dl-input:focus{outline:2px solid #0f766e;border-color:#0f766e}
+  .dl-paste{flex:none;font-size:.9rem;font-weight:700;color:#ffffff;background:#0f766e;
+    border-radius:10px;padding:12px 16px}
+  .dl-paste:active{opacity:.85}
+  .dl-plat{margin-top:8px;font-size:.85rem;font-weight:700;color:#0f766e;min-height:18px}
+  .dl-plat:empty{display:none}
+  .dl-lbl{margin-top:16px;font-size:.85rem;font-weight:700;color:#6b7280}
+  .dl-chips{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .dl-chip{font-size:.92rem;font-weight:700;color:#1f2937;background:#ffffff;
+    border:1px solid #d1d5db;border-radius:999px;padding:9px 16px}
+  .dl-chip:active{background:#e5e7eb}
+  .dl-chip.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .dl-go{display:block;width:100%;margin-top:20px;font-size:1rem;font-weight:800;color:#ffffff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:10px;padding:14px 16px}
+  .dl-go:active{opacity:.85}
+  .dl-go:disabled{opacity:.55}
+  .dl-free{margin-top:10px;font-size:.82rem;color:#6b7280;text-align:center}
+  .dl-status{margin-top:14px;font-size:.92rem;font-weight:600;color:#1f2937;min-height:20px;font-variant-numeric:tabular-nums}
+  .dl-status:empty{display:none}
+  .dl-err{margin-top:10px;font-size:.92rem;font-weight:600;color:#991b1b;line-height:1.5;word-break:break-word}
+  .dl-err:empty{display:none}
+  .dl-note{margin-top:10px;font-size:.85rem;color:#6b7280;line-height:1.5}
+  .dl-note:empty{display:none}
+  .dl-daily{margin-top:10px;font-size:.85rem;color:#6b7280;text-align:center}
+  .dl-daily:empty{display:none}
+  .dl-pick{margin-top:14px}
+  .dl-pick-title{font-size:.9rem;font-weight:700;color:#1f2937;margin-bottom:8px}
+  .dl-pick-item{display:flex;width:100%;align-items:center;gap:10px;text-align:left;
+    padding:12px 14px;font-size:.92rem;font-weight:600;color:#1f2937;background:#ffffff;
+    border:1px solid #d1d5db;border-radius:10px;margin-bottom:8px}
+  .dl-pick-item:active{background:#eef7f4}
+  .dl-pick-item .dl-pick-kind{flex:none;font-size:.78rem;font-weight:800;color:#0f766e}
+  .dl-pick-item span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dl-result{margin-top:14px}
+  .dl-filename{font-size:.9rem;font-weight:600;color:#1f2937;word-break:break-word;line-height:1.5}
+  .dl-dlbtn{display:block;width:100%;margin-top:10px;font-size:1rem;font-weight:800;color:#ffffff;
+    background:#0f766e;border-radius:10px;padding:14px 16px}
+  .dl-dlbtn:active{opacity:.85}
+  .dl-dlbtn:disabled{opacity:.55}
+  .dl-signin{padding:28px 16px;text-align:center;color:#6b7280;font-size:.95rem;line-height:1.6}
+  .dl-signin a{color:#0f766e;font-weight:700;text-decoration:underline}
+  /* ---- Drawer settings: theme + language ---- */
+  .menu-set{padding:12px 20px 6px}
+  .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
+  .seg-mini{display:flex;gap:6px}
+  .seg-mini button{flex:1;font-size:.88rem;font-weight:600;color:#1f2937;
+    border:1px solid #d1d5db;border-radius:8px;padding:8px 6px;background:transparent}
+  .seg-mini button:active{background:#e5e7eb}
+  .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  /* ---- Chat button: bottom-right, slides in from the right edge ---- */
+  .chat-fab{position:fixed;right:16px;bottom:16px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:#0f766e;border:1px solid #0f766e;
+    color:#ffffff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.18);
+    transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);
+    transition:transform .45s ease-out,opacity .45s ease-out,filter .45s ease-out;
+    pointer-events:none}
+  .chat-fab.in{transform:translateX(0);opacity:1;filter:blur(0);pointer-events:auto}
+  .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
+  .chat-fab:active{opacity:.85}
+  body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
+  body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
+  .chat-fab svg{width:24px;height:24px;flex:none}
+  html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  /* ---- Night theme: same layout, pure black ---- */
+  html[data-theme="dark"]{background:#000000}
+  html[data-theme="dark"] body{background:#000000;color:#e7f0ec}
+  html[data-theme="dark"] a{color:#e7f0ec}
+  html[data-theme="dark"] header{background:#000000}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#262626}
+  html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .hdr-logo b{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  html[data-theme="dark"] .icon-btn:active{background:#1a1a1a}
+  html[data-theme="dark"] .hdr-btn{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .hdr-btn:active{background:#1a1a1a}
+  html[data-theme="dark"] .menu-fab{background:#000000;border-color:#333333;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1a1a1a}
+  html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
+  html[data-theme="dark"] .menu{background:#000000;border-top-color:#262626}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#262626}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1a1a1a}
+  html[data-theme="dark"] .menu .menu-sep{background:#262626}
+  html[data-theme="dark"] .menu .menu-user{color:#9ca3af}
+  html[data-theme="dark"] .menu-set-label{color:#9ca3af}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .seg-mini button:active{background:#1a1a1a}
+  html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .dl-input{background:#000000;border-color:#333333;color:#e7f0ec}
+  html[data-theme="dark"] .dl-input:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
+  html[data-theme="dark"] .dl-plat{color:#2dd4bf}
+  html[data-theme="dark"] .dl-lbl{color:#9ca3af}
+  html[data-theme="dark"] .dl-chip{background:#000000;border-color:#333333;color:#e7f0ec}
+  html[data-theme="dark"] .dl-chip:active{background:#1a1a1a}
+  html[data-theme="dark"] .dl-chip.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .dl-free,html[data-theme="dark"] .dl-note,html[data-theme="dark"] .dl-daily{color:#9ca3af}
+  html[data-theme="dark"] .dl-status{color:#e7f0ec}
+  html[data-theme="dark"] .dl-err{color:#fca5a5}
+  html[data-theme="dark"] .dl-pick-title,html[data-theme="dark"] .dl-filename{color:#e7f0ec}
+  html[data-theme="dark"] .dl-pick-item{background:#000000;border-color:#333333;color:#e7f0ec}
+  html[data-theme="dark"] .dl-pick-item:active{background:#1a1a1a}
+  html[data-theme="dark"] .dl-pick-item .dl-pick-kind{color:#2dd4bf}
+  html[data-theme="dark"] .dl-signin{color:#9ca3af}
+  html[data-theme="dark"] .dl-signin a{color:#2dd4bf}
+  .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header id="hdr">
+    <div class="hdr-row hdr-top">
+      <a class="hdr-logo" href="index.html">
+        <img src="movai-logo-mark.png" width="26" height="26" alt="MovAi logo">
+        <b>MovAi</b>
+      </a>
+    </div>
+    <div class="hdr-row hdr-sub">
+      <a class="hdr-back" href="index.html" aria-label="Back">&#8249;</a>
+      <span class="hdr-sec">
+        <span class="hdr-sec-name" data-i18n="secDownload">ទាញយកវីដេអូ</span>
+      </span>
+      <a class="hdr-btn" href="/Movai.MusicGenerate/kh" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+    </div>
+  </header>
+  <div class="menu-veil" id="menuVeil"></div>
+  <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
+      <a href="index.html" data-i18n="navHome"><span class="nav-ic" style="color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>ទំព័រដើម</a>
+      <a href="/Movai.MusicGenerate/kh" data-i18n="navCreate"><span class="nav-ic" style="color:#ff2d78"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>បង្កើតចម្រៀង</a>
+      <a href="movai-new-market.html" data-i18n="navMarket"><span class="nav-ic" style="color:#d97706"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>ផ្សារ</a>
+      <a href="movai-new-songs.html" data-i18n="navSongs"><span class="nav-ic" style="color:#3b82f6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>ចម្រៀងរបស់ខ្ញុំ</a>
+      <a href="movai-new-profile.html" data-i18n="navProfile"><span class="nav-ic" style="color:#a855f7"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>ប្រវត្តិរូប</a>
+      <a href="movai-new-chat.html" data-i18n="navChat"><span class="nav-ic" style="color:#0d9488"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>ឆាត</a>
+    <div class="menu-set">
+      <div class="menu-set-label" id="menuFnsLbl">មុខងារ</div>
+      <div class="menu-fns" id="menuFns"></div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
+      <div class="seg-mini" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+    <div class="menu-set">
+      <div class="menu-set-label" data-i18n="lang">ភាសា</div>
+      <div class="seg-mini" id="langSeg">
+        <button type="button" data-lang-val="kh" data-i18n="langNameKh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en" data-i18n="langNameEn">English</button>
+      </div>
+    </div>
+    <div class="menu-sep"></div>
+    <div class="menu-user" id="menuUser" hidden></div>
+    <a href="movai-new-profile.html" id="menuSignIn" data-i18n="menuSignIn">ចូលប្រើ</a>
+    <button class="menu-link" id="menuSignOut" type="button" hidden data-i18n="menuSignOut">ចាកចេញ</button>
+  </nav>
+  <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
+  <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+
+  <main>
+    <div class="dl-signin" id="dlSignin" hidden>
+      <span data-i18n="dlNeedSignIn">សូមចូលប្រើជាមុនសិន ដើម្បីទាញយក</span>
+      <a href="movai-new-profile.html" data-i18n="dlSignIn">ចូលប្រើ</a>
+    </div>
+    <div class="dl-sec" id="dlBox">
+      <div class="dl-urlrow">
+        <input class="dl-input" id="dlUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" data-i18n-ph="dlUrlPh" placeholder="ដាក់ link វីដេអូនៅទីនេះ…">
+        <button class="dl-paste" id="dlPaste" type="button" data-i18n="dlPaste">បិទភ្ជាប់</button>
+      </div>
+      <div class="dl-plat" id="dlPlat"></div>
+      <div class="dl-lbl" data-i18n="dlFormat">ទម្រង់</div>
+      <div class="dl-chips" id="dlFmtRow">
+        <button class="dl-chip on" id="dlFmtMp4" type="button" aria-pressed="true">MP4</button>
+        <button class="dl-chip" id="dlFmtMp3" type="button" aria-pressed="false">MP3</button>
+      </div>
+      <div id="dlQualityWrap">
+        <div class="dl-lbl" data-i18n="dlQuality">គុណភាព</div>
+        <div class="dl-chips" id="dlQualityRow">
+          <button class="dl-chip on" type="button" data-q="1080" aria-pressed="true">1080</button>
+          <button class="dl-chip" type="button" data-q="720" aria-pressed="false">720</button>
+          <button class="dl-chip" type="button" data-q="480" aria-pressed="false">480</button>
+          <button class="dl-chip" type="button" data-q="360" aria-pressed="false">360</button>
+        </div>
+      </div>
+      <button class="dl-go" id="dlGo" type="button" data-i18n="dlGo">ទាញយក</button>
+      <div class="dl-free" data-i18n="dlFreeNote">ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ</div>
+      <div class="dl-status" id="dlStatus"></div>
+      <div class="dl-err" id="dlErr"></div>
+      <div class="dl-note" id="dlDirectNote"></div>
+      <div class="dl-daily" id="dlDaily"></div>
+      <div class="dl-pick" id="dlPicker" hidden>
+        <div class="dl-pick-title" data-i18n="dlPickTitle">ជ្រើសរើសមួយ</div>
+        <div id="dlPickList"></div>
+      </div>
+      <div class="dl-result" id="dlResult" hidden>
+        <div class="dl-filename" id="dlFileName"></div>
+        <button class="dl-dlbtn" id="dlDlBtn" type="button" data-i18n="dlSaveFile">រក្សាទុកឯកសារ</button>
+      </div>
+    </div>
+  </main>
+</div>
+<div id="tsBox" style="display:none"></div>
+<script>
+(function(){
+  "use strict";
+  if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+  /* ---- theme: Day / Night / Auto (follows the phone system) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#000000" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
+  var API_BASE = "https://movai-proxy-wasr.onrender.com";
+  function apiPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      var ms = timeoutMs || 60000;
+      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
+    }
+    return fetch(API_BASE + path, opts).then(function(r){
+      if (timer) clearTimeout(timer);
+      return r.json().catch(function(){ return null; });
+    }).catch(function(e){
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
+  }
+
+  /* ---- i18n: Khmer / English, strictly separated ---- */
+  var STR = {
+    kh: {
+      theme: "រូបរាង",
+      themeDay: "ថ្ងៃ",
+      themeNight: "យប់",
+      themeAuto: "ស្វ័យប្រវត្តិ",
+      lang: "ភាសា",
+      langNameKh: "ខ្មែរ",
+      langNameEn: "អង់គ្លេស",
+      navHome: "ទំព័រដើម",
+      navCreate: "បង្កើតចម្រៀង",
+      navMarket: "ផ្សារ",
+      navSongs: "ចម្រៀងរបស់ខ្ញុំ",
+      navProfile: "ប្រវត្តិរូប",
+      navChat: "ឆាត",
+      chatFabAria: "ឆាត",
+      menuSignIn: "ចូលប្រើ",
+      menuSignOut: "ចាកចេញ",
+      signedInAs: "បានចូលជា ",
+      menuAria: "ម៉ឺនុយ",
+      secDownload: "ទាញយកវីដេអូ",
+      dlPaste: "បិទភ្ជាប់",
+      dlUrlPh: "ដាក់ link វីដេអូនៅទីនេះ…",
+      dlPlatYoutube: "YouTube",
+      dlPlatTiktok: "TikTok",
+      dlPlatFacebook: "Facebook",
+      dlPlatInstagram: "Instagram",
+      dlPlatOther: "វីដេអូ",
+      dlFormat: "ទម្រង់",
+      dlQuality: "គុណភាព",
+      dlGo: "ទាញយក",
+      dlFreeNote: "ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ",
+      dlWorking: "កំពុងធ្វើការ…",
+      dlDirectNote: "កំពុងទាញយកតាមទូរសព្ទរបស់អ្នកដោយផ្ទាល់ — ឥតគិតថ្លៃ",
+      dlReady: "រួចហើយ — ចុចដើម្បីរក្សាទុក",
+      dlSaveFile: "រក្សាទុកឯកសារ",
+      dlDownloadingFile: "កំពុងទាញយកឯកសារ…",
+      dlDownloaded: "បានទាញយករួចហើយ",
+      dlPickTitle: "ជ្រើសរើសមួយ",
+      dlPickVideo: "វីដេអូ",
+      dlPickAudio: "សំឡេង",
+      dlNoAudio: "វីដេអូនេះគ្មានសំឡេងទេ — ទាញយកជា MP3 វិញ",
+      dlNoAudioMp3: "ទាញយកជា MP3",
+      dlLocalProc: "វីដេអូនេះត្រូវការកែច្នៃក្នុងទូរសព្ទ — ទាញយកបែបនេះមិនបានទេ",
+      dlNeedSignIn: "សូមចូលប្រើជាមុនសិន ដើម្បីទាញយក",
+      dlSignIn: "ចូលប្រើ",
+      dlNeedUrl: "សូមដាក់ link វីដេអូជាមុនសិន",
+      dlBadUrl: "link នេះមិនត្រឹមត្រូវទេ",
+      dlFailed: "ទាញយកមិនបានទេ",
+      dlNoServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      dlLeft: "នៅសល់",
+      dlTurnstile: "កំពុងផ្ទៀងផ្ទាត់…",
+      dlPasteFail: "បិទភ្ជាប់មិនបានទេ — សូមដាក់ link ដោយខ្លួនឯង"
+    },
+    en: {
+      theme: "Theme",
+      themeDay: "Day",
+      themeNight: "Night",
+      themeAuto: "Auto",
+      lang: "Language",
+      langNameKh: "Khmer",
+      langNameEn: "English",
+      navHome: "Home",
+      navCreate: "Create Song",
+      navMarket: "Marketplace",
+      navSongs: "My Songs",
+      navProfile: "Profile",
+      navChat: "AI Chat",
+      chatFabAria: "AI Chat",
+      menuSignIn: "Sign In",
+      menuSignOut: "Sign out",
+      signedInAs: "Signed in as ",
+      menuAria: "Menu",
+      secDownload: "Download Center",
+      dlPaste: "Paste",
+      dlUrlPh: "Paste a video link here…",
+      dlPlatYoutube: "YouTube",
+      dlPlatTiktok: "TikTok",
+      dlPlatFacebook: "Facebook",
+      dlPlatInstagram: "Instagram",
+      dlPlatOther: "Video",
+      dlFormat: "Format",
+      dlQuality: "Quality",
+      dlGo: "Download",
+      dlFreeNote: "Free • 20 per day",
+      dlWorking: "Working…",
+      dlDirectNote: "Downloading directly from your phone — free",
+      dlReady: "Ready — tap to save",
+      dlSaveFile: "Save file",
+      dlDownloadingFile: "Downloading file…",
+      dlDownloaded: "Downloaded",
+      dlPickTitle: "Choose one",
+      dlPickVideo: "Video",
+      dlPickAudio: "Audio",
+      dlNoAudio: "This video has no audio — download it as MP3 instead",
+      dlNoAudioMp3: "Download as MP3",
+      dlLocalProc: "This video needs in-phone processing — it cannot be downloaded this way",
+      dlNeedSignIn: "Please sign in first to download",
+      dlSignIn: "Sign In",
+      dlNeedUrl: "Please paste a video link first",
+      dlBadUrl: "This link is not valid",
+      dlFailed: "Download failed",
+      dlNoServer: "Could not reach the server. Please try again.",
+      dlLeft: "Left",
+      dlTurnstile: "Verifying…",
+      dlPasteFail: "Could not paste — please paste the link yourself"
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+
+  var DRAWER_FNS = [
+    { kh: "បង្កើតចម្រៀង", en: "Create Song", href: "/Movai.MusicGenerate/kh", color: "#ff2d78", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>" },
+    { kh: "ខូវើ", en: "Cover", href: "/Movai.MusicGenerate/kh", color: "#ff7a18", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><line x1=\"12\" y1=\"19\" x2=\"12\" y2=\"23\"/><line x1=\"8\" y1=\"23\" x2=\"16\" y2=\"23\"/></svg>" },
+    { kh: "My Voice", en: "My Voice", href: "/Movai.MusicGenerate/kh", color: "#059669", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h2l2-6 3 12 3-16 3 14 2-6 2 2h2\"/></svg>" },
+    { kh: "កាត់សំឡេង", en: "Vocal Remover", href: "/movai-new-songs.html", color: "#a855f7", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><line x1=\"20\" y1=\"4\" x2=\"8.12\" y2=\"15.88\"/><line x1=\"14.47\" y1=\"14.48\" x2=\"20\" y2=\"20\"/><line x1=\"8.12\" y1=\"8.12\" x2=\"12\" y2=\"12\"/></svg>" },
+    { kh: "បំបែកសំឡេង", en: "Split Stem", href: "/movai-new-songs.html", color: "#3b82f6", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>" },
+    { kh: "ទាញយក MP3", en: "Download MP3", href: "/movai-new-songs.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" },
+    { kh: "AI Lyrics", en: "AI Lyrics", href: "/movai-new-chat.html", color: "#d97706", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>" },
+    { kh: "វីដេអូ", en: "Music Video", href: "/movai-new-chat.html", color: "#ef4444", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>" },
+    { kh: "កែរូបភាព", en: "Photo Edit", href: "/movai-new-chat.html", color: "#6366f1", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>" },
+    { kh: "ទាញយកវីដេអូ", en: "Download Center", href: "/movai-new-download.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" }
+  ];
+  function renderDrawerFns(){
+    var box = document.getElementById("menuFns");
+    if (!box) return;
+    box.innerHTML = "";
+    DRAWER_FNS.forEach(function(f){
+      var a = document.createElement("a");
+      a.href = f.href;
+      var ic = document.createElement("span"); ic.className = "nav-ic"; ic.style.color = f.color; ic.innerHTML = f.icon;
+      a.appendChild(ic);
+      a.appendChild(document.createTextNode(lang === "en" ? f.en : f.kh));
+      box.appendChild(a);
+    });
+    var lbl = document.getElementById("menuFnsLbl");
+    if (lbl) lbl.textContent = lang === "en" ? "Functions" : "មុខងារ";
+  }
+  function onLangChange(){ if (typeof renderDrawerFns === "function") renderDrawerFns(); renderPlatLine(); }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); var ic = els[i].querySelector(":scope > .nav-ic"); if (ic) { els[i].textContent = ""; els[i].appendChild(ic); els[i].appendChild(document.createTextNode(t(k))); } else els[i].textContent = t(k); }
+    var phs = document.querySelectorAll("[data-i18n-ph]");
+    for (var j = 0; j < phs.length; j++) { var k2 = phs[j].getAttribute("data-i18n-ph"); phs[j].setAttribute("placeholder", t(k2)); }
+    var ars = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ars.length; a++) { var k3 = ars[a].getAttribute("data-i18n-aria"); ars[a].setAttribute("aria-label", t(k3)); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    if (typeof onLangChange === "function") onLangChange();
+    if (typeof menuAuthState === "function") menuAuthState();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
+
+  /* ---- menu ---- */
+  var menuEl = document.getElementById("menu");
+  var menuFab = document.getElementById("menuFab");
+  var menuVeil = document.getElementById("menuVeil");
+  var menuSignIn = document.getElementById("menuSignIn");
+  var menuSignOut = document.getElementById("menuSignOut");
+  var menuUser = document.getElementById("menuUser");
+  function setMenu(open){
+    if (open) syncDrawerState();
+    menuEl.classList.toggle("open", !!open);
+    document.body.classList.toggle("drawer-open", !!open);
+    if (menuVeil) menuVeil.classList.toggle("open", !!open);
+    if (menuFab) menuFab.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function toggleMenu(){ setMenu(!menuEl.classList.contains("open")); }
+  if (menuFab) menuFab.addEventListener("click", function(e){ e.stopPropagation(); toggleMenu(); });
+  if (menuVeil) menuVeil.addEventListener("click", function(){ setMenu(false); });
+  if (menuEl) menuEl.addEventListener("click", function(e){
+    var a = e.target && e.target.closest ? e.target.closest("a") : null;
+    if (a) setMenu(false);
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  var scrollFabTimer = null;
+  var scrollFabLast = 0;
+  window.addEventListener("scroll", function(){
+    document.body.classList.add("scrolling");
+    scrollFabLast = Date.now();
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    scrollFabTimer = setTimeout(function(){ document.body.classList.remove("scrolling"); }, 1000);
+  }, { passive: true });
+  window.addEventListener("scrollend", function(){
+    if (scrollFabTimer) clearTimeout(scrollFabTimer);
+    document.body.classList.remove("scrolling");
+  });
+  setInterval(function(){
+    if (document.body.classList.contains("scrolling") && Date.now() - scrollFabLast > 1200) document.body.classList.remove("scrolling");
+  }, 2000);
+  function menuAuthState(){
+    var em = "";
+    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) { em = ""; }
+    if (menuUser) { menuUser.textContent = em ? (t("signedInAs") + em) : ""; menuUser.hidden = !em; }
+    if (menuSignIn) menuSignIn.hidden = !!em;
+    if (menuSignOut) menuSignOut.hidden = !em;
+  }
+  function syncDrawerState(){
+    try {
+      if (typeof applyTheme === "function") applyTheme();
+      var ls = null;
+      try { ls = localStorage.getItem("movai-lang"); } catch (e) {}
+      if ((ls === "en" || ls === "kh") && typeof lang !== "undefined" && ls !== lang) {
+        lang = ls;
+        if (typeof applyLang === "function") applyLang();
+      } else if (typeof lang !== "undefined") {
+        var seg = document.getElementById("langSeg");
+        if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-lang-val") === lang); }
+      }
+      if (typeof menuAuthState === "function") menuAuthState();
+    } catch (e) {}
+  }
+  if (menuSignOut) menuSignOut.addEventListener("click", function(){
+    setMenu(false);
+    try { localStorage.removeItem("movai-session"); } catch (e) {}
+    location.reload();
+  });
+  menuAuthState();
+  menuEl.addEventListener("click", function(e){
+    if (e.target && e.target.tagName === "A") setMenu(false);
+  });
+
+  /* ---- Download Center ---- */
+  function cleanErr(msg){
+    var s = String(msg || "").trim();
+    s = s.replace(/^\s*(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP|Cobalt|cobalt|meowing|Render)\s*:\s*/i, "");
+    s = s.replace(/\b(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP|Cobalt|cobalt|meowing|Render)\b/gi, "");
+    s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
+    return s || t("dlFailed");
+  }
+  function curEmail(){
+    try { return (localStorage.getItem("movai-session") || "").trim(); } catch (e) { return ""; }
+  }
+  function detectPlatform(url){
+    var u = String(url || "").toLowerCase();
+    if (u.indexOf("youtube.com") >= 0 || u.indexOf("youtu.be") >= 0 || u.indexOf("music.youtube.com") >= 0) return "youtube";
+    if (u.indexOf("tiktok.com") >= 0) return "tiktok";
+    if (u.indexOf("facebook.com") >= 0 || u.indexOf("fb.watch") >= 0) return "facebook";
+    if (u.indexOf("instagram.com") >= 0) return "instagram";
+    return "other";
+  }
+  function platKey(p){
+    if (p === "youtube") return "dlPlatYoutube";
+    if (p === "tiktok") return "dlPlatTiktok";
+    if (p === "facebook") return "dlPlatFacebook";
+    if (p === "instagram") return "dlPlatInstagram";
+    return "dlPlatOther";
+  }
+
+  var urlInput = document.getElementById("dlUrl");
+  var pasteBtn = document.getElementById("dlPaste");
+  var platEl = document.getElementById("dlPlat");
+  var goBtn = document.getElementById("dlGo");
+  var statusEl = document.getElementById("dlStatus");
+  var errEl = document.getElementById("dlErr");
+  var directEl = document.getElementById("dlDirectNote");
+  var dailyEl = document.getElementById("dlDaily");
+  var pickerBox = document.getElementById("dlPicker");
+  var pickList = document.getElementById("dlPickList");
+  var resultBox = document.getElementById("dlResult");
+  var fileNameEl = document.getElementById("dlFileName");
+  var dlBtn = document.getElementById("dlDlBtn");
+  var signinBox = document.getElementById("dlSignin");
+  var dlBox = document.getElementById("dlBox");
+  var fmtMp4 = document.getElementById("dlFmtMp4");
+  var fmtMp3 = document.getElementById("dlFmtMp3");
+  var qualityWrap = document.getElementById("dlQualityWrap");
+  var qualityRow = document.getElementById("dlQualityRow");
+
+  var curFormat = "mp4";
+  var curQuality = "1080";
+  var busy = false;
+  var statusTimer = null;
+  var statusSecs = 0;
+  var resultUrl = "";
+  var resultName = "";
+
+  function renderPlatLine(){
+    var u = urlInput.value.trim();
+    platEl.textContent = u ? t(platKey(detectPlatform(u))) : "";
+  }
+  function setErr(msg){ errEl.textContent = msg || ""; }
+  function setStatus(msg){ statusEl.textContent = msg || ""; }
+  function startTicker(){
+    stopTicker();
+    statusSecs = 0;
+    setStatus(t("dlWorking") + " 0s");
+    statusTimer = setInterval(function(){
+      statusSecs++;
+      setStatus(t("dlWorking") + " " + statusSecs + "s");
+    }, 1000);
+  }
+  function stopTicker(){ if (statusTimer) { clearInterval(statusTimer); statusTimer = null; } }
+  function showDaily(j){
+    if (j && j.daily && typeof j.daily.left === "number") {
+      dailyEl.textContent = t("dlLeft") + " " + j.daily.left + " / 20";
+    }
+  }
+  function syncDlAuth(){
+    var em = curEmail();
+    signinBox.hidden = !!em;
+    dlBox.hidden = !em;
+    goBtn.disabled = !em;
+  }
+  function setFormat(f){
+    curFormat = f;
+    fmtMp4.classList.toggle("on", f === "mp4");
+    fmtMp3.classList.toggle("on", f === "mp3");
+    fmtMp4.setAttribute("aria-pressed", f === "mp4" ? "true" : "false");
+    fmtMp3.setAttribute("aria-pressed", f === "mp3" ? "true" : "false");
+    qualityWrap.hidden = (f !== "mp4");
+  }
+  function setQuality(q){
+    curQuality = q;
+    var bs = qualityRow.querySelectorAll("button[data-q]");
+    for (var i = 0; i < bs.length; i++) {
+      var on = bs[i].getAttribute("data-q") === q;
+      bs[i].classList.toggle("on", on);
+      bs[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+  }
+  function fileNameFor(suggested, format, url){
+    var name = String(suggested || "").trim();
+    if (name && name.indexOf("/") === -1 && name.indexOf("\\") === -1) return name;
+    var ext = format === "mp3" ? "mp3" : "mp4";
+    var m = String(url || "").match(/\.(mp4|mp3|webm|m4a)(?:[?#]|$)/i);
+    if (m) ext = m[1].toLowerCase();
+    return "MovAi-" + Date.now().toString(36) + "." + ext;
+  }
+  function showResult(url, filename, format){
+    stopTicker();
+    setStatus(t("dlReady"));
+    /* Keep the phone-direct note visible when the file came through the
+       fallback, so the user sees it was downloaded from their phone. */
+    pickerBox.hidden = true;
+    resultUrl = url;
+    resultName = fileNameFor(filename, format, url);
+    fileNameEl.textContent = resultName;
+    dlBtn.disabled = false;
+    dlBtn.textContent = t("dlSaveFile");
+    resultBox.hidden = false;
+  }
+  function renderPicker(items, audioUrl, format){
+    stopTicker();
+    setStatus("");
+    resultBox.hidden = true;
+    pickList.innerHTML = "";
+    var list = [];
+    if (format === "mp3" && audioUrl) list.push({ type: "audio", url: audioUrl });
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] && items[i].url) list.push(items[i]);
+    }
+    list.forEach(function(it, idx){
+      var isAudio = it.type === "audio";
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dl-pick-item";
+      var kind = document.createElement("span");
+      kind.className = "dl-pick-kind";
+      kind.textContent = isAudio ? "MP3" : "MP4";
+      var lbl = document.createElement("span");
+      lbl.textContent = (isAudio ? t("dlPickAudio") : t("dlPickVideo")) + " " + (idx + 1);
+      b.appendChild(kind);
+      b.appendChild(lbl);
+      b.addEventListener("click", function(){
+        showResult(it.url, "", isAudio ? "mp3" : "mp4");
+      });
+      pickList.appendChild(b);
+    });
+    pickerBox.hidden = false;
+  }
+  /* MP4 picker where the audio is separate: the video choices would be
+     mute, so never offer them — show the no-audio notice and offer MP3. */
+  function showNoAudio(){
+    stopTicker();
+    setStatus("");
+    setErr(t("dlNoAudio"));
+    pickList.innerHTML = "";
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "dl-pick-item";
+    var kind = document.createElement("span");
+    kind.className = "dl-pick-kind";
+    kind.textContent = "MP3";
+    var lbl = document.createElement("span");
+    lbl.textContent = t("dlNoAudioMp3");
+    b.appendChild(kind);
+    b.appendChild(lbl);
+    b.addEventListener("click", function(){
+      pickerBox.hidden = true;
+      setFormat("mp3");
+      runResolve();
+    });
+    pickList.appendChild(b);
+    pickerBox.hidden = false;
+  }
+  function handleServerResult(j, url, format){
+    if (!j) { setErr(t("dlFailed")); return; }
+    if (j.needLogin) { setErr(t("dlNeedSignIn")); syncDlAuth(); return; }
+    if (!j.ok) {
+      if (j.code === "youtube_blocked") { runPhoneDirect(url, format); return; }
+      setErr(j.error ? cleanErr(j.error) : t("dlFailed"));
+      return;
+    }
+    showDaily(j);
+    if ((j.kind === "tunnel" || j.kind === "redirect") && j.url) {
+      showResult(j.url, j.filename || "", format);
+      return;
+    }
+    if (j.kind === "picker" && Array.isArray(j.picker) && j.picker.length) {
+      if (format === "mp4" && j.audio) { showNoAudio(); return; }
+      renderPicker(j.picker, j.audio || "", format);
+      return;
+    }
+    if (j.kind === "local-processing") { setErr(t("dlLocalProc")); return; }
+    setErr(t("dlFailed"));
+  }
+  function runResolve(){
+    if (busy) return;
+    var email = curEmail();
+    if (!email) { setErr(t("dlNeedSignIn")); syncDlAuth(); return; }
+    var url = urlInput.value.trim();
+    if (!url) { setErr(t("dlNeedUrl")); urlInput.focus(); return; }
+    if (!/^https?:\/\//i.test(url)) { setErr(t("dlBadUrl")); return; }
+    busy = true;
+    goBtn.disabled = true;
+    setErr("");
+    directEl.textContent = "";
+    pickerBox.hidden = true;
+    resultBox.hidden = true;
+    dailyEl.textContent = "";
+    startTicker();
+    apiPost("/api/download/resolve", { email: email, url: url, format: curFormat, quality: curQuality }, 150000).then(function(j){
+      busy = false;
+      goBtn.disabled = false;
+      stopTicker();
+      setStatus("");
+      handleServerResult(j, url, curFormat);
+    }).catch(function(){
+      busy = false;
+      goBtn.disabled = false;
+      stopTicker();
+      setStatus("");
+      setErr(t("dlNoServer"));
+    });
+  }
+  /* ---- phone-direct fallback (same proven flow as the chat downloader):
+     the request goes straight from this phone to the download service —
+     Turnstile token minted in this browser, session JWT, then POST. ---- */
+  function directInstanceFor(url){
+    var u = String(url || "").toLowerCase();
+    if (u.indexOf("youtube.com") >= 0 || u.indexOf("youtu.be") >= 0) return "https://cobalt-api.meowing.de/";
+    return "https://api.cobalt.tools/";
+  }
+  function getTurnstileToken(sitekey){
+    return new Promise(function(resolve){
+      var done = false, timer = null;
+      function res(v){ if (!done) { done = true; if (timer) clearTimeout(timer); resolve(v); } }
+      if (!window.turnstile) { res(""); return; }
+      var box = document.getElementById("tsBox");
+      if (!box) { res(""); return; }
+      try {
+        var wid = window.turnstile.render(box, { sitekey: sitekey, size: "invisible",
+          callback: function(tok){ try { window.turnstile.remove(wid); } catch (e) {} res(tok || ""); },
+          "error-callback": function(){ res(""); },
+          "expired-callback": function(){ res(""); } });
+        window.turnstile.execute(wid);
+      } catch (e) { res(""); return; }
+      timer = setTimeout(function(){ res(""); }, 60000);
+    });
+  }
+  function runPhoneDirect(url, format){
+    busy = true;
+    goBtn.disabled = true;
+    directEl.textContent = t("dlDirectNote");
+    setStatus(t("dlTurnstile"));
+    startTicker();
+    var inst = directInstanceFor(url);
+    function fail(msg){
+      stopTicker();
+      setStatus("");
+      directEl.textContent = "";
+      setErr(msg || t("dlFailed"));
+      busy = false;
+      goBtn.disabled = false;
+    }
+    fetch(inst, { method: "GET" }).then(function(r){ return r.json(); }).then(function(info){
+      var sitekey = info && info.cobalt && info.cobalt.turnstileSitekey;
+      if (!sitekey) { fail(t("dlFailed")); return; }
+      getTurnstileToken(sitekey).then(function(tok){
+        if (!tok) { fail(t("dlFailed")); return; }
+        fetch(inst + "session", { method: "POST", headers: { "cf-turnstile-response": tok } }).then(function(r){ return r.json(); }).then(function(s){
+          var jwt = s && s.token;
+          if (!jwt) { fail((s && s.error && cleanErr(s.error.message || s.error.code)) || t("dlFailed")); return; }
+          var body = { url: url, downloadMode: format === "mp3" ? "audio" : "auto", filenameStyle: "basic" };
+          if (format === "mp3") body.audioFormat = "mp3";
+          else { body.videoQuality = curQuality; body.youtubeVideoContainer = "mp4"; }
+          var ctrl = null;
+          var opts = { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + jwt }, body: JSON.stringify(body) };
+          if (window.AbortController) {
+            ctrl = new AbortController();
+            opts.signal = ctrl.signal;
+            setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 120000);
+          }
+          fetch(inst, opts).then(function(r){ return r.json(); }).then(function(j){
+            stopTicker();
+            setStatus("");
+            busy = false;
+            goBtn.disabled = false;
+            if (j && (j.status === "redirect" || j.status === "tunnel") && j.url) {
+              showResult(j.url, j.filename || "", format);
+              return;
+            }
+            if (j && j.status === "picker" && Array.isArray(j.picker) && j.picker.length) {
+              if (format === "mp4" && j.audio) { showNoAudio(); return; }
+              renderPicker(j.picker, j.audio || "", format);
+              return;
+            }
+            if (j && j.status === "local-processing") { setErr(t("dlLocalProc")); return; }
+            fail((j && j.error && cleanErr(j.error.message || j.error.code)) || t("dlFailed"));
+          }).catch(function(){ fail(t("dlNoServer")); });
+        }).catch(function(){ fail(t("dlNoServer")); });
+      });
+    }).catch(function(){ fail(t("dlNoServer")); });
+  }
+  /* ---- blob download: Chrome ignores the download attribute on
+     cross-origin links, so fetch as a blob and save it locally. ---- */
+  function blobDownload(url, filename, btn){
+    btn.disabled = true;
+    btn.textContent = t("dlDownloadingFile");
+    fetch(url, { mode: "cors" }).then(function(r){
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.blob();
+    }).then(function(blob){
+      var objUrl = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = objUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){ try { URL.revokeObjectURL(objUrl); } catch (e) {} }, 5000);
+      setStatus(t("dlDownloaded"));
+      btn.disabled = false;
+      btn.textContent = t("dlSaveFile");
+    }).catch(function(){
+      btn.disabled = false;
+      btn.textContent = t("dlSaveFile");
+      setErr(t("dlFailed"));
+      try { window.open(url, "_blank"); } catch (e) {}
+    });
+  }
+
+  urlInput.addEventListener("input", renderPlatLine);
+  urlInput.addEventListener("change", renderPlatLine);
+  pasteBtn.addEventListener("click", function(){
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(function(txt){
+        if (txt) { urlInput.value = String(txt).trim(); renderPlatLine(); }
+      }).catch(function(){
+        setErr(t("dlPasteFail"));
+        urlInput.focus();
+      });
+    } else {
+      urlInput.focus();
+      setErr(t("dlPasteFail"));
+    }
+  });
+  fmtMp4.addEventListener("click", function(){ setFormat("mp4"); });
+  fmtMp3.addEventListener("click", function(){ setFormat("mp3"); });
+  qualityRow.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-q]") : null;
+    if (b) setQuality(b.getAttribute("data-q"));
+  });
+  goBtn.addEventListener("click", runResolve);
+  dlBtn.addEventListener("click", function(){
+    if (!resultUrl) return;
+    blobDownload(resultUrl, resultName, dlBtn);
+  });
+
+  syncDlAuth();
+  applyLang();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  /* ---- Chat button: slides in from the right edge on app open (blurry to
+     clear); if untouched for 10s it fades back to blurry, slides out to the
+     right and disappears completely; it returns on the next app open. ---- */
+  var fab = document.getElementById("chatFab");
+  if (!fab) return;
+  var HIDE_MS = 10000;
+  var hideTimer = null;
+  function openChat(){
+    if (window.location.pathname && window.location.pathname.indexOf("movai-new-chat.html") !== -1) {
+      var inp = document.getElementById("chatInput");
+      if (inp) { inp.focus(); }
+      window.scrollTo(0, document.body.scrollHeight);
+      return;
+    }
+    window.location.href = "movai-new-chat.html";
+  }
+  function hideFab(){
+    fab.classList.remove("in");
+    fab.classList.add("out");
+    setTimeout(function(){ fab.style.display = "none"; }, 500);
+  }
+  function cancelHide(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  fab.addEventListener("pointerdown", cancelHide);
+  fab.addEventListener("mouseenter", cancelHide);
+  fab.addEventListener("touchstart", cancelHide, { passive: true });
+  fab.addEventListener("focus", cancelHide);
+  fab.addEventListener("click", function(e){ e.preventDefault(); cancelHide(); openChat(); });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      fab.classList.add("in");
+      hideTimer = setTimeout(hideFab, HIDE_MS);
+    });
+  });
+})();
+</script>
+</body>
+</html>
