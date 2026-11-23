@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
 <link rel="apple-touch-icon" href="movai-icon-192.png">
-<title>MovAi Music Generate Kh — Download Center</title>
+<title>MovAi Music Generate Kh — Download MP3</title>
 <script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <style>
   /* MovAi new — clean look, one single pale background, no layers. */
@@ -87,7 +87,7 @@
 
   main{padding-top:108px;padding-bottom:120px}
 
-  /* ---- Download Center: plain rows directly on the background ---- */
+  /* ---- Download MP3: plain rows directly on the background ---- */
   .dl-sec{padding:16px}
   .dl-urlrow{display:flex;gap:8px;align-items:stretch}
   .dl-input{flex:1;min-width:0;font:inherit;font-size:.95rem;color:#1f2937;
@@ -228,7 +228,7 @@
     <div class="hdr-row hdr-sub">
       <a class="hdr-back" href="index.html" aria-label="Back">&#8249;</a>
       <span class="hdr-sec">
-        <span class="hdr-sec-name" data-i18n="secDownload">ទាញយកវីដេអូ</span>
+        <span class="hdr-sec-name" data-i18n="secDownload">ទាញយក MP3</span>
       </span>
       <a class="hdr-btn" href="/Movai.MusicGenerate/kh" data-i18n="navCreate">បង្កើតចម្រៀង</a>
     </div>
@@ -282,26 +282,13 @@
         <span class="dl-platlogo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8" fill="#0f766e" stroke="none"/></svg></span>
         <span class="dl-plat" id="dlPlat"></span>
       </div>
-      <div class="dl-lbl" data-i18n="dlFormat">ទម្រង់</div>
-      <div class="dl-chips" id="dlFmtRow">
-        <button class="dl-chip on" id="dlFmtMp4" type="button" aria-pressed="true">MP4</button>
-        <button class="dl-chip" id="dlFmtMp3" type="button" aria-pressed="false">MP3</button>
-      </div>
-      <div id="dlQualityWrap">
-        <div class="dl-lbl" data-i18n="dlQuality">គុណភាព</div>
-        <div class="dl-chips" id="dlQualityRow">
-          <button class="dl-chip on" type="button" data-q="1080" aria-pressed="true">1080</button>
-          <button class="dl-chip" type="button" data-q="720" aria-pressed="false">720</button>
-          <button class="dl-chip" type="button" data-q="480" aria-pressed="false">480</button>
-          <button class="dl-chip" type="button" data-q="360" aria-pressed="false">360</button>
-        </div>
-      </div>
       <button class="dl-go" id="dlGo" type="button" data-i18n="dlGo">ចាប់ផ្តើម</button>
       <div class="dl-free" data-i18n="dlFreeNote">ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ</div>
       <div class="dl-status" id="dlStatus"></div>
       <div class="dl-err" id="dlErr"></div>
       <div class="dl-daily" id="dlDaily"></div>
       <div class="dl-daily" id="dlGb"></div>
+      <div class="dl-daily" id="dlMb"></div>
       <div class="dl-preview" id="dlPreview" hidden>
         <div class="dl-prevtop">
           <div class="dl-thumb"><img id="dlThumb" alt="" hidden><span id="dlThumbFallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg></span></div>
@@ -312,8 +299,6 @@
         </div>
         <div class="dl-rows" id="dlRows"></div>
         <div class="dl-note" id="dlRowNote"></div>
-        <button class="dl-more" id="dlMore" type="button" data-i18n="dlMoreFormats" hidden>ទម្រង់ផ្សេងទៀត</button>
-        <div class="dl-rows" id="dlMoreRows" hidden></div>
         <button class="dl-bigdl" id="dlDownloadBtn" type="button" data-i18n="dlDownload" disabled>ទាញយក</button>
       </div>
     </div>
@@ -402,7 +387,7 @@
       menuSignOut: "ចាកចេញ",
       signedInAs: "បានចូលជា ",
       menuAria: "ម៉ឺនុយ",
-      secDownload: "ទាញយកវីដេអូ",
+      secDownload: "ទាញយក MP3",
       dlPaste: "បិទភ្ជាប់",
       dlUrlPh: "ដាក់ link វីដេអូនៅទីនេះ…",
       dlPlatYoutube: "YouTube",
@@ -410,17 +395,13 @@
       dlPlatFacebook: "Facebook",
       dlPlatInstagram: "Instagram",
       dlPlatOther: "វីដេអូ",
-      dlFormat: "ទម្រង់",
-      dlQuality: "គុណភាព",
       dlGo: "ចាប់ផ្តើម",
       dlDownload: "ទាញយក",
-      dlRowVideo: "វីដេអូ",
       dlRowMusic: "តន្ត្រី",
-      dlMoreFormats: "ទម្រង់ផ្សេងទៀត",
-      dlNoMoreFormats: "ទម្រង់ផ្សេងទៀតមិនមានទេ",
       dlFreeNote: "ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ",
       dlWorking: "កំពុងធ្វើការ…",
       dlGbLeft: "នៅសល់ {a} GB / {b} GB ខែនេះ",
+      dlMbLeft: "នៅសល់ {a} MB ខែនេះ",
       dlQueued: "កំពុងរង់ចាំ…",
       dlProcessing: "កំពុងដំណើរការ…",
       dlTimeout: "ការទាញយកយូរពេក — សូមព្យាយាមម្ដងទៀត",
@@ -457,7 +438,7 @@
       menuSignOut: "Sign out",
       signedInAs: "Signed in as ",
       menuAria: "Menu",
-      secDownload: "Download Center",
+      secDownload: "Download MP3",
       dlPaste: "Paste",
       dlUrlPh: "Paste a video link here…",
       dlPlatYoutube: "YouTube",
@@ -465,17 +446,13 @@
       dlPlatFacebook: "Facebook",
       dlPlatInstagram: "Instagram",
       dlPlatOther: "Video",
-      dlFormat: "Format",
-      dlQuality: "Quality",
       dlGo: "START",
       dlDownload: "Download",
-      dlRowVideo: "Video",
       dlRowMusic: "Music",
-      dlMoreFormats: "More formats",
-      dlNoMoreFormats: "No more formats available",
       dlFreeNote: "Free • 20 per day",
       dlWorking: "Working…",
       dlGbLeft: "{a} GB left of {b} GB this month",
+      dlMbLeft: "{a} MB left this month",
       dlQueued: "Queued…",
       dlProcessing: "Processing…",
       dlTimeout: "Download took too long — please try again",
@@ -515,7 +492,7 @@
     { kh: "AI Lyrics", en: "AI Lyrics", href: "/movai-new-chat.html", color: "#d97706", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>" },
     { kh: "វីដេអូ", en: "Music Video", href: "/movai-new-chat.html", color: "#ef4444", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>" },
     { kh: "កែរូបភាព", en: "Photo Edit", href: "/movai-new-chat.html", color: "#6366f1", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>" },
-    { kh: "ទាញយកវីដេអូ", en: "Download Center", href: "/movai-new-download.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" }
+    { kh: "ទាញយក MP3", en: "Download MP3", href: "/movai-new-download.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" }
   ];
   function renderDrawerFns(){
     var box = document.getElementById("menuFns");
@@ -622,7 +599,7 @@
     if (e.target && e.target.tagName === "A") setMenu(false);
   });
 
-  /* ---- Download Center ---- */
+  /* ---- Download MP3 ---- */
   function cleanErr(msg){
     var s = String(msg || "").trim();
     s = s.replace(/^\s*(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP|Cobalt|cobalt|meowing|Render|VidFetch|VideoFetch)\s*:\s*/i, "");
@@ -658,18 +635,12 @@
   var dailyEl = document.getElementById("dlDaily");
   var signinBox = document.getElementById("dlSignin");
   var dlBox = document.getElementById("dlBox");
-  var fmtMp4 = document.getElementById("dlFmtMp4");
-  var fmtMp3 = document.getElementById("dlFmtMp3");
-  var qualityWrap = document.getElementById("dlQualityWrap");
-  var qualityRow = document.getElementById("dlQualityRow");
-
-  var curFormat = "mp4";
-  var curQuality = "1080";
   var busy = false;
   var statusTimer = null;
   var statusSecs = 0;
   var lastDaily = null;
   var lastGb = null;
+  var lastMb = null;
 
   function renderPlatLine(){
     var u = urlInput.value.trim();
@@ -699,31 +670,13 @@
   function renderCounters(){
     if (lastDaily) showDaily({ daily: lastDaily });
     if (lastGb) showGb(lastGb);
+    if (lastMb) showMb(lastMb);
   }
   function syncDlAuth(){
     var em = curEmail();
     signinBox.hidden = !!em;
     dlBox.hidden = !em;
     goBtn.disabled = !em;
-  }
-  function setFormat(f){
-    curFormat = f;
-    fmtMp4.classList.toggle("on", f === "mp4");
-    fmtMp3.classList.toggle("on", f === "mp3");
-    fmtMp4.setAttribute("aria-pressed", f === "mp4" ? "true" : "false");
-    fmtMp3.setAttribute("aria-pressed", f === "mp3" ? "true" : "false");
-    qualityWrap.hidden = (f !== "mp4");
-    hidePreview();
-  }
-  function setQuality(q){
-    curQuality = q;
-    var bs = qualityRow.querySelectorAll("button[data-q]");
-    for (var i = 0; i < bs.length; i++) {
-      var on = bs[i].getAttribute("data-q") === q;
-      bs[i].classList.toggle("on", on);
-      bs[i].setAttribute("aria-pressed", on ? "true" : "false");
-    }
-    hidePreview();
   }
   function fileNameFor(suggested, format, url){
     var ext = format === "mp3" ? "mp3" : "mp4";
@@ -744,8 +697,6 @@
   var titleEl = document.getElementById("dlTitle");
   var sourceEl = document.getElementById("dlSource");
   var rowsBox = document.getElementById("dlRows");
-  var moreBtn = document.getElementById("dlMore");
-  var moreRowsBox = document.getElementById("dlMoreRows");
   var rowNoteEl = document.getElementById("dlRowNote");
   var downloadBtn = document.getElementById("dlDownloadBtn");
   var platRow = document.getElementById("dlPlatRow");
@@ -755,10 +706,7 @@
   var thumbIdUrl = "";
   var rowList = [];
   var selectedRow = null;
-  var hasVideoRow = false;
-  var hasMusicRow = false;
   var infoFormats = [];
-  var mainVideoQ = "";
   var currentJobId = "";
   var currentStatusText = "";
   var pollTimer = null;
@@ -807,24 +755,9 @@
     return n + " B";
   }
 
-  /* ---- format rows: choices, not files — the file comes from the job.
-     A quality /v1/info does not list is never shown. ---- */
-  function videoQualities(){
-    var out = [];
-    infoFormats.forEach(function(f){
-      if (!f || typeof f.quality !== "string") return;
-      var m = f.quality.match(/^(\d+)p?$/);
-      if (!m) return;
-      var q = m[1];
-      var size = (typeof f.size_bytes === "number" && Number.isFinite(f.size_bytes)) ? f.size_bytes : null;
-      var i, found = null;
-      for (i = 0; i < out.length; i++) { if (out[i].q === q) { found = out[i]; break; } }
-      if (found) { if (size !== null && (found.size === null || size > found.size)) found.size = size; }
-      else out.push({ q: q, n: parseInt(q, 10), size: size });
-    });
-    out.sort(function(a, b){ return b.n - a.n; });
-    return out;
-  }
+  /* ---- the MP3 row: the one choice — the file comes from the job.
+     Shown with the real size from /v1/info when listed, else no size,
+     never a guessed size. ---- */
   function musicSize(){
     var s = null;
     infoFormats.forEach(function(f){
@@ -865,81 +798,19 @@
     stopPoll();
     previewBox.hidden = true;
     rowsBox.innerHTML = "";
-    moreRowsBox.innerHTML = "";
-    moreRowsBox.hidden = true;
-    moreBtn.hidden = true;
     rowNoteEl.textContent = "";
     rowList = [];
     selectedRow = null;
-    hasVideoRow = false;
-    hasMusicRow = false;
     infoFormats = [];
-    mainVideoQ = "";
     currentJobId = "";
     downloadBtn.disabled = true;
     titleKnown = false;
   }
   function buildRows(){
-    var quals = videoQualities();
-    var mainQ = null;
-    var i;
-    for (i = 0; i < quals.length; i++) { if (quals[i].n <= parseInt(curQuality, 10)) { mainQ = quals[i]; break; } }
-    if (!mainQ && quals.length) mainQ = quals[0];
-    mainVideoQ = mainQ ? mainQ.q : "";
     rowsBox.innerHTML = "";
     rowList = [];
-    var videoRow = null, musicRow = null;
-    if (mainQ) {
-      videoRow = addRow("video", t("dlRowVideo") + " • " + mainQ.q + "p", mainQ.size, mainQ.q);
-      hasVideoRow = true;
-    }
-    musicRow = addRow("music", t("dlRowMusic") + " • MP3 128 kbps", musicSize(), "mp3");
-    hasMusicRow = true;
-    var want = curFormat === "mp3" ? musicRow : (videoRow || musicRow);
-    selectRow(want);
-    var extras = quals.filter(function(x){ return !mainQ || x.q !== mainQ.q; });
-    moreBtn.hidden = extras.length === 0;
-    moreRowsBox.hidden = true;
-    moreRowsBox.innerHTML = "";
-  }
-  /* "More formats": the other qualities /v1/info listed — sizes already
-     known, nothing to resolve. A quality that was not listed never
-     appears here either. */
-  function showMore(){
-    moreBtn.hidden = true;
-    moreRowsBox.hidden = false;
-    moreRowsBox.innerHTML = "";
-    var quals = videoQualities();
-    var shown = 0;
-    quals.forEach(function(x){
-      if (mainVideoQ && x.q === mainVideoQ) return;
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "dl-row";
-      var labelEl = document.createElement("span");
-      labelEl.className = "dl-row-label";
-      labelEl.textContent = t("dlRowVideo") + " • " + x.q + "p";
-      var checkEl = document.createElement("span");
-      checkEl.className = "dl-row-check";
-      checkEl.textContent = "✓";
-      var sizeEl = document.createElement("span");
-      sizeEl.className = "dl-row-size";
-      sizeEl.textContent = fmtSize(x.size);
-      b.appendChild(labelEl);
-      b.appendChild(checkEl);
-      b.appendChild(sizeEl);
-      var row = { kind: "video", label: labelEl.textContent, quality: x.q, button: b };
-      b.addEventListener("click", function(){ selectRow(row); });
-      moreRowsBox.appendChild(b);
-      rowList.push(row);
-      shown++;
-    });
-    if (!shown) {
-      var note = document.createElement("div");
-      note.className = "dl-note";
-      note.textContent = t("dlNoMoreFormats");
-      moreRowsBox.appendChild(note);
-    }
+    var musicRow = addRow("music", t("dlRowMusic") + " • MP3 128 kbps", musicSize(), "mp3");
+    selectRow(musicRow);
   }
 
   /* ---- monthly quota counter ---- */
@@ -954,11 +825,33 @@
       gbEl.textContent = "";
     }
   }
+  /* ---- monthly MB allowance: from /usage mbRemainingBytes (bytes).
+     1 decimal, trailing ".0" trimmed (500, 495.8). If the field is
+     absent (older server response) the line stays blank — never a
+     wrong number. ---- */
+  function fmtMb(n){
+    var mb = Math.max(0, n) / 1048576;
+    var s = mb.toFixed(1);
+    if (s.slice(-2) === ".0") s = s.slice(0, -2);
+    return s;
+  }
+  function showMb(j){
+    var mbEl = document.getElementById("dlMb");
+    if (!mbEl) return;
+    if (j && typeof j.mbRemainingBytes === "number" && Number.isFinite(j.mbRemainingBytes)) {
+      lastMb = j;
+      mbEl.textContent = t("dlMbLeft").replace("{a}", fmtMb(j.mbRemainingBytes));
+    } else {
+      lastMb = null;
+      mbEl.textContent = "";
+    }
+  }
   function refreshGb(){
     if (!curEmail()) return;
     apiGet("/api/download/vidfetch/usage?email=" + encodeURIComponent(curEmail()), 30000).then(function(j){
       showGb(j);
-    }).catch(function(){ /* quota line stays blank — never blocks */ });
+      showMb(j);
+    }).catch(function(){ /* quota lines stay blank — never blocks */ });
   }
 
   /* ---- polling: every 5s, live ticking seconds + the real status.
@@ -1004,7 +897,7 @@
           goBtn.disabled = false;
           setStatus(t("dlReady"));
           currentStatusText = "";
-          blobDownload(j.download_url, fileNameFor(titleKnown ? titleEl.textContent : "", selectedRow && selectedRow.kind === "music" ? "mp3" : "mp4", currentUrl), downloadBtn, "dlDownload");
+          blobDownload(j.download_url, fileNameFor(titleKnown ? titleEl.textContent : "", "mp3", currentUrl), downloadBtn, "dlDownload");
           refreshGb();
           return;
         }
@@ -1083,8 +976,8 @@
     downloadBtn.disabled = true;
     setErr("");
     setStatus(t("dlWorking") + " 0s");
-    var format = selectedRow.kind === "music" ? "mp3" : "mp4";
-    var quality = selectedRow.kind === "music" ? "" : selectedRow.quality;
+    var format = "mp3";
+    var quality = "";
     apiPost("/api/download/vidfetch/create", { email: email, url: currentUrl, format: format, quality: quality }, 60000).then(function(j){
       if (!j) { busy = false; downloadBtn.disabled = false; setStatus(""); setErr(t("dlNoServer")); return; }
       if (j.needLogin) { busy = false; downloadBtn.disabled = false; setStatus(""); setErr(t("dlNeedSignIn")); syncDlAuth(); return; }
@@ -1152,15 +1045,8 @@
       setErr(t("dlPasteFail"));
     }
   });
-  fmtMp4.addEventListener("click", function(){ setFormat("mp4"); });
-  fmtMp3.addEventListener("click", function(){ setFormat("mp3"); });
-  qualityRow.addEventListener("click", function(e){
-    var b = e.target && e.target.closest ? e.target.closest("button[data-q]") : null;
-    if (b) setQuality(b.getAttribute("data-q"));
-  });
   goBtn.addEventListener("click", runStart);
   downloadBtn.addEventListener("click", runDownload);
-  moreBtn.addEventListener("click", showMore);
 
   syncDlAuth();
   applyLang();
