@@ -284,7 +284,8 @@
 
   /* chat photo editor + hide the menu button while in chat (2026-11-23) */
   .menu-fab{transform:translateX(calc(-100% - 24px)) !important;opacity:0 !important;pointer-events:none !important}
-  .up-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid #cbd5d1;background:#ffffff;color:#0f766e;font-size:20px;line-height:1;cursor:pointer}
+  .up-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid #cbd5d1;background:#ffffff;color:#0f766e;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .up-btn svg{width:22px;height:22px;fill:currentColor}
   .up-btn:active{background:#e5e7eb}
   html[data-theme="dark"] .up-btn{background:#16261f;border-color:#3a524a;color:#2dd4bf}
 </style>
@@ -356,7 +357,7 @@
 <div id="tsBox" style="display:none"></div>
   <div class="input-bar">
   <div class="input-in">
-    <button class="up-btn" id="chatImgUp" type="button" data-i18n-aria="uploadImage" aria-label="Upload photo">&#128247;</button>
+    <button class="up-btn" id="chatImgUp" type="button" data-i18n-aria="uploadImage" aria-label="Upload photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 2 7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></button>
     <textarea id="chatInput" rows="1" data-i18n-ph="inputPh" placeholder="សរសេរសាររបស់អ្នក…"></textarea>
     <button class="send-btn" id="chatSend" type="button" data-i18n="send">ផ្ញើ</button>
     <input type="file" id="chatImgFile" accept="image/*" hidden>
@@ -449,6 +450,9 @@
       createNewBg: "កែរូបតាមនេះ",
       editCostConfirm: "កែរូបនេះត្រូវការ 50 Media Credits។ បន្តឬទេ?",
       editConfirmWith: "កែរូបនេះតាម៖ ",
+      editChoiceNote: "ជ្រើសរើស៖ ឥតគិតថ្លៃ ឬ 50 credits (រក្សាមុខច្បាស់ជាង)",
+      editFreeBtn: "កែឥតគិតថ្លៃ",
+      editPaidBtn: "50 credits",
       downloading: "កំពុងទាញយក…",
       downloadMp3: "ទាញយក MP3",
       downloadMp4: "ទាញយក MP4",
@@ -522,6 +526,9 @@
       createNewBg: "Edit photo",
       editCostConfirm: "Editing this photo costs 50 Media Credits. Continue?",
       editConfirmWith: "Edit this photo as: ",
+      editChoiceNote: "Choose: free, or 50 credits (keeps the face best)",
+      editFreeBtn: "Edit free",
+      editPaidBtn: "50 credits",
       downloading: "Downloading…",
       downloadMp3: "Download MP3",
       downloadMp4: "Download MP4",
@@ -1166,28 +1173,39 @@
   function askChatEdit(instruction, done){
     var div = el("div", "msg ai");
     var row = el("div", "confirm-row");
-    var tx = el("span", "confirm-text", t("editConfirmWith") + "\u00ab" + instruction + "\u00bb \u2014 " + t("editCostConfirm"));
-    var ok = el("button", "act-btn", t("approve"));
-    ok.type = "button";
+    var tx = el("span", "confirm-text", t("editConfirmWith") + "\u00ab" + instruction + "\u00bb \u2014 " + t("editChoiceNote"));
+    var freeBtn = el("button", "act-btn", t("editFreeBtn"));
+    freeBtn.type = "button";
+    var paidBtn = el("button", "act-btn", t("editPaidBtn"));
+    paidBtn.type = "button";
     var no = el("button", "act-btn", t("cancel"));
     no.type = "button";
-    row.appendChild(tx); row.appendChild(ok); row.appendChild(no);
+    row.appendChild(tx); row.appendChild(freeBtn); row.appendChild(paidBtn); row.appendChild(no);
     div.appendChild(row);
     msgsEl.appendChild(div);
     scrollBottom();
-    ok.addEventListener("click", function(){ div.remove(); runChatEdit(instruction, done); });
+    freeBtn.addEventListener("click", function(){ div.remove(); runChatEdit(instruction, "agnes", done); });
+    paidBtn.addEventListener("click", function(){ div.remove(); runChatEdit(instruction, "magichour", done); });
     no.addEventListener("click", function(){ div.remove(); pendingPhoto = null; done(); });
   }
   var imgEditBusy = false;
-  function runChatEdit(instruction, done){
+  function runChatEdit(instruction, model, done){
     if (imgEditBusy || !pendingPhoto) { done(); return; }
     imgEditBusy = true;
     var photoUrl = pendingPhoto.url;
     var prog = makeImageProgressBubble();
     function finishEdit(){ imgEditBusy = false; pendingPhoto = null; done(); }
     function fail(err){ prog.stop(); prog.el.remove(); addError(err); finishEdit(); }
-    apiPost("/api/gen/image/edit", { email: getEmail(), imageUrl: photoUrl, prompt: instruction }, 60000).then(function(e){
+    apiPost("/api/gen/image/edit", { email: getEmail(), imageUrl: photoUrl, prompt: instruction, model: model || "magichour" }, 120000).then(function(e){
       if (!e || e.ok !== true) { fail((e && e.error) || t("noServer")); return; }
+      if (e.url) {
+        prog.stop(); prog.el.remove();
+        cur.messages.push({ role: "assistant", content: "", at: Date.now(), media: [{ kind: "image", url: e.url, prompt: instruction }] });
+        touchSession();
+        renderMessages();
+        finishEdit();
+        return;
+      }
       if (e.jobId) {
         pollJob("image", "magichour", e.jobId, function(r){
           if (r.ok) {
