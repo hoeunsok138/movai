@@ -43,7 +43,7 @@
   .hdr-sub{padding-top:11px;padding-bottom:11px;border-bottom:1px solid #e5e7eb}
   .hdr-logo{display:flex;align-items:center;gap:8px;color:#1f2937;min-width:0}
   .hdr-logo svg,.hdr-logo img{flex:none}
-  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:#1f2937;line-height:1}
+  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;line-height:1;background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
   .hdr-right{display:flex;align-items:center;gap:4px}
   .icon-btn{font-size:1.35rem;line-height:1;color:#1f2937;padding:4px 9px;border-radius:8px}
   .icon-btn:active{background:#e5e7eb}
@@ -180,88 +180,89 @@
   .player-on .menu-fab{bottom:84px}
   html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, dark green-tinted background ---- */
-  html[data-theme="dark"]{background:#0e1a15}
-  html[data-theme="dark"] body{background:#0e1a15;color:#e7f0ec}
+  html[data-theme="dark"]{background:#000000}
+  html[data-theme="dark"] body{background:#000000;color:#e7f0ec}
   html[data-theme="dark"] a{color:#e7f0ec}
-  html[data-theme="dark"] header{background:#0e1a15}
-  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#24362f}
-  html[data-theme="dark"] .hdr-logo b,html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
-  html[data-theme="dark"] .icon-btn:active{background:#1d2f28}
-  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1d2f28}
-  html[data-theme="dark"] .menu-fab{background:#16261f;border-color:#3a524a;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
-  html[data-theme="dark"] .menu-fab:active{background:#1d2f28}
+  html[data-theme="dark"] header{background:#000000}
+  html[data-theme="dark"] .hdr-top,html[data-theme="dark"] .hdr-sub{border-bottom-color:#262626}
+  html[data-theme="dark"] .hdr-sec-name,html[data-theme="dark"] .icon-btn{color:#e7f0ec}
+  html[data-theme="dark"] .hdr-logo b{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  html[data-theme="dark"] .icon-btn:active{background:#1a1a1a}
+  html[data-theme="dark"] .sell-btn,html[data-theme="dark"] .hdr-btn,html[data-theme="dark"] .outline-btn{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .sell-btn:active,html[data-theme="dark"] .hdr-btn:active,html[data-theme="dark"] .outline-btn:active{background:#1a1a1a}
+  html[data-theme="dark"] .menu-fab{background:#000000;border-color:#333333;color:#e7f0ec;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .menu-fab:active{background:#1a1a1a}
   html[data-theme="dark"] .menu-veil{background:rgba(14,26,21,.6)}
-  html[data-theme="dark"] .menu{background:#16261f;border-top-color:#24362f}
-  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#24362f}
-  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1d2f28}
-  html[data-theme="dark"] .menu .menu-sep{background:#24362f}
-  html[data-theme="dark"] .menu .menu-user{color:#8fa89e}
-  html[data-theme="dark"] .menu-set-label{color:#8fa89e}
-  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .seg-mini button:active{background:#1d2f28}
+  html[data-theme="dark"] .menu{background:#000000;border-top-color:#262626}
+  html[data-theme="dark"] .menu a,html[data-theme="dark"] .menu button.menu-link{color:#e7f0ec;border-bottom-color:#262626}
+  html[data-theme="dark"] .menu a:active,html[data-theme="dark"] .menu button.menu-link:active{background:#1a1a1a}
+  html[data-theme="dark"] .menu .menu-sep{background:#262626}
+  html[data-theme="dark"] .menu .menu-user{color:#9ca3af}
+  html[data-theme="dark"] .menu-set-label{color:#9ca3af}
+  html[data-theme="dark"] .seg-mini button{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .seg-mini button:active{background:#1a1a1a}
   html[data-theme="dark"] .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
-  html[data-theme="dark"] .status{color:#8fa89e}
+  html[data-theme="dark"] .status{color:#9ca3af}
   html[data-theme="dark"] .retry{color:#e7f0ec}
-  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#24362f}
-  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1d2f28}
-  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#24362f}
+  html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#262626}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1a1a1a}
+  html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#262626}
   html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
-  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#8fa89e}
+  html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#9ca3af}
   html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
-  html[data-theme="dark"] .player{background:#0e1a15;border-top-color:#24362f}
+  html[data-theme="dark"] .player{background:#000000;border-top-color:#262626}
   html[data-theme="dark"] .player-title{color:#e7f0ec}
-  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .player button:active{background:#1d2f28}
-  html[data-theme="dark"] .player img{background:#24362f}
+  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .player button:active{background:#1a1a1a}
+  html[data-theme="dark"] .player img{background:#262626}
   html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
-  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#3a524a;color:#e7f0ec}
-  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1d2f28}
+  html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#333333;color:#e7f0ec}
+  html[data-theme="dark"] .play-btn:active,html[data-theme="dark"] .c-play:active{background:#1a1a1a}
   html[data-theme="dark"] .c-sub .secs{color:#e7f0ec}
-  html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
+  html[data-theme="dark"] .spin{border-color:#333333;border-top-color:#0f766e}
   html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
   html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
-  html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .txt{background:#000000;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
-  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1d2f28}
-  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .chip:active,html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1a1a1a}
+  html[data-theme="dark"] .chip[aria-pressed="true"],html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#000000;border-color:#e7f0ec}
   html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
-  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#0e1a15;border-color:#e7f0ec}
+  html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#000000;border-color:#e7f0ec}
   html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
-  html[data-theme="dark"] .tagchip button{color:#8fa89e}
-  html[data-theme="dark"] .tagchip button:active{background:#1d2f28}
-  html[data-theme="dark"] .cover-box{border-color:#3a524a}
+  html[data-theme="dark"] .tagchip button{color:#9ca3af}
+  html[data-theme="dark"] .tagchip button:active{background:#1a1a1a}
+  html[data-theme="dark"] .cover-box{border-color:#333333}
   html[data-theme="dark"] .cover-fileinfo{color:#e7f0ec}
-  html[data-theme="dark"] .bar{background:#24362f}
-  html[data-theme="dark"] .divider{border-top-color:#24362f}
+  html[data-theme="dark"] .bar{background:#262626}
+  html[data-theme="dark"] .divider{border-top-color:#262626}
   html[data-theme="dark"] .gift-veil{background:rgba(14,26,21,.75)}
-  html[data-theme="dark"] .gift-card{background:#16261f;border-color:#24362f}
+  html[data-theme="dark"] .gift-card{background:#000000;border-color:#262626}
   html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
-  html[data-theme="dark"] .gift-later{color:#8fa89e}
-  html[data-theme="dark"] .contact{border-top-color:#24362f}
-  html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .gift-later{color:#9ca3af}
+  html[data-theme="dark"] .contact{border-top-color:#262626}
+  html[data-theme="dark"] .contact-row{border-bottom-color:#262626}
   html[data-theme="dark"] .contact-text b{color:#e7f0ec}
-  html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .contact-text span{color:#9ca3af}
   html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
-  html[data-theme="dark"] .trow{border-bottom-color:#24362f}
-  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
-  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .methodrow button:active{background:#1d2f28}
-  html[data-theme="dark"] .methodrow button.picked{background:#1d2f28}
+  html[data-theme="dark"] .trow{border-bottom-color:#262626}
+  html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#9ca3af}
+  html[data-theme="dark"] .methodrow button{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .methodrow button:active{background:#1a1a1a}
+  html[data-theme="dark"] .methodrow button.picked{background:#1a1a1a}
   html[data-theme="dark"] .amt{color:#e7f0ec}
   html[data-theme="dark"] .qrwrap svg{background:#ffffff;border-radius:8px}
-  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#3a524a}
-  html[data-theme="dark"] .plain-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .plain-btn{color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .plain-btn:active{background:#1a1a1a}
   html[data-theme="dark"] .buybox input[type=file]{color:#e7f0ec}
   html[data-theme="dark"] .row-label,html[data-theme="dark"] .row-value{color:#e7f0ec}
-  html[data-theme="dark"] .row{border-bottom-color:#24362f}
-  html[data-theme="dark"] .row-sub{color:#8fa89e}
-  html[data-theme="dark"] .field{background:transparent;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .row{border-bottom-color:#262626}
+  html[data-theme="dark"] .row-sub{color:#9ca3af}
+  html[data-theme="dark"] .field{background:transparent;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
   html[data-theme="dark"] .field-label{color:#e7f0ec}
   html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
-  html[data-theme="dark"] .primary-btn:active{background:#1d2f28}
+  html[data-theme="dark"] .primary-btn:active{background:#1a1a1a}
   .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
 </style>
 </head>
@@ -271,7 +272,7 @@
     <div class="hdr-row hdr-top">
       <span class="hdr-logo">
         <img src="movai-logo-mark.png" width="26" height="26" alt="MovAi logo">
-        <b>MovAi Music Generate Kh</b>
+        <b>MovAi</b>
       </span>
     </div>
     <div class="hdr-row hdr-sub">
@@ -284,12 +285,16 @@
   </header>
   <div class="menu-veil" id="menuVeil"></div>
   <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
-      <a href="index.html" data-i18n="navHome">ទំព័រដើម</a>
+      <a href="index.html" data-i18n="navHome"><span class="nav-ic" style="color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>ទំព័រដើម</a>
       <a href="/Movai.MusicGenerate/kh" data-i18n="navCreate"><span class="nav-ic" style="color:#ff2d78"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>បង្កើតចម្រៀង</a>
       <a href="movai-new-market.html" data-i18n="navMarket"><span class="nav-ic" style="color:#d97706"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>ផ្សារ</a>
       <a href="movai-new-songs.html" data-i18n="navSongs"><span class="nav-ic" style="color:#3b82f6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>ចម្រៀងរបស់ខ្ញុំ</a>
       <a href="movai-new-profile.html" data-i18n="navProfile"><span class="nav-ic" style="color:#a855f7"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>ប្រវត្តិរូប</a>
       <a href="movai-new-chat.html" data-i18n="navChat"><span class="nav-ic" style="color:#0d9488"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>ឆាត</a>
+    <div class="menu-set">
+      <div class="menu-set-label" id="menuFnsLbl">មុខងារ</div>
+      <div class="menu-fns" id="menuFns"></div>
+    </div>
     <div class="menu-set">
       <div class="menu-set-label" data-i18n="theme">រូបរាង</div>
       <div class="seg-mini" id="themeSeg">
@@ -394,7 +399,7 @@
     var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute("content", dark ? "#0e1a15" : "#f2faf6");
+    if (m) m.setAttribute("content", dark ? "#000000" : "#f2faf6");
     var seg = document.getElementById("themeSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
   }
@@ -585,7 +590,33 @@
     var d = (STR && STR[lang]) || STR.en;
     return (d && d[k]) || (STR.en && STR.en[k]) || k;
   }
-  function onLangChange(){ if (snapHoldFetch) return; loadMarket(); loadTiers(); loadMyPurchases(); }
+  var DRAWER_FNS = [
+    { kh: "បង្កើតចម្រៀង", en: "Create Song", href: "/Movai.MusicGenerate/kh", color: "#ff2d78", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>" },
+    { kh: "ខូវើ", en: "Cover", href: "/Movai.MusicGenerate/kh", color: "#ff7a18", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><line x1=\"12\" y1=\"19\" x2=\"12\" y2=\"23\"/><line x1=\"8\" y1=\"23\" x2=\"16\" y2=\"23\"/></svg>" },
+    { kh: "My Voice", en: "My Voice", href: "/Movai.MusicGenerate/kh", color: "#059669", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h2l2-6 3 12 3-16 3 14 2-6 2 2h2\"/></svg>" },
+    { kh: "កាត់សំឡេង", en: "Vocal Remover", href: "/movai-new-songs.html", color: "#a855f7", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><line x1=\"20\" y1=\"4\" x2=\"8.12\" y2=\"15.88\"/><line x1=\"14.47\" y1=\"14.48\" x2=\"20\" y2=\"20\"/><line x1=\"8.12\" y1=\"8.12\" x2=\"12\" y2=\"12\"/></svg>" },
+    { kh: "បំបែកសំឡេង", en: "Split Stem", href: "/movai-new-songs.html", color: "#3b82f6", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>" },
+    { kh: "ទាញយក MP3", en: "Download MP3", href: "/movai-new-songs.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" },
+    { kh: "AI Lyrics", en: "AI Lyrics", href: "/movai-new-chat.html", color: "#d97706", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>" },
+    { kh: "វីដេអូ", en: "Music Video", href: "/movai-new-chat.html", color: "#ef4444", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>" },
+    { kh: "កែរូបភាព", en: "Photo Edit", href: "/movai-new-chat.html", color: "#6366f1", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>" }
+  ];
+  function renderDrawerFns(){
+    var box = document.getElementById("menuFns");
+    if (!box) return;
+    box.innerHTML = "";
+    DRAWER_FNS.forEach(function(f){
+      var a = document.createElement("a");
+      a.href = f.href;
+      var ic = document.createElement("span"); ic.className = "nav-ic"; ic.style.color = f.color; ic.innerHTML = f.icon;
+      a.appendChild(ic);
+      a.appendChild(document.createTextNode(lang === "en" ? f.en : f.kh));
+      box.appendChild(a);
+    });
+    var lbl = document.getElementById("menuFnsLbl");
+    if (lbl) lbl.textContent = lang === "en" ? "Functions" : "មុខងារ";
+  }
+  function onLangChange(){ if (snapHoldFetch) return; loadMarket(); loadTiers(); loadMyPurchases(); if (typeof renderDrawerFns === "function") renderDrawerFns(); }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); var ic = els[i].querySelector(":scope > .nav-ic"); if (ic) { els[i].textContent = ""; els[i].appendChild(ic); els[i].appendChild(document.createTextNode(t(k))); } else els[i].textContent = t(k); }
