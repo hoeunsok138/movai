@@ -359,7 +359,7 @@
   <button class="vw-close" id="viewerClose" type="button" aria-label="Close">&#10005;</button>
   <img id="viewerImg" alt="" hidden>
   <video id="viewerVid" controls playsinline hidden></video>
-  <a class="vw-dl" id="viewerDl" href="#" target="_blank" rel="noopener" download data-i18n="download">Download</a>
+  <a class="vw-dl" id="viewerDl" href="#" download data-i18n="download">Download</a>
 </div>
 
 <div id="tsBox" style="display:none"></div>
@@ -1011,8 +1011,8 @@
           }
           if (md.kind !== "download") {
             var dl = el("a", "dl-link", t("download"));
-            dl.href = md.url; dl.target = "_blank"; dl.rel = "noopener";
-            dl.setAttribute("download", "");
+            dl.href = md.url;
+            dl.addEventListener("click", function(e){ e.preventDefault(); downloadChatMedia(md.url, md.kind, dl); });
             wrap.appendChild(dl);
           }
           div.appendChild(wrap);
@@ -1113,11 +1113,46 @@
   });
   if (createdVeil) createdVeil.addEventListener("click", closeCreatedMenu);
 
+  /* ---- chat media download (Stage 34): Chrome ignores the `download`
+     attribute on cross-origin links, so a plain <a download> to a
+     Cloudinary/provider image OPENS it in a tab instead of saving it.
+     Same blob-download as My Songs (fetch -> blob -> object URL ->
+     a.download -> click), so tapping Download saves the file like an
+     MP3 download does. Shows "Downloading..." on the tapped link while
+     fetching; on failure shows the error and falls back to opening
+     the URL (the old behaviour). ---- */
+  function chatMediaFileName(url, kind){
+    var m = String(url || "").match(/\.(png|jpe?g|webp|gif|mp4|webm)(?:[?#]|$)/i);
+    var ext = m ? m[1].toLowerCase().replace("jpeg", "jpg") : (kind === "video" ? "mp4" : "png");
+    return "MovAi-" + Date.now().toString(36) + "." + ext;
+  }
+  function downloadChatMedia(url, kind, btn){
+    if (!url) return;
+    if (btn && btn.getAttribute("data-busy") === "1") return;
+    if (btn) { btn.setAttribute("data-busy", "1"); btn.textContent = t("downloading"); }
+    fetch(url, { mode: "cors" }).then(function(r){
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.blob();
+    }).then(function(blob){
+      var objUrl = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = objUrl;
+      a.download = chatMediaFileName(url, kind);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ try { URL.revokeObjectURL(objUrl); } catch (e) {} try { a.remove(); } catch (e) {} }, 5000);
+      if (btn) { btn.setAttribute("data-busy", ""); btn.textContent = t("download"); }
+    }).catch(function(){
+      if (btn) { btn.setAttribute("data-busy", ""); btn.textContent = t("downloadFailed"); setTimeout(function(){ try { btn.textContent = t("download"); } catch (e) {} }, 3000); }
+      try { window.open(url, "_blank"); } catch (e) {}
+    });
+  }
   /* ---- full-screen image/video viewer (tap a created image to see it full screen) ---- */
   var viewerEl = document.getElementById("viewer");
   var viewerImg = document.getElementById("viewerImg");
   var viewerVid = document.getElementById("viewerVid");
   var viewerDl = document.getElementById("viewerDl");
+  if (viewerDl) viewerDl.addEventListener("click", function(e){ e.preventDefault(); e.stopPropagation(); downloadChatMedia(viewerDl.href, (viewerVid && !viewerVid.hidden) ? "video" : "image", viewerDl); });
   function openViewer(url, kind){
     if (!viewerEl || !url) return;
     if (kind === "video") {
