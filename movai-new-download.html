@@ -97,8 +97,13 @@
   .dl-paste{flex:none;font-size:.9rem;font-weight:700;color:#ffffff;background:#0f766e;
     border-radius:10px;padding:12px 16px}
   .dl-paste:active{opacity:.85}
-  .dl-plat{margin-top:8px;font-size:.85rem;font-weight:700;color:#0f766e;min-height:18px}
-  .dl-plat:empty{display:none}
+  .dl-platrow{display:flex;align-items:center;gap:8px;margin-top:8px;min-height:28px}
+  .dl-platlogo{flex:none;width:28px;height:28px;background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;overflow:hidden}
+  .dl-platlogo img{width:22px;height:22px}
+  .dl-platlogo svg{width:20px;height:20px}
+  .dl-plat{font-size:.85rem;font-weight:700;color:#0f766e}
+  .dl-wake{margin-bottom:10px;font-size:.85rem;font-weight:600;color:#0f766e;min-height:18px;font-variant-numeric:tabular-nums}
+  .dl-wake:empty{display:none}
   .dl-lbl{margin-top:16px;font-size:.85rem;font-weight:700;color:#6b7280}
   .dl-chips{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
   .dl-chip{font-size:.92rem;font-weight:700;color:#1f2937;background:#ffffff;
@@ -118,20 +123,31 @@
   .dl-note:empty{display:none}
   .dl-daily{margin-top:10px;font-size:.85rem;color:#6b7280;text-align:center}
   .dl-daily:empty{display:none}
-  .dl-pick{margin-top:14px}
-  .dl-pick-title{font-size:.9rem;font-weight:700;color:#1f2937;margin-bottom:8px}
-  .dl-pick-item{display:flex;width:100%;align-items:center;gap:10px;text-align:left;
+  .dl-preview{margin-top:16px;border:1px solid #d1d5db;border-radius:12px;padding:12px;background:#ffffff}
+  .dl-prevtop{display:flex;gap:10px;align-items:flex-start}
+  .dl-thumb{flex:none;width:112px;height:63px;border-radius:8px;overflow:hidden;background:#e5e7eb;display:flex;align-items:center;justify-content:center}
+  .dl-thumb img{width:100%;height:100%;object-fit:cover}
+  .dl-thumb svg{width:28px;height:28px;color:#9ca3af}
+  .dl-prevmeta{flex:1;min-width:0}
+  .dl-title{font-size:.92rem;font-weight:700;color:#1f2937;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+  .dl-source{margin-top:4px;font-size:.8rem;color:#6b7280;word-break:break-all}
+  .dl-rows{margin-top:12px}
+  .dl-row{display:flex;width:100%;align-items:center;gap:8px;text-align:left;
     padding:12px 14px;font-size:.92rem;font-weight:600;color:#1f2937;background:#ffffff;
     border:1px solid #d1d5db;border-radius:10px;margin-bottom:8px}
-  .dl-pick-item:active{background:#eef7f4}
-  .dl-pick-item .dl-pick-kind{flex:none;font-size:.78rem;font-weight:800;color:#0f766e}
-  .dl-pick-item span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .dl-result{margin-top:14px}
-  .dl-filename{font-size:.9rem;font-weight:600;color:#1f2937;word-break:break-word;line-height:1.5}
-  .dl-dlbtn{display:block;width:100%;margin-top:10px;font-size:1rem;font-weight:800;color:#ffffff;
-    background:#0f766e;border-radius:10px;padding:14px 16px}
-  .dl-dlbtn:active{opacity:.85}
-  .dl-dlbtn:disabled{opacity:.55}
+  .dl-row:active{background:#eef7f4}
+  .dl-row:disabled{opacity:.55}
+  .dl-row.sel{border-color:#0f766e;background:#eef7f4}
+  .dl-row-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dl-row-check{flex:none;width:20px;text-align:center;color:#0f766e;visibility:hidden}
+  .dl-row.sel .dl-row-check{visibility:visible}
+  .dl-row-size{flex:none;font-size:.82rem;font-weight:700;color:#6b7280;font-variant-numeric:tabular-nums}
+  .dl-more{display:block;width:100%;margin-top:2px;font-size:.9rem;font-weight:700;color:#0f766e;background:transparent;border:1px dashed #9ca3af;border-radius:10px;padding:11px 14px}
+  .dl-more:active{background:#eef7f4}
+  .dl-bigdl{display:block;width:100%;margin-top:12px;font-size:1rem;font-weight:800;color:#ffffff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:10px;padding:14px 16px}
+  .dl-bigdl:active{opacity:.85}
+  .dl-bigdl:disabled{opacity:.55}
   .dl-signin{padding:28px 16px;text-align:center;color:#6b7280;font-size:.95rem;line-height:1.6}
   .dl-signin a{color:#0f766e;font-weight:700;text-decoration:underline}
   /* ---- Drawer settings: theme + language ---- */
@@ -184,6 +200,7 @@
   html[data-theme="dark"] .dl-input{background:#000000;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .dl-input:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
   html[data-theme="dark"] .dl-plat{color:#2dd4bf}
+  html[data-theme="dark"] .dl-wake{color:#2dd4bf}
   html[data-theme="dark"] .dl-lbl{color:#9ca3af}
   html[data-theme="dark"] .dl-chip{background:#000000;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .dl-chip:active{background:#1a1a1a}
@@ -191,10 +208,14 @@
   html[data-theme="dark"] .dl-free,html[data-theme="dark"] .dl-note,html[data-theme="dark"] .dl-daily{color:#9ca3af}
   html[data-theme="dark"] .dl-status{color:#e7f0ec}
   html[data-theme="dark"] .dl-err{color:#fca5a5}
-  html[data-theme="dark"] .dl-pick-title,html[data-theme="dark"] .dl-filename{color:#e7f0ec}
-  html[data-theme="dark"] .dl-pick-item{background:#000000;border-color:#333333;color:#e7f0ec}
-  html[data-theme="dark"] .dl-pick-item:active{background:#1a1a1a}
-  html[data-theme="dark"] .dl-pick-item .dl-pick-kind{color:#2dd4bf}
+  html[data-theme="dark"] .dl-preview{background:#1a1a1a;border-color:#333333}
+  html[data-theme="dark"] .dl-title{color:#e7f0ec}
+  html[data-theme="dark"] .dl-row{background:#000000;border-color:#333333;color:#e7f0ec}
+  html[data-theme="dark"] .dl-row:active{background:#1a1a1a}
+  html[data-theme="dark"] .dl-row.sel{background:#0f2e2a;border-color:#2dd4bf}
+  html[data-theme="dark"] .dl-row-check{color:#2dd4bf}
+  html[data-theme="dark"] .dl-more{color:#2dd4bf;border-color:#4b5563}
+  html[data-theme="dark"] .dl-more:active{background:#1a1a1a}
   html[data-theme="dark"] .dl-signin{color:#9ca3af}
   html[data-theme="dark"] .dl-signin a{color:#2dd4bf}
   .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
@@ -258,11 +279,15 @@
       <a href="movai-new-profile.html" data-i18n="dlSignIn">ចូលប្រើ</a>
     </div>
     <div class="dl-sec" id="dlBox">
+      <div class="dl-wake" id="dlWake" hidden></div>
       <div class="dl-urlrow">
         <input class="dl-input" id="dlUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" data-i18n-ph="dlUrlPh" placeholder="ដាក់ link វីដេអូនៅទីនេះ…">
         <button class="dl-paste" id="dlPaste" type="button" data-i18n="dlPaste">បិទភ្ជាប់</button>
       </div>
-      <div class="dl-plat" id="dlPlat"></div>
+      <div class="dl-platrow" id="dlPlatRow" hidden>
+        <span class="dl-platlogo"><img id="dlPlatLogo" alt="" width="22" height="22"><span id="dlPlatLogoFallback" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8" fill="#0f766e" stroke="none"/></svg></span></span>
+        <span class="dl-plat" id="dlPlat"></span>
+      </div>
       <div class="dl-lbl" data-i18n="dlFormat">ទម្រង់</div>
       <div class="dl-chips" id="dlFmtRow">
         <button class="dl-chip on" id="dlFmtMp4" type="button" aria-pressed="true">MP4</button>
@@ -277,19 +302,25 @@
           <button class="dl-chip" type="button" data-q="360" aria-pressed="false">360</button>
         </div>
       </div>
-      <button class="dl-go" id="dlGo" type="button" data-i18n="dlGo">ទាញយក</button>
+      <button class="dl-go" id="dlGo" type="button" data-i18n="dlGo">ចាប់ផ្តើម</button>
       <div class="dl-free" data-i18n="dlFreeNote">ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ</div>
       <div class="dl-status" id="dlStatus"></div>
       <div class="dl-err" id="dlErr"></div>
       <div class="dl-note" id="dlDirectNote"></div>
       <div class="dl-daily" id="dlDaily"></div>
-      <div class="dl-pick" id="dlPicker" hidden>
-        <div class="dl-pick-title" data-i18n="dlPickTitle">ជ្រើសរើសមួយ</div>
-        <div id="dlPickList"></div>
-      </div>
-      <div class="dl-result" id="dlResult" hidden>
-        <div class="dl-filename" id="dlFileName"></div>
-        <button class="dl-dlbtn" id="dlDlBtn" type="button" data-i18n="dlSaveFile">រក្សាទុកឯកសារ</button>
+      <div class="dl-preview" id="dlPreview" hidden>
+        <div class="dl-prevtop">
+          <div class="dl-thumb"><img id="dlThumb" alt="" hidden><span id="dlThumbFallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg></span></div>
+          <div class="dl-prevmeta">
+            <div class="dl-title" id="dlTitle"></div>
+            <div class="dl-source" id="dlSource"></div>
+          </div>
+        </div>
+        <div class="dl-rows" id="dlRows"></div>
+        <div class="dl-note" id="dlRowNote"></div>
+        <button class="dl-more" id="dlMore" type="button" data-i18n="dlMoreFormats" hidden>ទម្រង់ផ្សេងទៀត</button>
+        <div class="dl-rows" id="dlMoreRows" hidden></div>
+        <button class="dl-bigdl" id="dlDownloadBtn" type="button" data-i18n="dlDownload" disabled>ទាញយក</button>
       </div>
     </div>
   </main>
@@ -371,9 +402,16 @@
       dlPlatOther: "វីដេអូ",
       dlFormat: "ទម្រង់",
       dlQuality: "គុណភាព",
-      dlGo: "ទាញយក",
+      dlGo: "ចាប់ផ្តើម",
+      dlDownload: "ទាញយក",
+      dlRowVideo: "វីដេអូ",
+      dlRowMusic: "តន្ត្រី",
+      dlMoreFormats: "ទម្រង់ផ្សេងទៀត",
+      dlNoMoreFormats: "ទម្រង់ផ្សេងទៀតមិនមានទេ",
       dlFreeNote: "ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ",
       dlWorking: "កំពុងធ្វើការ…",
+      dlWaking: "កំពុងដាស់ server…",
+      dlWakeReady: "រួចរាល់",
       dlDirectNote: "កំពុងទាញយកតាមទូរសព្ទរបស់អ្នកដោយផ្ទាល់ — ឥតគិតថ្លៃ",
       dlReady: "រួចហើយ — ចុចដើម្បីរក្សាទុក",
       dlSaveFile: "រក្សាទុកឯកសារ",
@@ -424,9 +462,16 @@
       dlPlatOther: "Video",
       dlFormat: "Format",
       dlQuality: "Quality",
-      dlGo: "Download",
+      dlGo: "START",
+      dlDownload: "Download",
+      dlRowVideo: "Video",
+      dlRowMusic: "Music",
+      dlMoreFormats: "More formats",
+      dlNoMoreFormats: "No more formats available",
       dlFreeNote: "Free • 20 per day",
       dlWorking: "Working…",
+      dlWaking: "Waking the server…",
+      dlWakeReady: "Ready",
       dlDirectNote: "Downloading directly from your phone — free",
       dlReady: "Ready — tap to save",
       dlSaveFile: "Save file",
@@ -612,11 +657,6 @@
   var errEl = document.getElementById("dlErr");
   var directEl = document.getElementById("dlDirectNote");
   var dailyEl = document.getElementById("dlDaily");
-  var pickerBox = document.getElementById("dlPicker");
-  var pickList = document.getElementById("dlPickList");
-  var resultBox = document.getElementById("dlResult");
-  var fileNameEl = document.getElementById("dlFileName");
-  var dlBtn = document.getElementById("dlDlBtn");
   var signinBox = document.getElementById("dlSignin");
   var dlBox = document.getElementById("dlBox");
   var fmtMp4 = document.getElementById("dlFmtMp4");
@@ -629,12 +669,21 @@
   var busy = false;
   var statusTimer = null;
   var statusSecs = 0;
-  var resultUrl = "";
-  var resultName = "";
 
   function renderPlatLine(){
     var u = urlInput.value.trim();
-    platEl.textContent = u ? t(platKey(detectPlatform(u))) : "";
+    var key = u ? detectPlatform(u) : "";
+    platEl.textContent = u ? t(platKey(key)) : "";
+    if (platRow) platRow.hidden = !u;
+    var logo = PLAT_LOGOS[key] || "";
+    if (logo) {
+      platLogoImg.src = logo;
+      platLogoImg.hidden = false;
+      platLogoFallback.hidden = true;
+    } else {
+      platLogoImg.hidden = true;
+      platLogoFallback.hidden = false;
+    }
   }
   function setErr(msg){ errEl.textContent = msg || ""; }
   function setStatus(msg){ statusEl.textContent = msg || ""; }
@@ -666,6 +715,7 @@
     fmtMp4.setAttribute("aria-pressed", f === "mp4" ? "true" : "false");
     fmtMp3.setAttribute("aria-pressed", f === "mp3" ? "true" : "false");
     qualityWrap.hidden = (f !== "mp4");
+    hidePreview();
   }
   function setQuality(q){
     curQuality = q;
@@ -675,6 +725,7 @@
       bs[i].classList.toggle("on", on);
       bs[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
+    hidePreview();
   }
   function fileNameFor(suggested, format, url){
     var name = String(suggested || "").trim();
@@ -684,126 +735,314 @@
     if (m) ext = m[1].toLowerCase();
     return "MovAi-" + Date.now().toString(36) + "." + ext;
   }
-  function showResult(url, filename, format){
-    stopTicker();
-    setStatus(t("dlReady"));
-    /* Keep the phone-direct note visible when the file came through the
-       fallback, so the user sees it was downloaded from their phone. */
-    pickerBox.hidden = true;
-    resultUrl = url;
-    resultName = fileNameFor(filename, format, url);
-    fileNameEl.textContent = resultName;
-    dlBtn.disabled = false;
-    dlBtn.textContent = t("dlSaveFile");
-    resultBox.hidden = false;
+  var previewBox = document.getElementById("dlPreview");
+  var thumbImg = document.getElementById("dlThumb");
+  var thumbFallback = document.getElementById("dlThumbFallback");
+  var titleEl = document.getElementById("dlTitle");
+  var sourceEl = document.getElementById("dlSource");
+  var rowsBox = document.getElementById("dlRows");
+  var moreBtn = document.getElementById("dlMore");
+  var moreRowsBox = document.getElementById("dlMoreRows");
+  var rowNoteEl = document.getElementById("dlRowNote");
+  var downloadBtn = document.getElementById("dlDownloadBtn");
+  var platRow = document.getElementById("dlPlatRow");
+  var platLogoImg = document.getElementById("dlPlatLogo");
+  var platLogoFallback = document.getElementById("dlPlatLogoFallback");
+
+  var PLAT_LOGOS = { youtube: "logo-youtube.svg", tiktok: "logo-tiktok.svg", facebook: "logo-facebook.svg", instagram: "logo-instagram.svg" };
+  var MORE_VIDEO_Q = ["144", "240", "360", "480", "720", "1080"];
+
+  var currentUrl = "";
+  var titleKnown = false;
+  var thumbIdUrl = "";
+  var rowList = [];
+  var selectedRow = null;
+  var hasVideoRow = false;
+  var hasMusicRow = false;
+
+  /* ---- preview: thumbnail + title (best-effort, never blocks the flow) ---- */
+  function ytVideoId(u){
+    var m = String(u || "").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?[^#]*v=|shorts\/|embed\/|live\/))([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : "";
   }
-  function renderPicker(items, audioUrl, format){
-    stopTicker();
-    setStatus("");
-    resultBox.hidden = true;
-    pickList.innerHTML = "";
-    var list = [];
-    if (format === "mp3" && audioUrl) list.push({ type: "audio", url: audioUrl });
-    for (var i = 0; i < items.length; i++) {
-      if (items[i] && items[i].url) list.push(items[i]);
+  function setPreviewShell(url){
+    var host = "";
+    try { host = new URL(url).hostname; } catch (e) {}
+    sourceEl.textContent = host;
+    titleEl.textContent = url;
+    titleKnown = false;
+    thumbIdUrl = "";
+    var id = ytVideoId(url);
+    if (id) {
+      thumbIdUrl = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+      thumbImg.src = thumbIdUrl;
+      thumbImg.hidden = false;
+      thumbFallback.hidden = true;
+    } else {
+      thumbImg.hidden = true;
+      thumbFallback.hidden = false;
     }
-    list.forEach(function(it, idx){
-      var isAudio = it.type === "audio";
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "dl-pick-item";
-      var kind = document.createElement("span");
-      kind.className = "dl-pick-kind";
-      kind.textContent = isAudio ? "MP3" : "MP4";
-      var lbl = document.createElement("span");
-      lbl.textContent = (isAudio ? t("dlPickAudio") : t("dlPickVideo")) + " " + (idx + 1);
-      b.appendChild(kind);
-      b.appendChild(lbl);
-      b.addEventListener("click", function(){
-        showResult(it.url, "", isAudio ? "mp3" : "mp4");
-      });
-      pickList.appendChild(b);
-    });
-    pickerBox.hidden = false;
   }
-  /* MP4 picker where the audio is separate: the video choices would be
-     mute, so never offer them — show the no-audio notice and offer MP3. */
-  function showNoAudio(){
-    stopTicker();
-    setStatus("");
-    setErr(t("dlNoAudio"));
-    pickList.innerHTML = "";
+  function maybeTitleFromFilename(filename){
+    if (titleKnown || !filename) return;
+    var name = String(filename).replace(/\.(mp4|mp3|webm|m4a)$/i, "");
+    if (name) { titleEl.textContent = name; titleKnown = true; }
+  }
+  function fetchPreview(url){
+    /* oEmbed is tried first, but YouTube/TikTok do NOT send CORS headers,
+       so a browser read is normally blocked — the thumbnail-from-ID and
+       filename fallbacks below are what actually fill the panel. Never
+       breaks the flow: any failure is silent. */
+    var plat = detectPlatform(url);
+    var oembed = "";
+    if (plat === "youtube") oembed = "https://www.youtube.com/oembed?url=" + encodeURIComponent(url) + "&format=json";
+    else if (plat === "tiktok") oembed = "https://www.tiktok.com/oembed?url=" + encodeURIComponent(url);
+    if (!oembed) return;
+    var ctrl = null;
+    var opts = {};
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 8000);
+    }
+    fetch(oembed, opts).then(function(r){ return r.json(); }).then(function(j){
+      if (!j) return;
+      if (j.title) { titleEl.textContent = j.title; titleKnown = true; }
+      if (j.thumbnail_url) {
+        thumbImg.src = j.thumbnail_url;
+        thumbImg.hidden = false;
+        thumbFallback.hidden = true;
+      }
+    }).catch(function(){ /* best-effort only */ });
+  }
+  thumbImg.addEventListener("error", function(){
+    if (thumbIdUrl && thumbImg.getAttribute("src") !== thumbIdUrl) {
+      thumbImg.src = thumbIdUrl;
+    } else {
+      thumbImg.hidden = true;
+      thumbFallback.hidden = false;
+    }
+  });
+  platLogoImg.addEventListener("error", function(){
+    platLogoImg.hidden = true;
+    platLogoFallback.hidden = false;
+  });
+
+  /* ---- real file sizes (HEAD, best-effort, never a guessed size) ---- */
+  function fmtSize(n){
+    if (!n || n <= 0) return "";
+    if (n >= 1048576) return (n / 1048576).toFixed(1) + " MB";
+    if (n >= 1024) return Math.round(n / 1024) + " KB";
+    return n + " B";
+  }
+  function loadSize(url, sizeEl){
+    var done = false;
+    var ctrl = null;
+    var opts = { method: "HEAD" };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 10000);
+    }
+    fetch(url, opts).then(function(r){
+      if (done) return;
+      done = true;
+      var len = (r && r.headers) ? r.headers.get("content-length") : null;
+      sizeEl.textContent = len ? fmtSize(Number(len)) : "";
+    }).catch(function(){
+      if (done) return;
+      done = true;
+      sizeEl.textContent = ""; /* no size shown — never a fake one */
+    });
+  }
+
+  /* ---- format rows ---- */
+  function addRow(kind, label, url, filename, container){
     var b = document.createElement("button");
     b.type = "button";
-    b.className = "dl-pick-item";
-    var kind = document.createElement("span");
-    kind.className = "dl-pick-kind";
-    kind.textContent = "MP3";
-    var lbl = document.createElement("span");
-    lbl.textContent = t("dlNoAudioMp3");
-    b.appendChild(kind);
-    b.appendChild(lbl);
-    b.addEventListener("click", function(){
-      pickerBox.hidden = true;
-      setFormat("mp3");
-      runResolve();
+    b.className = "dl-row";
+    var labelEl = document.createElement("span");
+    labelEl.className = "dl-row-label";
+    labelEl.textContent = label;
+    var checkEl = document.createElement("span");
+    checkEl.className = "dl-row-check";
+    checkEl.textContent = "✓";
+    var sizeEl = document.createElement("span");
+    sizeEl.className = "dl-row-size";
+    b.appendChild(labelEl);
+    b.appendChild(checkEl);
+    b.appendChild(sizeEl);
+    var row = { kind: kind, label: label, url: url || "", filename: filename || "", button: b, sizeEl: sizeEl };
+    b.addEventListener("click", function(){ if (row.url) selectRow(row); });
+    if (row.url) { sizeEl.textContent = "…"; loadSize(row.url, sizeEl); }
+    else { b.disabled = true; sizeEl.textContent = "…"; }
+    (container || rowsBox).appendChild(b);
+    rowList.push(row);
+    return row;
+  }
+  function selectRow(row){
+    rowList.forEach(function(r){ r.button.classList.toggle("sel", r === row); });
+    selectedRow = row;
+    downloadBtn.disabled = false;
+  }
+  function hidePreview(){
+    previewBox.hidden = true;
+    rowsBox.innerHTML = "";
+    moreRowsBox.innerHTML = "";
+    moreRowsBox.hidden = true;
+    moreBtn.hidden = true;
+    rowNoteEl.textContent = "";
+    rowList = [];
+    selectedRow = null;
+    hasVideoRow = false;
+    hasMusicRow = false;
+    downloadBtn.disabled = true;
+    titleKnown = false;
+  }
+
+  /* Turn one resolveOne result into row data. A picker that carries a
+     separate audio track means its video items are MUTE — they are never
+     offered as video rows (owner rule); the audio becomes the Music row. */
+  function rowsFromResult(r, wantKind, label){
+    if (!r) return [];
+    if (r.kind === "file") return [{ kind: wantKind, url: r.url, filename: r.filename || "", label: label }];
+    if (r.kind === "picker") {
+      var out = [];
+      if (wantKind === "music") {
+        if (r.audio) { out.push({ kind: "music", url: r.audio, filename: "", label: t("dlRowMusic") }); return out; }
+        r.picker.forEach(function(it){ if (it && it.url && it.type === "audio") out.push({ kind: "music", url: it.url, filename: "", label: t("dlRowMusic") }); });
+        return out;
+      }
+      if (r.audio) return [];
+      r.picker.forEach(function(it, i){
+        if (it && it.url) out.push({ kind: "video", url: it.url, filename: "", label: t("dlRowVideo") + " " + (i + 1) });
+      });
+      return out;
+    }
+    return [];
+  }
+  function firstFileFromPicker(r, kind){
+    if (!r || r.kind !== "picker" || !Array.isArray(r.picker)) return null;
+    var i, it;
+    if (kind === "music") {
+      if (r.audio) return { url: r.audio, filename: "" };
+      for (i = 0; i < r.picker.length; i++) { it = r.picker[i]; if (it && it.url && it.type === "audio") return { url: it.url, filename: "" }; }
+      return null;
+    }
+    if (r.audio) return null;
+    for (i = 0; i < r.picker.length; i++) { it = r.picker[i]; if (it && it.url) return { url: it.url, filename: "" }; }
+    return null;
+  }
+
+  function buildRows(videoR, audioR, url){
+    var videoRows = rowsFromResult(videoR, "video", t("dlRowVideo") + " • " + curQuality + "p");
+    var audioRows = rowsFromResult(audioR, "music", t("dlRowMusic") + " • MP3 320K");
+    if (!audioRows.length && videoR && videoR.kind === "picker" && videoR.audio) {
+      audioRows = [{ kind: "music", url: videoR.audio, filename: "", label: t("dlRowMusic") }];
+    }
+    var rows = videoRows.concat(audioRows);
+    hasVideoRow = videoRows.length > 0;
+    hasMusicRow = audioRows.length > 0;
+    rowsBox.innerHTML = "";
+    var rowObjs = rows.map(function(rd){ return addRow(rd.kind, rd.label, rd.url, rd.filename, rowsBox); });
+    if (videoR && videoR.kind === "picker" && videoR.audio) rowNoteEl.textContent = t("dlNoAudio");
+    else rowNoteEl.textContent = "";
+    if (!rows.length) {
+      var e = null;
+      if (videoR && videoR.kind === "error") e = videoR;
+      else if (audioR && audioR.kind === "error") e = audioR;
+      if (e) {
+        if (e.needLogin) { setErr(t("dlNeedSignIn")); syncDlAuth(); }
+        else setErr(e.error || t("dlFailed"));
+      } else if (videoR && videoR.kind === "local" && audioR && audioR.kind === "local") setErr(t("dlLocalProc"));
+      else setErr(t("dlFailed"));
+      downloadBtn.disabled = true;
+      selectedRow = null;
+      moreBtn.hidden = true;
+      return;
+    }
+    var want = curFormat === "mp3" ? "music" : "video";
+    var pick = null;
+    rowObjs.forEach(function(ro){ if (!pick && ro.kind === want) pick = ro; });
+    if (!pick) pick = rowObjs[0];
+    selectRow(pick);
+    moreBtn.hidden = false;
+  }
+
+  /* "More formats": each extra quality resolves on demand (one resolve
+     call per quality, best-effort) and shows its real size the same way.
+     A quality that fails to resolve simply disappears — never a fake row. */
+  function showMore(){
+    moreBtn.hidden = true;
+    moreRowsBox.hidden = false;
+    moreRowsBox.innerHTML = "";
+    var items = [];
+    MORE_VIDEO_Q.forEach(function(q){
+      if (q !== curQuality) items.push({ kind: "video", quality: q, label: t("dlRowVideo") + " • " + q + "p" });
     });
-    pickList.appendChild(b);
-    pickerBox.hidden = false;
+    if (!hasMusicRow) items.push({ kind: "music", quality: "320", label: t("dlRowMusic") + " • MP3 320K" });
+    if (!items.length) { moreRowsBox.hidden = true; moreBtn.hidden = false; return; }
+    var pending = items.length;
+    var failed = 0;
+    items.forEach(function(it){
+      var row = addRow(it.kind, it.label, "", "", moreRowsBox);
+      resolveOne(currentUrl, it.kind === "music" ? "mp3" : "mp4", it.quality).then(function(r){
+        pending--;
+        var file = null;
+        if (r.kind === "file") file = { url: r.url, filename: r.filename || "" };
+        else if (r.kind === "picker") file = firstFileFromPicker(r, it.kind);
+        if (file) {
+          row.url = file.url;
+          row.filename = file.filename;
+          row.button.disabled = false;
+          row.sizeEl.textContent = "…";
+          loadSize(file.url, row.sizeEl);
+        } else {
+          failed++;
+          if (row.button.parentNode) row.button.parentNode.removeChild(row.button);
+          var ix = rowList.indexOf(row);
+          if (ix >= 0) rowList.splice(ix, 1);
+        }
+        if (pending === 0 && failed === items.length) {
+          var note = document.createElement("div");
+          note.className = "dl-note";
+          note.textContent = t("dlNoMoreFormats");
+          moreRowsBox.appendChild(note);
+        }
+      });
+    });
   }
-  function handleServerResult(j, url, format){
-    if (!j) { setErr(t("dlFailed")); return; }
-    if (j.needLogin) { setErr(t("dlNeedSignIn")); syncDlAuth(); return; }
-    if (!j.ok) {
-      if (j.code === "youtube_blocked") { runPhoneDirect(url, format); return; }
-      setErr(j.error ? cleanErr(j.error) : t("dlFailed"));
-      return;
-    }
-    showDaily(j);
-    if ((j.kind === "tunnel" || j.kind === "redirect") && j.url) {
-      showResult(j.url, j.filename || "", format);
-      return;
-    }
-    if (j.kind === "picker" && Array.isArray(j.picker) && j.picker.length) {
-      if (format === "mp4" && j.audio) { showNoAudio(); return; }
-      renderPicker(j.picker, j.audio || "", format);
-      return;
-    }
-    if (j.kind === "local-processing") { setErr(t("dlLocalProc")); return; }
-    setErr(t("dlFailed"));
-  }
-  function runResolve(){
-    if (busy) return;
+
+  /* Resolve ONE file (one format + one quality) through our server, falling
+     back to the phone-direct path whenever OUR side fails. Returns a promise
+     of {kind:'file', url, filename} | {kind:'picker', picker, audio} |
+     {kind:'local'} | {kind:'error', code, error, needLogin}. */
+  function resolveOne(url, format, quality){
     var email = curEmail();
-    if (!email) { setErr(t("dlNeedSignIn")); syncDlAuth(); return; }
-    var url = urlInput.value.trim();
-    if (!url) { setErr(t("dlNeedUrl")); urlInput.focus(); return; }
-    if (!/^https?:\/\//i.test(url)) { setErr(t("dlBadUrl")); return; }
-    busy = true;
-    goBtn.disabled = true;
-    setErr("");
-    directEl.textContent = "";
-    pickerBox.hidden = true;
-    resultBox.hidden = true;
-    dailyEl.textContent = "";
-    startTicker();
-    apiPost("/api/download/resolve", { email: email, url: url, format: curFormat, quality: curQuality }, 150000).then(function(j){
-      busy = false;
-      goBtn.disabled = false;
-      stopTicker();
-      setStatus("");
-      handleServerResult(j, url, curFormat);
+    return apiPost("/api/download/resolve", { email: email, url: url, format: format, quality: quality }, 150000).then(function(j){
+      if (!j) return phoneDirectResolve(url, format, quality); /* proxy answered garbage */
+      if (j.needLogin) return { kind: "error", code: "need_login", error: t("dlNeedSignIn"), needLogin: true };
+      if (!j.ok) {
+        if (!j.code || j.code === "daily_limit") return { kind: "error", code: j.code || "invalid", error: j.error ? cleanErr(j.error) : t("dlFailed") };
+        return phoneDirectResolve(url, format, quality);
+      }
+      if ((j.kind === "tunnel" || j.kind === "redirect") && j.url) {
+        showDaily(j);
+        return { kind: "file", url: j.url, filename: j.filename || "" };
+      }
+      if (j.kind === "picker" && Array.isArray(j.picker) && j.picker.length) {
+        return { kind: "picker", picker: j.picker, audio: j.audio || "" };
+      }
+      if (j.kind === "local-processing") return { kind: "local" };
+      return { kind: "error", code: "invalid", error: t("dlFailed") };
     }).catch(function(){
-      busy = false;
-      goBtn.disabled = false;
-      stopTicker();
-      setStatus("");
-      setErr(t("dlNoServer"));
+      return phoneDirectResolve(url, format, quality); /* proxy itself unreachable */
     });
   }
-  /* ---- phone-direct fallback (same proven flow as the chat downloader):
-     the request goes straight from this phone to the download service —
-     Turnstile token minted in this browser, session JWT, then POST. ---- */
+
+  /* YouTube goes to the community instance (the only one with YouTube
+     on); everything else goes to the official instance. Same split as
+     the chat downloader. */
   function directInstanceFor(url){
     var u = String(url || "").toLowerCase();
     if (u.indexOf("youtube.com") >= 0 || u.indexOf("youtu.be") >= 0) return "https://cobalt-api.meowing.de/";
@@ -826,32 +1065,27 @@
       timer = setTimeout(function(){ res(""); }, 60000);
     });
   }
-  function runPhoneDirect(url, format){
-    busy = true;
-    goBtn.disabled = true;
+
+  /* Phone-direct resolve — the same proven flow as the chat downloader:
+     the request goes straight from this phone to the download service
+     (Turnstile token minted in this browser, then a session JWT), so it
+     needs neither our proxy nor our own server. Returns the same shapes
+     as resolveOne. Never throws. */
+  function phoneDirectResolve(url, format, quality){
     directEl.textContent = t("dlDirectNote");
-    setStatus(t("dlTurnstile"));
-    startTicker();
     var inst = directInstanceFor(url);
-    function fail(msg){
-      stopTicker();
-      setStatus("");
-      directEl.textContent = "";
-      setErr(msg || t("dlFailed"));
-      busy = false;
-      goBtn.disabled = false;
-    }
-    fetch(inst, { method: "GET" }).then(function(r){ return r.json(); }).then(function(info){
+    function perr(code, msg){ return { kind: "error", code: code || "direct_failed", error: msg || t("dlFailed") }; }
+    return fetch(inst, { method: "GET" }).then(function(r){ return r.json(); }).then(function(info){
       var sitekey = info && info.cobalt && info.cobalt.turnstileSitekey;
-      if (!sitekey) { fail(t("dlFailed")); return; }
-      getTurnstileToken(sitekey).then(function(tok){
-        if (!tok) { fail(t("dlFailed")); return; }
-        fetch(inst + "session", { method: "POST", headers: { "cf-turnstile-response": tok } }).then(function(r){ return r.json(); }).then(function(s){
+      if (!sitekey) return perr("direct_failed");
+      return getTurnstileToken(sitekey).then(function(tok){
+        if (!tok) return perr("direct_failed");
+        return fetch(inst + "session", { method: "POST", headers: { "cf-turnstile-response": tok } }).then(function(r){ return r.json(); }).then(function(s){
           var jwt = s && s.token;
-          if (!jwt) { fail((s && s.error && cleanErr(s.error.message || s.error.code)) || t("dlFailed")); return; }
+          if (!jwt) return perr("direct_failed", (s && s.error && cleanErr(s.error.message || s.error.code)) || undefined);
           var body = { url: url, downloadMode: format === "mp3" ? "audio" : "auto", filenameStyle: "basic" };
           if (format === "mp3") body.audioFormat = "mp3";
-          else { body.videoQuality = curQuality; body.youtubeVideoContainer = "mp4"; }
+          else { body.videoQuality = quality; body.youtubeVideoContainer = "mp4"; }
           var ctrl = null;
           var opts = { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + jwt }, body: JSON.stringify(body) };
           if (window.AbortController) {
@@ -859,30 +1093,57 @@
             opts.signal = ctrl.signal;
             setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 120000);
           }
-          fetch(inst, opts).then(function(r){ return r.json(); }).then(function(j){
-            stopTicker();
-            setStatus("");
-            busy = false;
-            goBtn.disabled = false;
+          return fetch(inst, opts).then(function(r){ return r.json(); }).then(function(j){
             if (j && (j.status === "redirect" || j.status === "tunnel") && j.url) {
-              showResult(j.url, j.filename || "", format);
-              return;
+              return { kind: "file", url: j.url, filename: j.filename || "" };
             }
             if (j && j.status === "picker" && Array.isArray(j.picker) && j.picker.length) {
-              if (format === "mp4" && j.audio) { showNoAudio(); return; }
-              renderPicker(j.picker, j.audio || "", format);
-              return;
+              return { kind: "picker", picker: j.picker, audio: j.audio || "" };
             }
-            if (j && j.status === "local-processing") { setErr(t("dlLocalProc")); return; }
-            fail((j && j.error && cleanErr(j.error.message || j.error.code)) || t("dlFailed"));
-          }).catch(function(){ fail(t("dlNoServer")); });
-        }).catch(function(){ fail(t("dlNoServer")); });
+            if (j && j.status === "local-processing") return { kind: "local" };
+            return perr("direct_failed", (j && j.error && cleanErr(j.error.message || j.error.code)) || undefined);
+          }).catch(function(){ return perr("direct_failed", t("dlNoServer")); });
+        }).catch(function(){ return perr("direct_failed", t("dlNoServer")); });
       });
-    }).catch(function(){ fail(t("dlNoServer")); });
+    }).catch(function(){ return perr("direct_failed", t("dlNoServer")); });
   }
+
+  /* START: paste link → tap START → preview panel + format rows →
+     tap a row to choose it → tap Download to save it. */
+  function runStart(){
+    if (busy) return;
+    var email = curEmail();
+    if (!email) { setErr(t("dlNeedSignIn")); syncDlAuth(); return; }
+    var url = urlInput.value.trim();
+    if (!url) { setErr(t("dlNeedUrl")); urlInput.focus(); return; }
+    if (!/^https?:\/\//i.test(url)) { setErr(t("dlBadUrl")); return; }
+    currentUrl = url;
+    busy = true;
+    goBtn.disabled = true;
+    setErr("");
+    directEl.textContent = "";
+    dailyEl.textContent = "";
+    hidePreview();
+    previewBox.hidden = false;
+    setPreviewShell(url);
+    startTicker();
+    fetchPreview(url);
+    var videoP = resolveOne(url, "mp4", curQuality);
+    var audioP = resolveOne(url, "mp3", "320");
+    Promise.all([videoP, audioP]).then(function(rs){
+      stopTicker();
+      setStatus("");
+      busy = false;
+      goBtn.disabled = false;
+      if (rs[0] && rs[0].kind === "file") maybeTitleFromFilename(rs[0].filename);
+      else if (rs[1] && rs[1].kind === "file") maybeTitleFromFilename(rs[1].filename);
+      buildRows(rs[0], rs[1], url);
+    });
+  }
+
   /* ---- blob download: Chrome ignores the download attribute on
      cross-origin links, so fetch as a blob and save it locally. ---- */
-  function blobDownload(url, filename, btn){
+  function blobDownload(url, filename, btn, labelKey){
     btn.disabled = true;
     btn.textContent = t("dlDownloadingFile");
     fetch(url, { mode: "cors" }).then(function(r){
@@ -899,10 +1160,10 @@
       setTimeout(function(){ try { URL.revokeObjectURL(objUrl); } catch (e) {} }, 5000);
       setStatus(t("dlDownloaded"));
       btn.disabled = false;
-      btn.textContent = t("dlSaveFile");
+      btn.textContent = t(labelKey || "dlSaveFile");
     }).catch(function(){
       btn.disabled = false;
-      btn.textContent = t("dlSaveFile");
+      btn.textContent = t(labelKey || "dlSaveFile");
       setErr(t("dlFailed"));
       try { window.open(url, "_blank"); } catch (e) {}
     });
@@ -929,14 +1190,62 @@
     var b = e.target && e.target.closest ? e.target.closest("button[data-q]") : null;
     if (b) setQuality(b.getAttribute("data-q"));
   });
-  goBtn.addEventListener("click", runResolve);
-  dlBtn.addEventListener("click", function(){
-    if (!resultUrl) return;
-    blobDownload(resultUrl, resultName, dlBtn);
+  goBtn.addEventListener("click", runStart);
+  downloadBtn.addEventListener("click", function(){
+    if (!selectedRow || !selectedRow.url) return;
+    blobDownload(selectedRow.url, fileNameFor(selectedRow.filename, selectedRow.kind === "music" ? "mp3" : "mp4", selectedRow.url), downloadBtn, "dlDownload");
   });
+  moreBtn.addEventListener("click", showMore);
+
+  /* ---- Wake the download server on page open (owner order 2026-11-23):
+     the free Cobalt service sleeps when idle, so ping it the moment the
+     page opens — it is already awake by the time the user taps Download.
+     Signed-in only, fire-and-forget, 90s timeout; it never blocks the
+     UI or the Download button. While pending, the line above the form
+     shows live ticking seconds (never a static please-wait). "awake"
+     shows "Ready" briefly; "waking" / failure / timeout hides the line
+     silently — the retry + phone-direct fallback still cover the tap. */
+  function wakeServer(){
+    if (!curEmail()) return;
+    var wakeEl = document.getElementById("dlWake");
+    if (!wakeEl) return;
+    var secs = 0, timer = null, finished = false;
+    function stopWake(){ if (timer) { clearInterval(timer); timer = null; } }
+    function finishWake(){ if (finished) return; finished = true; stopWake(); }
+    wakeEl.hidden = false;
+    wakeEl.textContent = t("dlWaking") + " 0s";
+    timer = setInterval(function(){
+      secs++;
+      wakeEl.textContent = t("dlWaking") + " " + secs + "s";
+    }, 1000);
+    var ctrl = null;
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 90000);
+    }
+    var opts = { method: "GET" };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(API_BASE + "/api/download/wake", opts).then(function(r){
+      return r.json().catch(function(){ return null; });
+    }).then(function(j){
+      if (finished) return;
+      finishWake();
+      if (j && j.cobalt === "awake") {
+        wakeEl.textContent = t("dlWakeReady");
+        setTimeout(function(){ wakeEl.hidden = true; }, 1500);
+      } else {
+        wakeEl.hidden = true;
+      }
+    }).catch(function(){
+      if (finished) return;
+      finishWake();
+      wakeEl.hidden = true;
+    });
+  }
 
   syncDlAuth();
   applyLang();
+  wakeServer();
 })();
 </script>
 <script>
