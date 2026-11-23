@@ -110,6 +110,7 @@
   .primary-btn:disabled{opacity:.5}
   .msg{font-size:.9rem;color:#b91c1c;margin-top:12px;min-height:1.2em}
   .msg.ok{color:#0f766e}
+  .msg.working{color:inherit}
   .note{font-size:.85rem;color:#6b7280;margin-top:14px}
   .link-btn{font-size:.95rem;font-weight:600;color:#1f2937;text-decoration:underline;
     padding:0}
@@ -189,6 +190,7 @@
   html[data-theme="dark"] .spin{border-color:#3a524a;border-top-color:#0f766e}
   html[data-theme="dark"] .c-err,html[data-theme="dark"] .err,html[data-theme="dark"] .cover-msg.err-t,html[data-theme="dark"] .stem-msg.err-t,html[data-theme="dark"] .row-act.armed,html[data-theme="dark"] .msg,html[data-theme="dark"] .gift-msg{color:#fca5a5}
   html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
+  html[data-theme="dark"] .msg.working{color:#e7f0ec}
   html[data-theme="dark"] .txt{background:#16261f;border-color:#3a524a;color:#e7f0ec}
   html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
   html[data-theme="dark"] .chip,html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn,html[data-theme="dark"] .tagchip{color:#e7f0ec;border-color:#3a524a}
@@ -317,6 +319,13 @@
       <div class="sect-title" data-i18n="communityTitle">សហគមន៍</div>
       <div class="row"><span class="row-label" data-i18n="followers">អ្នកតាមដាន</span><span class="row-value" id="followers">&mdash;</span></div>
 
+      <div class="sect-title" data-i18n="vocalTitle">Vocal Remover</div>
+      <p class="note" data-i18n="vocalNote">ជ្រើសបទចម្រៀងរបស់អ្នក រួចចុចដកសំឡេងចេញ — នឹងបំបែកជា ៦ ស្ទេម៖ សំឡេង, ស្គរ, បាស, ផ្សេងៗ, ព្យាណូ, ហ្គីតា។ ប្រើសិទ្ធិ Vocal Studio ឥតគិតថ្លៃ (២ ដង)។ លីងស្ទេមប្រើបាន ១៤ ថ្ងៃ។</p>
+      <select class="field" id="vocalSong" aria-label="Vocal Remover song"></select>
+      <button class="primary-btn" id="vocalBtn" type="button" data-i18n="vocalBtn">ដកសំឡេងចេញ</button>
+      <p class="msg" id="vocalMsg" role="status"></p>
+      <div id="vocalStems"></div>
+
       <!-- Owner-only Suno balance section is built here by script, only for admin emails. -->
       <div id="adminSection"></div>
 
@@ -408,7 +417,19 @@
       wrongLogin: "Gmail ឬពាក្យសម្ងាត់ខុស។",
       googleFail: "ការចូលប្រើតាម Google មិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
       googleLoadFail: "មិនអាចផ្ទុកការចូលប្រើតាម Google បានទេ។ សូមព្យាយាមម្ដងទៀត។",
-      googleNoOpen: "ការចូលប្រើតាម Google មិនអាចបើកបានទេ។ សូមប្រើប៊ូតុង «ចូលប្រើជាមួយ Google» ខាងលើ ឬព្យាយាមម្ដងទៀត។"
+      googleNoOpen: "ការចូលប្រើតាម Google មិនអាចបើកបានទេ។ សូមប្រើប៊ូតុង «ចូលប្រើជាមួយ Google» ខាងលើ ឬព្យាយាមម្ដងទៀត។",
+      vocalTitle: "Vocal Remover",
+      vocalNote: "ជ្រើសបទចម្រៀងរបស់អ្នក រួចចុចដកសំឡេងចេញ — នឹងបំបែកជា ៦ ស្ទេម៖ សំឡេង, ស្គរ, បាស, ផ្សេងៗ, ព្យាណូ, ហ្គីតា។ ប្រើសិទ្ធិ Vocal Studio ឥតគិតថ្លៃ (២ ដង)។ លីងស្ទេមប្រើបាន ១៤ ថ្ងៃ។",
+      vocalPick: "ជ្រើសបទចម្រៀង…",
+      vocalBtn: "ដកសំឡេងចេញ",
+      vocalNoSongs: "មិនទាន់មានបទចម្រៀងទេ។",
+      vocalPickFirst: "សូមជ្រើសបទចម្រៀងជាមុនសិន។",
+      splitWorking: "កំពុងបំបែក… ",
+      splitChecked: "ពិនិត្យ ",
+      splitDone: "បំបែករួចរាល់។",
+      splitFail: "បំបែកមិនបានទេ។",
+      splitResume: "បទនេះកំពុងបំបែកនៅលើ server — សូមចុចដកសំឡេងចេញម្ដងទៀតដើម្បីពិនិត្យ",
+      download: "ទាញយក"
     },
     en: {
       theme: "Theme",
@@ -462,7 +483,19 @@
       wrongLogin: "Wrong Gmail or password.",
       googleFail: "Google sign-in failed. Please try again.",
       googleLoadFail: "Could not load Google sign-in. Please try again.",
-      googleNoOpen: "Google sign-in could not open. Please use the \"Sign in with Google\" button above, or try again."
+      googleNoOpen: "Google sign-in could not open. Please use the \"Sign in with Google\" button above, or try again.",
+      vocalTitle: "Vocal Remover",
+      vocalNote: "Pick one of your songs, then remove the vocals — it splits into 6 stems: vocals, drums, bass, other, piano, guitar. Uses a free Vocal Studio split (2 free). Stem links work for 14 days.",
+      vocalPick: "Pick a song…",
+      vocalBtn: "Remove vocals",
+      vocalNoSongs: "No songs yet.",
+      vocalPickFirst: "Please pick a song first.",
+      splitWorking: "Splitting… ",
+      splitChecked: "check ",
+      splitDone: "Split done.",
+      splitFail: "Split failed.",
+      splitResume: "Still separating on the server — tap Remove vocals again to check",
+      download: "Download"
     }
   };
   var LANG_KEY = "movai-lang";
@@ -475,7 +508,7 @@
     var d = (STR && STR[lang]) || STR.en;
     return (d && d[k]) || (STR.en && STR.en[k]) || k;
   }
-  function onLangChange(){ if (currentUser) { renderUser(currentUser); renderAdminSection(currentEmail); } }
+  function onLangChange(){ if (currentUser) { renderUser(currentUser); renderAdminSection(currentEmail); renderVocalSelect(); } }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
@@ -666,6 +699,7 @@
     loginView.hidden = true;
     profileView.hidden = false;
     signOutBtn.hidden = false;
+    loadVocalSongs();
   }
   function showLoading(){
     loginView.hidden = true;
@@ -755,6 +789,151 @@
         }
       })
       .catch(function(){ /* stays "—" */ });
+  }
+
+  /* ---- Vocal Remover: pick one of your songs, split it into 6 stems
+     (same /api/studio/separate as My Songs, same free-2 Vocal Studio
+     allowance, same 6-min wait + live check count while polling). ---- */
+  var vocalSongs = [];
+  function vrFmtDur(s){
+    s = Math.round(Number(s) || 0);
+    var m = Math.floor(s / 60), r = s % 60;
+    return m + ":" + (r < 10 ? "0" : "") + r;
+  }
+  function vrCleanErr(m){
+    if (m && typeof m === "object") {
+      var v = (lang === "kh" ? m.km : m.en) || m.en || m.km || "";
+      return String(v);
+    }
+    var s = String(m || "").trim();
+    s = s.replace(/^\s*(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\s*:\s*/i, "");
+    s = s.replace(/\b(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\b/gi, "");
+    s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
+    return s || t("splitFail");
+  }
+  function vrSetMsg(text, kind){
+    var el = document.getElementById("vocalMsg");
+    if (!el) return;
+    el.textContent = text || "";
+    el.className = "msg" + (kind === "ok" ? " ok" : kind === "working" ? " working" : "");
+  }
+  function vrPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      if (timeoutMs) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, timeoutMs);
+    }
+    return fetch(API + path, opts).then(function(r){ return r.json(); })
+      .then(function(j){ if (timer) clearTimeout(timer); return j; })
+      .catch(function(e){ if (timer) clearTimeout(timer); throw e; });
+  }
+  function vrRenderStems(stems){
+    var host = document.getElementById("vocalStems");
+    host.innerHTML = "";
+    (stems || []).forEach(function(st){
+      var row = document.createElement("div");
+      row.className = "row";
+      var label = document.createElement("span");
+      label.className = "row-label";
+      label.textContent = st.name || "stem";
+      var a = document.createElement("a");
+      a.className = "link-btn";
+      a.href = st.url;
+      a.textContent = t("download");
+      a.setAttribute("download", "");
+      row.appendChild(label);
+      row.appendChild(a);
+      host.appendChild(row);
+    });
+  }
+  function vrPoll(hash, t0){
+    var n = 0, checks = 0;
+    var tick = setInterval(function(){
+      vrSetMsg(t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s" + (checks ? " · " + t("splitChecked") + checks : ""), "working");
+    }, 1000);
+    function step(){
+      if (n++ >= 60) {
+        clearInterval(tick);
+        vrSetMsg(t("splitFail"), "err");
+        return;
+      }
+      fetch(API + "/api/studio/separate/status?hash=" + encodeURIComponent(hash) +
+        "&email=" + encodeURIComponent(currentEmail), { cache: "no-store" })
+        .then(function(r){ return r.json(); }).then(function(j){
+          if (j && j.ok === true && j.done === true && Array.isArray(j.stems) && j.stems.length) {
+            clearInterval(tick);
+            vrSetMsg(t("splitDone"), "ok");
+            vrRenderStems(j.stems);
+          } else if (j && j.ok === false) {
+            clearInterval(tick);
+            vrSetMsg(vrCleanErr(j.error || t("splitFail")), "err");
+          } else {
+            checks++;
+            setTimeout(step, 10000);
+          }
+        }).catch(function(){ setTimeout(step, 10000); });
+    }
+    setTimeout(step, 10000);
+  }
+  function vrRun(){
+    var sel = document.getElementById("vocalSong");
+    if (!currentEmail) { vrSetMsg(t("signinTitle"), "err"); return; }
+    var raw = sel ? sel.value : "";
+    if (raw === "" || raw === null) { vrSetMsg(t("vocalPickFirst"), "err"); return; }
+    var song = vocalSongs[Number(raw)];
+    if (!song || !song.url) { vrSetMsg(t("vocalPickFirst"), "err"); return; }
+    document.getElementById("vocalStems").innerHTML = "";
+    vrSetMsg(t("splitWorking") + "0s", "working");
+    var t0 = Date.now();
+    var tick = setInterval(function(){
+      vrSetMsg(t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s", "working");
+    }, 1000);
+    vrPost("/api/studio/separate", { email: currentEmail, audioUrl: song.url, songTitle: song.title || "" }, 360000).then(function(j){
+      clearInterval(tick);
+      if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
+        vrSetMsg(t("splitDone"), "ok");
+        vrRenderStems(j.stems);
+      } else if (j && j.error === "mvsep_timeout" && j.hash) {
+        vrSetMsg(t("splitWorking") + "0s", "working");
+        vrPoll(j.hash, t0);
+      } else {
+        vrSetMsg(vrCleanErr(j && j.error ? j.error : t("splitFail")), "err");
+      }
+    }).catch(function(e){
+      clearInterval(tick);
+      if (e && e.name === "AbortError") vrSetMsg(t("splitResume"), "err");
+      else vrSetMsg(t("noServer"), "err");
+    });
+  }
+  function renderVocalSelect(){
+    var sel = document.getElementById("vocalSong");
+    if (!sel) return;
+    var prev = sel.value;
+    sel.innerHTML = "";
+    var opt0 = document.createElement("option");
+    opt0.value = "";
+    opt0.textContent = vocalSongs.length ? t("vocalPick") : t("vocalNoSongs");
+    sel.appendChild(opt0);
+    vocalSongs.forEach(function(s, i){
+      var o = document.createElement("option");
+      o.value = String(i);
+      o.textContent = (s.title || "—") + (isFinite(Number(s.duration)) ? " · " + vrFmtDur(s.duration) : "");
+      sel.appendChild(o);
+    });
+    if (prev !== "" && vocalSongs[Number(prev)]) sel.value = prev;
+  }
+  function loadVocalSongs(){
+    var sel = document.getElementById("vocalSong");
+    if (!sel || !currentEmail) return;
+    apiJson("/api/public/history?email=" + encodeURIComponent(currentEmail), "GET").then(function(d){
+      var items = (d && Array.isArray(d.items)) ? d.items : [];
+      vocalSongs = items.filter(function(it){ return it && (it.url || it.src); }).map(function(it){
+        return { title: it.title || "", url: it.url || it.src, duration: it.duration };
+      });
+      renderVocalSelect();
+    }).catch(function(){ /* select keeps its placeholder */ });
   }
 
   // Refresh the profile from the server (server credits are the truth).
@@ -1043,6 +1222,8 @@
     }
     showLogin();
   }
+  var _vrBtn = document.getElementById("vocalBtn");
+  if (_vrBtn) _vrBtn.addEventListener("click", vrRun);
   applyLang();
   snapRestore();
   boot();
