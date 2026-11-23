@@ -228,6 +228,7 @@
   .online-check{font-weight:800}
   .hdr-dots{font-size:1.3rem;font-weight:800;line-height:1;padding:6px 10px}
   .msg img.chat-img{cursor:pointer}
+  .msg a.dl-btn{display:inline-block;margin-top:6px;padding:10px 14px;border-radius:10px;background:#0f766e;color:#fff;font-weight:700;text-decoration:none}
   /* ---- Session date groups (not one flat list) ---- */
   .sess-group{padding:14px 16px 4px;font-size:.8rem;font-weight:700;color:#6b7280}
   /* ---- Created items (header ⋮ menu) ---- */
@@ -302,6 +303,7 @@
   .edit-note{font-size:.85rem;color:#6b7280;margin-top:8px}
   html[data-theme="dark"] .edit-note{color:#8fa89e}
 </style>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -375,14 +377,15 @@
     <button type="button" class="edit-chip" data-ratio="9:16">9:16</button>
     <button type="button" class="edit-chip" data-ratio="16:9">16:9</button>
   </div>
-  <input class="edit-bg" id="imgEditBg" type="text" data-i18n-ph="bgPromptPh" placeholder="ផ្ទៃខាងក្រោយថ្មី៖ ឧ. ឆ្នេរសមុទ្រពេលល្ងាច…">
-  <div class="edit-note" data-i18n="keepSamePhoto">រូបដដែល ប្ដូរតែផ្ទៃខាងក្រោយទេ។</div>
+  <input class="edit-bg" id="imgEditBg" type="text" data-i18n-ph="bgPromptPh" placeholder="ប្រាប់ថាចង់កែអ្វី៖ ឧ. ដូរផ្ទៃខាងក្រោយជា ឆ្នេរសមុទ្រ…">
+  <div class="edit-note" data-i18n="keepSamePhoto">កែតែអ្វីដែលបងប្រាប់ទេ នៅសល់ដដែលទាំងអស់។</div>
   <div class="edit-row">
-    <button type="button" class="act-btn" id="imgEditGo" data-i18n="createNewBg">បង្កើតផ្ទៃខាងក្រោយថ្មី</button>
+    <button type="button" class="act-btn" id="imgEditGo" data-i18n="createNewBg">កែរូបតាមនេះ</button>
     <button type="button" class="act-btn" id="imgEditCancel" data-i18n="cancel">បោះបង់</button>
   </div>
 </div>
-<div class="input-bar">
+<div id="tsBox" style="display:none"></div>
+  <div class="input-bar">
   <div class="input-in">
     <button class="up-btn" id="chatImgUp" type="button" data-i18n-aria="uploadImage" aria-label="Upload photo">&#128247;</button>
     <textarea id="chatInput" rows="1" data-i18n-ph="inputPh" placeholder="សរសេរសាររបស់អ្នក…"></textarea>
@@ -470,12 +473,18 @@
       untitled: "គ្មានចំណងជើង",
       uploadImage: "អាប់ឡូតរូបភាព",
       cropOrig: "ដើម",
-      bgPromptPh: "ផ្ទៃខាងក្រោយថ្មី៖ ឧ. ឆ្នេរសមុទ្រពេលល្ងាច…",
-      bgNeeded: "សូមសរសេរផ្ទៃខាងក្រោយដែលចង់បាន",
+      bgPromptPh: "ប្រាប់ថាចង់កែអ្វី៖ ឧ. ដូរផ្ទៃខាងក្រោយជា ឆ្នេរសមុទ្រ…",
+      bgNeeded: "សូមប្រាប់ថាចង់កែអ្វី",
       badPhoto: "សូមជ្រើសរើសរូបភាព",
-      keepSamePhoto: "រូបដដែល ប្ដូរតែផ្ទៃខាងក្រោយទេ។",
-      createNewBg: "បង្កើតផ្ទៃខាងក្រោយថ្មី",
+      keepSamePhoto: "កែតែអ្វីដែលបងប្រាប់ទេ នៅសល់ដដែលទាំងអស់។",
+      createNewBg: "កែរូបតាមនេះ",
       editCostConfirm: "កែរូបនេះត្រូវការ 50 Media Credits។ បន្តឬទេ?",
+      downloading: "កំពុងទាញយក…",
+      downloadMp3: "ទាញយក MP3",
+      downloadMp4: "ទាញយក MP4",
+      downloadFailed: "ទាញយកមិនបានទេ",
+      chooseFormat: "ចង់ទាញយកជា MP3 ឬ MP4?",
+      fbNoMp3: "Facebook ទាញជា MP3 មិនបានទេ សូមជ្រើស MP4",
       online: "Online",
       today: "ថ្ងៃនេះ",
       yesterday: "ម្សិលមិញ",
@@ -536,12 +545,18 @@
       untitled: "Untitled",
       uploadImage: "Upload a photo",
       cropOrig: "Original",
-      bgPromptPh: "New background, e.g. beach at sunset…",
-      bgNeeded: "Please describe the new background",
+      bgPromptPh: "Tell it what to change, e.g. change the background to a beach…",
+      bgNeeded: "Please tell it what to change",
       badPhoto: "Please choose an image",
-      keepSamePhoto: "Same photo — only the background changes.",
-      createNewBg: "Create new background",
+      keepSamePhoto: "Only what you ask changes — everything else stays the same.",
+      createNewBg: "Edit photo",
       editCostConfirm: "Editing this photo costs 50 Media Credits. Continue?",
+      downloading: "Downloading…",
+      downloadMp3: "Download MP3",
+      downloadMp4: "Download MP4",
+      downloadFailed: "Download failed",
+      chooseFormat: "Download as MP3 or MP4?",
+      fbNoMp3: "Facebook cannot download as MP3 — please choose MP4",
       online: "Online",
       today: "Today",
       yesterday: "Yesterday",
@@ -963,7 +978,12 @@
       if (m.media && m.media.length) {
         m.media.forEach(function(md){
           var wrap = el("div", "msg-media");
-          if (md.kind === "image") {
+          if (md.kind === "download") {
+            var db = el("a", "dl-btn", "\u2b07 " + t(md.format === "mp4" ? "downloadMp4" : "downloadMp3"));
+            db.href = md.url; db.target = "_blank"; db.rel = "noopener";
+            db.setAttribute("download", "");
+            wrap.appendChild(db);
+          } else if (md.kind === "image") {
             var img = el("img", "chat-img");
             img.src = md.url; img.alt = "";
             img.addEventListener("click", function(){ openViewer(md.url, "image"); });
@@ -973,10 +993,12 @@
             v.src = md.url; v.controls = true; v.playsInline = true;
             wrap.appendChild(v);
           }
-          var dl = el("a", "dl-link", t("download"));
-          dl.href = md.url; dl.target = "_blank"; dl.rel = "noopener";
-          dl.setAttribute("download", "");
-          wrap.appendChild(dl);
+          if (md.kind !== "download") {
+            var dl = el("a", "dl-link", t("download"));
+            dl.href = md.url; dl.target = "_blank"; dl.rel = "noopener";
+            dl.setAttribute("download", "");
+            wrap.appendChild(dl);
+          }
           div.appendChild(wrap);
         });
       }
@@ -1022,7 +1044,7 @@
     sessions.forEach(function(s){
       (s.messages || []).forEach(function(m){
         (m.media || []).forEach(function(md){
-          if (!md || !md.url) return;
+          if (!md || !md.url || md.kind === "download") return;
           items.push({ kind: md.kind === "video" ? "video" : "image", url: md.url,
             name: (md.prompt || "").trim() || (md.kind === "video" ? t("createdVideo") : t("createdImage")),
             at: (m && m.at) || s.at || 0 });
@@ -1266,6 +1288,116 @@
     }).catch(function(){ fail(t("noServer")); });
   }
 
+
+  /* ---- downloader (SnapTube-style, cobalt) ----
+     Paste a link + say "download as mp3/mp4". Cobalt needs a human
+     Turnstile token, so the token is minted in this browser and the
+     download request goes straight from the phone to cobalt. YouTube
+     goes to the community instance (cobalt-api.meowing.de, the only
+     one with YouTube on); everything else goes to the official
+     instance (api.cobalt.tools). No MovAi credits are charged —
+     cobalt is free. Facebook has no MP3 — only MP4. */
+  function downloadIntent(text){
+    var m = String(text || "").match(/https?:\/\/[^\s]+/);
+    if (!m) return null;
+    if (!/download|ដោនឡូត|\bmp3\b|\bmp4\b/i.test(text)) return null;
+    var url = m[0].replace(/[.,;)\]]+$/, "");
+    var format = /\bmp4\b/i.test(text) ? "mp4" : (/\bmp3\b/i.test(text) ? "mp3" : "");
+    return { url: url, format: format };
+  }
+  function cobaltInstanceFor(url){
+    var u = String(url || "").toLowerCase();
+    if (u.indexOf("youtube.com") >= 0 || u.indexOf("youtu.be") >= 0) return "https://cobalt-api.meowing.de/";
+    return "https://api.cobalt.tools/";
+  }
+  function isFacebookUrl(url){
+    var u = String(url || "").toLowerCase();
+    return u.indexOf("facebook.com") >= 0 || u.indexOf("fb.watch") >= 0;
+  }
+  function getTurnstileToken(sitekey){
+    return new Promise(function(resolve){
+      var done = false, timer = null;
+      function res(v){ if (!done) { done = true; if (timer) clearTimeout(timer); resolve(v); } }
+      if (!window.turnstile) { res(""); return; }
+      var box = document.getElementById("tsBox");
+      if (!box) { res(""); return; }
+      try {
+        var wid = window.turnstile.render(box, { sitekey: sitekey, size: "invisible",
+          callback: function(tok){ try { window.turnstile.remove(wid); } catch (e) {} res(tok || ""); },
+          "error-callback": function(){ res(""); },
+          "expired-callback": function(){ res(""); } });
+        window.turnstile.execute(wid);
+      } catch (e) { res(""); return; }
+      timer = setTimeout(function(){ res(""); }, 60000);
+    });
+  }
+  function runCobaltDownload(url, format, done){
+    var inst = cobaltInstanceFor(url);
+    var prog = makeProgressBubble("downloading");
+    function fail(err){ try { prog.stop(); } catch (e) {} try { prog.el.remove(); } catch (e) {} addError(err); done(); }
+    fetch(inst, { method: "GET" }).then(function(r){ return r.json(); }).then(function(info){
+      var sitekey = info && info.cobalt && info.cobalt.turnstileSitekey;
+      if (!sitekey) { fail(t("downloadFailed") + " (no turnstile)"); return; }
+      getTurnstileToken(sitekey).then(function(tok){
+        if (!tok) { fail(t("downloadFailed") + " (turnstile)"); return; }
+        fetch(inst + "session", { method: "POST", headers: { "cf-turnstile-response": tok } }).then(function(r){ return r.json(); }).then(function(s){
+          var jwt = s && s.token;
+          if (!jwt) { fail((s && s.error && (s.error.message || s.error.code)) || t("downloadFailed")); return; }
+          var body = { url: url, downloadMode: format === "mp3" ? "audio" : "auto", filenameStyle: "basic" };
+          if (format === "mp3") body.audioFormat = "mp3"; else body.videoQuality = "720";
+          fetch(inst, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + jwt }, body: JSON.stringify(body) }).then(function(r){ return r.json(); }).then(function(j){
+            try { prog.stop(); } catch (e) {}
+            try { prog.el.remove(); } catch (e) {}
+            if (j && (j.status === "redirect" || j.status === "tunnel") && j.url) {
+              cur.messages.push({ role: "assistant", content: "", media: [{ kind: "download", url: j.url, format: format, prompt: j.filename || "" }], at: Date.now() });
+              touchSession(); renderMessages(); done(); return;
+            }
+            if (j && j.status === "picker" && Array.isArray(j.picker) && j.picker.length) {
+              var pick = null;
+              for (var i = 0; i < j.picker.length; i++) {
+                if (format === "mp3" ? j.picker[i].type === "audio" : j.picker[i].type === "video") { pick = j.picker[i]; break; }
+              }
+              if (!pick) pick = j.picker[0];
+              if (pick && pick.url) {
+                cur.messages.push({ role: "assistant", content: "", media: [{ kind: "download", url: pick.url, format: format, prompt: j.filename || "" }], at: Date.now() });
+                touchSession(); renderMessages(); done(); return;
+              }
+            }
+            fail((j && j.error && (j.error.message || j.error.code)) || t("downloadFailed"));
+          }).catch(function(){ fail(t("noServer")); });
+        }).catch(function(){ fail(t("noServer")); });
+      });
+    }).catch(function(){ fail(t("noServer")); });
+  }
+  function runDownload(url, format, done){
+    if (!format) {
+      // No format said yet: ask with two buttons. The chooser releases
+      // the input right away (done now); the buttons download on tap.
+      var wrap = el("div", "msg ai");
+      wrap.appendChild(document.createTextNode(t("chooseFormat")));
+      var row = el("div", "song-acts");
+      if (!isFacebookUrl(url)) {
+        var b3 = el("button", "act-btn", "MP3");
+        b3.type = "button";
+        b3.addEventListener("click", function(){ wrap.remove(); runCobaltDownload(url, "mp3", function(){}); });
+        row.appendChild(b3);
+      } else {
+        wrap.appendChild(el("div", "prog", t("fbNoMp3")));
+      }
+      var b4 = el("button", "act-btn", "MP4");
+      b4.type = "button";
+      b4.addEventListener("click", function(){ wrap.remove(); runCobaltDownload(url, "mp4", function(){}); });
+      row.appendChild(b4);
+      wrap.appendChild(row);
+      msgsEl.appendChild(wrap);
+      scrollBottom();
+      done();
+      return;
+    }
+    if (format === "mp3" && isFacebookUrl(url)) { addError(t("fbNoMp3")); done(); return; }
+    runCobaltDownload(url, format, done);
+  }
+
   /* ---- intent + send ---- */
   function detectKind(text){
     var s = String(text || "");
@@ -1333,6 +1465,8 @@
   }
   function runSend(text, done){
     var d = done || function(){};
+    var dl = downloadIntent(text);
+    if (dl) { runDownload(dl.url, dl.format, d); return; }
     var kind = detectKind(text);
     if (kind === "image") { genImage(text, null, d); return; }
     if (kind === "video") {
