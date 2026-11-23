@@ -105,18 +105,41 @@
     border:1px solid #d1d5db;border-radius:8px;padding:8px 14px;background:transparent}
   .seg-btn:active{background:#e5e7eb}
   .seg-btn[aria-pressed="true"]{background:#1f2937;color:#ffffff;border-color:#1f2937}
-  #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
-  #modelRow .seg-btn.mdl-c0[aria-pressed="true"]{background:rgba(255,45,120,.12);border-color:#ff2d78;color:#ff2d78}
-  #modelRow .seg-btn.mdl-c1[aria-pressed="true"]{background:rgba(255,122,24,.12);border-color:#ff7a18;color:#ff7a18}
-  #modelRow .seg-btn.mdl-c2[aria-pressed="true"]{background:rgba(5,150,105,.12);border-color:#059669;color:#059669}
-  #modelRow .seg-btn.mdl-c3[aria-pressed="true"]{background:rgba(168,85,247,.12);border-color:#a855f7;color:#a855f7}
+  /* Stage 35: every model chip ALWAYS carries its model color (same
+     colors as the AI Models tiles) — tinted border+text when
+     unselected, SOLID color when selected. The old green rules
+     (light + dark) are deleted: at night the dark teal rule beat
+     these colors, so the selected model showed teal. */
+  #modelRow .seg-btn.mdl-c0{border-color:#ff2d78;color:#ff2d78;background:rgba(255,45,120,.08)}
+  #modelRow .seg-btn.mdl-c0[aria-pressed="true"]{background:#ff2d78;border-color:#ff2d78;color:#ffffff}
+  #modelRow .seg-btn.mdl-c1{border-color:#ff7a18;color:#ff7a18;background:rgba(255,122,24,.08)}
+  #modelRow .seg-btn.mdl-c1[aria-pressed="true"]{background:#ff7a18;border-color:#ff7a18;color:#ffffff}
+  #modelRow .seg-btn.mdl-c2{border-color:#059669;color:#059669;background:rgba(5,150,105,.08)}
+  #modelRow .seg-btn.mdl-c2[aria-pressed="true"]{background:#059669;border-color:#059669;color:#ffffff}
+  #modelRow .seg-btn.mdl-c3{border-color:#a855f7;color:#a855f7;background:rgba(168,85,247,.08)}
+  #modelRow .seg-btn.mdl-c3[aria-pressed="true"]{background:#a855f7;border-color:#a855f7;color:#ffffff}
+  /* Stage 35: voice chips, same pattern — Male blue, Female pink,
+     Random purple, My Voice green (its tile color). */
+  #voiceRow .seg-btn.voice-c0{border-color:#3b82f6;color:#3b82f6;background:rgba(59,130,246,.08)}
+  #voiceRow .seg-btn.voice-c0[aria-pressed="true"]{background:#3b82f6;border-color:#3b82f6;color:#ffffff}
+  #voiceRow .seg-btn.voice-c1{border-color:#ff2d78;color:#ff2d78;background:rgba(255,45,120,.08)}
+  #voiceRow .seg-btn.voice-c1[aria-pressed="true"]{background:#ff2d78;border-color:#ff2d78;color:#ffffff}
+  #voiceRow .seg-btn.voice-c2{border-color:#a855f7;color:#a855f7;background:rgba(168,85,247,.08)}
+  #voiceRow .seg-btn.voice-c2[aria-pressed="true"]{background:#a855f7;border-color:#a855f7;color:#ffffff}
+  #voiceRow .seg-btn.voice-c3{border-color:#059669;color:#059669;background:rgba(5,150,105,.08)}
+  #voiceRow .seg-btn.voice-c3[aria-pressed="true"]{background:#059669;border-color:#059669;color:#ffffff}
+  /* Stage 35: AI Lyrics button amber (its tile color); Cover toggle orange. */
+  #aiLyricsBtn{background:#d97706;border-color:#d97706;color:#ffffff}
+  #aiLyricsBtn:disabled{opacity:.55}
+  #coverToggle{color:#ff7a18}
   .acct{font-size:.95rem;color:#1f2937}
   .acct b{font-weight:700}
   .linklike{font-size:.92rem;color:#1f2937;text-decoration:underline;padding:0}
   .bal{font-size:.95rem;color:#1f2937}
   .bal b{font-weight:700}
   .gen-btn{display:block;width:100%;font-size:1rem;font-weight:700;color:#ffffff;
-    background:#0f766e;border-radius:10px;padding:13px 16px}
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:10px;padding:13px 16px}
+  .gen-btn:disabled{opacity:.55}
   .gen-btn:active{opacity:.85}
   .prog{font-size:.95rem;color:#1f2937;margin-top:14px}
   .prog .secs{font-weight:700}
@@ -202,7 +225,7 @@
   .style-preset-field .spf-label.ph{color:#6b7280;font-weight:700}
   .style-preset-field .spf-count{flex:none;display:inline-flex;align-items:center;justify-content:center;
     min-width:24px;height:24px;padding:0 7px;border-radius:999px;
-    background:#0f766e;color:#ffffff;font-size:.8125rem;font-weight:900;line-height:1}
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);color:#ffffff;font-size:.8125rem;font-weight:900;line-height:1}
   .style-preset-field .spf-chev{flex:none;color:#6b7280;font-size:.75rem;transition:transform .2s}
   .style-preset-wrap.open .spf-chev{transform:rotate(180deg)}
   .style-preset-drop{position:absolute;top:100%;left:0;right:0;z-index:30;
@@ -221,8 +244,8 @@
   .style-preset-row .preset-check{flex:none;display:inline-flex;align-items:center;justify-content:center;
     width:26px;height:26px;border:2px solid #d1d5db;border-radius:8px;
     background:transparent;color:transparent;font-size:1rem;font-weight:900;line-height:1}
-  .style-preset-row.on{border-color:#0f766e}
-  .style-preset-row.on .preset-check{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .style-preset-row.on{border-color:#ff2d78}
+  .style-preset-row.on .preset-check{background:#ff2d78;border-color:#ff2d78;color:#ffffff}
   .style-preset-row .row-name{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
   .style-preset-row .row-del{flex:none;font-size:.9rem;color:#6b7280;padding:2px 8px;border-radius:50%}
   .style-preset-row .row-del:active{background:#e5e7eb}
@@ -259,7 +282,6 @@
   html[data-theme="dark"] .seg-btn,html[data-theme="dark"] .mini-btn{color:#e7f0ec;border-color:#333333}
   html[data-theme="dark"] .seg-btn:active,html[data-theme="dark"] .mini-btn:active{background:#1a1a1a}
   html[data-theme="dark"] .seg-btn[aria-pressed="true"]{background:#e7f0ec;color:#000000;border-color:#e7f0ec}
-  html[data-theme="dark"] #modelRow .seg-btn[aria-pressed="true"]{background:#0f766e;border-color:#0f766e;color:#ffffff}
   html[data-theme="dark"] .mini-btn.dark{background:#e7f0ec;color:#000000;border-color:#e7f0ec}
   html[data-theme="dark"] .mini-btn.green{background:#0f766e;color:#ffffff;border-color:#0f766e}
   html[data-theme="dark"] .res-dl,html[data-theme="dark"] .linklike{color:#e7f0ec}
@@ -279,8 +301,8 @@
   html[data-theme="dark"] .style-preset-drop{background:#000000;border-color:#333333}
   html[data-theme="dark"] .style-preset-row{background:#000000;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .style-preset-row .preset-check{border-color:#333333}
-  html[data-theme="dark"] .style-preset-row.on{border-color:#0f766e}
-  html[data-theme="dark"] .style-preset-row.on .preset-check{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  html[data-theme="dark"] .style-preset-row.on{border-color:#ff2d78}
+  html[data-theme="dark"] .style-preset-row.on .preset-check{background:#ff2d78;border-color:#ff2d78;color:#ffffff}
   html[data-theme="dark"] .style-preset-row .row-del{color:#9ca3af}
   html[data-theme="dark"] .style-preset-row .row-del:active{background:#1a1a1a}
 </style>
@@ -397,10 +419,10 @@
     <div class="field">
       <span class="lbl" id="voiceLbl" data-i18n="voiceLbl">សំឡេង</span>
       <div class="seg" id="voiceRow" role="group" aria-labelledby="voiceLbl">
-        <button class="seg-btn" type="button" data-voice="male" aria-pressed="true" data-i18n="male">បុរស</button>
-        <button class="seg-btn" type="button" data-voice="female" aria-pressed="false" data-i18n="female">ស្រី</button>
-        <button class="seg-btn" type="button" data-voice="random" aria-pressed="false" data-i18n="random">ចៃដន្យ</button>
-        <button class="seg-btn" type="button" data-voice="myvoice" aria-pressed="false" data-i18n="myVoice">សំឡេងខ្ញុំ</button>
+        <button class="seg-btn voice-c0" type="button" data-voice="male" aria-pressed="true" data-i18n="male">បុរស</button>
+        <button class="seg-btn voice-c1" type="button" data-voice="female" aria-pressed="false" data-i18n="female">ស្រី</button>
+        <button class="seg-btn voice-c2" type="button" data-voice="random" aria-pressed="false" data-i18n="random">ចៃដន្យ</button>
+        <button class="seg-btn voice-c3" type="button" data-voice="myvoice" aria-pressed="false" data-i18n="myVoice">សំឡេងខ្ញុំ</button>
       </div>
       <!-- My Voice setup (old site flow) -->
       <div id="myVoiceBox" hidden style="margin-top:12px">
