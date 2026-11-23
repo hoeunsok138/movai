@@ -163,6 +163,33 @@
   .yt-text{flex:1;min-width:0}
   .yt-title{display:block;font-size:.85rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .yt-meta{display:block;font-size:.75rem;color:#6b7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* ---- AI Models section (Stage 23) ---- */
+  .md-sec{border-top:1px solid #e5e7eb;margin-top:14px;padding:14px 16px 0}
+  .md-title{font-size:.95rem;font-weight:700;color:#1f2937}
+  .md-sub{font-size:.8rem;color:#6b7280;margin-top:2px}
+  .md-list{margin-top:6px}
+  .md-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .md-row:active{background:#eef1f0}
+  .md-badge{flex:none;font-size:.68rem;font-weight:700;color:#fff;background:#0f766e;border-radius:6px;padding:2px 6px}
+  .md-text{flex:1;min-width:0}
+  .md-name{display:block;font-size:.9rem;font-weight:700;color:#1f2937}
+  .md-tag{display:block;font-size:.78rem;color:#6b7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .md-chev{flex:none;font-size:1rem;color:#9ca3af}
+  .md-veil{position:fixed;inset:0;z-index:90;background:rgba(10,25,20,.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column}
+  .md-veil[hidden]{display:none}
+  .md-panel{flex:1;min-height:0;display:flex;flex-direction:column;background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);max-width:720px;width:100%;margin:0 auto;overflow:hidden}
+  .md-panel-hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #e5e7eb}
+  .md-panel-title{flex:1;min-width:0;font-size:.95rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .md-panel-close{flex:none;font-size:1.1rem;font-weight:700;color:#1f2937;background:transparent;border:0;padding:6px 8px}
+  .md-panel-body{flex:1;overflow-y:auto;padding:14px 16px 120px}
+  .md-panel-tag{font-size:.9rem;color:#1f2937;line-height:1.6}
+  .md-panel-sec{font-size:.85rem;font-weight:700;color:#1f2937;margin-top:16px}
+  .md-feats{list-style:none;margin:8px 0 0;padding:0}
+  .md-feats li{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #eef1f0;font-size:.88rem;color:#1f2937}
+  .md-feats li b{flex:none;color:#0f766e}
+  .md-note{margin-top:14px;font-size:.82rem;color:#6b7280;line-height:1.6}
+  .md-create{display:block;margin-top:16px;text-align:center;font-size:1rem;font-weight:700;color:#fff;background:#0f766e;border-radius:10px;padding:13px 16px;text-decoration:none}
+  .md-create:active{opacity:.85}
   /* ---- Gift sheet ---- */
   .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
@@ -278,6 +305,16 @@
   html[data-theme="dark"] .yt-meta,html[data-theme="dark"] .yt-now span{color:#8fa89e}
   html[data-theme="dark"] .yt-row{border-bottom-color:#24362f}
   html[data-theme="dark"] .yt-row:active,html[data-theme="dark"] .yt-row.playing{background:#1d2f28}
+  html[data-theme="dark"] .md-sec{border-top-color:#24362f}
+  html[data-theme="dark"] .md-title,html[data-theme="dark"] .md-name,html[data-theme="dark"] .md-panel-title,html[data-theme="dark"] .md-panel-sec,html[data-theme="dark"] .md-feats li,html[data-theme="dark"] .md-panel-tag{color:#e7f0ec}
+  html[data-theme="dark"] .md-sub,html[data-theme="dark"] .md-tag,html[data-theme="dark"] .md-note{color:#8fa89e}
+  html[data-theme="dark"] .md-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .md-row:active{background:#1d2f28}
+  html[data-theme="dark"] .md-panel{background:#0e1a15}
+  html[data-theme="dark"] .md-panel-hdr{border-bottom-color:#24362f}
+  html[data-theme="dark"] .md-feats li{border-bottom-color:#24362f}
+  html[data-theme="dark"] .md-panel-close{color:#e7f0ec}
+  html[data-theme="dark"] .md-chev{color:#5b6f66}
   html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
   html[data-theme="dark"] .trow{border-bottom-color:#24362f}
   html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
@@ -350,6 +387,28 @@
     <div class="feed" id="feed"></div>
     <div class="status" id="status">កំពុងផ្ទុកចម្រៀង…</div>
   </main>
+
+  <!-- AI Models section (Stage 23): tap a model -> full panel. -->
+  <section class="md-sec" id="mdSec">
+    <div class="md-title" data-i18n="mdTitle">ម៉ូដែល AI</div>
+    <div class="md-sub" data-i18n="mdSub">ម៉ូដែលច្រៀងរបស់ MovAi — សំឡេងច្បាស់ ពិរោះ ជាងមុន</div>
+    <div class="md-list" id="mdList"></div>
+  </section>
+  <div class="md-veil" id="mdVeil" hidden>
+    <div class="md-panel">
+      <div class="md-panel-hdr">
+        <span class="md-panel-title" id="mdPanelName"></span>
+        <button class="md-panel-close" id="mdPanelClose" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="md-panel-body">
+        <div class="md-panel-tag" id="mdPanelTag"></div>
+        <div class="md-panel-sec" data-i18n="mdFeatTitle">មុខងារដែលអ្នកអាចធ្វើបាន</div>
+        <ul class="md-feats" id="mdPanelFeats"></ul>
+        <div class="md-note" data-i18n="mdNote">បង្កើតម្ដង 12 Song Credits បាន 2 បទ</div>
+        <a class="md-create" id="mdPanelCreate" href="/Movai.MusicGenerate/kh" data-i18n="mdCreate">បង្កើតចម្រៀងជាមួយម៉ូដែលនេះ</a>
+      </div>
+    </div>
+  </div>
 
   <!-- YouTube section (Stage 21): official embed, real logo image.
        16 songs, most-viewed first. Tap a row to play it; when a song
@@ -536,7 +595,13 @@
       ytSubscribe: "ជាវ",
       ytPlaying: "កំពុងចាក់",
       ytShowAll: "មើលបទទាំងអស់",
-      ytHide: "លាក់បទ"
+      ytHide: "លាក់បទ",
+      mdTitle: "ម៉ូដែល AI",
+      mdSub: "ម៉ូដែលច្រៀងរបស់ MovAi — សំឡេងច្បាស់ ពិរោះ ជាងមុន",
+      mdBest: "ល្អបំផុត",
+      mdFeatTitle: "មុខងារដែលអ្នកអាចធ្វើបាន",
+      mdCreate: "បង្កើតចម្រៀងជាមួយម៉ូដែលនេះ",
+      mdNote: "បង្កើតម្ដង 12 Song Credits បាន 2 បទ"
     },
     en: {
       claimTitle: "Free Gift",
@@ -589,7 +654,13 @@
       ytSubscribe: "Subscribe",
       ytPlaying: "Playing",
       ytShowAll: "See all songs",
-      ytHide: "Hide songs"
+      ytHide: "Hide songs",
+      mdTitle: "AI Models",
+      mdSub: "MovAi's singing models — clear voices, more beautiful than before",
+      mdBest: "Best",
+      mdFeatTitle: "What you can do",
+      mdCreate: "Create a song with this model",
+      mdNote: "12 Song Credits per creation — you get 2 songs"
     }
   };
   var LANG_KEY = "movai-lang";
@@ -603,7 +674,7 @@
     return (d && d[k]) || (STR.en && STR.en[k]) || k;
   }
 
-  function onLangChange(){ renderFeed(); if (typeof renderYtList === "function") renderYtList(); }
+  function onLangChange(){ renderFeed(); if (typeof renderYtList === "function") renderYtList(); if (typeof renderMdList === "function") renderMdList(); if (typeof mdCur !== "undefined" && mdCur) mdOpen(mdCur.id); }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
@@ -853,6 +924,100 @@
       probeDuration(song, dur);
     });
   }
+  /* ---- AI Models section (Stage 23): tap a row -> full panel with the
+     model's description + the feature list. The Create button saves the
+     model in localStorage ("movai-song-model") so the Create page opens
+     with this model already selected. ---- */
+  var MD_MODELS = [
+    { id: "v6", name: "V6 Ultra", best: true,
+      tagKh: "ច្រៀងច្បាស់បំផុត សំឡេងស្អាតបំផុត", tagEn: "Clearest singing, most beautiful voice",
+      descKh: "ម៉ូដែលល្អបំផុតរបស់ MovAi — ច្រៀងច្បាស់ណាស់ សំឡេងស្អាត ជាងមុនៗ។ សម្រាប់បទដែលបងចង់បានល្អបំផុត។",
+      descEn: "MovAi's best model — the clearest singing, a beautiful voice, better than before. For the songs that matter most." },
+    { id: "v6-wild", name: "V6 Pro", best: false,
+      tagKh: "គុណភាពខ្ពស់ សម្រាប់បទទូទៅ", tagEn: "High quality for everyday songs",
+      descKh: "គុណភាពខ្ពស់ ច្រៀងច្បាស់ សម្រាប់បង្កើតបទទូទៅបានល្អ។",
+      descEn: "High quality, clear singing — great for everyday songs." },
+    { id: "v6-mini", name: "V6 Mini", best: false,
+      tagKh: "ស្រាល សម្រាប់សាកគំនិតថ្មី", tagEn: "Light, for trying new ideas",
+      descKh: "ម៉ូដែលស្រាល សម្រាប់សាកគំនិតថ្មីៗ និងបង្កើតបទលឿនៗ។",
+      descEn: "A light model for trying new ideas and quick songs." },
+    { id: "v5_5", name: "V5.5", best: false,
+      tagKh: "ម៉ូដែលចាស់ ទុកចិត្តបាន — ប្រើសម្រាប់ My Voice", tagEn: "Classic and trusted — the model My Voice uses",
+      descKh: "ម៉ូដែលចាស់ ទុកចិត្តបាន — ជាម៉ូដែលដែល My Voice ប្រើសម្រាប់ច្រៀងជាសំឡេងរបស់អ្នក។",
+      descEn: "The classic, trusted model — the one My Voice uses to sing in your voice." }
+  ];
+  var MD_FEATS = [
+    { kh: "បង្កើតចម្រៀង — ដាក់អត្ថបទចម្រៀង បានបទពេញមួយបទ", en: "Create Song — lyrics in, a full song out" },
+    { kh: "ខូវើ — ច្រៀងបទដដែលជាសំឡេង AI", en: "Cover — the same song, sung by AI" },
+    { kh: "My Voice — ច្រៀងជាសំឡេងរបស់អ្នកផ្ទាល់", en: "My Voice — sing in your own voice" },
+    { kh: "កាត់សំឡេង — បំបែកសំឡេងច្រៀង និងសំឡេងភ្លេង", en: "Vocal Remover — split vocals and music" },
+    { kh: "បំបែកសំឡេង — បំបែកជា 6 ឬ 12 សំឡេង", en: "Split Stem — split into 6 or 12 stems" },
+    { kh: "ទាញយក MP3 — ទាញយកបទរបស់ខ្លួនឯងឥតគិតថ្លៃ", en: "Download MP3 — download your own songs free" },
+    { kh: "AI Lyrics — សរសេរអត្ថបទចម្រៀងវែងៗ", en: "AI Lyrics — write long lyrics" },
+    { kh: "វីដេអូ — ប្រែបទចម្រៀងជាវីដេអូ", en: "Music Video — turn a song into a video" },
+    { kh: "កែរូបភាព — កែរូបថតឥតគិតថ្លៃ", en: "Photo Edit — edit photos free" }
+  ];
+  var mdCur = null;
+  function mdTag(m){ return lang === "en" ? m.tagEn : m.tagKh; }
+  function mdDesc(m){ return lang === "en" ? m.descEn : m.descKh; }
+  function mdFeat(f){ return lang === "en" ? f.en : f.kh; }
+  function renderMdList(){
+    if (typeof MD_MODELS === "undefined" || !MD_MODELS) return;
+    var list = document.getElementById("mdList");
+    if (!list) return;
+    list.innerHTML = "";
+    MD_MODELS.forEach(function(m){
+      var row = document.createElement("button");
+      row.type = "button"; row.className = "md-row";
+      if (m.best) { var bd = document.createElement("span"); bd.className = "md-badge"; bd.textContent = t("mdBest"); row.appendChild(bd); }
+      var tx = document.createElement("span"); tx.className = "md-text";
+      var nm = document.createElement("span"); nm.className = "md-name"; nm.textContent = m.name;
+      var tg = document.createElement("span"); tg.className = "md-tag"; tg.textContent = mdTag(m);
+      tx.appendChild(nm); tx.appendChild(tg);
+      var ch = document.createElement("span"); ch.className = "md-chev"; ch.textContent = "\u203A";
+      row.appendChild(tx); row.appendChild(ch);
+      row.addEventListener("click", function(){ mdOpen(m.id); });
+      list.appendChild(row);
+    });
+  }
+  function mdOpen(id){
+    if (typeof MD_MODELS === "undefined" || !MD_MODELS) return;
+    var m = null;
+    for (var i = 0; i < MD_MODELS.length; i++) if (MD_MODELS[i].id === id) m = MD_MODELS[i];
+    if (!m) return;
+    mdCur = m;
+    document.getElementById("mdPanelName").textContent = m.name;
+    document.getElementById("mdPanelTag").textContent = mdDesc(m);
+    var ul = document.getElementById("mdPanelFeats");
+    ul.innerHTML = "";
+    MD_FEATS.forEach(function(f){
+      var li = document.createElement("li");
+      var ck = document.createElement("b"); ck.textContent = "\u2713";
+      var tx = document.createElement("span"); tx.textContent = mdFeat(f);
+      li.appendChild(ck); li.appendChild(tx);
+      ul.appendChild(li);
+    });
+    var veil = document.getElementById("mdVeil");
+    if (veil) veil.hidden = false;
+    try { document.body.style.overflow = "hidden"; } catch (e) {}
+  }
+  function mdClose(){
+    var veil = document.getElementById("mdVeil");
+    if (veil) veil.hidden = true;
+    try { document.body.style.overflow = ""; } catch (e) {}
+    mdCur = null;
+  }
+  function mdWire(){
+    var c = document.getElementById("mdPanelClose");
+    if (c && !c._mdWired) { c._mdWired = true; c.addEventListener("click", mdClose); }
+    var veil = document.getElementById("mdVeil");
+    if (veil && !veil._mdWired) { veil._mdWired = true; veil.addEventListener("click", function(e){ if (e.target === veil) mdClose(); }); }
+    var cr = document.getElementById("mdPanelCreate");
+    if (cr && !cr._mdWired) { cr._mdWired = true; cr.addEventListener("click", function(){
+      if (mdCur) { try { localStorage.setItem("movai-song-model", mdCur.id); } catch (e) {} }
+    }); }
+  }
+
   /* ---- YouTube section (Stage 21): official embed, real logo image.
      16 songs, most-viewed first. Tap a row to play it in the player;
      when a song ends, the next one starts by itself (YouTube IFrame API).
@@ -1261,6 +1426,8 @@
   ytWireToggle();
   ytSyncToggle();
   ytShowPoster();
+  renderMdList();
+  mdWire();
   giftInit();
 })();
 </script>
