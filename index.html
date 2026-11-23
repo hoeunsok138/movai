@@ -102,6 +102,7 @@
   .row-dur{flex:none;font-size:.85rem;color:#6b7280}
   .row.playing .row-title{color:#0f766e}
   .status{padding:28px 16px;text-align:center;color:#6b7280;font-size:.95rem}
+  .status:empty{display:none}
   .retry{margin-top:10px;color:#1f2937;text-decoration:underline;font-size:.95rem}
 
   /* ---- Now-playing bar: slim, directly on the background ---- */
@@ -192,7 +193,8 @@
   .md-create:active{opacity:.85}
   /* ---- Welcome hero (Stage 27): compact, the website's own system ---- */
   .hero{text-align:center;padding:20px 14px 16px;margin:12px 12px 0;border-radius:16px;overflow:hidden;
-    background:radial-gradient(120% 120% at 50% 0%,#1a0b2e 0%,#000000 60%)}
+    background:radial-gradient(120% 120% at 50% 0%,#fff1e6 0%,#f2faf6 65%);
+    box-shadow:0 0 36px rgba(255,122,24,.18)}
   .hero[hidden]{display:none}
   .hero-top{font-size:.9rem;font-weight:700;color:#e11d48}
   .hero-brand{font-size:2.1rem;font-weight:900;letter-spacing:.02em;line-height:1.1;
@@ -201,15 +203,24 @@
     filter:drop-shadow(0 0 14px rgba(255,90,40,.55))}
   /* The website's working system: 9 functions, compact 3x3 tiles */
   .hero-sys{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
-  .sys-tile{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 4px}
+  .sys-tile{background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.07);border-radius:8px;padding:7px 4px}
   .sys-ic{display:block;line-height:0}
   .sys-ic svg{display:block;margin:0 auto}
-  .sys-nm{display:block;font-size:.68rem;color:#e5e7eb;line-height:1.3;margin-top:2px}
+  .sys-nm{display:block;font-size:.68rem;color:#1f2937;line-height:1.3;margin-top:2px}
+  .sys-tile.c0{color:#ff2d78;background:rgba(255,45,120,.10);border-color:rgba(255,45,120,.32)}
+  .sys-tile.c1{color:#ff7a18;background:rgba(255,122,24,.10);border-color:rgba(255,122,24,.32)}
+  .sys-tile.c2{color:#059669;background:rgba(5,150,105,.10);border-color:rgba(5,150,105,.32)}
+  .sys-tile.c3{color:#a855f7;background:rgba(168,85,247,.10);border-color:rgba(168,85,247,.32)}
+  .sys-tile.c4{color:#3b82f6;background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.32)}
+  .sys-tile.c5{color:#0d9488;background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.32)}
+  .sys-tile.c6{color:#d97706;background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.32)}
+  .sys-tile.c7{color:#ef4444;background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.32)}
+  .sys-tile.c8{color:#6366f1;background:rgba(99,102,241,.10);border-color:rgba(99,102,241,.32)}
   .hero-btn{display:inline-block;margin-top:12px;font-size:.92rem;font-weight:800;color:#fff;
     background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:11px 24px;text-decoration:none;
     box-shadow:0 0 20px rgba(255,90,40,.55)}
   .hero-btn:active{opacity:.85}
-  .hero-hint{margin-top:10px;font-size:.82rem;color:#9ca3af}
+  .hero-hint{margin-top:10px;font-size:.82rem;color:#6b7280}
   /* ---- Gift sheet ---- */
   .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
@@ -326,6 +337,10 @@
   html[data-theme="dark"] .yt-row{border-bottom-color:#24362f}
   html[data-theme="dark"] .yt-row:active,html[data-theme="dark"] .yt-row.playing{background:#1d2f28}
   html[data-theme="dark"] .md-sec{border-top-color:#24362f}
+  html[data-theme="dark"] .hero{background:radial-gradient(120% 120% at 50% 0%,#1a0b2e 0%,#000000 60%);box-shadow:0 0 36px rgba(255,45,120,.25)}
+  html[data-theme="dark"] .sys-tile{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+  html[data-theme="dark"] .sys-nm{color:#e5e7eb}
+  html[data-theme="dark"] .hero-hint{color:#9ca3af}
   html[data-theme="dark"] .md-title,html[data-theme="dark"] .md-name,html[data-theme="dark"] .md-panel-title,html[data-theme="dark"] .md-panel-sec,html[data-theme="dark"] .md-feats li,html[data-theme="dark"] .md-panel-tag{color:#e7f0ec}
   html[data-theme="dark"] .md-sub,html[data-theme="dark"] .md-tag,html[data-theme="dark"] .md-note{color:#8fa89e}
   html[data-theme="dark"] .md-row{border-bottom-color:#24362f}
@@ -413,7 +428,6 @@
     </div>
     <div class="feed" id="feed"></div>
     <div class="status" id="status">កំពុងផ្ទុកចម្រៀង…</div>
-  </main>
 
   <!-- AI Models section (Stage 23): tap a model -> full panel. -->
   <section class="md-sec" id="mdSec">
@@ -473,6 +487,7 @@
     </a>
   </footer>
 </div>
+  </main>
 
 <!-- Gift CLAIM popup (new-user gift: 24 Song Credits, once per Gmail) -->
 <div class="gift-veil" id="giftSheet" hidden role="dialog" aria-modal="true">
@@ -1001,22 +1016,22 @@
   function mdDesc(m){ return lang === "en" ? m.descEn : m.descKh; }
   function mdFeat(f){ return lang === "en" ? f.en : f.kh; }
   var HERO_SYS_ICONS = [
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><line x1=\"12\" y1=\"19\" x2=\"12\" y2=\"23\"/><line x1=\"8\" y1=\"23\" x2=\"16\" y2=\"23\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h2l2-6 3 12 3-16 3 14 2-6 2 2h2\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><line x1=\"20\" y1=\"4\" x2=\"8.12\" y2=\"15.88\"/><line x1=\"14.47\" y1=\"14.48\" x2=\"20\" y2=\"20\"/><line x1=\"8.12\" y1=\"8.12\" x2=\"12\" y2=\"12\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>",
-    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e5e7eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>"
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><line x1=\"12\" y1=\"19\" x2=\"12\" y2=\"23\"/><line x1=\"8\" y1=\"23\" x2=\"16\" y2=\"23\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h2l2-6 3 12 3-16 3 14 2-6 2 2h2\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><line x1=\"20\" y1=\"4\" x2=\"8.12\" y2=\"15.88\"/><line x1=\"14.47\" y1=\"14.48\" x2=\"20\" y2=\"20\"/><line x1=\"8.12\" y1=\"8.12\" x2=\"12\" y2=\"12\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>",
+    "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>"
   ];
   function renderHeroSys(){
     var box = document.getElementById("heroSys");
     if (!box || typeof MD_FEATS === "undefined" || !MD_FEATS) return;
     box.innerHTML = "";
     MD_FEATS.forEach(function(f, i){
-      var t = document.createElement("div"); t.className = "sys-tile";
+      var t = document.createElement("div"); t.className = "sys-tile c" + i;
       var ic = document.createElement("span"); ic.className = "sys-ic"; ic.innerHTML = HERO_SYS_ICONS[i] || "";
       var nm = document.createElement("span"); nm.className = "sys-nm";
       nm.textContent = mdFeat(f).split(" — ")[0];
