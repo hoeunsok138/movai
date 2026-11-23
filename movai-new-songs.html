@@ -175,6 +175,50 @@
   html[data-theme="dark"] .stem-mute{border-color:#3a524a;color:#e7f0ec}
   html[data-theme="dark"] .stem-mute.off{background:#1d2f28;color:#8fa89e}
   html[data-theme="dark"] .stem-row.playing{background:linear-gradient(90deg,rgba(236,72,153,.22),rgba(249,115,22,.22))}
+  /* ---- Stem panel (stage 13): own full-screen panel, blurred backdrop ---- */
+  .stem-panel-veil{position:fixed;inset:0;z-index:90;background:rgba(10,25,20,.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column}
+  .stem-panel-veil[hidden]{display:none}
+  .stem-panel{flex:1;min-height:0;display:flex;flex-direction:column;background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);max-width:720px;width:100%;margin:0 auto;overflow:hidden}
+  html[data-theme="dark"] .stem-panel{background:#0e1a15;color:#e7f0ec}
+  .stem-panel-hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #e5e7eb}
+  html[data-theme="dark"] .stem-panel-hdr{border-bottom-color:#24362f}
+  .stem-panel-title{flex:1;min-width:0;font-size:.95rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stem-panel-close{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid #d1d5db;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1f2937}
+  .stem-panel-close svg{width:20px;height:20px;fill:currentColor}
+  html[data-theme="dark"] .stem-panel-close{border-color:#3a524a;color:#e7f0ec}
+  .stem-proc-view{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px}
+  .stem-proc-view[hidden]{display:none}
+  .stem-logo-big{position:relative;width:96px;height:96px}
+  .stem-logo-big img{width:96px;height:96px;animation:spin 2.5s linear infinite}
+  .stem-logo-big .stem-ring-big{position:absolute;inset:-10px;border-radius:50%;border:4px solid transparent;border-top-color:#0f766e;border-right-color:#0f766e;animation:spin 1.1s linear infinite}
+  .stem-logo-big .stem-shadow-big{position:absolute;inset:-18px;border-radius:50%;background:conic-gradient(from 0deg,rgba(15,118,110,.5),transparent 45%,rgba(15,118,110,.35) 70%,transparent);filter:blur(14px);animation:spin 2.8s linear infinite}
+  .stem-mix-view{flex:1;min-height:0;display:flex;flex-direction:column}
+  .stem-mix-view[hidden]{display:none}
+  .stem-master{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #e5e7eb}
+  html[data-theme="dark"] .stem-master{border-bottom-color:#24362f}
+  .stem-master-play{flex:none;width:52px;height:52px;border-radius:50%;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .stem-master-play svg{width:28px;height:28px;fill:currentColor}
+  .stem-time{font-size:.9rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .stem-scroll{flex:1;min-height:0;overflow-y:auto;position:relative;padding:6px 14px 20px}
+  .stem-ruler{position:relative;height:20px;margin:2px 0 6px;border-bottom:1px solid #e5e7eb}
+  html[data-theme="dark"] .stem-ruler{border-bottom-color:#24362f}
+  .stem-mark{position:absolute;top:0;font-size:.68rem;color:#6b7280;transform:translateX(-50%);white-space:nowrap}
+  .stem-mark-end{transform:translateX(-100%)}
+  .stem-track{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eef2f0}
+  html[data-theme="dark"] .stem-track{border-bottom-color:#24362f}
+  .stem-track .stem-name{flex:1;min-width:0}
+  .stem-vol{flex:none;width:90px;accent-color:#0f766e}
+  .stem-playhead{position:absolute;top:0;bottom:0;width:2px;background:#0f766e;z-index:2;pointer-events:none}
+  .stem-playhead::before{content:"";position:absolute;top:0;left:-4px;border:5px solid transparent;border-top:7px solid #0f766e}
+  /* ---- Player seek bar (stage 14) ---- */
+  .player-seek{max-width:720px;margin:8px auto 0;display:flex;align-items:center;gap:8px}
+  .player-seek input[type="range"]{flex:1;min-width:0;accent-color:#0f766e}
+  .player-time{font-size:.75rem;font-weight:600;color:#4b5563;min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+  html[data-theme="dark"] .player-time{color:#9db8ac}
+  /* ---- SVG icons (stage 15): drawn by code, not text glyphs ---- */
+  .player button svg{width:20px;height:20px;fill:currentColor;vertical-align:middle}
+  .player .p-close svg{width:18px;height:18px}
+  .mode-ico svg{width:16px;height:16px;fill:currentColor;vertical-align:-3px}
 
   /* ---- Now-playing bar: slim, directly on the background ---- */
   .player{position:fixed;left:0;right:0;bottom:0;z-index:40;
@@ -385,17 +429,46 @@
   <div class="player-in">
     <img id="pCover" alt="" src="">
     <span class="player-title" id="pTitle"></span>
-    <button id="pPlay" type="button" aria-label="Play or pause" data-i18n-aria="playPause">&#10074;&#10074;</button>
+    <button id="pPlay" type="button" aria-label="Play or pause" data-i18n-aria="playPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
     <button id="pNext" type="button" data-i18n="next">បន្ទាប់</button>
-    <button class="p-close" id="pClose" type="button" aria-label="Close" data-i18n-aria="close">&#10005;</button>
+    <button class="p-close" id="pClose" type="button" aria-label="Close" data-i18n-aria="close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button>
+  </div>
+  <div class="player-seek">
+    <span class="player-time" id="pCur">0:00</span>
+    <input type="range" id="pSeek" min="0" max="100" step="0.1" value="0" aria-label="Seek">
+    <span class="player-time" id="pDur">0:00</span>
   </div>
   <div class="player-modes">
-    <button id="pRepeat" type="button" class="mode-btn"><span class="mode-ico">&#8635;</span><span id="pRepeatLbl">ធ្វើម្តងទៀត</span></button>
-    <button id="pShuffle" type="button" class="mode-btn"><span class="mode-ico">&#8646;</span><span id="pShuffleLbl">ចៃដន្យ</span></button>
+    <button id="pRepeat" type="button" class="mode-btn"><span class="mode-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg></span><span id="pRepeatLbl">ធ្វើម្តងទៀត</span></button>
+    <button id="pShuffle" type="button" class="mode-btn"><span class="mode-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></span><span id="pShuffleLbl">ចៃដន្យ</span></button>
   </div>
   <div class="player-err" id="pErr" hidden></div>
 </div>
 <audio id="au" preload="none"></audio>
+<div class="stem-panel-veil" id="stemPanelVeil" hidden>
+  <div class="stem-panel" id="stemPanel" role="dialog" aria-label="Stem panel">
+    <div class="stem-panel-hdr">
+      <span class="stem-panel-title" id="stemPanelTitle"></span>
+      <button class="stem-panel-close" id="stemPanelClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button>
+    </div>
+    <div class="stem-proc-view" id="stemProcView">
+      <div class="stem-logo-big"><img src="movai-logo-mark.png" alt=""><span class="stem-ring-big"></span><span class="stem-shadow-big"></span></div>
+      <div class="stem-stage" id="stemProcStage"></div>
+      <button class="mini-btn stem-cancel-btn" id="stemPanelCancel" type="button">Cancel</button>
+    </div>
+    <div class="stem-mix-view" id="stemMixView" hidden>
+      <div class="stem-master">
+        <button class="stem-master-play" id="stemMasterPlay" type="button" aria-label="Play all stems together"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+        <span class="stem-time" id="stemTime">0:00 / 0:00</span>
+      </div>
+      <div class="stem-scroll" id="stemScroll">
+        <div class="stem-ruler" id="stemRuler"></div>
+        <div class="stem-tracks" id="stemTracks"></div>
+        <div class="stem-playhead" id="stemPlayhead"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -525,6 +598,7 @@
       splitWorking: "កំពុងបំបែក… ",
       splitChecked: "ពិនិត្យ ",
       splitDone: "បំបែករួចរាល់។",
+      viewStemPanel: "មើលផ្ទាំងបំបែក",
       splitFail: "បំបែកមិនបានទេ។",
       post: "ផុស",
       postPublic: "ផុសទៅសាធារណៈ",
@@ -626,6 +700,7 @@
       splitWorking: "Splitting… ",
       splitChecked: "check ",
       splitDone: "Split done.",
+      viewStemPanel: "Open stem panel",
       splitFail: "Split failed.",
       post: "Post",
       postPublic: "Post to Public",
@@ -1234,7 +1309,6 @@
     });
   }
   function renderList(){
-    stopStemAudio();
     closeSongMenu();
     listEl.innerHTML = "";
     noteEl.textContent = "";
@@ -1550,71 +1624,9 @@
     var k = { vocals: "stemVocals", music: "stemMusic", drums: "stemDrums", bass: "stemBass", other: "stemOther", piano: "stemPiano", guitar: "stemGuitar" }[n];
     return k ? t(k) : (n || "stem");
   }
-  var stemAu = null;
-  var stemPlayingUrl = "";
-  var stemMuted = {};
-  function stopStemAudio(){
-    if (stemAu) { try { stemAu.pause(); } catch (e) {} }
-    stemPlayingUrl = "";
-    var rows = document.querySelectorAll(".stem-row.playing");
-    for (var i = 0; i < rows.length; i++) rows[i].classList.remove("playing");
-    var btns = document.querySelectorAll(".stem-play.on");
-    for (var j = 0; j < btns.length; j++) { btns[j].classList.remove("on"); btns[j].textContent = "\u25b6"; }
-  }
-  function renderStemLinks(res, stems){
-    res.innerHTML = "";
-    if (!stems || !stems.length) return;
-    stopStemAudio();
-    stems.forEach(function(st){
-      var r = document.createElement("div");
-      r.className = "stem-row";
-      var nm = document.createElement("span");
-      nm.className = "stem-name";
-      nm.textContent = stemName(st.name);
-      if (st.locked) {
-        // Admin locked this stem — show the lock, no download link.
-        var lk = document.createElement("span");
-        lk.className = "row-dl";
-        lk.textContent = "🔒 " + t("lockedStem");
-        r.appendChild(nm); r.appendChild(lk);
-      } else {
-        var pb = document.createElement("button");
-        pb.type = "button"; pb.className = "stem-play"; pb.textContent = "\u25b6";
-        pb.setAttribute("aria-label", stemName(st.name));
-        var mb = document.createElement("button");
-        mb.type = "button"; mb.className = "stem-mute" + (stemMuted[st.url] ? " off" : ""); mb.textContent = "M";
-        var a = document.createElement("a");
-        a.className = "row-dl";
-        a.href = st.url;
-        a.textContent = t("download");
-        a.setAttribute("download", "");
-        pb.addEventListener("click", function(){
-          if (stemPlayingUrl === st.url) { stopStemAudio(); return; }
-          stopStemAudio();
-          if (!stemAu) {
-            stemAu = new Audio();
-            stemAu.preload = "auto";
-            stemAu.addEventListener("ended", function(){ stopStemAudio(); });
-          }
-          if (au) { try { au.pause(); } catch (e) {} }
-          stemAu.src = st.url;
-          stemAu.volume = stemMuted[st.url] ? 0 : 1;
-          try { var pr = stemAu.play(); if (pr && pr.catch) pr.catch(function(){}); } catch (e) {}
-          stemPlayingUrl = st.url;
-          r.classList.add("playing");
-          pb.classList.add("on"); pb.textContent = "\u23f8";
-        });
-        mb.addEventListener("click", function(){
-          var m = !stemMuted[st.url];
-          stemMuted[st.url] = m;
-          mb.classList.toggle("off", m);
-          if (stemPlayingUrl === st.url && stemAu) stemAu.volume = m ? 0 : 1;
-        });
-        r.appendChild(pb); r.appendChild(nm); r.appendChild(mb); r.appendChild(a);
-      }
-      res.appendChild(r);
-    });
-  }
+  // (stage 13) the solo stem player is retired — stems play together
+  // in the panel mixer (mixAudios). stopStemAudio now just stops the mix.
+  function stopStemAudio(){ mixPauseAll(); }
   function stemSetMsg(msg, text, isErr){
     msg.textContent = text || "";
     msg.className = "stem-msg" + (isErr ? " err-t" : "");
@@ -1635,6 +1647,8 @@
     }
   }
   function stemProcTime(box, stageText){
+    var ps = document.getElementById("stemProcStage");
+    if (ps) ps.textContent = stageText || "";
     var proc = box && box.querySelector(".stem-proc");
     if (!proc || proc.hidden) return;
     var st = proc.querySelector(".stem-stage");
@@ -1644,9 +1658,11 @@
     var cb = box && box.querySelector(".stem-cancel-btn");
     if (cb) cb.hidden = !show;
   }
-  function stemStartRun(box, msg){
-    var ctx = { box: box, msg: msg, cancelled: false, ctrl: null, timers: [] };
+  function stemStartRun(box, msg, title){
+    var ctx = { box: box, msg: msg, cancelled: false, ctrl: null, timers: [], title: title || "" };
     box._stemCtx = ctx;
+    mixCtx = ctx;
+    mixOpen(title);
     stemProcShow(box, true, t("splitWorking") + "0s");
     stemCancelShow(box, true);
     return ctx;
@@ -1666,6 +1682,7 @@
       if (cb) cb.hidden = true;
       if (box._stemCtx === ctx) box._stemCtx = null;
     }
+    mixClose();
   }
   function stemCancel(ctx){
     if (!ctx || ctx.cancelled) return;
@@ -1674,6 +1691,180 @@
     stemRunEnd(ctx);
     stemSetMsg(ctx.msg, t("splitCancelled"), true);
   }
+  /* ---- Stem panel (stage 13): the split results live in their OWN
+     panel, not in the song row. One master play button plays ALL
+     stems TOGETHER in sync; M mutes one stem; the vertical playhead
+     line sweeps the tracks while the mix plays. While a split runs,
+     the panel shows the big logo over a blurred backdrop (the song
+     list behind is blurred out). ---- */
+  var ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  var ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+  var mixAudios = [];
+  var mixTimer = null, mixDur = 0, mixPlaying = false, mixTitle = "", mixCtx = null;
+  function mixEl(id){ return document.getElementById(id); }
+  function fmtMixTime(s){
+    s = Math.max(0, Math.floor(s || 0));
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+  function mixOpen(title){
+    mixTitle = title || "";
+    var veil = mixEl("stemPanelVeil");
+    if (!veil) return;
+    var tt = mixEl("stemPanelTitle"); if (tt) tt.textContent = mixTitle;
+    mixEl("stemProcView").hidden = false;
+    mixEl("stemMixView").hidden = true;
+    var st = mixEl("stemProcStage"); if (st) st.textContent = t("splitWorking") + "0s";
+    veil.hidden = false;
+  }
+  function mixClose(){
+    mixPauseAll();
+    var veil = mixEl("stemPanelVeil");
+    if (veil) veil.hidden = true;
+    mixCtx = null;
+  }
+  function mixShowMixer(title, stems){
+    mixTitle = title || "";
+    var veil = mixEl("stemPanelVeil");
+    if (!veil) return;
+    var tt = mixEl("stemPanelTitle"); if (tt) tt.textContent = mixTitle;
+    mixPauseAll();
+    mixAudios = []; mixDur = 0; mixPlaying = false;
+    var tracks = mixEl("stemTracks");
+    tracks.innerHTML = "";
+    var ruler = mixEl("stemRuler");
+    ruler.innerHTML = "";
+    (stems || []).forEach(function(st){
+      var r = document.createElement("div");
+      r.className = "stem-track";
+      var nm = document.createElement("span");
+      nm.className = "stem-name"; nm.textContent = stemName(st.name);
+      if (st.locked) {
+        var lk = document.createElement("span");
+        lk.className = "row-dl"; lk.textContent = "\uD83D\uDD12 " + t("lockedStem");
+        r.appendChild(nm); r.appendChild(lk);
+      } else {
+        var mb = document.createElement("button");
+        mb.type = "button"; mb.className = "stem-mute"; mb.textContent = "M";
+        var vol = document.createElement("input");
+        vol.type = "range"; vol.className = "stem-vol"; vol.min = "0"; vol.max = "100"; vol.value = "100";
+        var a = document.createElement("a");
+        a.className = "row-dl"; a.href = st.url; a.textContent = t("download"); a.setAttribute("download", "");
+        var entry = { name: st.name, url: st.url, muted: false, vol: 1, audio: null, muteBtn: mb, volEl: vol };
+        var ad = new Audio();
+        ad.preload = "auto"; ad.src = st.url;
+        ad.addEventListener("loadedmetadata", function(){
+          if (!mixDur && ad.duration && isFinite(ad.duration)) { mixDur = ad.duration; mixRenderRuler(); mixTick(); }
+        });
+        ad.addEventListener("ended", function(){ if (mixPlaying) mixStopAll(); });
+        entry.audio = ad;
+        mb.addEventListener("click", function(){
+          entry.muted = !entry.muted;
+          mb.classList.toggle("off", entry.muted);
+          if (entry.audio) entry.audio.volume = entry.muted ? 0 : entry.vol;
+        });
+        vol.addEventListener("input", function(){
+          entry.vol = Number(vol.value || 0) / 100;
+          if (entry.audio && !entry.muted) entry.audio.volume = entry.vol;
+        });
+        r.appendChild(nm); r.appendChild(mb); r.appendChild(vol); r.appendChild(a);
+        mixAudios.push(entry);
+      }
+      tracks.appendChild(r);
+    });
+    mixEl("stemProcView").hidden = true;
+    mixEl("stemMixView").hidden = false;
+    var mp = mixEl("stemMasterPlay"); if (mp) mp.innerHTML = ICON_PLAY;
+    var tm = mixEl("stemTime"); if (tm) tm.textContent = "0:00 / " + fmtMixTime(mixDur);
+    var ph = mixEl("stemPlayhead"); if (ph) ph.style.left = "0%";
+    veil.hidden = false;
+    // Debug/test hook: the current mix (audios + duration + seek).
+    window.__mix = { audios: mixAudios, setDur: function(d){ mixDur = d; mixRenderRuler(); mixTick(); }, seek: mixSeek };
+  }
+  function mixRenderRuler(){
+    var ruler = mixEl("stemRuler");
+    if (!ruler || !mixDur) return;
+    ruler.innerHTML = "";
+    for (var s = 0; s <= mixDur; s += 60) {
+      var m = document.createElement("span");
+      m.className = "stem-mark";
+      m.style.left = (s / mixDur * 100) + "%";
+      m.textContent = fmtMixTime(s);
+      ruler.appendChild(m);
+    }
+    var end = document.createElement("span");
+    end.className = "stem-mark stem-mark-end";
+    end.style.left = "100%";
+    end.textContent = fmtMixTime(mixDur);
+    ruler.appendChild(end);
+  }
+  function mixPlayAll(){
+    if (!mixAudios.length) return;
+    if (au) { try { au.pause(); } catch (e) {} }
+    var t0 = mixAudios[0].audio.currentTime || 0;
+    mixAudios.forEach(function(en){
+      try { en.audio.currentTime = t0; } catch (e) {}
+      en.audio.volume = en.muted ? 0 : en.vol;
+      var pr = en.audio.play(); if (pr && pr.catch) pr.catch(function(){});
+    });
+    mixPlaying = true;
+    var mp = mixEl("stemMasterPlay"); if (mp) mp.innerHTML = ICON_PAUSE;
+    if (mixTimer) clearInterval(mixTimer);
+    mixTimer = setInterval(mixTick, 100);
+  }
+  function mixPauseAll(){
+    if (mixTimer) { clearInterval(mixTimer); mixTimer = null; }
+    mixPlaying = false;
+    (mixAudios || []).forEach(function(en){ try { en.audio.pause(); } catch (e) {} });
+    var mp = mixEl("stemMasterPlay"); if (mp) mp.innerHTML = ICON_PLAY;
+  }
+  function mixStopAll(){
+    mixPauseAll();
+    (mixAudios || []).forEach(function(en){ try { en.audio.currentTime = 0; } catch (e) {} });
+    var ph = mixEl("stemPlayhead"); if (ph) ph.style.left = "0%";
+    var tm = mixEl("stemTime"); if (tm) tm.textContent = "0:00 / " + fmtMixTime(mixDur);
+  }
+  function mixTick(){
+    if (!mixAudios.length) return;
+    var c = mixAudios[0].audio.currentTime || 0;
+    if (mixDur > 0) {
+      var ph = mixEl("stemPlayhead"); if (ph) ph.style.left = Math.min(100, c / mixDur * 100) + "%";
+    }
+    var tm = mixEl("stemTime"); if (tm) tm.textContent = fmtMixTime(c) + " / " + fmtMixTime(mixDur);
+    if (mixDur > 0 && c >= mixDur - 0.15) mixStopAll();
+  }
+  function mixSeek(frac){
+    if (!mixDur) return;
+    var tt = Math.max(0, Math.min(1, frac)) * mixDur;
+    mixAudios.forEach(function(en){ try { en.audio.currentTime = tt; } catch (e) {} });
+    mixTick();
+  }
+  function mixViewBtn(res, box){
+    res.innerHTML = "";
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "mini-btn dark"; b.textContent = t("viewStemPanel");
+    b.addEventListener("click", function(){
+      if (box && box._stemData) mixShowMixer(box._stemData.title, box._stemData.stems);
+    });
+    res.appendChild(b);
+  }
+  // Panel wiring (master play, close, cancel, seek, veil).
+  (function(){
+    var veil = mixEl("stemPanelVeil");
+    if (!veil) return;
+    var mp = mixEl("stemMasterPlay");
+    if (mp) mp.addEventListener("click", function(){ if (mixPlaying) mixPauseAll(); else mixPlayAll(); });
+    var cl = mixEl("stemPanelClose");
+    if (cl) cl.addEventListener("click", function(){ mixClose(); });
+    var pc = mixEl("stemPanelCancel");
+    if (pc) { pc.textContent = t("cancel"); pc.addEventListener("click", function(){ if (mixCtx) stemCancel(mixCtx); }); }
+    var sc = mixEl("stemScroll");
+    if (sc) sc.addEventListener("click", function(ev){
+      if (ev.target && (ev.target.closest("button") || ev.target.closest("a") || ev.target.closest("input"))) return;
+      var r = sc.getBoundingClientRect();
+      if (r.width > 0) mixSeek((ev.clientX - r.left) / r.width);
+    });
+    veil.addEventListener("click", function(ev){ if (ev.target === veil) mixClose(); });
+  })();
   function runStem6(song, msg, res){
     if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
     var box = stemBoxOf(msg);
@@ -1681,7 +1872,7 @@
     stemSetMsg(msg, "");
     res.innerHTML = "";
     var t0 = Date.now();
-    var ctx = stemStartRun(box, msg);
+    var ctx = stemStartRun(box, msg, song.title || "");
     var tick = setInterval(function(){
       stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
@@ -1694,7 +1885,9 @@
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
         stemRunEnd(ctx);
         stemSetMsg(msg, t("splitDone"));
-        renderStemLinks(res, j.stems);
+        box._stemData = { title: song.title || "", stems: j.stems };
+        mixShowMixer(box._stemData.title, j.stems);
+        mixViewBtn(res, box);
       } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
         stemProcShow(box, true, t("splitWorking") + "0s");
         pollStem6(j.hash, msg, res, t0, ctx);
@@ -1734,7 +1927,9 @@
             clearInterval(tick);
             if (ctx) stemRunEnd(ctx);
             stemSetMsg(msg, t("splitDone"));
-            renderStemLinks(res, j.stems);
+            box._stemData = { title: ctx.title, stems: j.stems };
+            mixShowMixer(box._stemData.title, j.stems);
+            mixViewBtn(res, box);
           } else if (j && j.ok === false) {
             clearInterval(tick);
             if (ctx) stemRunEnd(ctx);
@@ -1762,7 +1957,7 @@
     stemSetMsg(msg, "");
     res.innerHTML = "";
     var t0 = Date.now();
-    var ctx = stemStartRun(box, msg);
+    var ctx = stemStartRun(box, msg, title);
     var tick = setInterval(function(){
       stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
@@ -1805,7 +2000,7 @@
     stemSetMsg(msg, "");
     res.innerHTML = "";
     var t0 = Date.now();
-    var ctx = stemStartRun(box, msg);
+    var ctx = stemStartRun(box, msg, title);
     var tick = setInterval(function(){
       stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
@@ -1819,7 +2014,9 @@
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
         stemRunEnd(ctx);
         stemSetMsg(msg, vrDoneMsg(j));
-        renderStemLinks(res, j.stems);
+        box._stemData = { title: title, stems: j.stems };
+        mixShowMixer(box._stemData.title, j.stems);
+        mixViewBtn(res, box);
       } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
         stemProcShow(box, true, t("splitWorking") + "0s");
         pollStem6(j.hash, msg, res, t0, ctx);
@@ -1928,7 +2125,9 @@
           clearInterval(tick);
           if (ctx) stemRunEnd(ctx);
           stemSetMsg(msg, t("splitDone"));
-          renderStemLinks(res, j.stems);
+          box._stemData = { title: ctx.title, stems: j.stems };
+          mixShowMixer(box._stemData.title, j.stems);
+          mixViewBtn(res, box);
         } else if (j && j.ok === false) {
           clearInterval(tick);
           if (ctx) stemRunEnd(ctx);
@@ -2074,7 +2273,7 @@
     });
   }
   function syncPlayBtn(){
-    pPlay.innerHTML = au.paused ? "&#9654;" : "&#10074;&#10074;";
+    pPlay.innerHTML = au.paused ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>' : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
     pPlay.setAttribute("aria-label", au.paused ? t("play") : t("pause"));
   }
   /* Round 3 (D): one audio URL can be a dead link (HTTP 200, empty
@@ -2213,6 +2412,34 @@
   au.addEventListener("playing", function(){ clearPlayErr(); });
   au.addEventListener("error", function(){ onPlayFailed(au.error); syncPlayBtn(); });
   au.addEventListener("ended", playEnded);
+  /* ---- Player seek bar + time (stage 14) ---- */
+  var pSeek = document.getElementById("pSeek");
+  var pCur = document.getElementById("pCur");
+  var pDur = document.getElementById("pDur");
+  var seekDrag = false;
+  function fmtPlayerTime(s){
+    s = Math.max(0, Math.floor(s || 0));
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+  au.addEventListener("loadedmetadata", function(){
+    if (pDur) pDur.textContent = fmtPlayerTime(au.duration);
+    if (pSeek) pSeek.value = "0";
+    if (pCur) pCur.textContent = "0:00";
+  });
+  au.addEventListener("timeupdate", function(){
+    if (seekDrag || !au.duration || !isFinite(au.duration)) return;
+    if (pSeek) pSeek.value = String(au.currentTime / au.duration * 100);
+    if (pCur) pCur.textContent = fmtPlayerTime(au.currentTime);
+  });
+  if (pSeek) {
+    pSeek.addEventListener("pointerdown", function(){ seekDrag = true; });
+    pSeek.addEventListener("pointerup", function(){ seekDrag = false; });
+    pSeek.addEventListener("input", function(){
+      if (!au.duration || !isFinite(au.duration)) return;
+      au.currentTime = Number(pSeek.value || 0) / 100 * au.duration;
+      if (pCur) pCur.textContent = fmtPlayerTime(au.currentTime);
+    });
+  }
 
   applyLang();
   // Resume any generation handed off by Create (or left by a refresh):
