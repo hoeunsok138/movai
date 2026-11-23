@@ -158,6 +158,23 @@
   .stem-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
     padding:8px 0;border-bottom:1px solid #eef1f0;font-size:.9rem}
   .stem-row:last-child{border-bottom:0}
+  .stem-proc{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 0 6px}
+  .stem-logo{position:relative;width:56px;height:56px}
+  .stem-logo img{width:56px;height:56px;animation:spin 2.5s linear infinite}
+  .stem-logo .stem-ring{position:absolute;inset:-7px;border-radius:50%;border:3px solid transparent;border-top-color:#0f766e;border-right-color:#0f766e;animation:spin 1.1s linear infinite}
+  .stem-logo .stem-shadow{position:absolute;inset:-12px;border-radius:50%;background:conic-gradient(from 0deg,rgba(15,118,110,.5),transparent 45%,rgba(15,118,110,.35) 70%,transparent);filter:blur(10px);animation:spin 2.8s linear infinite}
+  .stem-stage{font-size:.9rem;color:#374151;text-align:center}
+  html[data-theme="dark"] .stem-stage{color:#e7f0ec}
+  .stem-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .stem-play{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid #cbd5d1;background:#fff;font-size:.95rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .stem-play.on{background:linear-gradient(135deg,#ec4899,#f97316);border-color:transparent;color:#fff}
+  .stem-mute{flex:none;width:32px;height:32px;border-radius:8px;border:1px solid #cbd5d1;background:transparent;font-size:.8rem;font-weight:700;cursor:pointer}
+  .stem-mute.off{background:#e5e7eb;color:#6b7280;text-decoration:line-through}
+  .stem-row.playing{background:linear-gradient(90deg,#fce7f3,#ffedd5);border-radius:10px}
+  html[data-theme="dark"] .stem-play{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .stem-mute{border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .stem-mute.off{background:#1d2f28;color:#8fa89e}
+  html[data-theme="dark"] .stem-row.playing{background:linear-gradient(90deg,rgba(236,72,153,.22),rgba(249,115,22,.22))}
 
   /* ---- Now-playing bar: slim, directly on the background ---- */
   .player{position:fixed;left:0;right:0;bottom:0;z-index:40;
@@ -546,6 +563,7 @@
       retryFree: "សាកម្ដងទៀតឥតគិតថ្លៃ",
       retryLimit: "ខូវើនេះបានសាកច្រើនដងហើយ — សូមបង្កើតខូវើថ្មី។",
       cancel: "បញ្ឈប់",
+      splitCancelled: "បានបញ្ឈប់។",
       noServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
       splitResume: "បទនេះកំពុងបំបែកនៅលើ server — សូមចុច 6 stems ម្តងទៀតដើម្បីពិនិត្យ",
       signInFirst: "សូមចូលប្រើជាមុនសិន។",
@@ -646,6 +664,7 @@
       retryFree: "Retry free",
       retryLimit: "This cover has been retried too many times — please create a new cover.",
       cancel: "Cancel",
+      splitCancelled: "Cancelled.",
       noServer: "Could not reach the server. Please try again.",
       splitResume: "Still separating on the server — tap 6 stems again to check",
       signInFirst: "Please sign in first.",
@@ -737,13 +756,14 @@
     s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
     return s || t("genFailed");
   }
-  function apiPost(path, body, timeoutMs){
+  function apiPost(path, body, timeoutMs, onCtrl){
     var ctrl = null, timer = null;
     var opts = { method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body || {}) };
     if (window.AbortController) {
       ctrl = new AbortController();
       opts.signal = ctrl.signal;
+      if (typeof onCtrl === "function") { try { onCtrl(ctrl); } catch (e) {} }
       var ms = timeoutMs || 60000;
       if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
     }
@@ -1214,6 +1234,7 @@
     });
   }
   function renderList(){
+    stopStemAudio();
     closeSongMenu();
     listEl.innerHTML = "";
     noteEl.textContent = "";
@@ -1467,9 +1488,6 @@
     if (box) { box.hidden = !box.hidden; return; }
     box = document.createElement("div");
     box.className = "stem-box";
-    var lbl = document.createElement("div");
-    lbl.className = "hint";
-    lbl.textContent = t("splitChoose");
     var rowBtns = document.createElement("div");
     rowBtns.className = "rowline";
     rowBtns.style.cssText = "display:flex;gap:8px;flex-wrap:wrap";
@@ -1480,18 +1498,33 @@
     var b12 = document.createElement("button");
     b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12"); b12.setAttribute("data-stem", "12");
     rowBtns.appendChild(bVr); rowBtns.appendChild(b6); rowBtns.appendChild(b12);
-    var nVr = document.createElement("div");
-    nVr.className = "hint"; nVr.textContent = t("vocalRemoverNote");
-    var n6 = document.createElement("div");
-    n6.className = "hint"; n6.textContent = t("split6Note");
-    var n12 = document.createElement("div");
-    n12.className = "hint"; n12.textContent = t("split12Note");
+    var proc = document.createElement("div");
+    proc.className = "stem-proc";
+    proc.hidden = true;
+    var pLogo = document.createElement("div");
+    pLogo.className = "stem-logo";
+    var pImg = document.createElement("img");
+    pImg.src = "movai-logo-mark.png";
+    pImg.alt = "";
+    var pRing = document.createElement("span");
+    pRing.className = "stem-ring";
+    var pShad = document.createElement("span");
+    pShad.className = "stem-shadow";
+    pLogo.appendChild(pImg); pLogo.appendChild(pRing); pLogo.appendChild(pShad);
+    var pStage = document.createElement("div");
+    pStage.className = "stem-stage";
+    proc.appendChild(pLogo); proc.appendChild(pStage);
+    var cancelBtn = document.createElement("button");
+    cancelBtn.type = "button"; cancelBtn.className = "mini-btn stem-cancel-btn"; cancelBtn.textContent = t("cancel");
+    cancelBtn.hidden = true;
+    cancelBtn.addEventListener("click", function(){ if (box._stemCtx) stemCancel(box._stemCtx); });
     var msg = document.createElement("div");
     msg.className = "stem-msg";
     var res = document.createElement("div");
     res.className = "stem-res";
-    box.appendChild(lbl); box.appendChild(rowBtns);
-    box.appendChild(nVr); box.appendChild(n6); box.appendChild(n12);
+    box.appendChild(rowBtns);
+    box.appendChild(proc);
+    box.appendChild(cancelBtn);
     box.appendChild(msg); box.appendChild(res);
     itemEl.appendChild(box);
     bVr.addEventListener("click", function(){ runVocalRemover(song, msg, res); });
@@ -1517,13 +1550,26 @@
     var k = { vocals: "stemVocals", music: "stemMusic", drums: "stemDrums", bass: "stemBass", other: "stemOther", piano: "stemPiano", guitar: "stemGuitar" }[n];
     return k ? t(k) : (n || "stem");
   }
+  var stemAu = null;
+  var stemPlayingUrl = "";
+  var stemMuted = {};
+  function stopStemAudio(){
+    if (stemAu) { try { stemAu.pause(); } catch (e) {} }
+    stemPlayingUrl = "";
+    var rows = document.querySelectorAll(".stem-row.playing");
+    for (var i = 0; i < rows.length; i++) rows[i].classList.remove("playing");
+    var btns = document.querySelectorAll(".stem-play.on");
+    for (var j = 0; j < btns.length; j++) { btns[j].classList.remove("on"); btns[j].textContent = "\u25b6"; }
+  }
   function renderStemLinks(res, stems){
     res.innerHTML = "";
     if (!stems || !stems.length) return;
+    stopStemAudio();
     stems.forEach(function(st){
       var r = document.createElement("div");
       r.className = "stem-row";
       var nm = document.createElement("span");
+      nm.className = "stem-name";
       nm.textContent = stemName(st.name);
       if (st.locked) {
         // Admin locked this stem — show the lock, no download link.
@@ -1532,12 +1578,39 @@
         lk.textContent = "🔒 " + t("lockedStem");
         r.appendChild(nm); r.appendChild(lk);
       } else {
+        var pb = document.createElement("button");
+        pb.type = "button"; pb.className = "stem-play"; pb.textContent = "\u25b6";
+        pb.setAttribute("aria-label", stemName(st.name));
+        var mb = document.createElement("button");
+        mb.type = "button"; mb.className = "stem-mute" + (stemMuted[st.url] ? " off" : ""); mb.textContent = "M";
         var a = document.createElement("a");
         a.className = "row-dl";
         a.href = st.url;
         a.textContent = t("download");
         a.setAttribute("download", "");
-        r.appendChild(nm); r.appendChild(a);
+        pb.addEventListener("click", function(){
+          if (stemPlayingUrl === st.url) { stopStemAudio(); return; }
+          stopStemAudio();
+          if (!stemAu) {
+            stemAu = new Audio();
+            stemAu.preload = "auto";
+            stemAu.addEventListener("ended", function(){ stopStemAudio(); });
+          }
+          if (au) { try { au.pause(); } catch (e) {} }
+          stemAu.src = st.url;
+          stemAu.volume = stemMuted[st.url] ? 0 : 1;
+          try { var pr = stemAu.play(); if (pr && pr.catch) pr.catch(function(){}); } catch (e) {}
+          stemPlayingUrl = st.url;
+          r.classList.add("playing");
+          pb.classList.add("on"); pb.textContent = "\u23f8";
+        });
+        mb.addEventListener("click", function(){
+          var m = !stemMuted[st.url];
+          stemMuted[st.url] = m;
+          mb.classList.toggle("off", m);
+          if (stemPlayingUrl === st.url && stemAu) stemAu.volume = m ? 0 : 1;
+        });
+        r.appendChild(pb); r.appendChild(nm); r.appendChild(mb); r.appendChild(a);
       }
       res.appendChild(r);
     });
@@ -1546,42 +1619,109 @@
     msg.textContent = text || "";
     msg.className = "stem-msg" + (isErr ? " err-t" : "");
   }
+  function fmtStemTime(s){
+    s = Math.max(0, Math.floor(s || 0));
+    if (s < 60) return s + "s";
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+  function stemBoxOf(msg){ return msg && msg.parentNode ? msg.parentNode : null; }
+  function stemProcShow(box, show, stageText){
+    var proc = box && box.querySelector(".stem-proc");
+    if (!proc) return;
+    proc.hidden = !show;
+    if (show) {
+      var st = proc.querySelector(".stem-stage");
+      if (st) st.textContent = stageText || "";
+    }
+  }
+  function stemProcTime(box, stageText){
+    var proc = box && box.querySelector(".stem-proc");
+    if (!proc || proc.hidden) return;
+    var st = proc.querySelector(".stem-stage");
+    if (st) st.textContent = stageText || "";
+  }
+  function stemCancelShow(box, show){
+    var cb = box && box.querySelector(".stem-cancel-btn");
+    if (cb) cb.hidden = !show;
+  }
+  function stemStartRun(box, msg){
+    var ctx = { box: box, msg: msg, cancelled: false, ctrl: null, timers: [] };
+    box._stemCtx = ctx;
+    stemProcShow(box, true, t("splitWorking") + "0s");
+    stemCancelShow(box, true);
+    return ctx;
+  }
+  function stemRunEnd(ctx){
+    if (!ctx) return;
+    (ctx.timers || []).forEach(function(tm){
+      try { clearInterval(tm); } catch (e) {}
+      try { clearTimeout(tm); } catch (e) {}
+    });
+    ctx.timers = [];
+    var box = ctx.box;
+    if (box) {
+      var proc = box.querySelector(".stem-proc");
+      if (proc) proc.hidden = true;
+      var cb = box.querySelector(".stem-cancel-btn");
+      if (cb) cb.hidden = true;
+      if (box._stemCtx === ctx) box._stemCtx = null;
+    }
+  }
+  function stemCancel(ctx){
+    if (!ctx || ctx.cancelled) return;
+    ctx.cancelled = true;
+    if (ctx.ctrl) { try { ctx.ctrl.abort(); } catch (e) {} }
+    stemRunEnd(ctx);
+    stemSetMsg(ctx.msg, t("splitCancelled"), true);
+  }
   function runStem6(song, msg, res){
     if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
-    stemSetMsg(msg, t("splitWorking") + "0s");
+    var box = stemBoxOf(msg);
+    stopStemAudio();
+    stemSetMsg(msg, "");
     res.innerHTML = "";
     var t0 = Date.now();
+    var ctx = stemStartRun(box, msg);
     var tick = setInterval(function(){
-      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+      stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
+    ctx.timers.push(tick);
     // POST /api/studio/separate {email, audioUrl, songTitle} -> {ok, stems} (6 stems, MVSEP)
     apiPost("/api/studio/separate", { email: email, audioUrl: songUrl(song),
-      songTitle: song.title || "" }, 360000).then(function(j){
+      songTitle: song.title || "" }, 360000, function(c){ ctx.ctrl = c; }).then(function(j){
       clearInterval(tick);
+      if (ctx.cancelled) return;
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
+        stemRunEnd(ctx);
         stemSetMsg(msg, t("splitDone"));
         renderStemLinks(res, j.stems);
       } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
-        stemSetMsg(msg, t("splitWorking") + "0s");
-        pollStem6(j.hash, msg, res, t0);
+        stemProcShow(box, true, t("splitWorking") + "0s");
+        pollStem6(j.hash, msg, res, t0, ctx);
       } else {
+        stemRunEnd(ctx);
         stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
       }
     }).catch(function(e){
       clearInterval(tick);
+      if (ctx.cancelled) return;
+      stemRunEnd(ctx);
       if (e && e.name === "AbortError") stemSetMsg(msg, t("splitResume"), true);
       else stemSetMsg(msg, t("noServer"), true);
     });
   }
-  function pollStem6(hash, msg, res, t0){
+  function pollStem6(hash, msg, res, t0, ctx){
+    var box = stemBoxOf(msg);
     var n = 0;
-    var checks = 0; // every answered /status poll — visible proof the server is still working on the job
     var tick = setInterval(function(){
-      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s" + (checks ? " · " + t("splitChecked") + checks : ""));
+      stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
+    if (ctx) ctx.timers.push(tick);
     function step(){
+      if (ctx && ctx.cancelled) return;
       if (n++ >= 60) {
         clearInterval(tick);
+        if (ctx) stemRunEnd(ctx);
         stemSetMsg(msg, t("splitFail"), true);
         return;
       }
@@ -1589,44 +1729,60 @@
       fetch(API_BASE + "/api/studio/separate/status?hash=" + encodeURIComponent(hash) +
         "&email=" + encodeURIComponent(email), { cache: "no-store" })
         .then(function(r){ return r.json(); }).then(function(j){
+          if (ctx && ctx.cancelled) return;
           if (j && j.ok === true && j.done === true && Array.isArray(j.stems) && j.stems.length) {
             clearInterval(tick);
+            if (ctx) stemRunEnd(ctx);
             stemSetMsg(msg, t("splitDone"));
             renderStemLinks(res, j.stems);
           } else if (j && j.ok === false) {
             clearInterval(tick);
+            if (ctx) stemRunEnd(ctx);
             stemSetMsg(msg, cleanErr(j.error || t("splitFail")), true);
           } else {
-            checks++;
-            setTimeout(step, 10000);
+            var tm = setTimeout(step, 10000);
+            if (ctx) ctx.timers.push(tm);
           }
-        }).catch(function(){ setTimeout(step, 10000); });
+        }).catch(function(){
+          if (ctx && ctx.cancelled) return;
+          var tm = setTimeout(step, 10000);
+          if (ctx) ctx.timers.push(tm);
+        });
     }
-    setTimeout(step, 10000);
+    var first = setTimeout(step, 10000);
+    if (ctx) ctx.timers.push(first);
   }
   function runStem12(song, msg, res){
     runStem12Url(songUrl(song), song.title || "", msg, res);
   }
   function runStem12Url(audioUrl, title, msg, res){
     if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
-    stemSetMsg(msg, t("splitWorking") + "0s");
+    var box = stemBoxOf(msg);
+    stopStemAudio();
+    stemSetMsg(msg, "");
     res.innerHTML = "";
     var t0 = Date.now();
+    var ctx = stemStartRun(box, msg);
     var tick = setInterval(function(){
-      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+      stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
+    ctx.timers.push(tick);
     // POST /api/stem/split {email, audioUrl, title} -> {ok, splitTaskId} (12 stems, 50 credits)
     apiPost("/api/stem/split", { email: email, audioUrl: audioUrl,
-      title: title }, 60000).then(function(j){
+      title: title }, 60000, function(c){ ctx.ctrl = c; }).then(function(j){
       clearInterval(tick);
+      if (ctx.cancelled) return;
       if (j && j.ok === true && j.splitTaskId) {
-        stemSetMsg(msg, t("splitWorking") + "0s");
-        pollStem12(j.splitTaskId, msg, res, t0);
+        stemProcShow(box, true, t("splitWorking") + "0s");
+        pollStem12(j.splitTaskId, msg, res, t0, ctx);
       } else {
+        stemRunEnd(ctx);
         stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
       }
     }).catch(function(){
       clearInterval(tick);
+      if (ctx.cancelled) return;
+      stemRunEnd(ctx);
       stemSetMsg(msg, t("noServer"), true);
     });
   }
@@ -1644,28 +1800,37 @@
   }
   function runVocalRemoverUrl(audioUrl, title, msg, res){
     if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
-    stemSetMsg(msg, t("splitWorking") + "0s");
+    var box = stemBoxOf(msg);
+    stopStemAudio();
+    stemSetMsg(msg, "");
     res.innerHTML = "";
     var t0 = Date.now();
+    var ctx = stemStartRun(box, msg);
     var tick = setInterval(function(){
-      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+      stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
+    ctx.timers.push(tick);
     // POST /api/studio/separate {email, audioUrl, songTitle, stems: 2}
     // -> {ok, stems} (Vocal Remover rows: unlocked stems + locked rows)
     apiPost("/api/studio/separate", { email: email, audioUrl: audioUrl,
-      songTitle: title, stems: 2 }, 360000).then(function(j){
+      songTitle: title, stems: 2 }, 360000, function(c){ ctx.ctrl = c; }).then(function(j){
       clearInterval(tick);
+      if (ctx.cancelled) return;
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
+        stemRunEnd(ctx);
         stemSetMsg(msg, vrDoneMsg(j));
         renderStemLinks(res, j.stems);
       } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
-        stemSetMsg(msg, t("splitWorking") + "0s");
-        pollStem6(j.hash, msg, res, t0);
+        stemProcShow(box, true, t("splitWorking") + "0s");
+        pollStem6(j.hash, msg, res, t0, ctx);
       } else {
+        stemRunEnd(ctx);
         stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
       }
     }).catch(function(e){
       clearInterval(tick);
+      if (ctx.cancelled) return;
+      stemRunEnd(ctx);
       if (e && e.name === "AbortError") stemSetMsg(msg, t("vocalResume"), true);
       else stemSetMsg(msg, t("noServer"), true);
     });
@@ -1741,32 +1906,45 @@
     row.appendChild(bVr); row.appendChild(b12);
     res.appendChild(lbl); res.appendChild(row);
   }
-  function pollStem12(splitTaskId, msg, res, t0){
+  function pollStem12(splitTaskId, msg, res, t0, ctx){
+    var box = stemBoxOf(msg);
     var n = 0;
     var tick = setInterval(function(){
-      stemSetMsg(msg, t("splitWorking") + Math.floor((Date.now() - t0) / 1000) + "s");
+      stemProcTime(box, t("splitWorking") + fmtStemTime((Date.now() - t0) / 1000));
     }, 1000);
+    if (ctx) ctx.timers.push(tick);
     function step(){
+      if (ctx && ctx.cancelled) return;
       if (n++ >= 120) {
         clearInterval(tick);
+        if (ctx) stemRunEnd(ctx);
         stemSetMsg(msg, t("splitFail"), true);
         return;
       }
       // POST /api/stem/status {email, splitTaskId} -> {ok, done, stems}
       apiPost("/api/stem/status", { email: email, splitTaskId: splitTaskId }, 30000).then(function(j){
+        if (ctx && ctx.cancelled) return;
         if (j && j.ok === true && j.done === true && Array.isArray(j.stems) && j.stems.length) {
           clearInterval(tick);
+          if (ctx) stemRunEnd(ctx);
           stemSetMsg(msg, t("splitDone"));
           renderStemLinks(res, j.stems);
         } else if (j && j.ok === false) {
           clearInterval(tick);
+          if (ctx) stemRunEnd(ctx);
           stemSetMsg(msg, cleanErr(j.error || t("splitFail")), true);
         } else {
-          setTimeout(step, 5000);
+          var tm = setTimeout(step, 5000);
+          if (ctx) ctx.timers.push(tm);
         }
-      }).catch(function(){ setTimeout(step, 5000); });
+      }).catch(function(){
+        if (ctx && ctx.cancelled) return;
+        var tm = setTimeout(step, 5000);
+        if (ctx) ctx.timers.push(tm);
+      });
     }
-    setTimeout(step, 5000);
+    var first = setTimeout(step, 5000);
+    if (ctx) ctx.timers.push(first);
   }
   function filterSongs(items, deletedIds, deletedUrls){
     var tomb = tombGet(email);
