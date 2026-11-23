@@ -190,16 +190,46 @@
   .md-note{margin-top:14px;font-size:.82rem;color:#6b7280;line-height:1.6}
   .md-create{display:block;margin-top:16px;text-align:center;font-size:1rem;font-weight:700;color:#fff;background:#0f766e;border-radius:10px;padding:13px 16px;text-decoration:none}
   .md-create:active{opacity:.85}
-  /* ---- Welcome hero (Stage 25): dark, glowing, like the ad the owner sent ---- */
+  /* ---- Welcome hero (Stage 26): 100% like the ad, names/system ours ---- */
   .hero{text-align:center;padding:28px 16px 24px;margin:14px 16px 0;border-radius:16px;overflow:hidden;
     background:radial-gradient(120% 120% at 50% 0%,#1a0b2e 0%,#000000 60%)}
   .hero[hidden]{display:none}
-  .hero-top{font-size:1.05rem;font-weight:700;color:#f5d0fe}
+  .hero-top{font-size:1.05rem;font-weight:700;color:#e11d48}
   .hero-brand{font-size:3.4rem;font-weight:900;letter-spacing:.02em;line-height:1.1;
     background:linear-gradient(90deg,#ff2d78 0%,#ff7a18 55%,#ffb800 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     filter:drop-shadow(0 0 18px rgba(255,90,40,.55))}
-  .hero-sub{margin-top:10px;font-size:1.05rem;font-weight:800;color:#ffffff;line-height:1.4}
+  /* Dashboard mockup (glowing card, his real numbers) */
+  .hero-dash{margin-top:18px;text-align:left;border:1px solid rgba(255,45,120,.55);border-radius:12px;
+    background:#0d0d14;box-shadow:0 0 30px rgba(255,45,120,.35);overflow:hidden}
+  .hd-side{display:none}
+  .hd-main{padding:12px}
+  .hd-title{font-size:.8rem;font-weight:700;color:#e5e7eb}
+  .hd-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .hd-stat{background:#171724;border-radius:8px;padding:8px 10px}
+  .hd-stat span{display:block;font-size:.68rem;color:#9ca3af}
+  .hd-stat b{font-size:1rem;color:#fff}
+  .hd-chart{width:100%;height:64px;margin-top:10px}
+  .hd-right{padding:12px;border-top:1px solid #26263a}
+  .hd-top{font-size:.72rem;color:#9ca3af}
+  .hd-big{font-size:1.6rem;font-weight:900;color:#fff}
+  .hd-song{font-size:.8rem;color:#fbbf24;margin-top:2px}
+  .hd-bar{margin-top:8px}
+  .hd-bar span{font-size:.68rem;color:#9ca3af}
+  .hd-bar .bar{height:5px;background:#26263a;border-radius:99px;margin-top:3px;overflow:hidden}
+  .hd-bar .bar i{display:block;height:100%;background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:99px}
+  .hd-bar b{font-size:.68rem;color:#e5e7eb}
+  @media (min-width:560px){
+    .hero-dash{display:flex}
+    .hd-side{display:block;width:110px;flex:none;padding:12px 10px;border-right:1px solid #26263a}
+    .hd-logo{font-size:.85rem;font-weight:900;color:#fff;margin-bottom:12px}
+    .hd-nav{font-size:.72rem;color:#9ca3af;padding:5px 6px;border-radius:6px}
+    .hd-nav.on{background:#ff2d78;color:#fff}
+    .hd-main{flex:1}
+    .hd-right{width:170px;flex:none;border-top:0;border-left:1px solid #26263a}
+  }
+  .hero-sub{margin-top:18px;font-size:1.15rem;font-weight:900;color:#ffffff;line-height:1.4}
+  .hero-sub2{margin-top:8px;font-size:.9rem;color:#d1d5db;line-height:1.5}
   .hero-btn{display:inline-block;margin-top:16px;font-size:1rem;font-weight:800;color:#fff;
     background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:13px 28px;text-decoration:none;
     box-shadow:0 0 24px rgba(255,90,40,.55)}
@@ -402,8 +432,43 @@
     <div class="hero" id="hero" hidden>
       <div class="hero-top" data-i18n="heroTop">បង្កើតចម្រៀងដោយ AI?</div>
       <div class="hero-brand">MovAi</div>
-      <div class="hero-sub" data-i18n="heroSub">ច្រៀងច្បាស់ ពិរោះ ជាងមុន</div>
-      <a class="hero-btn" href="/Movai.MusicGenerate/kh" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <div class="hero-dash">
+        <div class="hd-side">
+          <div class="hd-logo">MovAi</div>
+          <div class="hd-nav on">Dashboard</div>
+          <div class="hd-nav">Songs</div>
+          <div class="hd-nav">Analytics</div>
+          <div class="hd-nav">Models</div>
+          <div class="hd-nav">Audience</div>
+          <div class="hd-nav">Playlists</div>
+          <div class="hd-nav">Settings</div>
+        </div>
+        <div class="hd-main">
+          <div class="hd-title">Performance Overview</div>
+          <div class="hd-stats">
+            <div class="hd-stat"><span>Views</span><b>22,357</b></div>
+            <div class="hd-stat"><span>Top Song</span><b>13,367</b></div>
+            <div class="hd-stat"><span>Subscribers</span><b>109</b></div>
+            <div class="hd-stat"><span>Videos</span><b>20</b></div>
+          </div>
+          <svg class="hd-chart" viewBox="0 0 300 80" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="hdg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2d78"/><stop offset="1" stop-color="#ff7a18"/></linearGradient></defs>
+            <path d="M0,70 L40,64 L80,67 L120,50 L160,54 L200,34 L240,38 L280,14 L300,10 L300,80 L0,80 Z" fill="rgba(255,45,120,.18)"/>
+            <polyline points="0,70 40,64 80,67 120,50 160,54 200,34 240,38 280,14 300,10" fill="none" stroke="url(#hdg)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="hd-right">
+          <div class="hd-top">Top Song</div>
+          <div class="hd-big">13,367</div>
+          <div class="hd-song">មិត្តល្អ និង មិត្តអប្រិយ</div>
+          <div class="hd-bar"><span>Top song share</span><div class="bar"><i style="width:60%"></i></div><b>60%</b></div>
+          <div class="hd-bar"><span>Long videos</span><div class="bar"><i style="width:80%"></i></div><b>80%</b></div>
+          <div class="hd-bar"><span>Shorts</span><div class="bar"><i style="width:20%"></i></div><b>20%</b></div>
+        </div>
+      </div>
+      <div class="hero-sub" data-i18n="heroSub">MovAi បង្កើតបទចម្រៀង។ អ្នកធ្វើឲ្យវាល្បី។</div>
+      <div class="hero-sub2" data-i18n="heroSub2">បង្វែរបទ AI ទៅជាបទដែលអាចចាក់បានគ្រប់ទីកន្លែង។</div>
+      <a class="hero-btn" href="/Movai.MusicGenerate/kh" data-i18n="heroCta">សាកល្បង MovAi ឥតគិតថ្លៃ</a>
       <div class="hero-hint" data-i18n="heroHint">ឬមើលបទ YouTube ខាងក្រោម</div>
     </div>
     <div class="feed" id="feed"></div>
@@ -625,7 +690,9 @@
       mdCreate: "បង្កើតចម្រៀងជាមួយម៉ូដែលនេះ",
       mdNote: "បង្កើតម្ដង 12 Song Credits បាន 2 បទ",
       heroTop: "បង្កើតចម្រៀងដោយ AI?",
-      heroSub: "ច្រៀងច្បាស់ ពិរោះ ជាងមុន",
+      heroSub: "MovAi បង្កើតបទចម្រៀង។ អ្នកធ្វើឲ្យវាល្បី។",
+      heroSub2: "បង្វែរបទ AI ទៅជាបទដែលអាចចាក់បានគ្រប់ទីកន្លែង។",
+      heroCta: "សាកល្បង MovAi ឥតគិតថ្លៃ",
       heroHint: "ឬមើលបទ YouTube ខាងក្រោម"
     },
     en: {
@@ -687,7 +754,9 @@
       mdCreate: "Create a song with this model",
       mdNote: "12 Song Credits per creation — you get 2 songs",
       heroTop: "Made a song with AI?",
-      heroSub: "Clearer singing, more beautiful than before",
+      heroSub: "MovAi CREATES THE SONG. YOU MAKE IT GO VIRAL.",
+      heroSub2: "Turn AI songs into stream-ready releases.",
+      heroCta: "TRY MovAi FREE",
       heroHint: "Or watch the YouTube songs below"
     }
   };
