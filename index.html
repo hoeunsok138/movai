@@ -33,7 +33,7 @@
   .wrap{max-width:720px;margin:0 auto}
 
   /* ---- Header: two rows, directly on the background (transparent) ---- */
-  header{position:sticky;top:0;z-index:20;
+  header{position:fixed;top:0;left:0;right:0;z-index:50;max-width:720px;margin:auto;
     background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
     background-attachment:fixed;}
   .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -86,7 +86,7 @@
   [hidden]{display:none !important}
 
   /* ---- Feed: plain list rows directly on the background ---- */
-  main{padding-bottom:120px}
+  main{padding-top:108px;padding-bottom:120px}
   .feed{animation:fade .3s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
   .row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
