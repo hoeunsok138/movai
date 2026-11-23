@@ -190,6 +190,14 @@
   .md-note{margin-top:14px;font-size:.82rem;color:#6b7280;line-height:1.6}
   .md-create{display:block;margin-top:16px;text-align:center;font-size:1rem;font-weight:700;color:#fff;background:#0f766e;border-radius:10px;padding:13px 16px;text-decoration:none}
   .md-create:active{opacity:.85}
+  /* ---- Welcome hero (Stage 24): only when the feed is empty ---- */
+  .hero{text-align:center;padding:28px 16px 8px}
+  .hero[hidden]{display:none}
+  .hero-logo{width:72px;height:72px;object-fit:contain}
+  .hero-tag{margin-top:12px;font-size:1rem;font-weight:700;color:#1f2937;line-height:1.5}
+  .hero-btn{display:inline-block;margin-top:16px;font-size:1rem;font-weight:700;color:#fff;background:#0f766e;border-radius:10px;padding:13px 28px;text-decoration:none}
+  .hero-btn:active{opacity:.85}
+  .hero-hint{margin-top:12px;font-size:.82rem;color:#6b7280}
   /* ---- Gift sheet ---- */
   .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
@@ -315,6 +323,8 @@
   html[data-theme="dark"] .md-feats li{border-bottom-color:#24362f}
   html[data-theme="dark"] .md-panel-close{color:#e7f0ec}
   html[data-theme="dark"] .md-chev{color:#5b6f66}
+  html[data-theme="dark"] .hero-tag{color:#e7f0ec}
+  html[data-theme="dark"] .hero-hint{color:#8fa89e}
   html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
   html[data-theme="dark"] .trow{border-bottom-color:#24362f}
   html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
@@ -384,6 +394,12 @@
   <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
 
   <main>
+    <div class="hero" id="hero" hidden>
+      <img class="hero-logo" src="movai-logo-mark.png" alt="MovAi">
+      <div class="hero-tag" data-i18n="heroTag">បង្កើតចម្រៀងដោយ AI — ច្រៀងច្បាស់ ពិរោះ ជាងមុន</div>
+      <a class="hero-btn" href="/Movai.MusicGenerate/kh" data-i18n="navCreate">បង្កើតចម្រៀង</a>
+      <div class="hero-hint" data-i18n="heroHint">ឬមើលបទ YouTube ខាងក្រោម</div>
+    </div>
     <div class="feed" id="feed"></div>
     <div class="status" id="status">កំពុងផ្ទុកចម្រៀង…</div>
   </main>
@@ -601,7 +617,9 @@
       mdBest: "ល្អបំផុត",
       mdFeatTitle: "មុខងារដែលអ្នកអាចធ្វើបាន",
       mdCreate: "បង្កើតចម្រៀងជាមួយម៉ូដែលនេះ",
-      mdNote: "បង្កើតម្ដង 12 Song Credits បាន 2 បទ"
+      mdNote: "បង្កើតម្ដង 12 Song Credits បាន 2 បទ",
+      heroTag: "បង្កើតចម្រៀងដោយ AI — ច្រៀងច្បាស់ ពិរោះ ជាងមុន",
+      heroHint: "ឬមើលបទ YouTube ខាងក្រោម"
     },
     en: {
       claimTitle: "Free Gift",
@@ -660,7 +678,9 @@
       mdBest: "Best",
       mdFeatTitle: "What you can do",
       mdCreate: "Create a song with this model",
-      mdNote: "12 Song Credits per creation — you get 2 songs"
+      mdNote: "12 Song Credits per creation — you get 2 songs",
+      heroTag: "Create songs with AI — clear voices, more beautiful than before",
+      heroHint: "Or watch the YouTube songs below"
     }
   };
   var LANG_KEY = "movai-lang";
@@ -868,6 +888,10 @@
   sellBtn.addEventListener("click", function(){ window.location.href = "movai-new-market.html"; });
 
   /* ---- feed ---- */
+  function showHero(on){
+    var h = document.getElementById("hero");
+    if (h) h.hidden = !on;
+  }
   function setStatus(html){
     statusEl.innerHTML = "";
     if (typeof html === "string") { statusEl.textContent = html; return; }
@@ -881,6 +905,7 @@
     b.className = "retry"; b.type = "button"; b.textContent = t("retry");
     b.addEventListener("click", loadFeed);
     wrap.appendChild(el); wrap.appendChild(b);
+    showHero(false);
     setStatus(wrap);
   }
   function probeDuration(song, durEl){
@@ -895,8 +920,9 @@
   }
   function renderFeed(){
     feedEl.innerHTML = "";
-    if (!songs.length) { setStatus(t("noSongs")); return; }
+    if (!songs.length) { showHero(true); setStatus(""); return; }
     statusEl.textContent = "";
+    showHero(false);
     songs.forEach(function(song, i){
       var row = document.createElement("button");
       row.type = "button"; row.className = "row"; row.dataset.i = i;
@@ -1191,6 +1217,7 @@
   }
 
   function loadFeed(){
+    showHero(false);
     setStatus(t("loadingSongs"));
     feedEl.innerHTML = "";
     fetch(FEED_URL, { cache: "no-store" })
