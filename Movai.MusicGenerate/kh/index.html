@@ -34,7 +34,7 @@
   .wrap{max-width:720px;margin:0 auto}
 
   /* ---- Header: two rows, directly on the background (transparent) ---- */
-  header{position:sticky;top:0;z-index:20;
+  header{position:fixed;top:0;left:0;right:0;z-index:50;max-width:720px;margin:auto;
     background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
     background-attachment:fixed;}
   .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -87,7 +87,7 @@
   .menu a[aria-current="page"]{font-weight:700}
 
   /* ---- Create form: plain elements directly on the background ---- */
-  main{padding:20px 16px 120px}
+  main{padding:108px 16px 120px}
   .field{margin-bottom:22px}
   .lbl{display:block;font-size:.92rem;font-weight:700;color:#1f2937;margin-bottom:7px}
   .hint{font-size:.82rem;color:#6b7280;margin-top:6px}
