@@ -33,7 +33,7 @@
   .wrap{max-width:720px;margin:0 auto}
 
   /* ---- Header: two rows, directly on the background (transparent) ---- */
-  header{position:sticky;top:0;z-index:20;
+  header{position:fixed;top:0;left:0;right:0;z-index:50;max-width:720px;margin-left:auto;margin-right:auto;
     background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
     background-attachment:fixed;}
   .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -114,7 +114,7 @@
   .seg-mini button.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
 
   /* ---- Chat: plain message list on the background ---- */
-  main{padding-bottom:120px}
+  main{padding-top:65px;padding-bottom:120px}
   .sess-bar{display:flex;align-items:center;gap:8px;padding:12px 16px 0}
   .sess-btn{flex:none;font-size:.85rem;font-weight:600;color:#1f2937;
     border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;background:transparent}
@@ -287,21 +287,6 @@
   .up-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid #cbd5d1;background:#ffffff;color:#0f766e;font-size:20px;line-height:1;cursor:pointer}
   .up-btn:active{background:#e5e7eb}
   html[data-theme="dark"] .up-btn{background:#16261f;border-color:#3a524a;color:#2dd4bf}
-  .edit-veil{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none}
-  .edit-veil.open{display:block}
-  .edit-sheet{position:fixed;left:0;right:0;bottom:0;z-index:91;background:#f2faf6;border-radius:16px 16px 0 0;padding:16px;max-height:86vh;overflow:auto;display:none}
-  .edit-sheet.open{display:block}
-  html[data-theme="dark"] .edit-sheet{background:#0e1a15}
-  .edit-prev{width:100%;max-height:300px;object-fit:contain;border-radius:12px;background:#e5e7eb}
-  .edit-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .edit-chip{flex:1;min-width:64px;padding:8px 4px;border-radius:10px;border:1px solid #cbd5d1;background:#fff;font-size:.9rem;cursor:pointer;text-align:center}
-  .edit-chip.on{border-color:#0f766e;background:#0f766e;color:#fff}
-  html[data-theme="dark"] .edit-chip{background:#16261f;border-color:#3a524a;color:#e7f0ec}
-  html[data-theme="dark"] .edit-chip.on{border-color:#2dd4bf;background:#0f766e;color:#fff}
-  .edit-bg{width:100%;margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid #cbd5d1;font-size:1rem;background:#fff;color:inherit}
-  html[data-theme="dark"] .edit-bg{background:#16261f;border-color:#3a524a;color:#e7f0ec}
-  .edit-note{font-size:.85rem;color:#6b7280;margin-top:8px}
-  html[data-theme="dark"] .edit-note{color:#8fa89e}
 </style>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -368,22 +353,6 @@
   <a class="vw-dl" id="viewerDl" href="#" target="_blank" rel="noopener" download data-i18n="download">Download</a>
 </div>
 
-<div class="edit-veil" id="imgEditVeil"></div>
-<div class="edit-sheet" id="imgEditSheet" role="dialog" aria-label="Edit photo">
-  <img class="edit-prev" id="imgEditPrev" alt="">
-  <div class="edit-row" id="imgEditCrops">
-    <button type="button" class="edit-chip on" data-ratio="orig" data-i18n="cropOrig">ដើម</button>
-    <button type="button" class="edit-chip" data-ratio="1:1">1:1</button>
-    <button type="button" class="edit-chip" data-ratio="9:16">9:16</button>
-    <button type="button" class="edit-chip" data-ratio="16:9">16:9</button>
-  </div>
-  <input class="edit-bg" id="imgEditBg" type="text" data-i18n-ph="bgPromptPh" placeholder="ប្រាប់ថាចង់កែអ្វី៖ ឧ. ដូរផ្ទៃខាងក្រោយជា ឆ្នេរសមុទ្រ…">
-  <div class="edit-note" data-i18n="keepSamePhoto">កែតែអ្វីដែលបងប្រាប់ទេ នៅសល់ដដែលទាំងអស់។</div>
-  <div class="edit-row">
-    <button type="button" class="act-btn" id="imgEditGo" data-i18n="createNewBg">កែរូបតាមនេះ</button>
-    <button type="button" class="act-btn" id="imgEditCancel" data-i18n="cancel">បោះបង់</button>
-  </div>
-</div>
 <div id="tsBox" style="display:none"></div>
   <div class="input-bar">
   <div class="input-in">
@@ -479,6 +448,7 @@
       keepSamePhoto: "កែតែអ្វីដែលបងប្រាប់ទេ នៅសល់ដដែលទាំងអស់។",
       createNewBg: "កែរូបតាមនេះ",
       editCostConfirm: "កែរូបនេះត្រូវការ 50 Media Credits។ បន្តឬទេ?",
+      editConfirmWith: "កែរូបនេះតាម៖ ",
       downloading: "កំពុងទាញយក…",
       downloadMp3: "ទាញយក MP3",
       downloadMp4: "ទាញយក MP4",
@@ -551,6 +521,7 @@
       keepSamePhoto: "Only what you ask changes — everything else stays the same.",
       createNewBg: "Edit photo",
       editCostConfirm: "Editing this photo costs 50 Media Credits. Continue?",
+      editConfirmWith: "Edit this photo as: ",
       downloading: "Downloading…",
       downloadMp3: "Download MP3",
       downloadMp4: "Download MP4",
@@ -746,6 +717,7 @@
   if (!cur) {
     cur = { id: "s" + Date.now().toString(36), title: "", at: Date.now(), messages: [] };
     sessions.unshift(cur);
+    pendingPhoto = null;
     saveSessions(sessions);
     try { localStorage.setItem(CUR_KEY, cur.id); } catch (e) {}
   }
@@ -757,6 +729,7 @@
   function newSession(){
     cur = { id: "s" + Date.now().toString(36), title: "", at: Date.now(), messages: [] };
     sessions.unshift(cur);
+    pendingPhoto = null;
     saveSessions(sessions);
     try { localStorage.setItem(CUR_KEY, cur.id); } catch (e) {}
     renderSessList();
@@ -811,6 +784,7 @@
           if (!cur) {
             cur = { id: "s" + Date.now().toString(36), title: "", at: Date.now(), messages: [] };
             sessions.unshift(cur);
+    pendingPhoto = null;
           }
           try { localStorage.setItem(CUR_KEY, cur.id); } catch (e2) {}
         }
@@ -821,6 +795,7 @@
       row.appendChild(del);
       row.addEventListener("click", function(){
         cur = s;
+        pendingPhoto = null;
         try { localStorage.setItem(CUR_KEY, cur.id); } catch (e) {}
         sessListEl.hidden = true;
         renderMessages();
@@ -1146,56 +1121,19 @@
   }
 
 
-  /* ---- chat photo editor: upload a photo, crop it, change ONLY the
-     background and keep the same photo (owner order 2026-11-23).
-     Flow: pick -> sheet (crop + background text) -> Generate ->
-     50-Credit confirm (same pattern as video) -> upload ->
-     /api/gen/image/edit -> poll the existing image status -> the
-     edited image lands in the chat as a normal image message. ---- */
+  /* ---- photo editing in the chat (owner order 2026-11-23) ----
+     Upload a photo in the chat -> the photo appears IN the chat as the
+     user's own message -> the user types what to change as a normal
+     chat message -> that message goes to the EDIT flow (not a new
+     image, not a chat text reply) -> 50-Credit confirm first (same
+     pattern as video) -> /api/gen/image/edit -> poll the existing
+     image status -> the edited photo lands in the chat, same person
+     kept. The photo is uploaded at pick time (free, no credits) so
+     it shows in the chat right away; pendingPhoto is session-only
+     and clears on a new/changed session or on Cancel. ---- */
   var imgUpBtn = document.getElementById("chatImgUp");
   var imgFileEl = document.getElementById("chatImgFile");
-  var imgEditVeil = document.getElementById("imgEditVeil");
-  var imgEditSheet = document.getElementById("imgEditSheet");
-  var imgEditPrev = document.getElementById("imgEditPrev");
-  var imgEditBg = document.getElementById("imgEditBg");
-  var imgEditCrops = document.getElementById("imgEditCrops");
-  var imgEditOrigData = "";
-  var imgEditOrigName = "photo.jpg";
-  var imgEditData = "";
-  var imgEditName = "photo.jpg";
-  var imgEditBusy = false;
-  function openImgEditor(){ if (imgEditVeil) imgEditVeil.classList.add("open"); if (imgEditSheet) imgEditSheet.classList.add("open"); }
-  function closeImgEditor(){ if (imgEditVeil) imgEditVeil.classList.remove("open"); if (imgEditSheet) imgEditSheet.classList.remove("open"); }
-  function renderImgCrop(ratio){
-    if (!imgEditOrigData) return;
-    var im = new Image();
-    im.onload = function(){
-      var w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
-      if (!w || !h) return;
-      var tw = w, th = h, sx = 0, sy = 0;
-      if (ratio !== "orig") {
-        var parts = String(ratio).split(":");
-        var target = (Number(parts[0]) || 1) / (Number(parts[1]) || 1);
-        if (w / h > target) { th = h; tw = Math.round(h * target); sx = Math.round((w - tw) / 2); }
-        else { tw = w; th = Math.round(w / target); sy = Math.round((h - th) / 2); }
-      }
-      var scale = Math.min(1, 1024 / Math.max(tw, th));
-      var cv = document.createElement("canvas");
-      cv.width = Math.max(1, Math.round(tw * scale));
-      cv.height = Math.max(1, Math.round(th * scale));
-      var ctx = cv.getContext("2d");
-      if (!ctx) return;
-      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, cv.width, cv.height);
-      ctx.drawImage(im, sx, sy, tw, th, 0, 0, cv.width, cv.height);
-      var out = "";
-      try { out = cv.toDataURL("image/jpeg", 0.92); } catch (e) { return; }
-      if (!out || out.indexOf("data:image/jpeg") !== 0) return;
-      imgEditData = out;
-      imgEditName = "photo.jpg";
-      if (imgEditPrev) imgEditPrev.src = out;
-    };
-    im.src = imgEditOrigData;
-  }
+  var pendingPhoto = null;
   if (imgUpBtn) imgUpBtn.addEventListener("click", function(){
     if (!getEmail()) {
       var bar = document.getElementById("signinBar");
@@ -1213,42 +1151,22 @@
     rd.onload = function(){
       var dataUrl = String(rd.result || "");
       if (!dataUrl) return;
-      imgEditOrigData = dataUrl;
-      imgEditOrigName = f.name || "photo.jpg";
-      imgEditData = dataUrl;
-      imgEditName = imgEditOrigName;
-      if (imgEditPrev) imgEditPrev.src = dataUrl;
-      if (imgEditBg) imgEditBg.value = "";
-      if (imgEditCrops) {
-        var chips = imgEditCrops.querySelectorAll("button[data-ratio]");
-        for (var i = 0; i < chips.length; i++) chips[i].classList.toggle("on", chips[i].getAttribute("data-ratio") === "orig");
-      }
-      openImgEditor();
-      renderImgCrop("orig");
+      var b64 = dataUrl.split(",")[1] || "";
+      apiPost("/api/gen/image/upload", { email: getEmail(), filename: f.name || "photo.jpg", data: b64 }, 120000).then(function(j){
+        if (!j || j.ok !== true || !j.url) { addError((j && j.error) || t("noServer")); return; }
+        pendingPhoto = { url: j.url, name: f.name || "photo.jpg" };
+        cur.messages.push({ role: "user", content: "", at: Date.now(), media: [{ kind: "image", url: j.url, prompt: "" }] });
+        touchSession();
+        renderMessages();
+      }).catch(function(){ addError(t("noServer")); });
     };
     rd.readAsDataURL(f);
     imgFileEl.value = "";
   });
-  if (imgEditCrops) imgEditCrops.addEventListener("click", function(e){
-    var b = e.target && e.target.closest ? e.target.closest("button[data-ratio]") : null;
-    if (!b) return;
-    var bs = imgEditCrops.querySelectorAll("button[data-ratio]");
-    for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i] === b);
-    renderImgCrop(b.getAttribute("data-ratio"));
-  });
-  if (imgEditVeil) imgEditVeil.addEventListener("click", closeImgEditor);
-  var imgEditCancel = document.getElementById("imgEditCancel");
-  if (imgEditCancel) imgEditCancel.addEventListener("click", closeImgEditor);
-  var imgEditGo = document.getElementById("imgEditGo");
-  if (imgEditGo) imgEditGo.addEventListener("click", askImgEdit);
-  function askImgEdit(){
-    var bg = imgEditBg ? imgEditBg.value.trim() : "";
-    if (!bg) { addError(t("bgNeeded")); return; }
-    if (!imgEditData) { addError(t("noServer")); return; }
-    closeImgEditor();
+  function askChatEdit(instruction, done){
     var div = el("div", "msg ai");
     var row = el("div", "confirm-row");
-    var tx = el("span", "confirm-text", t("editCostConfirm"));
+    var tx = el("span", "confirm-text", t("editConfirmWith") + "\u00ab" + instruction + "\u00bb \u2014 " + t("editCostConfirm"));
     var ok = el("button", "act-btn", t("approve"));
     ok.type = "button";
     var no = el("button", "act-btn", t("cancel"));
@@ -1257,38 +1175,44 @@
     div.appendChild(row);
     msgsEl.appendChild(div);
     scrollBottom();
-    ok.addEventListener("click", function(){ div.remove(); runImgEdit(bg); });
-    no.addEventListener("click", function(){ div.remove(); });
+    ok.addEventListener("click", function(){ div.remove(); runChatEdit(instruction, done); });
+    no.addEventListener("click", function(){ div.remove(); pendingPhoto = null; done(); });
   }
-  function runImgEdit(bg){
-    if (imgEditBusy) return;
+  var imgEditBusy = false;
+  function runChatEdit(instruction, done){
+    if (imgEditBusy || !pendingPhoto) { done(); return; }
     imgEditBusy = true;
+    var photoUrl = pendingPhoto.url;
     var prog = makeImageProgressBubble();
-    function doneEdit(){ imgEditBusy = false; }
-    function fail(err){ prog.stop(); prog.el.remove(); addError(err); doneEdit(); }
-    var b64 = String(imgEditData).split(",")[1] || "";
-    apiPost("/api/gen/image/upload", { email: getEmail(), filename: imgEditName, data: b64 }, 120000).then(function(j){
-      if (!j || j.ok !== true || !j.url) { fail((j && j.error) || t("noServer")); return; }
-      apiPost("/api/gen/image/edit", { email: getEmail(), imageUrl: j.url, prompt: bg }, 60000).then(function(e){
-        if (!e || e.ok !== true) { fail((e && e.error) || t("noServer")); return; }
-        if (e.jobId) {
-          pollJob("image", "magichour", e.jobId, function(r){
-            if (r.ok) {
-              prog.stop(); prog.el.remove();
-              cur.messages.push({ role: "assistant", content: "", at: Date.now(), media: [{ kind: "image", url: r.url, prompt: bg }] });
-              touchSession();
-              renderMessages();
-              doneEdit();
-            } else fail(r.error);
-          });
-          return;
-        }
-        fail(t("noServer"));
-      }).catch(function(){ fail(t("noServer")); });
+    function finishEdit(){ imgEditBusy = false; pendingPhoto = null; done(); }
+    function fail(err){ prog.stop(); prog.el.remove(); addError(err); finishEdit(); }
+    apiPost("/api/gen/image/edit", { email: getEmail(), imageUrl: photoUrl, prompt: instruction }, 60000).then(function(e){
+      if (!e || e.ok !== true) { fail((e && e.error) || t("noServer")); return; }
+      if (e.jobId) {
+        pollJob("image", "magichour", e.jobId, function(r){
+          if (r.ok) {
+            prog.stop(); prog.el.remove();
+            cur.messages.push({ role: "assistant", content: "", at: Date.now(), media: [{ kind: "image", url: r.url, prompt: instruction }] });
+            touchSession();
+            renderMessages();
+            finishEdit();
+          } else fail(r.error);
+        });
+        return;
+      }
+      fail(t("noServer"));
     }).catch(function(){ fail(t("noServer")); });
   }
-
-
+  // A photo uploaded in the previous visit is still the pending photo
+  // (it is the last message of this session) — the user can keep
+  // telling the chat what to do with it.
+  if (!pendingPhoto && cur && cur.messages && cur.messages.length) {
+    var lm = cur.messages[cur.messages.length - 1];
+    if (lm && lm.role === "user" && lm.media && lm.media.length) {
+      var lu = lm.media[lm.media.length - 1];
+      if (lu && lu.kind === "image" && lu.url) pendingPhoto = { url: lu.url, name: "photo.jpg" };
+    }
+  }
   /* ---- downloader (SnapTube-style, cobalt) ----
      Paste a link + say "download as mp3/mp4". Cobalt needs a human
      Turnstile token, so the token is minted in this browser and the
@@ -1467,6 +1391,7 @@
     var d = done || function(){};
     var dl = downloadIntent(text);
     if (dl) { runDownload(dl.url, dl.format, d); return; }
+    if (pendingPhoto) { askChatEdit(text, d); return; }
     var kind = detectKind(text);
     if (kind === "image") { genImage(text, null, d); return; }
     if (kind === "video") {
