@@ -135,6 +135,31 @@
   .contact-text b{display:block;font-size:.85rem;font-weight:600;color:#1f2937}
   .contact-text span{display:block;font-size:.75rem;color:#6b7280;margin-top:2px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* ---- YouTube section (Stage 21): real logo image, official embed ---- */
+  .yt-sec{border-top:1px solid #e5e7eb;margin-top:14px;padding:14px 16px 0}
+  .yt-head{display:flex;align-items:center;gap:10px}
+  .yt-logo-chip{flex:none;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:5px 8px;display:flex;align-items:center}
+  .yt-logo-chip img{height:20px;width:auto;display:block}
+  .yt-name{flex:1;min-width:0;font-size:.92rem;font-weight:700;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .yt-sub{flex:none;font-size:.78rem;font-weight:700;color:#fff;background:#f00;border-radius:8px;padding:6px 10px;text-decoration:none}
+  .yt-player{margin-top:12px;position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+  .yt-player img{width:100%;height:100%;object-fit:cover;display:block}
+  .yt-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:transparent;border:0;cursor:pointer}
+  .yt-play span{width:56px;height:56px;border-radius:50%;background:rgba(255,0,0,.92);color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center}
+  .yt-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .yt-now{margin-top:10px;font-size:.85rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .yt-now span{color:#6b7280;font-weight:400}
+  .yt-watch{display:inline-block;margin-top:6px;font-size:.8rem;font-weight:600;color:#0f766e}
+  .yt-list{margin-top:10px}
+  .yt-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .yt-row:active{background:#eef1f0}
+  .yt-row.playing{background:#eef7f4}
+  .yt-thumb{position:relative;flex:none;width:112px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000}
+  .yt-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .yt-thumb b{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.8);color:#fff;font-size:.68rem;font-weight:600;padding:1px 4px;border-radius:4px}
+  .yt-text{flex:1;min-width:0}
+  .yt-title{display:block;font-size:.85rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .yt-meta{display:block;font-size:.75rem;color:#6b7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   /* ---- Gift sheet ---- */
   .gift-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     background:rgba(242,250,246,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px}
@@ -245,6 +270,11 @@
   html[data-theme="dark"] .contact-row{border-bottom-color:#24362f}
   html[data-theme="dark"] .contact-text b{color:#e7f0ec}
   html[data-theme="dark"] .contact-text span{color:#8fa89e}
+  html[data-theme="dark"] .yt-sec{border-top-color:#24362f}
+  html[data-theme="dark"] .yt-name,html[data-theme="dark"] .yt-now,html[data-theme="dark"] .yt-title{color:#e7f0ec}
+  html[data-theme="dark"] .yt-meta,html[data-theme="dark"] .yt-now span{color:#8fa89e}
+  html[data-theme="dark"] .yt-row{border-bottom-color:#24362f}
+  html[data-theme="dark"] .yt-row:active,html[data-theme="dark"] .yt-row.playing{background:#1d2f28}
   html[data-theme="dark"] .info,html[data-theme="dark"] .buybox p,html[data-theme="dark"] .trow,html[data-theme="dark"] .addr{color:#e7f0ec}
   html[data-theme="dark"] .trow{border-bottom-color:#24362f}
   html[data-theme="dark"] .trow span,html[data-theme="dark"] .own-note{color:#8fa89e}
@@ -317,6 +347,21 @@
     <div class="feed" id="feed"></div>
     <div class="status" id="status">កំពុងផ្ទុកចម្រៀង…</div>
   </main>
+
+  <!-- YouTube section (Stage 21): official embed, real logo image.
+       16 songs, most-viewed first. Tap a row to play it; when a song
+       ends the next one starts by itself. No autoplay on load. -->
+  <section class="yt-sec" id="ytSec">
+    <div class="yt-head">
+      <span class="yt-logo-chip"><img src="youtube-logo.png" alt="YouTube"></span>
+      <span class="yt-name">Music 1M Views</span>
+      <a class="yt-sub" href="https://www.youtube.com/@Music1MViews" target="_blank" rel="noopener" data-i18n="ytSubscribe">ជាវ</a>
+    </div>
+    <div class="yt-player" id="ytPlayer"></div>
+    <div class="yt-now" id="ytNow"></div>
+    <a class="yt-watch" id="ytWatch" href="https://www.youtube.com/@Music1MViews" target="_blank" rel="noopener" data-i18n="ytWatchOn">មើលនៅ YouTube</a>
+    <div class="yt-list" id="ytList"></div>
+  </section>
 
   <!-- Contact footer (owner order): real logo images, never code-drawn.
        Profile photos could not be fetched from Facebook (the Page photo
@@ -482,7 +527,10 @@
       repeatAll: "ធ្វើទាំងអស់",
       repeatOne: "បទនេះម្តងទៀត",
       shuffle: "ចៃដន្យ",
-      close: "បិទ"
+      close: "បិទ",
+      ytWatchOn: "មើលនៅ YouTube",
+      ytSubscribe: "ជាវ",
+      ytPlaying: "កំពុងចាក់"
     },
     en: {
       claimTitle: "Free Gift",
@@ -530,7 +578,10 @@
       repeatAll: "Repeat All",
       repeatOne: "Repeat One",
       shuffle: "Shuffle",
-      close: "Close"
+      close: "Close",
+      ytWatchOn: "Watch on YouTube",
+      ytSubscribe: "Subscribe",
+      ytPlaying: "Playing"
     }
   };
   var LANG_KEY = "movai-lang";
@@ -544,7 +595,7 @@
     return (d && d[k]) || (STR.en && STR.en[k]) || k;
   }
 
-  function onLangChange(){ renderFeed(); }
+  function onLangChange(){ renderFeed(); if (typeof renderYtList === "function") renderYtList(); }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
@@ -794,6 +845,143 @@
       probeDuration(song, dur);
     });
   }
+  /* ---- YouTube section (Stage 21): official embed, real logo image.
+     16 songs, most-viewed first. Tap a row to play it in the player;
+     when a song ends, the next one starts by itself (YouTube IFrame API).
+     No autoplay on page load, no hidden player, no loop — the visitor
+     presses play, and a view counts after ~30s of watching. ---- */
+  var YT_VIDEOS = [
+    { id: "5Cv9GaLJ2Q0", title: "មិត្តល្អ និង មិត្តអប្រិយ | Good Friends & Fake Friends | Khmer Hip Hop Rap | AI Music", views: 13367, dur: "4:01", date: "2026-09-09" },
+    { id: "cg1h_wdVZNM", title: "The Role | តួនាទី | Khmer English Rap | AI Music", views: 2290, dur: "4:23", date: "2026-09-10" },
+    { id: "QeOeEOJzFY0", title: "Toxic Bro អាសំលាញ់អាប់ | Music Video MC1 & Mister បងម៉ូវ | Music 1M Views", views: 2067, dur: "4:15", date: "2026-09-12" },
+    { id: "-xNV7tQ7CXQ", title: "Let You Go — អោយអូនទៅធ្វើការ / អោយអូនទៅមានថ្មី | MC1 & Mister បងម៉ូវ | Music 1M Views", views: 1584, dur: "3:50", date: "2026-09-11" },
+    { id: "F1tDYhI0RRs", title: "POOR IN WEALTH RICH IN HEART មនុស្សក្រទ្រព្យ និង មនុស្សក្រចិត្ត", views: 414, dur: "4:12", date: "2026-09-13" },
+    { id: "pqAdRNJMVQk", title: "CAN'T TOLERATE | មិនចេះទ្រ", views: 402, dur: "3:51", date: "2026-09-15" },
+    { id: "1nTgnzxpzxE", title: "ANCESTORS ARE WAITING | បុណ្យភ្ជុំ ដូនតារង់ចាំ", views: 355, dur: "4:20", date: "2026-09-15" },
+    { id: "uCKL3Y0J1hM", title: "Are You Tired of Me ធុញបងមែនទេ ពេលបងចង់ក្បែរ | MC 1 & Mister បងម៉ូវ", views: 272, dur: "4:20", date: "2026-09-25" },
+    { id: "OJr7E4QjIlI", title: "One Day Lover សង្សារមួយថ្ងៃ | MC 1 & Mister បងម៉ូវ", views: 237, dur: "4:37", date: "2026-09-25" },
+    { id: "WKsE1osdMsE", title: "Pray to the Gods បួងសួងទេវតា សូមចិត្តនាងកុំប្រែ | MC 1 & Mister បងម៉ូវ", views: 192, dur: "4:00", date: "2026-09-25" },
+    { id: "Eq9jY7eDjRA", title: "Karma Keeps Us Apart ជាតិនេះកម្មតាមបំបែក | MC 1 & Mister បងម៉ូវ", views: 178, dur: "4:50", date: "2026-09-25" },
+    { id: "S1eftz7r1hE", title: "You Were My First បងជាមនុស្សដំបូងសម្រាប់អូន | MC 1 & Mister បងម៉ូវ", views: 145, dur: "3:35", date: "2026-09-25" },
+    { id: "vRcYTqjivjo", title: "One Minute Beside You មួយនាទីសុំក្បែរអូន | MC 1 & Mister បងម៉ូវ", views: 136, dur: "4:44", date: "2026-09-25" },
+    { id: "CdG1RzGVCjs", title: "Why Won’t My Tears Stop ហេតុអ្វីទឹកភ្នែកចេះតែហូរមិនឈប់ | MC 1 & Mister បងម៉ូវ", views: 104, dur: "4:15", date: "2026-09-25" },
+    { id: "gyWgBXIWrp0", title: "Can I Be Your Replacement ទុកបងជាសង្សារជំនួសគេបានទេ | MC 1 & Mister បងម៉ូវ", views: 75, dur: "5:43", date: "2026-09-25" },
+    { id: "sodRd70k8ac", title: "Alone News 😔 | The Pain of Being Alone 💔 | Sad Emotional Story", views: 34, dur: "3:23", date: "2026-10-06" }
+  ];
+  var ytCur = 0, ytApiState = 0, ytPlayerObj = null, ytPendingId = null;
+  function ytThumb(id){ return "https://i.ytimg.com/vi/" + id + "/mqdefault.jpg"; }
+  function ytPoster(id){ return "https://i.ytimg.com/vi/" + id + "/maxresdefault.jpg"; }
+  function ytWatchUrl(id){ return "https://www.youtube.com/watch?v=" + id; }
+  function fmtYtDate(iso){
+    try {
+      var d = new Date(iso + "T00:00:00");
+      return d.toLocaleDateString(lang === "en" ? "en-US" : "km-KH", { day: "numeric", month: "short", year: "numeric" });
+    } catch (e) { return iso; }
+  }
+  function ytMarkPlaying(){
+    if (typeof YT_VIDEOS === "undefined" || !YT_VIDEOS) return;
+    var rows = document.querySelectorAll("#ytList .yt-row");
+    for (var i = 0; i < rows.length; i++) rows[i].classList.toggle("playing", i === ytCur);
+    var nowEl = document.getElementById("ytNow");
+    if (nowEl) {
+      var v = YT_VIDEOS[ytCur];
+      nowEl.innerHTML = "";
+      var b = document.createElement("b"); b.textContent = v.title;
+      var sp = document.createElement("span"); sp.textContent = " • " + t("ytPlaying");
+      nowEl.appendChild(b); nowEl.appendChild(sp);
+    }
+    var w = document.getElementById("ytWatch");
+    if (w) w.href = ytWatchUrl(YT_VIDEOS[ytCur].id);
+  }
+  function renderYtList(){
+    if (typeof YT_VIDEOS === "undefined" || !YT_VIDEOS) return;
+    var list = document.getElementById("ytList");
+    if (!list) return;
+    list.innerHTML = "";
+    YT_VIDEOS.forEach(function(v, i){
+      var row = document.createElement("button");
+      row.type = "button"; row.className = "yt-row"; row.dataset.i = i;
+      var th = document.createElement("span"); th.className = "yt-thumb";
+      var im = document.createElement("img"); im.alt = ""; im.loading = "lazy"; im.src = ytThumb(v.id);
+      im.onerror = function(){ if (im.src.indexOf("mqdefault") !== -1) im.src = ytPoster(v.id); };
+      var db = document.createElement("b"); db.textContent = v.dur;
+      th.appendChild(im); th.appendChild(db);
+      var tx = document.createElement("span"); tx.className = "yt-text";
+      var ti = document.createElement("span"); ti.className = "yt-title"; ti.textContent = v.title;
+      var me = document.createElement("span"); me.className = "yt-meta";
+      me.textContent = fmtCount(v.views) + " " + t("views") + " • " + fmtYtDate(v.date);
+      tx.appendChild(ti); tx.appendChild(me);
+      row.appendChild(th); row.appendChild(tx);
+      row.addEventListener("click", function(){ ytPlay(i); });
+      list.appendChild(row);
+    });
+    ytMarkPlaying();
+  }
+  function ytShowPoster(){
+    if (typeof YT_VIDEOS === "undefined" || !YT_VIDEOS) return;
+    var box = document.getElementById("ytPlayer");
+    if (!box) return;
+    box.innerHTML = "";
+    var v = YT_VIDEOS[ytCur];
+    var im = document.createElement("img");
+    im.alt = ""; im.src = ytPoster(v.id);
+    im.onerror = function(){ if (im.src.indexOf("maxresdefault") !== -1) im.src = ytThumb(v.id); };
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "yt-play"; btn.setAttribute("aria-label", t("play"));
+    var cir = document.createElement("span"); cir.textContent = "▶";
+    btn.appendChild(cir);
+    btn.addEventListener("click", function(){ ytPlay(ytCur); });
+    box.appendChild(im); box.appendChild(btn);
+    ytMarkPlaying();
+  }
+  function ytLoadApi(){
+    if (ytApiState !== 0) return;
+    ytApiState = 1;
+    var sc = document.createElement("script");
+    sc.src = "https://www.youtube.com/iframe_api";
+    sc.onerror = function(){ ytApiState = 0; };
+    document.head.appendChild(sc);
+  }
+  window.onYouTubeIframeAPIReady = function(){
+    ytApiState = 2;
+    if (ytPendingId) {
+      var el = document.getElementById("ytFrame");
+      if (el && window.YT && YT.Player) {
+        try { ytPlayerObj = new YT.Player(el, { events: { onStateChange: ytOnState } }); } catch (e) {}
+      }
+      ytPendingId = null;
+    }
+  };
+  function ytOnState(ev){
+    try {
+      if (window.YT && ev.data === YT.PlayerState.ENDED) ytPlay((ytCur + 1) % YT_VIDEOS.length);
+    } catch (e) {}
+  }
+  function ytPlay(i){
+    if (typeof YT_VIDEOS === "undefined" || !YT_VIDEOS) return;
+    ytCur = i;
+    var v = YT_VIDEOS[i];
+    var box = document.getElementById("ytPlayer");
+    if (!box) return;
+    try { if (ytPlayerObj && ytPlayerObj.destroy) ytPlayerObj.destroy(); } catch (e) {}
+    ytPlayerObj = null;
+    box.innerHTML = "";
+    var fr = document.createElement("iframe");
+    fr.id = "ytFrame";
+    fr.src = "https://www.youtube.com/embed/" + v.id + "?autoplay=1&rel=0&enablejsapi=1";
+    fr.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    fr.allowFullscreen = true;
+    fr.title = v.title;
+    box.appendChild(fr);
+    ytMarkPlaying();
+    if (window.YT && YT.Player) {
+      try { ytPlayerObj = new YT.Player(fr, { events: { onStateChange: ytOnState } }); } catch (e) {}
+    } else {
+      ytPendingId = v.id;
+      ytLoadApi();
+    }
+  }
+
   function loadFeed(){
     setStatus(t("loadingSongs"));
     feedEl.innerHTML = "";
@@ -1026,6 +1214,8 @@
 
   applyLang();
   if (!snapRestore()) loadFeed();
+  renderYtList();
+  ytShowPoster();
   giftInit();
 })();
 </script>
