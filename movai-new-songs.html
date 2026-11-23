@@ -521,6 +521,8 @@
       vocalCharged: "បានកាត់ ៦ ក្រេឌីត",
       vocalResume: "បទនេះកំពុងបំបែកនៅលើ server — សូមចុច Vocal Remover ម្ដងទៀតដើម្បីពិនិត្យ",
       uploadWorking: "កំពុងអាប់ឡូត… ",
+      sharedAdded: "បានបញ្ចូលបទ ",
+      sharedNeedSignIn: "សូមចូលគណនីសិន ដើម្បីបញ្ចូលបទដែលបានស៊ែរ",
       chooseSplit: "ជ្រើសការបំបែក៖",
       stemVocals: "សំឡេងច្រៀង",
       stemMusic: "សំឡេងភ្លេង",
@@ -619,6 +621,8 @@
       vocalCharged: "6 credits deducted",
       vocalResume: "Still separating on the server — tap Vocal Remover again to check",
       uploadWorking: "Uploading… ",
+      sharedAdded: "Added song ",
+      sharedNeedSignIn: "Please sign in first to add the shared song",
       chooseSplit: "Choose a split:",
       stemVocals: "Vocals",
       stemMusic: "Music",
@@ -1213,6 +1217,7 @@
     closeSongMenu();
     listEl.innerHTML = "";
     noteEl.textContent = "";
+    if (sharedAddedTitle) { noteEl.textContent = t("sharedAdded") + sharedAddedTitle; sharedAddedTitle = ""; }
     if (!songs.length) {
       countEl.textContent = "0 " + t("songs");
       setStatus(t("noSongs"));
@@ -1775,6 +1780,47 @@
       return true;
     });
   }
+
+  /* ---- share target receiver: a song shared into MovAi from the
+     phone / Facebook / Telegram lands here (stashed by sw.js) ---- */
+  var sharedChecked = false;
+  var sharedAddedTitle = "";
+  function checkSharedSong(){
+    if (sharedChecked) return;
+    sharedChecked = true;
+    if (!("caches" in window)) return;
+    caches.match("/movai-shared-audio").then(function(res){
+      if (!res) return null;
+      return res.json();
+    }).then(function(stash){
+      if (!stash || !stash.files || !stash.files.length) return;
+      if (!email) { if (noteEl) noteEl.textContent = t("sharedNeedSignIn"); return; }
+      var f = stash.files[0];
+      setStatus(t("uploadWorking") + "0s");
+      var t0 = Date.now();
+      var tick = setInterval(function(){ setStatus(t("uploadWorking") + Math.floor((Date.now() - t0) / 1000) + "s"); }, 1000);
+      apiPost("/api/studio/upload", { email: email, filename: f.name || "song.mp3", data: f.data }, 120000).then(function(j){
+        clearInterval(tick);
+        if (j && j.ok === true && j.url) {
+          var ts = Date.now();
+          var title = String(f.name || "song.mp3").replace(/\.[^.]+$/, "");
+          var item = { type: "song", id: "shared-" + ts, title: title, url: j.url, ts: ts, createdAt: ts };
+          apiPost("/api/public/history", { email: email, items: [item] }, 30000).then(function(h){
+            if (!h || h.ok !== true) { setStatus(""); if (noteEl) noteEl.textContent = cleanErr(h && h.error ? h.error : t("splitFail")); return; }
+            caches.open("movai-share").then(function(c){ return c.delete("/movai-shared-audio"); }).then(function(){
+              setStatus("");
+              sharedAddedTitle = title;
+              loadSongsQuiet();
+            });
+          }).catch(function(){ setStatus(""); if (noteEl) noteEl.textContent = t("noServer"); });
+          return;
+        }
+        setStatus("");
+        if (noteEl) noteEl.textContent = cleanErr(j && j.error ? j.error : t("splitFail"));
+      }).catch(function(){ clearInterval(tick); setStatus(""); if (noteEl) noteEl.textContent = t("noServer"); });
+    }).catch(function(){});
+  }
+
   function loadSongs(quiet){
     email = getEmail();
     if (!email) { showSignIn(); return; }
@@ -2080,6 +2126,7 @@
   }
 
   if (!snapRestore()) loadSongs();
+  checkSharedSong();
 })();
 </script>
 <script>
