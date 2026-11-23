@@ -220,22 +220,100 @@
   html[data-theme="dark"] .signin-bar{color:#8fa89e}
   html[data-theme="dark"] .signin-bar a{color:#2dd4bf}
   .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
+  /* ---- Chat identity header: big logo + name + Online, stuck at the top ---- */
+  .chat-hdr{padding-top:10px;padding-bottom:10px}
+  .chat-logo{flex:none;width:44px;height:44px;border-radius:12px}
+  .chat-id{flex-direction:column;align-items:flex-start;gap:1px}
+  .hdr-online{font-size:.8rem;font-weight:600;color:#16a34a;display:flex;align-items:center;gap:4px}
+  .online-check{font-weight:800}
+  .hdr-dots{font-size:1.3rem;font-weight:800;line-height:1;padding:6px 10px}
+  .msg img.chat-img{cursor:pointer}
+  /* ---- Session date groups (not one flat list) ---- */
+  .sess-group{padding:14px 16px 4px;font-size:.8rem;font-weight:700;color:#6b7280}
+  /* ---- Created items (header ⋮ menu) ---- */
+  .created-veil{position:fixed;inset:0;z-index:70;display:none;background:rgba(0,0,0,.25)}
+  .created-veil.open{display:block}
+  .created-menu{position:fixed;z-index:71;min-width:240px;max-width:calc(100vw - 32px);max-height:60vh;overflow-y:auto;
+    background:#ffffff;border:1px solid #d1d5db;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:6px 0;display:none}
+  .created-menu.open{display:block}
+  .created-menu .cm-title{padding:10px 16px 6px;font-size:.85rem;font-weight:700;color:#6b7280}
+  .created-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 16px;background:transparent;border:0;border-bottom:1px solid #eef1f0}
+  .created-item:active{background:#eef1f0}
+  .created-item .ci-name{flex:1;min-width:0;font-size:.9rem;font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .created-item .ci-date{flex:none;font-size:.78rem;color:#6b7280}
+  .created-empty{padding:12px 16px;font-size:.85rem;color:#6b7280}
+  /* ---- Full-screen image/video viewer ---- */
+  .viewer{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center}
+  .viewer.open{display:flex}
+  .viewer img,.viewer video{max-width:100vw;max-height:100vh;object-fit:contain}
+  .viewer .vw-close{position:fixed;top:14px;right:14px;z-index:101;width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,.15);color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center}
+  .viewer .vw-dl{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:101;
+    background:#0f766e;color:#fff;font-weight:700;border-radius:10px;padding:10px 18px;text-decoration:none}
+  /* ---- Image progress: a square panel, shimmer squares drifting,
+     a shadow ring spinning around inside it, percentage in the center ---- */
+  .img-ph{position:relative;width:100%;max-width:320px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;
+    background:#dbeafe;border:1px solid #bfdbfe}
+  .img-ph-grid{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(15,118,110,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(15,118,110,.25) 1px,transparent 1px);
+    background-size:24px 24px;animation:phGrid 2.4s ease-in-out infinite alternate}
+  @keyframes phGrid{from{background-position:0 0}to{background-position:12px 12px}}
+  .img-ph-ring{position:absolute;inset:0;border-radius:12px;border:3px solid transparent;
+    background:conic-gradient(from 0deg,#0f766e,transparent 25%,transparent 50%,#0f766e 75%,transparent) border-box;
+    -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude;
+    animation:phSpin 2.5s linear infinite}
+  @keyframes phSpin{to{transform:rotate(360deg)}}
+  .img-ph-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+  .img-ph-num .pct{font-size:2rem;font-weight:800;color:#0f766e;line-height:1}
+  .img-ph-num .secs{font-size:.85rem;font-weight:600;color:#1f2937}
+  html[data-theme="dark"] .hdr-online{color:#4ade80}
+  html[data-theme="dark"] .sess-group{color:#8fa89e}
+  html[data-theme="dark"] .created-menu{background:#16261f;border-color:#3a524a}
+  html[data-theme="dark"] .created-menu .cm-title{color:#8fa89e}
+  html[data-theme="dark"] .created-item{border-bottom-color:#24362f}
+  html[data-theme="dark"] .created-item:active{background:#1d2f28}
+  html[data-theme="dark"] .created-item .ci-name{color:#e7f0ec}
+  html[data-theme="dark"] .created-item .ci-date,html[data-theme="dark"] .created-empty{color:#8fa89e}
+  html[data-theme="dark"] .img-ph{background:#16261f;border-color:#3a524a}
+  html[data-theme="dark"] .img-ph-grid{background-image:linear-gradient(rgba(45,212,191,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,.3) 1px,transparent 1px)}
+  html[data-theme="dark"] .img-ph-num .pct{color:#2dd4bf}
+  html[data-theme="dark"] .img-ph-num .secs{color:#e7f0ec}
+
+
+  /* chat photo editor + hide the menu button while in chat (2026-11-23) */
+  .menu-fab{transform:translateX(calc(-100% - 24px)) !important;opacity:0 !important;pointer-events:none !important}
+  .up-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid #cbd5d1;background:#ffffff;color:#0f766e;font-size:20px;line-height:1;cursor:pointer}
+  .up-btn:active{background:#e5e7eb}
+  html[data-theme="dark"] .up-btn{background:#16261f;border-color:#3a524a;color:#2dd4bf}
+  .edit-veil{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none}
+  .edit-veil.open{display:block}
+  .edit-sheet{position:fixed;left:0;right:0;bottom:0;z-index:91;background:#f2faf6;border-radius:16px 16px 0 0;padding:16px;max-height:86vh;overflow:auto;display:none}
+  .edit-sheet.open{display:block}
+  html[data-theme="dark"] .edit-sheet{background:#0e1a15}
+  .edit-prev{width:100%;max-height:300px;object-fit:contain;border-radius:12px;background:#e5e7eb}
+  .edit-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .edit-chip{flex:1;min-width:64px;padding:8px 4px;border-radius:10px;border:1px solid #cbd5d1;background:#fff;font-size:.9rem;cursor:pointer;text-align:center}
+  .edit-chip.on{border-color:#0f766e;background:#0f766e;color:#fff}
+  html[data-theme="dark"] .edit-chip{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  html[data-theme="dark"] .edit-chip.on{border-color:#2dd4bf;background:#0f766e;color:#fff}
+  .edit-bg{width:100%;margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid #cbd5d1;font-size:1rem;background:#fff;color:inherit}
+  html[data-theme="dark"] .edit-bg{background:#16261f;border-color:#3a524a;color:#e7f0ec}
+  .edit-note{font-size:.85rem;color:#6b7280;margin-top:8px}
+  html[data-theme="dark"] .edit-note{color:#8fa89e}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header id="hdr">
-    <div class="hdr-row hdr-top">
-      <a class="hdr-logo" href="index.html">
-        <img src="movai-logo-mark.png" width="26" height="26" alt="MovAi logo">
-        <b>MovAi Music Generate Kh</b>
-      </a>
-    </div>
-    <div class="hdr-row hdr-sub">
+    <div class="hdr-row hdr-sub chat-hdr">
       <a class="hdr-back" href="index.html" aria-label="Back">&#8249;</a>
-      <span class="hdr-sec">
-        <span class="hdr-sec-name" data-i18n="secChat">ឆាត</span>
+      <img class="chat-logo" src="movai-logo-mark.png" width="44" height="44" alt="MovAi logo">
+      <span class="hdr-sec chat-id">
+        <span class="hdr-sec-name" data-i18n="secChat">AI Chat</span>
+        <span class="hdr-online"><span class="online-check">✓</span> <span data-i18n="online">Online</span></span>
       </span>
+      <button class="hdr-btn hdr-dots" id="createdBtn" type="button" data-i18n-aria="createdTitle">&#8942;</button>
       <button class="hdr-btn" id="newChatBtn" type="button" data-i18n="newChat">ជជែកថ្មី</button>
     </div>
   </header>
@@ -279,10 +357,37 @@
   </main>
 </div>
 
+<div class="created-veil" id="createdVeil"></div>
+<div class="created-menu" id="createdMenu" role="menu" aria-label="Created"></div>
+<div class="viewer" id="viewer" role="dialog" aria-label="Image">
+  <button class="vw-close" id="viewerClose" type="button" aria-label="Close">&#10005;</button>
+  <img id="viewerImg" alt="" hidden>
+  <video id="viewerVid" controls playsinline hidden></video>
+  <a class="vw-dl" id="viewerDl" href="#" target="_blank" rel="noopener" download data-i18n="download">Download</a>
+</div>
+
+<div class="edit-veil" id="imgEditVeil"></div>
+<div class="edit-sheet" id="imgEditSheet" role="dialog" aria-label="Edit photo">
+  <img class="edit-prev" id="imgEditPrev" alt="">
+  <div class="edit-row" id="imgEditCrops">
+    <button type="button" class="edit-chip on" data-ratio="orig" data-i18n="cropOrig">ដើម</button>
+    <button type="button" class="edit-chip" data-ratio="1:1">1:1</button>
+    <button type="button" class="edit-chip" data-ratio="9:16">9:16</button>
+    <button type="button" class="edit-chip" data-ratio="16:9">16:9</button>
+  </div>
+  <input class="edit-bg" id="imgEditBg" type="text" data-i18n-ph="bgPromptPh" placeholder="ផ្ទៃខាងក្រោយថ្មី៖ ឧ. ឆ្នេរសមុទ្រពេលល្ងាច…">
+  <div class="edit-note" data-i18n="keepSamePhoto">រូបដដែល ប្ដូរតែផ្ទៃខាងក្រោយទេ។</div>
+  <div class="edit-row">
+    <button type="button" class="act-btn" id="imgEditGo" data-i18n="createNewBg">បង្កើតផ្ទៃខាងក្រោយថ្មី</button>
+    <button type="button" class="act-btn" id="imgEditCancel" data-i18n="cancel">បោះបង់</button>
+  </div>
+</div>
 <div class="input-bar">
   <div class="input-in">
+    <button class="up-btn" id="chatImgUp" type="button" data-i18n-aria="uploadImage" aria-label="Upload photo">&#128247;</button>
     <textarea id="chatInput" rows="1" data-i18n-ph="inputPh" placeholder="សរសេរសាររបស់អ្នក…"></textarea>
     <button class="send-btn" id="chatSend" type="button" data-i18n="send">ផ្ញើ</button>
+    <input type="file" id="chatImgFile" accept="image/*" hidden>
   </div>
 </div>
 
@@ -362,7 +467,22 @@
       voiceChangedM: "បានប្ដូរសំឡេងទៅជាបុរសហើយ",
       viewPackage: "មើលកញ្ចប់",
       download: "ទាញយក",
-      untitled: "គ្មានចំណងជើង"
+      untitled: "គ្មានចំណងជើង",
+      uploadImage: "អាប់ឡូតរូបភាព",
+      cropOrig: "ដើម",
+      bgPromptPh: "ផ្ទៃខាងក្រោយថ្មី៖ ឧ. ឆ្នេរសមុទ្រពេលល្ងាច…",
+      bgNeeded: "សូមសរសេរផ្ទៃខាងក្រោយដែលចង់បាន",
+      badPhoto: "សូមជ្រើសរើសរូបភាព",
+      keepSamePhoto: "រូបដដែល ប្ដូរតែផ្ទៃខាងក្រោយទេ។",
+      createNewBg: "បង្កើតផ្ទៃខាងក្រោយថ្មី",
+      editCostConfirm: "កែរូបនេះត្រូវការ 50 Media Credits។ បន្តឬទេ?",
+      online: "Online",
+      today: "ថ្ងៃនេះ",
+      yesterday: "ម្សិលមិញ",
+      createdTitle: "អ្វីដែលបានបង្កើត",
+      createdEmpty: "មិនទាន់មានអ្វីដែលបានបង្កើតទេ។",
+      createdImage: "រូបភាព",
+      createdVideo: "វីដេអូ"
     },
     en: {
       secChat: "AI Chat",
@@ -413,7 +533,22 @@
       voiceChangedM: "Voice changed to male",
       viewPackage: "View package",
       download: "Download",
-      untitled: "Untitled"
+      untitled: "Untitled",
+      uploadImage: "Upload a photo",
+      cropOrig: "Original",
+      bgPromptPh: "New background, e.g. beach at sunset…",
+      bgNeeded: "Please describe the new background",
+      badPhoto: "Please choose an image",
+      keepSamePhoto: "Same photo — only the background changes.",
+      createNewBg: "Create new background",
+      editCostConfirm: "Editing this photo costs 50 Media Credits. Continue?",
+      online: "Online",
+      today: "Today",
+      yesterday: "Yesterday",
+      createdTitle: "Created",
+      createdEmpty: "Nothing created yet.",
+      createdImage: "Image",
+      createdVideo: "Video"
     }
   };
   var LANG_KEY = "movai-lang";
@@ -427,7 +562,7 @@
     return (d && d[k]) || (STR.en && STR.en[k]) || k;
   }
 
-  function onLangChange(){ renderMessages(); renderSessList(); }
+  function onLangChange(){ renderMessages(); renderSessList(); if (createdMenu && createdMenu.classList.contains("open")) openCreatedMenu(); }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
@@ -493,7 +628,7 @@
     var a = e.target && e.target.closest ? e.target.closest("a") : null;
     if (a) setMenu(false);
   });
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") { setMenu(false); try { closeViewer(); } catch (err) {} try { closeCreatedMenu(); } catch (err) {} try { closeImgEditor(); } catch (err) {} } });
   /* Round 4 (H): while the user is actively scrolling, fade the floating
      buttons out so they never cover content mid-scroll; ~1s after
      scrolling stops they fade back in. Never touches the chat button's
@@ -616,7 +751,22 @@
   function fmtDate(ts){
     var d = new Date(ts);
     if (isNaN(d.getTime())) return "";
-    return d.toLocaleDateString(lang === "en" ? "en-US" : "km-KH", { month: "short", day: "numeric" });
+    return d.toLocaleDateString(lang === "en" ? "en-US" : "km-KH", { year: "numeric", month: "short", day: "numeric" });
+  }
+  function sessDayKey(ts){
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  }
+  function sessGroupLabel(ts){
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    var day = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+    if (day === today) return t("today");
+    if (day === today - 86400000) return t("yesterday");
+    return fmtDate(ts);
   }
   function renderSessList(){
     sessListEl.innerHTML = "";
@@ -624,7 +774,13 @@
       sessListEl.appendChild(el("div", "sess-empty", t("noSessions")));
       return;
     }
+    var lastKey = null;
     sessions.forEach(function(s){
+      var key = sessDayKey(s.at);
+      if (key !== lastKey) {
+        lastKey = key;
+        sessListEl.appendChild(el("div", "sess-group", sessGroupLabel(s.at)));
+      }
       var row = el("button", "sess-row");
       row.type = "button";
       row.appendChild(el("span", "sess-title", s.title || t("untitled")));
@@ -810,6 +966,7 @@
           if (md.kind === "image") {
             var img = el("img", "chat-img");
             img.src = md.url; img.alt = "";
+            img.addEventListener("click", function(){ openViewer(md.url, "image"); });
             wrap.appendChild(img);
           } else if (md.kind === "video") {
             var v = el("video", "chat-vid");
@@ -853,6 +1010,260 @@
         return;
       }
     }
+  }
+
+  /* ---- created items (header ⋮ menu): every image/video the chat
+     made, with its name + date, so he can see what he created and when ---- */
+  var createdBtn = document.getElementById("createdBtn");
+  var createdMenu = document.getElementById("createdMenu");
+  var createdVeil = document.getElementById("createdVeil");
+  function collectCreated(){
+    var items = [];
+    sessions.forEach(function(s){
+      (s.messages || []).forEach(function(m){
+        (m.media || []).forEach(function(md){
+          if (!md || !md.url) return;
+          items.push({ kind: md.kind === "video" ? "video" : "image", url: md.url,
+            name: (md.prompt || "").trim() || (md.kind === "video" ? t("createdVideo") : t("createdImage")),
+            at: (m && m.at) || s.at || 0 });
+        });
+      });
+    });
+    items.sort(function(a, b){ return (b.at || 0) - (a.at || 0); });
+    return items.slice(0, 50);
+  }
+  function closeCreatedMenu(){
+    if (createdMenu) createdMenu.classList.remove("open");
+    if (createdVeil) createdVeil.classList.remove("open");
+  }
+  function openCreatedMenu(){
+    if (!createdMenu || !createdBtn) return;
+    createdMenu.innerHTML = "";
+    createdMenu.appendChild(el("div", "cm-title", t("createdTitle")));
+    var items = collectCreated();
+    if (!items.length) createdMenu.appendChild(el("div", "created-empty", t("createdEmpty")));
+    items.forEach(function(it){
+      var row = el("button", "created-item");
+      row.type = "button";
+      row.appendChild(el("span", "ci-name", it.name));
+      row.appendChild(el("span", "ci-date", fmtDate(it.at)));
+      row.addEventListener("click", function(){
+        closeCreatedMenu();
+        openViewer(it.url, it.kind);
+      });
+      createdMenu.appendChild(row);
+    });
+    var r = createdBtn.getBoundingClientRect();
+    createdMenu.style.right = Math.max(8, (window.innerWidth || 0) - r.right) + "px";
+    createdMenu.style.top = (r.bottom + 6) + "px";
+    createdMenu.classList.add("open");
+    if (createdVeil) createdVeil.classList.add("open");
+  }
+  if (createdBtn) createdBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    if (createdMenu && createdMenu.classList.contains("open")) closeCreatedMenu();
+    else openCreatedMenu();
+  });
+  if (createdVeil) createdVeil.addEventListener("click", closeCreatedMenu);
+
+  /* ---- full-screen image/video viewer (tap a created image to see it full screen) ---- */
+  var viewerEl = document.getElementById("viewer");
+  var viewerImg = document.getElementById("viewerImg");
+  var viewerVid = document.getElementById("viewerVid");
+  var viewerDl = document.getElementById("viewerDl");
+  function openViewer(url, kind){
+    if (!viewerEl || !url) return;
+    if (kind === "video") {
+      if (viewerImg) viewerImg.hidden = true;
+      if (viewerVid) { viewerVid.src = url; viewerVid.hidden = false; try { viewerVid.play(); } catch (e) {} }
+    } else {
+      if (viewerVid) { try { viewerVid.pause(); } catch (e) {} viewerVid.hidden = true; viewerVid.removeAttribute("src"); }
+      if (viewerImg) { viewerImg.src = url; viewerImg.hidden = false; }
+    }
+    if (viewerDl) viewerDl.href = url;
+    viewerEl.classList.add("open");
+  }
+  function closeViewer(){
+    if (!viewerEl) return;
+    viewerEl.classList.remove("open");
+    if (viewerVid) { try { viewerVid.pause(); } catch (e) {} }
+  }
+  var viewerClose = document.getElementById("viewerClose");
+  if (viewerClose) viewerClose.addEventListener("click", closeViewer);
+  if (viewerEl) viewerEl.addEventListener("click", function(e){
+    if (e.target !== viewerDl && e.target !== viewerVid) closeViewer();
+  });
+
+  /* ---- image progress: a square panel, shimmer squares drifting,
+     a shadow ring spinning around inside it, and the percentage in
+     the center. The % is time-based (the image providers report no
+     progress) — it rises with real elapsed seconds, caps at 99%,
+     and the image arriving is the 100%. The seconds under it are
+     the real elapsed time. ---- */
+  function makeImageProgressBubble(){
+    var div = el("div", "msg ai");
+    div.appendChild(el("div", null, t("creatingImage")));
+    var ph = el("div", "img-ph");
+    var grid = el("div", "img-ph-grid");
+    var ring = el("div", "img-ph-ring");
+    var num = el("div", "img-ph-num");
+    var pct = el("span", "pct", "0%");
+    var secs = el("span", "secs", "0s");
+    num.appendChild(pct); num.appendChild(secs);
+    ph.appendChild(grid); ph.appendChild(ring); ph.appendChild(num);
+    div.appendChild(ph);
+    msgsEl.appendChild(div);
+    var t0 = Date.now();
+    var timer = setInterval(function(){
+      var s = Math.floor((Date.now() - t0) / 1000);
+      secs.textContent = s + "s";
+      pct.textContent = Math.min(99, Math.floor(s / 60 * 100)) + "%";
+    }, 500);
+    scrollBottom();
+    return { el: div, stop: function(){ clearInterval(timer); } };
+  }
+
+
+  /* ---- chat photo editor: upload a photo, crop it, change ONLY the
+     background and keep the same photo (owner order 2026-11-23).
+     Flow: pick -> sheet (crop + background text) -> Generate ->
+     50-Credit confirm (same pattern as video) -> upload ->
+     /api/gen/image/edit -> poll the existing image status -> the
+     edited image lands in the chat as a normal image message. ---- */
+  var imgUpBtn = document.getElementById("chatImgUp");
+  var imgFileEl = document.getElementById("chatImgFile");
+  var imgEditVeil = document.getElementById("imgEditVeil");
+  var imgEditSheet = document.getElementById("imgEditSheet");
+  var imgEditPrev = document.getElementById("imgEditPrev");
+  var imgEditBg = document.getElementById("imgEditBg");
+  var imgEditCrops = document.getElementById("imgEditCrops");
+  var imgEditOrigData = "";
+  var imgEditOrigName = "photo.jpg";
+  var imgEditData = "";
+  var imgEditName = "photo.jpg";
+  var imgEditBusy = false;
+  function openImgEditor(){ if (imgEditVeil) imgEditVeil.classList.add("open"); if (imgEditSheet) imgEditSheet.classList.add("open"); }
+  function closeImgEditor(){ if (imgEditVeil) imgEditVeil.classList.remove("open"); if (imgEditSheet) imgEditSheet.classList.remove("open"); }
+  function renderImgCrop(ratio){
+    if (!imgEditOrigData) return;
+    var im = new Image();
+    im.onload = function(){
+      var w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
+      if (!w || !h) return;
+      var tw = w, th = h, sx = 0, sy = 0;
+      if (ratio !== "orig") {
+        var parts = String(ratio).split(":");
+        var target = (Number(parts[0]) || 1) / (Number(parts[1]) || 1);
+        if (w / h > target) { th = h; tw = Math.round(h * target); sx = Math.round((w - tw) / 2); }
+        else { tw = w; th = Math.round(w / target); sy = Math.round((h - th) / 2); }
+      }
+      var scale = Math.min(1, 1024 / Math.max(tw, th));
+      var cv = document.createElement("canvas");
+      cv.width = Math.max(1, Math.round(tw * scale));
+      cv.height = Math.max(1, Math.round(th * scale));
+      var ctx = cv.getContext("2d");
+      if (!ctx) return;
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.drawImage(im, sx, sy, tw, th, 0, 0, cv.width, cv.height);
+      var out = "";
+      try { out = cv.toDataURL("image/jpeg", 0.92); } catch (e) { return; }
+      if (!out || out.indexOf("data:image/jpeg") !== 0) return;
+      imgEditData = out;
+      imgEditName = "photo.jpg";
+      if (imgEditPrev) imgEditPrev.src = out;
+    };
+    im.src = imgEditOrigData;
+  }
+  if (imgUpBtn) imgUpBtn.addEventListener("click", function(){
+    if (!getEmail()) {
+      var bar = document.getElementById("signinBar");
+      if (bar) bar.hidden = false;
+      addError(t("signInToChat"));
+      return;
+    }
+    if (imgFileEl) imgFileEl.click();
+  });
+  if (imgFileEl) imgFileEl.addEventListener("change", function(){
+    var f = imgFileEl.files && imgFileEl.files[0];
+    if (!f) return;
+    if (!/^image\//.test(f.type || "")) { addError(t("badPhoto")); imgFileEl.value = ""; return; }
+    var rd = new FileReader();
+    rd.onload = function(){
+      var dataUrl = String(rd.result || "");
+      if (!dataUrl) return;
+      imgEditOrigData = dataUrl;
+      imgEditOrigName = f.name || "photo.jpg";
+      imgEditData = dataUrl;
+      imgEditName = imgEditOrigName;
+      if (imgEditPrev) imgEditPrev.src = dataUrl;
+      if (imgEditBg) imgEditBg.value = "";
+      if (imgEditCrops) {
+        var chips = imgEditCrops.querySelectorAll("button[data-ratio]");
+        for (var i = 0; i < chips.length; i++) chips[i].classList.toggle("on", chips[i].getAttribute("data-ratio") === "orig");
+      }
+      openImgEditor();
+      renderImgCrop("orig");
+    };
+    rd.readAsDataURL(f);
+    imgFileEl.value = "";
+  });
+  if (imgEditCrops) imgEditCrops.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-ratio]") : null;
+    if (!b) return;
+    var bs = imgEditCrops.querySelectorAll("button[data-ratio]");
+    for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i] === b);
+    renderImgCrop(b.getAttribute("data-ratio"));
+  });
+  if (imgEditVeil) imgEditVeil.addEventListener("click", closeImgEditor);
+  var imgEditCancel = document.getElementById("imgEditCancel");
+  if (imgEditCancel) imgEditCancel.addEventListener("click", closeImgEditor);
+  var imgEditGo = document.getElementById("imgEditGo");
+  if (imgEditGo) imgEditGo.addEventListener("click", askImgEdit);
+  function askImgEdit(){
+    var bg = imgEditBg ? imgEditBg.value.trim() : "";
+    if (!bg) { addError(t("bgNeeded")); return; }
+    if (!imgEditData) { addError(t("noServer")); return; }
+    closeImgEditor();
+    var div = el("div", "msg ai");
+    var row = el("div", "confirm-row");
+    var tx = el("span", "confirm-text", t("editCostConfirm"));
+    var ok = el("button", "act-btn", t("approve"));
+    ok.type = "button";
+    var no = el("button", "act-btn", t("cancel"));
+    no.type = "button";
+    row.appendChild(tx); row.appendChild(ok); row.appendChild(no);
+    div.appendChild(row);
+    msgsEl.appendChild(div);
+    scrollBottom();
+    ok.addEventListener("click", function(){ div.remove(); runImgEdit(bg); });
+    no.addEventListener("click", function(){ div.remove(); });
+  }
+  function runImgEdit(bg){
+    if (imgEditBusy) return;
+    imgEditBusy = true;
+    var prog = makeImageProgressBubble();
+    function doneEdit(){ imgEditBusy = false; }
+    function fail(err){ prog.stop(); prog.el.remove(); addError(err); doneEdit(); }
+    var b64 = String(imgEditData).split(",")[1] || "";
+    apiPost("/api/gen/image/upload", { email: getEmail(), filename: imgEditName, data: b64 }, 120000).then(function(j){
+      if (!j || j.ok !== true || !j.url) { fail((j && j.error) || t("noServer")); return; }
+      apiPost("/api/gen/image/edit", { email: getEmail(), imageUrl: j.url, prompt: bg }, 60000).then(function(e){
+        if (!e || e.ok !== true) { fail((e && e.error) || t("noServer")); return; }
+        if (e.jobId) {
+          pollJob("image", "magichour", e.jobId, function(r){
+            if (r.ok) {
+              prog.stop(); prog.el.remove();
+              cur.messages.push({ role: "assistant", content: "", at: Date.now(), media: [{ kind: "image", url: r.url, prompt: bg }] });
+              touchSession();
+              renderMessages();
+              doneEdit();
+            } else fail(r.error);
+          });
+          return;
+        }
+        fail(t("noServer"));
+      }).catch(function(){ fail(t("noServer")); });
+    }).catch(function(){ fail(t("noServer")); });
   }
 
   /* ---- intent + send ---- */
@@ -984,7 +1395,7 @@
   }
   function genImage(prompt, attachTo, done){
     var sz = imageSizeFor(prompt);
-    var prog = makeProgressBubble("creatingImage");
+    var prog = makeImageProgressBubble();
     function finish(url){
       prog.stop(); prog.el.remove();
       var m = { kind: "image", url: url, prompt: prompt };
