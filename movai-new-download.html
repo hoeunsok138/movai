@@ -117,8 +117,6 @@
   .dl-err:empty{display:none}
   .dl-note{margin-top:10px;font-size:.85rem;color:#6b7280;line-height:1.5}
   .dl-note:empty{display:none}
-  .dl-daily{margin-top:10px;font-size:.85rem;color:#6b7280;text-align:center}
-  .dl-daily:empty{display:none}
   .dl-preview{margin-top:16px;border:1px solid #d1d5db;border-radius:12px;padding:12px;background:#ffffff}
   .dl-prevtop{display:flex;gap:10px;align-items:flex-start}
   .dl-thumb{flex:none;width:112px;height:63px;border-radius:8px;overflow:hidden;background:#e5e7eb;display:flex;align-items:center;justify-content:center}
@@ -200,7 +198,7 @@
   html[data-theme="dark"] .dl-chip{background:#000000;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .dl-chip:active{background:#1a1a1a}
   html[data-theme="dark"] .dl-chip.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
-  html[data-theme="dark"] .dl-free,html[data-theme="dark"] .dl-note,html[data-theme="dark"] .dl-daily{color:#9ca3af}
+  html[data-theme="dark"] .dl-free,html[data-theme="dark"] .dl-note{color:#9ca3af}
   html[data-theme="dark"] .dl-status{color:#e7f0ec}
   html[data-theme="dark"] .dl-err{color:#fca5a5}
   html[data-theme="dark"] .dl-preview{background:#1a1a1a;border-color:#333333}
@@ -283,12 +281,9 @@
         <span class="dl-plat" id="dlPlat"></span>
       </div>
       <button class="dl-go" id="dlGo" type="button" data-i18n="dlGo">ចាប់ផ្តើម</button>
-      <div class="dl-free" data-i18n="dlFreeNote">ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ</div>
+      <div class="dl-free" data-i18n="dlAllowance">ទាញយក MP3 500 MB / ខែ</div>
       <div class="dl-status" id="dlStatus"></div>
       <div class="dl-err" id="dlErr"></div>
-      <div class="dl-daily" id="dlDaily"></div>
-      <div class="dl-daily" id="dlGb"></div>
-      <div class="dl-daily" id="dlMb"></div>
       <div class="dl-preview" id="dlPreview" hidden>
         <div class="dl-prevtop">
           <div class="dl-thumb"><img id="dlThumb" alt="" hidden><span id="dlThumbFallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg></span></div>
@@ -348,24 +343,6 @@
       throw e;
     });
   }
-  function apiGet(path, timeoutMs){
-    var ctrl = null, timer = null;
-    var opts = { method: "GET", headers: { "Accept": "application/json" } };
-    if (window.AbortController) {
-      ctrl = new AbortController();
-      opts.signal = ctrl.signal;
-      var ms = timeoutMs || 30000;
-      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
-    }
-    return fetch(API_BASE + path, opts).then(function(r){
-      if (timer) clearTimeout(timer);
-      return r.json().catch(function(){ return null; });
-    }).catch(function(e){
-      if (timer) clearTimeout(timer);
-      throw e;
-    });
-  }
-
   /* ---- i18n: Khmer / English, strictly separated ---- */
   var STR = {
     kh: {
@@ -398,10 +375,8 @@
       dlGo: "ចាប់ផ្តើម",
       dlDownload: "ទាញយក",
       dlRowMusic: "តន្ត្រី",
-      dlFreeNote: "ឥតគិតថ្លៃ • 20 ដង/ថ្ងៃ",
+      dlAllowance: "ទាញយក MP3 500 MB / ខែ",
       dlWorking: "កំពុងធ្វើការ…",
-      dlGbLeft: "នៅសល់ {a} GB / {b} GB ខែនេះ",
-      dlMbLeft: "នៅសល់ {a} MB ខែនេះ",
       dlQueued: "កំពុងរង់ចាំ…",
       dlProcessing: "កំពុងដំណើរការ…",
       dlTimeout: "ការទាញយកយូរពេក — សូមព្យាយាមម្ដងទៀត",
@@ -416,7 +391,6 @@
       dlBadUrl: "link នេះមិនត្រឹមត្រូវទេ",
       dlFailed: "ទាញយកមិនបានទេ",
       dlNoServer: "ភ្ជាប់ទៅម៉ាស៊ីនមេមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
-      dlLeft: "នៅសល់",
       dlPasteFail: "បិទភ្ជាប់មិនបានទេ — សូមដាក់ link ដោយខ្លួនឯង"
     },
     en: {
@@ -449,10 +423,8 @@
       dlGo: "START",
       dlDownload: "Download",
       dlRowMusic: "Music",
-      dlFreeNote: "Free • 20 per day",
+      dlAllowance: "Download MP3 500 MB / Month",
       dlWorking: "Working…",
-      dlGbLeft: "{a} GB left of {b} GB this month",
-      dlMbLeft: "{a} MB left this month",
       dlQueued: "Queued…",
       dlProcessing: "Processing…",
       dlTimeout: "Download took too long — please try again",
@@ -467,7 +439,6 @@
       dlBadUrl: "This link is not valid",
       dlFailed: "Download failed",
       dlNoServer: "Could not reach the server. Please try again.",
-      dlLeft: "Left",
       dlPasteFail: "Could not paste — please paste the link yourself"
     }
   };
@@ -509,7 +480,7 @@
     var lbl = document.getElementById("menuFnsLbl");
     if (lbl) lbl.textContent = lang === "en" ? "Functions" : "មុខងារ";
   }
-  function onLangChange(){ if (typeof renderDrawerFns === "function") renderDrawerFns(); renderPlatLine(); if (typeof renderCounters === "function") renderCounters(); }
+  function onLangChange(){ if (typeof renderDrawerFns === "function") renderDrawerFns(); renderPlatLine(); }
   function applyLang(){
     var els = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); var ic = els[i].querySelector(":scope > .nav-ic"); if (ic) { els[i].textContent = ""; els[i].appendChild(ic); els[i].appendChild(document.createTextNode(t(k))); } else els[i].textContent = t(k); }
@@ -632,15 +603,11 @@
   var goBtn = document.getElementById("dlGo");
   var statusEl = document.getElementById("dlStatus");
   var errEl = document.getElementById("dlErr");
-  var dailyEl = document.getElementById("dlDaily");
   var signinBox = document.getElementById("dlSignin");
   var dlBox = document.getElementById("dlBox");
   var busy = false;
   var statusTimer = null;
   var statusSecs = 0;
-  var lastDaily = null;
-  var lastGb = null;
-  var lastMb = null;
 
   function renderPlatLine(){
     var u = urlInput.value.trim();
@@ -660,18 +627,6 @@
     }, 1000);
   }
   function stopTicker(){ if (statusTimer) { clearInterval(statusTimer); statusTimer = null; } }
-  function showDaily(j){
-    if (j && j.daily && typeof j.daily.left === "number") {
-      lastDaily = j.daily;
-      dailyEl.textContent = t("dlLeft") + " " + j.daily.left + " / 20";
-    }
-  }
-  /* Re-render the counters in the current language (language switch). */
-  function renderCounters(){
-    if (lastDaily) showDaily({ daily: lastDaily });
-    if (lastGb) showGb(lastGb);
-    if (lastMb) showMb(lastMb);
-  }
   function syncDlAuth(){
     var em = curEmail();
     signinBox.hidden = !!em;
@@ -813,47 +768,6 @@
     selectRow(musicRow);
   }
 
-  /* ---- monthly quota counter ---- */
-  function showGb(j){
-    var gbEl = document.getElementById("dlGb");
-    if (!gbEl) return;
-    if (j && j.ok && typeof j.remaining_gb === "number" && typeof j.limit_gb === "number") {
-      lastGb = j;
-      gbEl.textContent = t("dlGbLeft").replace("{a}", String(j.remaining_gb)).replace("{b}", String(j.limit_gb));
-    } else {
-      lastGb = null;
-      gbEl.textContent = "";
-    }
-  }
-  /* ---- monthly MB allowance: from /usage mbRemainingBytes (bytes).
-     1 decimal, trailing ".0" trimmed (500, 495.8). If the field is
-     absent (older server response) the line stays blank — never a
-     wrong number. ---- */
-  function fmtMb(n){
-    var mb = Math.max(0, n) / 1048576;
-    var s = mb.toFixed(1);
-    if (s.slice(-2) === ".0") s = s.slice(0, -2);
-    return s;
-  }
-  function showMb(j){
-    var mbEl = document.getElementById("dlMb");
-    if (!mbEl) return;
-    if (j && typeof j.mbRemainingBytes === "number" && Number.isFinite(j.mbRemainingBytes)) {
-      lastMb = j;
-      mbEl.textContent = t("dlMbLeft").replace("{a}", fmtMb(j.mbRemainingBytes));
-    } else {
-      lastMb = null;
-      mbEl.textContent = "";
-    }
-  }
-  function refreshGb(){
-    if (!curEmail()) return;
-    apiGet("/api/download/vidfetch/usage?email=" + encodeURIComponent(curEmail()), 30000).then(function(j){
-      showGb(j);
-      showMb(j);
-    }).catch(function(){ /* quota lines stay blank — never blocks */ });
-  }
-
   /* ---- polling: every 5s, live ticking seconds + the real status.
      A poll that fails once never kills the job — the next tick retries.
      After 10 minutes the job is given up on (timeout). ---- */
@@ -890,7 +804,6 @@
           else setErr(cleanErr(j.error));
           return;
         }
-        if (j.daily) showDaily(j);
         if (j.status === "completed" && j.download_url) {
           stopPoll();
           busy = false;
@@ -898,7 +811,6 @@
           setStatus(t("dlReady"));
           currentStatusText = "";
           blobDownload(j.download_url, fileNameFor(titleKnown ? titleEl.textContent : "", "mp3", currentUrl), downloadBtn, "dlDownload");
-          refreshGb();
           return;
         }
         if (j.status === "failed" || j.status === "deleted" || j.status === "cancelled") {
@@ -939,7 +851,6 @@
     busy = true;
     goBtn.disabled = true;
     setErr("");
-    dailyEl.textContent = "";
     hidePreview();
     previewBox.hidden = false;
     setPreviewShell(url, null);
@@ -985,11 +896,9 @@
         busy = false;
         downloadBtn.disabled = false;
         setStatus("");
-        if (j.daily) showDaily(j);
         setErr(cleanErr(j.error));
         return;
       }
-      if (j.daily) showDaily(j);
       currentJobId = j.jobId || "";
       if (!currentJobId) { busy = false; downloadBtn.disabled = false; setStatus(""); setErr(t("dlFailed")); return; }
       currentStatusText = t("dlQueued");
@@ -1050,7 +959,6 @@
 
   syncDlAuth();
   applyLang();
-  refreshGb();
 })();
 </script>
 <script>
