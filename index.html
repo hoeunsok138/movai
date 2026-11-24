@@ -328,6 +328,43 @@
     text-decoration:underline}
   .gift-msg{font-size:.9rem;color:#991b1b;margin-top:10px;min-height:16px}
   .gift-msg.ok-t{color:#0f766e;font-weight:600}
+  /* ---- Premium renewal popup (last 2 days: lucky-draw 120) ---- */
+  .hdr-right{position:relative}
+  @keyframes renewBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .renew-bob{position:absolute;top:-11px;right:-4px;z-index:5;display:flex;align-items:center;
+    font-size:.72rem;font-weight:800;color:#fff;white-space:nowrap;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:3px 8px;
+    box-shadow:0 2px 8px rgba(255,45,120,.45);animation:renewBob 1.1s ease-in-out infinite}
+  .renew-bob[hidden]{display:none}
+  .renew-bob:active{opacity:.85}
+  .renew-veil{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
+    background:rgba(10,25,20,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:16px}
+  .renew-veil[hidden]{display:none}
+  .renew-card{position:relative;width:100%;max-width:360px;text-align:center;
+    background:linear-gradient(135deg,#fff5f8,#fff7ed);border:2px solid #ff2d78;border-radius:20px;
+    padding:26px 20px 22px;box-shadow:0 12px 40px rgba(255,45,120,.35)}
+  .renew-ico{font-size:3rem;line-height:1.1;animation:renewBob 1.1s ease-in-out infinite}
+  .renew-big{font-size:3rem;font-weight:900;line-height:1.1;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .renew-card h3{margin:8px 0 0;font-size:1.15rem;font-weight:800;color:#1f2937}
+  .renew-card p{margin:10px 0 0;font-size:.95rem;line-height:1.6;color:#1f2937}
+  .renew-days{font-weight:800;color:#ff2d78}
+  .renew-claim{display:block;width:100%;margin-top:18px;font-size:1.05rem;font-weight:800;color:#fff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:13px 16px;
+    box-shadow:0 4px 16px rgba(255,45,120,.4)}
+  .renew-claim:active{opacity:.85}
+  .renew-later{display:inline-block;margin-top:12px;font-size:.9rem;color:#6b7280;text-decoration:underline}
+  .renew-close{position:absolute;top:8px;right:10px;font-size:1.1rem;font-weight:700;color:#6b7280;padding:6px 8px}
+  .pkg-buy-btn{position:relative}
+  .pkg-rec{position:absolute;top:-9px;right:10px;z-index:2;font-size:.72rem;font-weight:800;color:#fff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:3px 10px;
+    box-shadow:0 2px 8px rgba(255,45,120,.45);white-space:nowrap}
+  .renew-rec{display:inline-block;margin-top:8px;font-size:.8rem;font-weight:800;color:#fff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:4px 12px;
+    box-shadow:0 2px 8px rgba(255,45,120,.4)}
+  .renew-timer{margin-top:10px;font-size:1.3rem;font-weight:900;letter-spacing:1px;color:#ff2d78}
+  .renew-timer b{font-variant-numeric:tabular-nums}
+  .renew-bob-timer{font-variant-numeric:tabular-nums;opacity:.95}
   /* ---- Drawer settings: theme + language ---- */
   .menu-set{padding:12px 20px 6px}
   .menu-set-label{font-size:.85rem;font-weight:700;color:#6b7280;margin-bottom:8px}
@@ -426,6 +463,10 @@
   html[data-theme="dark"] .gift-card{background:#000000;border-color:#262626}
   html[data-theme="dark"] .gift-card h3,html[data-theme="dark"] .gift-card p{color:#e7f0ec}
   html[data-theme="dark"] .gift-later{color:#9ca3af}
+  html[data-theme="dark"] .renew-veil{background:rgba(14,26,21,.8)}
+  html[data-theme="dark"] .renew-card{background:linear-gradient(135deg,#2a0a18,#2a1503);border-color:#ff2d78}
+  html[data-theme="dark"] .renew-card h3,html[data-theme="dark"] .renew-card p{color:#fff}
+  html[data-theme="dark"] .renew-later,html[data-theme="dark"] .renew-close{color:#d1d5db}
   html[data-theme="dark"] .contact{border-top-color:#262626}
   html[data-theme="dark"] .contact-row{border-bottom-color:#262626}
   html[data-theme="dark"] .contact-text b{color:#e7f0ec}
@@ -493,6 +534,7 @@
       </span>
       <span class="hdr-right">
         <button class="upgrade-btn" id="upgradeBtn" type="button" data-i18n="upgrade">Upgrade</button>
+        <button class="renew-bob" id="renewBob" type="button" hidden><span data-i18n="renewBob">120 • បន្ត</span> <span class="renew-bob-timer" id="renewBobTimer">48:00:00</span></button>
       </span>
     </div>
     <div class="hdr-row hdr-sub">
@@ -620,6 +662,22 @@
   </div>
 </div>
 
+<!-- Premium renewal popup (last 2 days: lucky-draw 120 continuation) -->
+<div class="renew-veil" id="renewSheet" hidden role="dialog" aria-modal="true">
+  <div class="renew-card">
+    <button class="renew-close" id="renewClose" type="button" aria-label="Close">✕</button>
+    <div class="renew-ico">🎁</div>
+    <div class="renew-rec" data-i18n="recommend">ណែនាំ • Recommend</div>
+    <div class="renew-big">120</div>
+    <h3 data-i18n="renewTitle">បន្ត / Update &amp; Continue</h3>
+    <p data-i18n="renewBody">កញ្ចប់ Premium របស់អ្នកនៅសល់ 2 ថ្ងៃទៀត — បន្តឥឡូវនេះដើម្បីរក្សា credit នៅសល់របស់អ្នករហូតដល់ 120 ហើយទទួលបាន 2360 ថ្មីទៀត។ បើប្រើអស់ហើយក៏នៅតែបាន 120 ដែរ!</p>
+    <p class="renew-days" data-i18n="renewOnly2Days">✨ មានតែ 2 ថ្ងៃនេះតែប៉ុណ្ណោះ!</p>
+    <div class="renew-timer">⏳ <span data-i18n="renewTimeLeft">នៅសល់</span> <b id="renewTimer">48:00:00</b></div>
+    <button class="renew-claim" id="renewGoBtn" type="button" data-i18n="renewBtn">បន្តឥឡូវ ✓</button>
+    <button class="renew-later" id="renewLaterBtn" type="button" data-i18n="renewLater">មិនទាន់ទេ</button>
+  </div>
+</div>
+
 <!-- Upgrade pane: opened by the top-right Upgrade button. -->
 <div class="pkg-veil" id="pkgSheet" hidden role="dialog" aria-modal="true">
   <div class="pkg-card">
@@ -646,6 +704,7 @@
           <span class="pkg-item-main"><span class="pkg-item-name">Pro</span><span class="pkg-item-sub"><b class="pkg-num">1000</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>120</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">1120</b></span></span>
         </button>
         <button class="pkg-item pkg-buy-btn" type="button" data-pkg="premium" data-price="18.99" data-credits="2360" data-name="Premium">
+          <span class="pkg-rec" data-i18n="recommend">ណែនាំ • Recommend</span>
           <span class="pkg-price-col"><span class="pkg-item-price">$18.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
           <span class="pkg-item-main"><span class="pkg-item-name">Premium</span><span class="pkg-item-sub"><b class="pkg-num">2120</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>240</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">2360</b></span></span>
         </button>
@@ -869,7 +928,15 @@
       pkgClaimed: "បានទទួលរួចហើយ ✓",
       pkgNeedLogin: "សូមចូលគណនីជាមុនសិន ដើម្បីទទួលយកក្រេឌីតឥតគិតថ្លៃ។",
       pkgPerMonth: "/ខែ",
-      pkgRollover: "Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។",
+      pkgRollover: "Premium៖ credit នៅសល់បន្តបានត្រឹម 120 — តែក្នុង 2 ថ្ងៃចុងក្រោយ (ថ្ងៃទី 29–30) តែប៉ុណ្ណោះ។ ថ្ងៃទី 1–28 ទិញប៉ុន្មានបូកប៉ុណ្ណឹង។ ប្រើអស់ហើយក៏បាន 120 ដែរ។ ផុតថ្ងៃកំណត់ → 0។",
+      renewTitle: "បន្ត / Update & Continue",
+      renewBody: "កញ្ចប់ Premium របស់អ្នកនៅសល់ 2 ថ្ងៃទៀត — បន្តឥឡូវនេះដើម្បីរក្សា credit នៅសល់របស់អ្នករហូតដល់ 120 ហើយទទួលបាន 2360 ថ្មីទៀត។ បើប្រើអស់ហើយក៏នៅតែបាន 120 ដែរ!",
+      renewOnly2Days: "✨ មានតែ 2 ថ្ងៃនេះតែប៉ុណ្ណោះ!",
+      renewBtn: "បន្តឥឡូវ ✓",
+      renewLater: "មិនទាន់ទេ",
+      renewBob: "120 • បន្ត",
+      renewTimeLeft: "នៅសល់",
+      recommend: "ណែនាំ • Recommend",
       buyTitle: "ទិញកញ្ចប់",
       buyBack: "← ត្រឡប់",
       buySigninFirst: "សូមចូលគណនីជាមុនសិន ដើម្បីទិញកញ្ចប់។",
@@ -965,7 +1032,15 @@
       pkgClaimed: "Already claimed ✓",
       pkgNeedLogin: "Please sign in first to claim your free credits.",
       pkgPerMonth: "/month",
-      pkgRollover: "Premium: renew on time — leftover credit carries over, up to 120. Past the deadline → 0.",
+      pkgRollover: "Premium: leftover credit carries over, up to 120 — only in the last 2 days (days 29–30). Days 1–28, buying just adds normally. Even if you used them all, you still get 120. Past the deadline → 0.",
+      renewTitle: "Continue / Update & Continue",
+      renewBody: "Your Premium package has 2 days left — continue now to keep up to 120 of your leftover credits and get 2360 new ones. Even if you used them all, you still get 120!",
+      renewOnly2Days: "✨ Only these 2 days!",
+      renewBtn: "Continue now ✓",
+      renewLater: "Not now",
+      renewBob: "120 • Continue",
+      renewTimeLeft: "Left",
+      recommend: "Recommend",
       buyTitle: "Buy package",
       buyBack: "← Back",
       buySigninFirst: "Please sign in first to buy a package.",
@@ -1194,9 +1269,106 @@
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
     if (!em) return;
     apiPost("/api/admin/sync", { email: em }, 30000).then(function(j){
-      if (j && j.ok === true && j.user) maybeShowGift(j.user);
+      if (j && j.ok === true && j.user) { maybeShowGift(j.user); maybeShowRenew(j.user); }
     }).catch(function(){});
   }
+
+/* ---- Premium renewal popup (last 2 days: lucky-draw 120) + zero-balance bobbing badge ----
+   Premium only. The popup shows when the plan has 0 < remaining <= 2 days
+   (days 29-30); the bobbing badge shows on the Upgrade button when the
+   balance is 0 and the plan is in its last 2 days OR already expired.
+   Popup dismissal is per-session only (sessionStorage), so it shows
+   again on the next visit while still inside the window. ---- */
+var renewSheet = document.getElementById("renewSheet");
+var renewBob = document.getElementById("renewBob");
+var renewGoBtn = document.getElementById("renewGoBtn");
+var renewLaterBtn = document.getElementById("renewLaterBtn");
+var renewCloseBtn = document.getElementById("renewClose");
+var renewEmail = "";
+function renewDismissKey(em){ return "movai-renew-dismissed-" + String(em || "").toLowerCase(); }
+function renewDaysLeft(user){
+  if (!user || user.songPlan !== "premium") return null;
+  var exp = Date.parse(user.songPlanExpiresAt || "");
+  if (!exp) return null;
+  return (exp - Date.now()) / 86400000;
+}
+function renewBalance(user){
+  return Math.floor(Number(user && user.songCredits) || 0);
+}
+function hideRenew(){ if (renewSheet) renewSheet.hidden = true; }
+function openPremiumBuy(){
+  hideRenew();
+  openBuySheet({ id: "premium", price: "18.99", credits: "2360", name: "Premium" });
+}
+var renewExpMs = 0, renewTimerId = null;
+/* Countdown: HH:MM:SS with TOTAL hours (up to 48 — never wraps at 24). */
+function renewFmt(ms){
+  if (ms <= 0) return "00:00:00";
+  var s = Math.floor(ms / 1000);
+  var h = Math.floor(s / 3600);
+  var m = Math.floor((s % 3600) / 60);
+  var sec = s % 60;
+  function p2(n){ return (n < 10 ? "0" : "") + n; }
+  return p2(h) + ":" + p2(m) + ":" + p2(sec);
+}
+function renewTick(){
+  var ms = renewExpMs - Date.now();
+  var txt = renewFmt(ms);
+  var rt = document.getElementById("renewTimer");
+  if (rt) rt.textContent = txt;
+  var bt = document.getElementById("renewBobTimer");
+  if (bt) bt.textContent = txt;
+  if (ms <= 0) {
+    if (renewTimerId) { clearInterval(renewTimerId); renewTimerId = null; }
+    hideRenew();
+    if (renewBob) renewBob.hidden = true;
+  }
+}
+function renewStartTimer(expMs){
+  renewExpMs = expMs;
+  if (expMs <= Date.now()) {
+    // Already expired at load: the badge still shows (owner order —
+    // they ran out and need to continue), so show 00:00:00 without
+    // hiding anything and without starting the interval. Only a LIVE
+    // countdown reaching zero hides the offer (see renewTick).
+    var rt0 = document.getElementById("renewTimer");
+    if (rt0) rt0.textContent = "00:00:00";
+    var bt0 = document.getElementById("renewBobTimer");
+    if (bt0) bt0.textContent = "00:00:00";
+    return;
+  }
+  renewTick();
+  if (!renewTimerId) renewTimerId = setInterval(renewTick, 1000);
+}
+function maybeShowRenew(user){
+  if (!user || !user.email) return;
+  renewEmail = user.email;
+  var days = renewDaysLeft(user);
+  var bal = renewBalance(user);
+  // Bobbing badge: Premium + balance 0 + in the last 2 days OR expired.
+  var showBob = days !== null && days <= 2 && bal === 0;
+  if (renewBob) renewBob.hidden = !showBob;
+  // Popup: Premium + 0 < remaining <= 2 days, per-session dismissal.
+  var showPop = false;
+  if (days !== null && days > 0 && days <= 2) {
+    var dismissed = false;
+    try { dismissed = sessionStorage.getItem(renewDismissKey(user.email)) === "1"; } catch (e) {}
+    if (!dismissed && renewSheet) { renewSheet.hidden = false; showPop = true; }
+  }
+  // Countdown: the offer is live while the popup or the badge is shown.
+  if (showPop || showBob) {
+    var exp = Date.parse(user.songPlanExpiresAt || "");
+    if (exp) renewStartTimer(exp);
+  }
+}
+function renewDismiss(){
+  try { if (renewEmail) sessionStorage.setItem(renewDismissKey(renewEmail), "1"); } catch (e) {}
+  hideRenew();
+}
+if (renewGoBtn) renewGoBtn.addEventListener("click", openPremiumBuy);
+if (renewBob) renewBob.addEventListener("click", openPremiumBuy);
+if (renewLaterBtn) renewLaterBtn.addEventListener("click", renewDismiss);
+if (renewCloseBtn) renewCloseBtn.addEventListener("click", renewDismiss);
 
 function refreshPkgClaim(){
   var btn = document.getElementById("pkgClaimBtn");
