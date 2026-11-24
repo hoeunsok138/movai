@@ -631,6 +631,12 @@
       split6Locked: "6 ស្ទេមត្រូវបានចាក់សោដោយ Admin — សូមប្រើ 2 សំឡេងសិន",
       splitDailyLimit: "ថ្ងៃនេះអ្នកបានបំបែក 2 ដងហើយ — សូមរង់ចាំថ្ងៃស្អែក",
       splitTooBig: "ឯកសារធំពេក — អតិបរមា 100 MB",
+      splitVsOut: "បំបែក 6 សំឡេងអស់ quota ហើយ — សូមទាក់ទង Admin",
+      splitNoKey: "Admin មិនទាន់ដាក់ API Key សម្រាប់បំបែកបទទេ",
+      splitTimeout: "MovAi កំពុងបំបែកបទនេះ — សូមរង់ចាំបន្តិច ហើយចុច Split (AI) ម្តងទៀត",
+      splitBadAudio: "ឯកសារសំឡេងនេះបំបែកមិនបានទេ",
+      splitFailed: "បំបែកបទនេះមិនបានទេ — សូមព្យាយាមម្តងទៀត",
+      splitNotFound: "រកមិនឃើញការងារបំបែកនេះទេ — សូមបំបែកម្តងទៀត",
       midiDownload: "ទាញយក MIDI",
       post: "ផុស",
       postPublic: "ផុសទៅសាធារណៈ",
@@ -738,6 +744,12 @@
       split6Locked: "6-stem splitting is locked by the Admin — please use 2 sounds for now",
       splitDailyLimit: "You have used your 2 splits for today — please come back tomorrow",
       splitTooBig: "File too big — max 100 MB",
+      splitVsOut: "6-stem split quota is used up — please contact the Admin",
+      splitNoKey: "Admin has not added an API key for splitting yet",
+      splitTimeout: "MovAi is still separating this song — please wait a bit and tap Split (AI) again",
+      splitBadAudio: "This audio file could not be split",
+      splitFailed: "This song could not be split — please try again",
+      splitNotFound: "This split job was not found — please split again",
       midiDownload: "Download MIDI",
       post: "Post",
       postPublic: "Post to Public",
@@ -894,6 +906,26 @@
     s = s.replace(/\b(Suno|MusicAPI|Magic Hour|NovAI|Groq|OpenRouter|ACE Music|Agnes|MVSEP)\b/gi, "");
     s = s.replace(/:\s*:/g, ":").replace(/\s{2,}/g, " ").trim();
     return s || t("genFailed");
+  }
+  // Friendly split errors: the server returns error codes (vs_out,
+  // split_no_key, ...) or a {km,en} message object. Never show a raw
+  // code on screen — map it to a Khmer/English message instead.
+  function splitErrText(j){
+    if (j && j.message && typeof j.message === "object") {
+      if (lang === "en" && j.message.en) return String(j.message.en);
+      if (j.message.km) return String(j.message.km);
+      if (j.message.en) return String(j.message.en);
+    }
+    if (j && typeof j.message === "string" && j.message.trim()) return j.message.trim();
+    var code = (j && (j.code || j.error)) || "";
+    var map = { "vs_out": "splitVsOut", "split_no_key": "splitNoKey",
+      "split_daily_limit": "splitDailyLimit", "split6_locked": "split6Locked",
+      "split_timeout": "splitTimeout", "mvsep_timeout": "splitTimeout",
+      "split_too_big": "splitTooBig", "split_bad_audio": "splitBadAudio",
+      "split_failed": "splitFailed", "split_not_found": "splitNotFound" };
+    if (map[code]) return t(map[code]);
+    if (j && j.error) return cleanErr(j.error);
+    return t("splitFail");
   }
   function apiPost(path, body, timeoutMs, onCtrl){
     var ctrl = null, timer = null;
@@ -2093,7 +2125,7 @@
         pollStem6(j.hash, msg, res, t0, ctx);
       } else {
         stemRunEnd(ctx);
-        stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
+        stemSetMsg(msg, splitErrText(j), true);
       }
     }).catch(function(e){
       clearInterval(tick);
@@ -2136,7 +2168,7 @@
           } else if (j && j.ok === false) {
             clearInterval(tick);
             if (ctx) stemRunEnd(ctx);
-            stemSetMsg(msg, cleanErr(j.error || t("splitFail")), true);
+            stemSetMsg(msg, splitErrText(j), true);
           } else {
             var tm = setTimeout(step, 10000);
             if (ctx) ctx.timers.push(tm);
@@ -2175,7 +2207,7 @@
         pollStem12(j.splitTaskId, msg, res, t0, ctx);
       } else {
         stemRunEnd(ctx);
-        stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
+        stemSetMsg(msg, splitErrText(j), true);
       }
     }).catch(function(){
       clearInterval(tick);
@@ -2228,7 +2260,7 @@
         pollStem6(j.hash, msg, res, t0, ctx);
       } else {
         stemRunEnd(ctx);
-        stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
+        stemSetMsg(msg, splitErrText(j), true);
       }
     }).catch(function(e){
       clearInterval(tick);
@@ -2295,7 +2327,7 @@
       if (j && j.ok === true && j.url) {
         showVrChooser(j.url, file.name || "song.mp3", msg, res);
       } else {
-        stemSetMsg(msg, cleanErr(j && j.error ? j.error : t("splitFail")), true);
+        stemSetMsg(msg, splitErrText(j), true);
       }
     }).catch(function(){
       clearInterval(tick);
@@ -2371,7 +2403,7 @@
         } else if (j && j.ok === false) {
           clearInterval(tick);
           if (ctx) stemRunEnd(ctx);
-          stemSetMsg(msg, cleanErr(j.error || t("splitFail")), true);
+          stemSetMsg(msg, splitErrText(j), true);
         } else {
           var tm = setTimeout(step, 5000);
           if (ctx) ctx.timers.push(tm);
@@ -2433,7 +2465,7 @@
           return;
         }
         setStatus("");
-        if (noteEl) noteEl.textContent = cleanErr(j && j.error ? j.error : t("splitFail"));
+        if (noteEl) noteEl.textContent = splitErrText(j);
       }).catch(function(){ clearInterval(tick); setStatus(""); if (noteEl) noteEl.textContent = t("noServer"); });
     }).catch(function(){});
   }
