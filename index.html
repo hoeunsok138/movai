@@ -68,6 +68,16 @@
   .pkg-card-title{flex:1;font-size:.95rem;font-weight:700;color:#1f2937}
   .pkg-close{flex:none;font-size:1.1rem;font-weight:700;color:#1f2937;padding:6px 8px}
   .pkg-card-body{padding:14px 16px 16px}
+  .pkg-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+  .pkg-item{display:flex;align-items:center;gap:12px;padding:12px 14px;
+    background:#fff;border:1px solid #e5e7eb;border-radius:12px;text-decoration:none}
+  .pkg-item:active{background:#eef1f0}
+  .pkg-item-main{flex:1;min-width:0}
+  .pkg-item-name{display:block;font-size:.95rem;font-weight:800;color:#1f2937}
+  .pkg-item-sub{display:block;font-size:.82rem;color:#6b7280;margin-top:2px}
+  .pkg-item-price{flex:none;font-size:1.05rem;font-weight:800;color:#0f766e}
+  .pkg-item-per{font-size:.75rem;font-weight:600;color:#6b7280}
+  .pkg-note{font-size:.78rem;color:#6b7280;line-height:1.5;padding:0 2px}
   
   /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
   .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
@@ -547,6 +557,25 @@
       <button class="pkg-close" id="pkgClose" type="button" aria-label="Close" data-i18n-aria="close">✕</button>
     </div>
     <div class="pkg-card-body">
+      <div class="pkg-list">
+        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+          <span class="pkg-item-main"><span class="pkg-item-name">Free</span><span class="pkg-item-sub" data-i18n="pkgP1">24 ក្រេឌីត · សាកល្បង</span></span>
+          <span class="pkg-item-price">$0.00</span>
+        </a>
+        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+          <span class="pkg-item-main"><span class="pkg-item-name">Starter</span><span class="pkg-item-sub" data-i18n="pkgP2">500 ក្រេឌីត + 50 ថែម · សរុប 550 ក្រេឌីត</span></span>
+          <span class="pkg-item-price">$4.99<span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+        </a>
+        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+          <span class="pkg-item-main"><span class="pkg-item-name">Pro</span><span class="pkg-item-sub" data-i18n="pkgP3">1000 ក្រេឌីត + 120 ថែម · សរុប 1120 ក្រេឌីត</span></span>
+          <span class="pkg-item-price">$9.99<span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+        </a>
+        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+          <span class="pkg-item-main"><span class="pkg-item-name">Premium</span><span class="pkg-item-sub" data-i18n="pkgP4">2120 ក្រេឌីត + 240 ថែម · សរុប 2360 ក្រេឌីត</span></span>
+          <span class="pkg-item-price">$18.99<span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+        </a>
+        <div class="pkg-note" data-i18n="pkgRollover">Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។</div>
+      </div>
       <p class="pkg-buy"><span data-i18n="pkgBuyNote">ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin តាម Telegram ដើម្បីទិញក្រេឌីត។</span> <a href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">Telegram @yemsokhoeun_9999</a></p>
     </div>
   </div>
@@ -697,6 +726,12 @@
       upgrade: "Upgrade",
       pkgTitle: "កញ្ចប់សេវាកម្ម",
       pkgBuyNote: "ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin តាម Telegram ដើម្បីទិញក្រេឌីត។",
+      pkgP1: "24 ក្រេឌីត · សាកល្បង",
+      pkgP2: "500 ក្រេឌីត + 50 ថែម · សរុប 550 ក្រេឌីត",
+      pkgP3: "1000 ក្រេឌីត + 120 ថែម · សរុប 1120 ក្រេឌីត",
+      pkgP4: "2120 ក្រេឌីត + 240 ថែម · សរុប 2360 ក្រេឌីត",
+      pkgPerMonth: "/ខែ",
+      pkgRollover: "Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។",
       heroTop: "បង្កើតចម្រៀងដោយ AI?",
       heroCta: "សាកល្បង MovAi ឥតគិតថ្លៃ",
       heroHint: "ឬមើលបទ YouTube ខាងក្រោម"
@@ -762,6 +797,12 @@
       upgrade: "Upgrade",
       pkgTitle: "Service Packages",
       pkgBuyNote: "Need more credit? Contact the admin on Telegram to buy credit.",
+      pkgP1: "24 Credits · Try",
+      pkgP2: "500 Credits + 50 Bonus · 550 Credits total",
+      pkgP3: "1000 Credits + 120 Bonus · 1120 Credits total",
+      pkgP4: "2120 Credits + 240 Bonus · 2360 Credits total",
+      pkgPerMonth: "/month",
+      pkgRollover: "Premium: renew on time — leftover credit carries over, up to 120. Past the deadline → 0.",
       heroTop: "Made a song with AI?",
       heroCta: "TRY MovAi FREE",
       heroHint: "Or watch the YouTube songs below"
