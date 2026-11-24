@@ -649,6 +649,7 @@
       </div>
     </div>
   </div>
+</div>
 <div class="pkg-veil" id="buySheet" hidden role="dialog" aria-modal="true">
   <div class="pkg-card">
     <div class="pkg-card-hdr">
@@ -1349,8 +1350,8 @@ if (buySubmit) buySubmit.addEventListener("click", function(){
   reader.readAsDataURL(buyReceiptFile);
 });
 if (buyBackBtn) buyBackBtn.addEventListener("click", function(){ closeBuySheet(); openPkgSheet(); });
-if (buyCloseBtn) buyCloseBtn.addEventListener("click", function(){ closeBuySheet(); });
-if (buySheetEl) buySheetEl.addEventListener("click", function(e){ if (e.target === buySheetEl) closeBuySheet(); });
+if (buyCloseBtn) buyCloseBtn.addEventListener("click", function(){ closeBuySheet(); openPkgSheet(); });
+if (buySheetEl) buySheetEl.addEventListener("click", function(e){ if (e.target === buySheetEl) { closeBuySheet(); openPkgSheet(); } });
 var pkgBuyBtns = document.querySelectorAll(".pkg-buy-btn");
 for (var _bi = 0; _bi < pkgBuyBtns.length; _bi++) {
   pkgBuyBtns[_bi].addEventListener("click", function(){
