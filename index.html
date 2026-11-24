@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="movai-icon-192.png">
 <title>MovAi Music Generate Kh</title>
 <script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
   /* MovAi new — KIE.AI clean look, one single pale background, no layers. */
   *{box-sizing:border-box}
@@ -94,6 +95,31 @@
   .pkg-claim:disabled{opacity:.55;box-shadow:none}
   .pkg-claim-row .gift-msg{margin-top:8px;text-align:center}
   .pkg-note{font-size:.78rem;color:#6b7280;line-height:1.5;padding:0 2px}
+  .pkg-buy-btn{width:100%;font:inherit;text-align:left;cursor:pointer}
+  .pkg-buy-btn:active{background:#eef1f0}
+  /* ---- buy sheet (KHQR / USDT) ---- */
+  .buy-brand{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 12px;text-align:center}
+  .buy-brand-name{font-size:1.25rem;font-weight:800;background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .buy-brand-site{font-size:.78rem;color:#6b7280}
+  .buy-sum{text-align:center;font-size:.9rem;font-weight:700;color:#1f2937;margin:0 0 12px}
+  .buy-label{font-size:.85rem;font-weight:700;color:#1f2937;margin:0 0 8px}
+  .buy-methods{display:flex;gap:10px;margin-bottom:12px}
+  .buy-method{flex:1;font-size:1rem;font-weight:800;padding:12px 8px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;color:#1f2937;cursor:pointer}
+  .buy-method.picked{border-color:#ff2d78;background:rgba(255,45,120,.08);color:#ff2d78}
+  .buy-amt{text-align:center;font-size:1.3rem;font-weight:800;margin:6px 0 10px;background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .buy-qr{display:flex;justify-content:center;margin:4px 0 10px}
+  .buy-qr svg{width:220px;height:220px;max-width:100%}
+  .buy-hint{font-size:.85rem;color:#6b7280;line-height:1.6;margin:0 0 10px;text-align:center}
+  .buy-addr{font-size:.85rem;word-break:break-all;background:#eef1f0;border-radius:8px;padding:8px 10px;margin:0 0 10px;text-align:center}
+  .buy-link{display:block;text-align:center;font-weight:700;color:#ff2d78;margin:0 0 10px}
+  .buy-receipt{border-top:1px solid #e5e7eb;padding-top:12px;margin-top:4px}
+  .buy-receipt input[type=file]{width:100%;font-size:.85rem;margin:6px 0}
+  .buy-send{display:block;width:100%;font-size:1rem;font-weight:800;color:#fff;background:linear-gradient(90deg,#ff2d78,#ff7a18);border:none;border-radius:999px;padding:11px 16px;box-shadow:0 0 16px rgba(255,90,40,.35);cursor:pointer;margin-top:8px}
+  .buy-send:active{opacity:.85}
+  .buy-send:disabled{opacity:.55;box-shadow:none}
+  .buy-msg{font-size:.85rem;text-align:center;margin:10px 0 0;line-height:1.6}
+  .buy-msg.ok-t{color:#059669;font-weight:700}
+  .buy-back{flex:none;font-size:.85rem;font-weight:700;color:#ff2d78;padding:6px 8px}
   
   /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
   .menu-fab{position:fixed;left:16px;bottom:16px;z-index:60;
@@ -582,21 +608,65 @@
             <div class="gift-msg" id="pkgClaimMsg" hidden></div>
           </div>
         </div>
-        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+        <button class="pkg-item pkg-buy-btn" type="button" data-pkg="starter" data-price="4.99" data-credits="550" data-name="Starter">
           <span class="pkg-price-col"><span class="pkg-item-price">$4.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
           <span class="pkg-item-main"><span class="pkg-item-name">Starter</span><span class="pkg-item-sub"><b class="pkg-num">500</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>50</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">550</b></span></span>
-        </a>
-        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+        </button>
+        <button class="pkg-item pkg-buy-btn" type="button" data-pkg="pro" data-price="9.99" data-credits="1120" data-name="Pro">
           <span class="pkg-price-col"><span class="pkg-item-price">$9.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
           <span class="pkg-item-main"><span class="pkg-item-name">Pro</span><span class="pkg-item-sub"><b class="pkg-num">1000</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>120</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">1120</b></span></span>
-        </a>
-        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+        </button>
+        <button class="pkg-item pkg-buy-btn" type="button" data-pkg="premium" data-price="18.99" data-credits="2360" data-name="Premium">
           <span class="pkg-price-col"><span class="pkg-item-price">$18.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
           <span class="pkg-item-main"><span class="pkg-item-name">Premium</span><span class="pkg-item-sub"><b class="pkg-num">2120</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>240</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">2360</b></span></span>
-        </a>
+        </button>
         <div class="pkg-note" data-i18n="pkgRollover">Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។</div>
       </div>
       <p class="pkg-buy"><span data-i18n="pkgBuyNote">ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin តាម Telegram ដើម្បីទិញក្រេឌីត។</span> <a href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">Telegram @yemsokhoeun_9999</a></p>
+    </div>
+  </div>
+<div class="pkg-veil" id="buySheet" hidden role="dialog" aria-modal="true">
+  <div class="pkg-card">
+    <div class="pkg-card-hdr">
+      <button class="buy-back" id="buyBack" type="button" data-i18n="buyBack">← ត្រឡប់</button>
+      <span class="pkg-card-title" data-i18n="buyTitle">ទិញកញ្ចប់</span>
+      <button class="pkg-close" id="buyClose" type="button" aria-label="Close" data-i18n-aria="close">✕</button>
+    </div>
+    <div class="pkg-card-body">
+      <div class="buy-brand"><span class="buy-brand-name">♪ MovAi</span><span class="buy-brand-site">movai-78r6.onrender.com</span></div>
+      <p class="buy-sum" id="buySum"></p>
+      <p class="buy-msg" id="buySigninMsg" hidden></p>
+      <div id="buySteps" hidden>
+        <p class="buy-label" data-i18n="choosePay">ជ្រើសរើសរបៀបបង់ប្រាក់៖</p>
+        <div class="buy-methods">
+          <button class="buy-method" id="buyKhqr" type="button">KHQR 🇰🇭</button>
+          <button class="buy-method" id="buyUsdt" type="button">QR USDT</button>
+        </div>
+        <div id="buyKhqrBox" hidden>
+          <p class="buy-label" data-i18n="amtToPay">ចំនួនត្រូវបង់</p>
+          <p class="buy-amt" id="buyKhqrAmt"></p>
+          <div class="buy-qr" id="buyKhqrQr"></div>
+          <p class="buy-hint" data-i18n="scanBank">ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — វាយចំនួននេះក្នុងអាប់ធនាគារ។ បង់ទៅឲ្យ YEM SOKHOEUN។</p>
+          <p class="buy-hint" id="buyKhqrPayloadWrap" hidden><span data-i18n="khqrCode">កូដ KHQR៖ </span><span id="buyKhqrPayload"></span></p>
+          <a class="buy-link" id="buyKhqrLink" href="#" target="_blank" rel="noopener" data-i18n="khqrLinkTxt">បើកលីង់បង់ប្រាក់ KHQR</a>
+        </div>
+        <div id="buyUsdtBox" hidden>
+          <p class="buy-label" data-i18n="amtToPay">ចំនួនត្រូវបង់</p>
+          <p class="buy-amt" id="buyUsdtAmt"></p>
+          <div class="buy-qr" id="buyUsdtQr"></div>
+          <p class="buy-hint" data-i18n="sendUsdt">សូមផ្ញើចំនួននេះឲ្យត្រឹមត្រូវជា USDT (TRC20 តែប៉ុណ្ណោះ) ទៅកាន់៖</p>
+          <p class="buy-addr" id="buyUsdtAddr"></p>
+          <p style="text-align:center;margin:0 0 10px"><button class="buy-method" id="buyCopyAddr" type="button" data-i18n="copyAddr" style="flex:none">ចម្លងអាសយដ្ឋាន</button> <span class="buy-hint" id="buyCopyMsg"></span></p>
+        </div>
+        <div class="buy-receipt" id="buyReceiptBox" hidden>
+          <p class="buy-label" data-i18n="receiptLbl">អាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក (បន្ទាប់ពីបង់ប្រាក់)៖</p>
+          <input type="file" id="buyReceiptFile" accept="image/jpeg,image/png,image/webp">
+          <p class="buy-hint" data-i18n="receiptHint">JPG, PNG ឬ WebP, អតិបរមា ៥ MB។</p>
+          <p class="buy-hint" id="buyReceiptName"></p>
+          <button class="buy-send" id="buySubmit" type="button" data-i18n="submitBuy">ខ្ញុំបានបង់ហើយ — ផ្ញើវិក្កយបត្រឲ្យអនុម័ត</button>
+          <p class="buy-msg" id="buyMsg"></p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -753,6 +823,29 @@
       pkgNeedLogin: "សូមចូលគណនីជាមុនសិន ដើម្បីទទួលយកក្រេឌីតឥតគិតថ្លៃ។",
       pkgPerMonth: "/ខែ",
       pkgRollover: "Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។",
+      buyTitle: "ទិញកញ្ចប់",
+      buyBack: "← ត្រឡប់",
+      buySigninFirst: "សូមចូលគណនីជាមុនសិន ដើម្បីទិញកញ្ចប់។",
+      choosePay: "ជ្រើសរើសរបៀបបង់ប្រាក់៖",
+      amtToPay: "ចំនួនត្រូវបង់",
+      scanBank: "ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — វាយចំនួននេះក្នុងអាប់ធនាគារ។ បង់ទៅឲ្យ YEM SOKHOEUN។",
+      khqrLinkTxt: "បើកលីង់បង់ប្រាក់ KHQR",
+      khqrCode: "កូដ KHQR៖ ",
+      sendUsdt: "សូមផ្ញើចំនួននេះឲ្យត្រឹមត្រូវជា USDT (TRC20 តែប៉ុណ្ណោះ) ទៅកាន់៖",
+      copyAddr: "ចម្លងអាសយដ្ឋាន",
+      copiedAddr: "បានចម្លងអាសយដ្ឋានហើយ",
+      receiptLbl: "អាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក (បន្ទាប់ពីបង់ប្រាក់)៖",
+      receiptHint: "JPG, PNG ឬ WebP, អតិបរមា ៥ MB។",
+      submitBuy: "ខ្ញុំបានបង់ហើយ — ផ្ញើវិក្កយបត្រឲ្យអនុម័ត",
+      uploadReceiptFirst: "សូមអាប់ឡូតវិក្កយបត្រជាមុនសិន។",
+      uploadingReceipt: "កំពុងអាប់ឡូតវិក្កយបត្រ…",
+      receiptUploaded: "បានអាប់ឡូតវិក្កយបត្រ — កំពុងផ្ញើទៅ Admin…",
+      receiptUploadFail: "អាប់ឡូតវិក្កយបត្រមិនបានទេ។",
+      purchaseFail: "ផ្ញើសំណើទិញមិនបានទេ។",
+      waitingApproval: "បានផ្ញើហើយ — Admin នឹងពិនិត្យ និងអនុម័ត។ អ្នកនឹងទទួលបានក្រេឌីតបន្ទាប់ពីអនុម័ត។",
+      qrFailKhqr: "បង្កើត QR មិនបានទេ — សូមប្រើលីង់ KHQR ខាងក្រោម។ ចំនួនត្រូវបង់៖ ",
+      qrFailUsdt: "បង្កើត QR មិនបានទេ — សូមចម្លងអាសយដ្ឋានខាងក្រោម។",
+      readImageFail: "អានរូបភាពមិនបានទេ។",
       heroTop: "បង្កើតចម្រៀងដោយ AI?",
       heroCta: "សាកល្បង MovAi ឥតគិតថ្លៃ",
       heroHint: "ឬមើលបទ YouTube ខាងក្រោម"
@@ -825,6 +918,29 @@
       pkgNeedLogin: "Please sign in first to claim your free credits.",
       pkgPerMonth: "/month",
       pkgRollover: "Premium: renew on time — leftover credit carries over, up to 120. Past the deadline → 0.",
+      buyTitle: "Buy package",
+      buyBack: "← Back",
+      buySigninFirst: "Please sign in first to buy a package.",
+      choosePay: "Choose how to pay:",
+      amtToPay: "Amount to pay",
+      scanBank: "Scan with any bank app — type this amount in your bank app. Pay to YEM SOKHOEUN.",
+      khqrLinkTxt: "Open KHQR payment link",
+      khqrCode: "KHQR code: ",
+      sendUsdt: "Send exactly this amount in USDT (TRC20 only) to:",
+      copyAddr: "Copy address",
+      copiedAddr: "Address copied",
+      receiptLbl: "Upload your payment receipt (after paying):",
+      receiptHint: "JPG, PNG or WebP, max 5 MB.",
+      submitBuy: "I've paid — send receipt for approval",
+      uploadReceiptFirst: "Please upload your receipt first.",
+      uploadingReceipt: "Uploading receipt…",
+      receiptUploaded: "Receipt uploaded — sending to admin…",
+      receiptUploadFail: "Could not upload the receipt.",
+      purchaseFail: "Could not send the purchase request.",
+      waitingApproval: "Sent — the admin will review and approve it. You'll receive the credits after approval.",
+      qrFailKhqr: "Could not draw the QR — please use the KHQR link below. Amount to pay: ",
+      qrFailUsdt: "Could not draw the QR — please copy the address below.",
+      readImageFail: "Could not read the image.",
       heroTop: "Made a song with AI?",
       heroCta: "TRY MovAi FREE",
       heroHint: "Or watch the YouTube songs below"
@@ -1018,6 +1134,206 @@ function refreshPkgClaim(){
   var msg = document.getElementById("pkgClaimMsg");
   if (msg) msg.hidden = true;
 }
+/* ---- buy sheet: KHQR / USDT for the paid credit packages ----
+   KHQR is STATIC (no amount in the QR — the buyer types the package
+   price in their bank app). The package price is shown on the card
+   above the QR instead of a 0.00. USDT QR is the Binance TRC20
+   address. Receipt upload + purchase request reuse the market flow;
+   credits are granted ONLY after the admin approves. Every step is
+   logged to /api/public/purchase-event for the admin tracking view. */
+var BUY_PAY = { khqrLink: "https://pay.canadiabank.com.kh/K6EkJR30W0BM3VVK", usdtAddress: "TPHu2Z45PZ9xUB7AzqMehWKv72HysE9Vzd" };
+var KHQR_BASE = "00020101021129530016cadikhppxxx@cadi011300100045531070212Canadia Bank5204000053038405802KH5912YEM SOKHOEUN6010Phnom Penh";
+function buyEmail(){
+  var em = "";
+  try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
+  return em;
+}
+function buyEvent(step, method){
+  var em = buyEmail();
+  if (!em || !buyPkg) return;
+  try { apiPost("/api/public/purchase-event", { email: em, packageId: buyPkg.id, step: step, method: method || "" }, 15000).catch(function(){}); } catch (e) {}
+}
+function khqrCrc16(s){
+  var crc = 65535;
+  for (var i = 0; i < s.length; i++) {
+    crc ^= s.charCodeAt(i) << 8;
+    for (var b = 0; b < 8; b++) {
+      crc = (crc & 32768) ? ((crc << 1) ^ 4129) & 65535 : (crc << 1) & 65535;
+    }
+  }
+  return crc;
+}
+function khqrStaticPayload(){
+  var p = KHQR_BASE; /* 010211 = static, no amount tag — buyer types it */
+  var crc = khqrCrc16(p + "6304");
+  return p + "6304" + ("0000" + crc.toString(16).toUpperCase()).slice(-4);
+}
+function buyQrSvg(text){
+  try {
+    if (typeof qrcode !== "function") return "";
+    var qr = qrcode(0, "M");
+    qr.addData(text, "Byte");
+    qr.make();
+    return qr.createSvgTag({ cellSize: 6, margin: 8 });
+  } catch (e) { return ""; }
+}
+function buyLoadSettings(){
+  fetch(API_BASE + "/api/admin/settings", { cache: "no-store" }).then(function(r){ return r.json(); }).then(function(d){
+    var pay = d && d.settings && d.settings.payment;
+    if (pay) {
+      if (typeof pay.khqrLink === "string" && pay.khqrLink.trim()) BUY_PAY.khqrLink = pay.khqrLink.trim();
+      if (typeof pay.binanceUsdtAddress === "string" && pay.binanceUsdtAddress.trim()) BUY_PAY.usdtAddress = pay.binanceUsdtAddress.trim();
+    }
+  }).catch(function(){ /* keep the verified defaults above */ });
+}
+var buyPkg = null;      /* {id, name, price, credits} */
+var buyMethod = "";     /* "khqr" | "usdt" */
+var buyQrShown = false;
+var buySent = false;
+var buyReceiptFile = null;
+var buySheetEl = document.getElementById("buySheet");
+var buySum = document.getElementById("buySum");
+var buySigninMsg = document.getElementById("buySigninMsg");
+var buySteps = document.getElementById("buySteps");
+var buyKhqr = document.getElementById("buyKhqr");
+var buyUsdt = document.getElementById("buyUsdt");
+var buyKhqrBox = document.getElementById("buyKhqrBox");
+var buyUsdtBox = document.getElementById("buyUsdtBox");
+var buyKhqrAmt = document.getElementById("buyKhqrAmt");
+var buyKhqrQr = document.getElementById("buyKhqrQr");
+var buyKhqrPayloadWrap = document.getElementById("buyKhqrPayloadWrap");
+var buyKhqrPayload = document.getElementById("buyKhqrPayload");
+var buyKhqrLink = document.getElementById("buyKhqrLink");
+var buyUsdtAmt = document.getElementById("buyUsdtAmt");
+var buyUsdtQr = document.getElementById("buyUsdtQr");
+var buyUsdtAddr = document.getElementById("buyUsdtAddr");
+var buyCopyAddr = document.getElementById("buyCopyAddr");
+var buyCopyMsg = document.getElementById("buyCopyMsg");
+var buyReceiptBox = document.getElementById("buyReceiptBox");
+var buyReceiptInput = document.getElementById("buyReceiptFile");
+var buyReceiptName = document.getElementById("buyReceiptName");
+var buySubmit = document.getElementById("buySubmit");
+var buyMsg = document.getElementById("buyMsg");
+var buyBackBtn = document.getElementById("buyBack");
+var buyCloseBtn = document.getElementById("buyClose");
+function openBuySheet(pkg){
+  buyPkg = pkg; buyMethod = ""; buyQrShown = false; buySent = false; buyReceiptFile = null;
+  buyKhqrBox.hidden = true; buyUsdtBox.hidden = true; buyReceiptBox.hidden = true;
+  buyKhqr.classList.remove("picked"); buyUsdt.classList.remove("picked");
+  buyMsg.textContent = ""; buyMsg.className = "buy-msg"; buyReceiptName.textContent = ""; buyCopyMsg.textContent = "";
+  buyReceiptInput.value = "";
+  buySum.textContent = pkg.name + " — $" + pkg.price + (lang === "en" ? "/month" : "/ខែ") + " · " + pkg.credits + " Song Credits";
+  var em = buyEmail();
+  buySigninMsg.hidden = !!em;
+  buySteps.hidden = !em;
+  if (!em) buySigninMsg.textContent = t("buySigninFirst");
+  closePkgSheet();
+  if (buySheetEl) buySheetEl.hidden = false;
+  buyEvent("viewed", "");
+}
+function closeBuySheet(){
+  if (buySheetEl) buySheetEl.hidden = true;
+  if (buyPkg && buyQrShown && !buySent) buyEvent("abandoned", buyMethod);
+  buyPkg = null;
+}
+function showBuyMethod(method){
+  if (!buyPkg) return;
+  buyMethod = method;
+  buyKhqr.classList.toggle("picked", method === "khqr");
+  buyUsdt.classList.toggle("picked", method === "usdt");
+  buyKhqrBox.hidden = method !== "khqr";
+  buyUsdtBox.hidden = method !== "usdt";
+  buyReceiptBox.hidden = false;
+  buyMsg.textContent = ""; buyMsg.className = "buy-msg";
+  buyEvent("method", method);
+  if (method === "khqr") {
+    buyKhqrAmt.textContent = "$" + buyPkg.price;
+    var payload = khqrStaticPayload();
+    var svg = buyQrSvg(payload);
+    buyKhqrQr.innerHTML = "";
+    if (svg) { buyKhqrQr.innerHTML = svg; buyKhqrPayloadWrap.hidden = true; }
+    else {
+      buyKhqrPayload.textContent = payload;
+      buyKhqrPayloadWrap.hidden = false;
+      var warn = document.createElement("p");
+      warn.className = "buy-hint";
+      warn.textContent = t("qrFailKhqr") + "$" + buyPkg.price;
+      buyKhqrQr.appendChild(warn);
+    }
+    buyKhqrLink.href = BUY_PAY.khqrLink;
+  } else {
+    buyUsdtAmt.textContent = "$" + buyPkg.price + " USDT";
+    buyUsdtAddr.textContent = BUY_PAY.usdtAddress;
+    var usvg = buyQrSvg(BUY_PAY.usdtAddress);
+    buyUsdtQr.innerHTML = "";
+    if (usvg) buyUsdtQr.innerHTML = usvg;
+    else {
+      var w2 = document.createElement("p");
+      w2.className = "buy-hint";
+      w2.textContent = t("qrFailUsdt");
+      buyUsdtQr.appendChild(w2);
+    }
+  }
+  buyQrShown = true;
+  buyEvent("qr", method);
+}
+if (buyKhqr) buyKhqr.addEventListener("click", function(){ showBuyMethod("khqr"); });
+if (buyUsdt) buyUsdt.addEventListener("click", function(){ showBuyMethod("usdt"); });
+if (buyCopyAddr) buyCopyAddr.addEventListener("click", function(){
+  var done = function(){ buyCopyMsg.textContent = t("copiedAddr"); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(BUY_PAY.usdtAddress).then(done, done);
+  else { try { var ta = document.createElement("textarea"); ta.value = BUY_PAY.usdtAddress; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); } catch (e) {} done(); }
+});
+if (buyReceiptInput) buyReceiptInput.addEventListener("change", function(){
+  buyReceiptFile = buyReceiptInput.files && buyReceiptInput.files[0] ? buyReceiptInput.files[0] : null;
+  buyReceiptName.textContent = buyReceiptFile ? buyReceiptFile.name : "";
+  if (buyReceiptFile) buyEvent("receipt", buyMethod);
+});
+if (buySubmit) buySubmit.addEventListener("click", function(){
+  var em = buyEmail();
+  if (!em || !buyPkg) return;
+  if (!buyReceiptFile) { buyMsg.textContent = t("uploadReceiptFirst"); buyMsg.className = "buy-msg"; return; }
+  buySubmit.disabled = true;
+  buyMsg.textContent = t("uploadingReceipt");
+  buyMsg.className = "buy-msg";
+  var reader = new FileReader();
+  reader.onload = function(){
+    var dataUrl = String(reader.result || "");
+    var b64 = dataUrl.indexOf(",") >= 0 ? dataUrl.split(",")[1] : dataUrl;
+    apiPost("/api/public/purchase-receipt", { email: em, filename: buyReceiptFile.name, data: b64 }, 60000).then(function(rd){
+      if (!rd || rd.ok !== true || !rd.url) throw new Error((rd && rd.error) || t("receiptUploadFail"));
+      buyMsg.textContent = t("receiptUploaded");
+      return apiPost("/api/admin/purchase-request", { email: em, packageId: buyPkg.id, plan: buyPkg.name, method: buyMethod, receiptUrl: rd.url }, 60000);
+    }).then(function(bd){
+      if (!bd || bd.ok !== true) throw new Error((bd && bd.error) || t("purchaseFail"));
+      buySent = true;
+      buyMsg.textContent = t("waitingApproval");
+      buyMsg.className = "buy-msg ok-t";
+      buySubmit.disabled = false;
+      buyEvent("sent", buyMethod);
+    }).catch(function(err){
+      buyMsg.textContent = (err && err.message) ? err.message : t("purchaseFail");
+      buyMsg.className = "buy-msg";
+      buySubmit.disabled = false;
+    });
+  };
+  reader.onerror = function(){
+    buyMsg.textContent = t("readImageFail");
+    buyMsg.className = "buy-msg";
+    buySubmit.disabled = false;
+  };
+  reader.readAsDataURL(buyReceiptFile);
+});
+if (buyBackBtn) buyBackBtn.addEventListener("click", function(){ closeBuySheet(); openPkgSheet(); });
+if (buyCloseBtn) buyCloseBtn.addEventListener("click", function(){ closeBuySheet(); });
+if (buySheetEl) buySheetEl.addEventListener("click", function(e){ if (e.target === buySheetEl) closeBuySheet(); });
+var pkgBuyBtns = document.querySelectorAll(".pkg-buy-btn");
+for (var _bi = 0; _bi < pkgBuyBtns.length; _bi++) {
+  pkgBuyBtns[_bi].addEventListener("click", function(){
+    openBuySheet({ id: this.getAttribute("data-pkg"), price: this.getAttribute("data-price"), credits: this.getAttribute("data-credits"), name: this.getAttribute("data-name") });
+  });
+}
+buyLoadSettings();
 function openPkgSheet(){
   var s = document.getElementById("pkgSheet");
   if (s) s.hidden = false;
