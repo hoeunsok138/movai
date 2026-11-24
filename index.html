@@ -1153,12 +1153,12 @@
       }
       if (f.mv) {
         a.setAttribute("data-mv", "1");
-        if (featureSettings.mvLocked || featureSettings.videoGenLocked) {
+        if (featureSettings.mvLocked) {
           a.classList.add("split-locked");
           a.addEventListener("click", function(e){
             e.preventDefault();
             setMenu(false);
-            alert(t(featureSettings.videoGenLocked ? "videoGenLocked" : "mvLocked"));
+            alert(t("mvLocked"));
           });
         }
       }

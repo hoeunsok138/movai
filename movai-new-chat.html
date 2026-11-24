@@ -611,12 +611,12 @@
         var nb = document.createElement("span"); nb.className = "new-badge"; nb.textContent = "New";
         a.appendChild(nb);
       }
-      if (f.mv && (featureSettings.mvLocked || featureSettings.videoGenLocked)) {
+      if (f.mv && featureSettings.mvLocked) {
         a.classList.add("split-locked");
         a.addEventListener("click", function(e){
           e.preventDefault();
           setMenu(false);
-          alert(t(featureSettings.videoGenLocked ? "videoGenLocked" : "mvLocked"));
+          alert(t("mvLocked"));
         });
       }
       box.appendChild(a);
