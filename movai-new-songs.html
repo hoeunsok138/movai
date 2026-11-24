@@ -1040,6 +1040,7 @@
         id: id, type: "song", mode: "song", url: permUrl,
         title: song.title || meta.title || t("untitled"),
         prompt: (meta.lyrics || "").slice(0, 400),
+        lyrics: meta.lyrics || "",
         model: displayModel(meta.model), style: meta.style || "",
         image: song.image || "",
         streamUrl: song.streamUrl || "",
