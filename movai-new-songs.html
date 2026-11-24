@@ -1832,6 +1832,11 @@
   function stemProcSet(stage, pct){
     stemProcRenderStages(stage);
     stemProcSetBar(pct);
+    // Stem colour chips stay hidden until the separating stage: during
+    // upload (stage 1) no stem exists yet, so showing Vocals/Music would
+    // lie about how far the split has got. They appear when stage 2 starts.
+    var se = document.getElementById("stemProcStems");
+    if (se) se.style.display = (stage >= 2) ? "" : "none";
   }
   function stemProcShow(box, show, stageText){
     var proc = box && box.querySelector(".stem-proc");
