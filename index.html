@@ -95,6 +95,14 @@
   .pkg-claim:disabled{opacity:.55;box-shadow:none}
   .pkg-claim-row .gift-msg{margin-top:8px;text-align:center}
   .pkg-note{font-size:.78rem;color:#6b7280;line-height:1.5;padding:0 2px}
+  /* ---- contacts row at the bottom of the Upgrade pane: horizontal ---- */
+  .pkg-contacts{margin:12px 0 0}
+  .pkg-contacts-lbl{font-size:.82rem;color:#6b7280;line-height:1.6;margin:0 0 8px}
+  .pkg-contact-row{display:flex;gap:8px}
+  .pkg-contact{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;text-decoration:none}
+  .pkg-contact:active{background:#eef1f0}
+  .pkg-contact-logo{width:32px;height:32px;border-radius:7px;object-fit:cover}
+  .pkg-contact-name{font-size:.78rem;font-weight:800;text-align:center;line-height:1.3;background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
   .pkg-buy-btn{width:100%;font:inherit;text-align:left;cursor:pointer}
   .pkg-buy-btn:active{background:#eef1f0}
   /* ---- buy sheet (KHQR / USDT) ---- */
@@ -622,7 +630,23 @@
         </button>
         <div class="pkg-note" data-i18n="pkgRollover">Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។</div>
       </div>
-      <p class="pkg-buy"><span data-i18n="pkgBuyNote">ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin តាម Telegram ដើម្បីទិញក្រេឌីត។</span> <a href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">Telegram @yemsokhoeun_9999</a></p>
+      <div class="pkg-contacts">
+        <p class="pkg-contacts-lbl" data-i18n="pkgBuyNote">ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin៖</p>
+        <div class="pkg-contact-row">
+          <a class="pkg-contact" href="https://www.facebook.com/share/1diwbcCkNs/" target="_blank" rel="noopener">
+            <img class="pkg-contact-logo" src="facebook-logo.png" alt="Facebook">
+            <span class="pkg-contact-name" data-i18n="fbPage">ទំព័រហ្វេសប៊ុក</span>
+          </a>
+          <a class="pkg-contact" href="https://www.facebook.com/share/1CDRBqwGU2/" target="_blank" rel="noopener">
+            <img class="pkg-contact-logo" src="facebook-logo.png" alt="Facebook">
+            <span class="pkg-contact-name" data-i18n="fbAccount">គណនីហ្វេសប៊ុក</span>
+          </a>
+          <a class="pkg-contact" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
+            <img class="pkg-contact-logo" src="telegram-logo.png" alt="Telegram">
+            <span class="pkg-contact-name" data-i18n="tgAdmin">តេឡេក្រាម (Admin)</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 <div class="pkg-veil" id="buySheet" hidden role="dialog" aria-modal="true">
@@ -815,7 +839,7 @@
       mdNote: "បង្កើតម្ដង 12 Song Credits បាន 2 បទ",
       upgrade: "Upgrade",
       pkgTitle: "កញ្ចប់សេវាកម្ម",
-      pkgBuyNote: "ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin តាម Telegram ដើម្បីទិញក្រេឌីត។",
+      pkgBuyNote: "ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin៖",
       pkgCredits: "ក្រេឌីត",
       pkgBonusWord: "ថែម",
       pkgTry: "សាកល្បង",
@@ -910,7 +934,7 @@
       mdNote: "12 Song Credits per creation — you get 2 songs",
       upgrade: "Upgrade",
       pkgTitle: "Service Packages",
-      pkgBuyNote: "Need more credit? Contact the admin on Telegram to buy credit.",
+      pkgBuyNote: "Need more credit? Contact the admin:",
       pkgCredits: "Credits",
       pkgBonusWord: "Bonus",
       pkgTry: "Try",
