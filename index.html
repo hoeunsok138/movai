@@ -69,14 +69,30 @@
   .pkg-close{flex:none;font-size:1.1rem;font-weight:700;color:#1f2937;padding:6px 8px}
   .pkg-card-body{padding:14px 16px 16px}
   .pkg-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
-  .pkg-item{display:flex;align-items:center;gap:12px;padding:12px 14px;
+  .pkg-item{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 14px;
     background:#fff;border:1px solid #e5e7eb;border-radius:12px;text-decoration:none}
   .pkg-item:active{background:#eef1f0}
+  .pkg-price-col{flex:none;display:flex;flex-direction:column;align-items:flex-start;min-width:88px}
+  .pkg-item-price{font-size:1.3rem;font-weight:800;line-height:1.1;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pkg-item-per{font-size:.75rem;font-weight:600;color:#6b7280;margin-top:2px}
   .pkg-item-main{flex:1;min-width:0}
   .pkg-item-name{display:block;font-size:.95rem;font-weight:800;color:#1f2937}
-  .pkg-item-sub{display:block;font-size:.82rem;color:#6b7280;margin-top:2px}
-  .pkg-item-price{flex:none;font-size:1.05rem;font-weight:800;color:#0f766e}
-  .pkg-item-per{font-size:.75rem;font-weight:600;color:#6b7280}
+  .pkg-item-sub{display:block;font-size:.85rem;color:#6b7280;margin-top:3px;line-height:1.7}
+  .pkg-num{font-weight:800;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pkg-bonus{display:inline-block;font-weight:700;color:#ff2d78;
+    background:rgba(255,45,120,.10);border:1px solid rgba(255,45,120,.28);border-radius:999px;padding:1px 8px;white-space:nowrap}
+  .pkg-bonus b{color:#ff2d78}
+  .pkg-eq{font-weight:700;color:#6b7280}
+  .pkg-total{font-size:1rem}
+  .pkg-claim-row{flex-basis:100%;margin-top:2px}
+  .pkg-claim{display:block;width:100%;font-size:1rem;font-weight:800;color:#fff;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);border:none;border-radius:999px;padding:11px 16px;
+    box-shadow:0 0 16px rgba(255,90,40,.35)}
+  .pkg-claim:active{opacity:.85}
+  .pkg-claim:disabled{opacity:.55;box-shadow:none}
+  .pkg-claim-row .gift-msg{margin-top:8px;text-align:center}
   .pkg-note{font-size:.78rem;color:#6b7280;line-height:1.5;padding:0 2px}
   
   /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
@@ -558,21 +574,25 @@
     </div>
     <div class="pkg-card-body">
       <div class="pkg-list">
+        <div class="pkg-item">
+          <span class="pkg-price-col"><span class="pkg-item-price">$0.00</span></span>
+          <span class="pkg-item-main"><span class="pkg-item-name">Free</span><span class="pkg-item-sub"><b class="pkg-num">24</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> · <span data-i18n="pkgTry">សាកល្បង</span></span></span>
+          <div class="pkg-claim-row">
+            <button class="pkg-claim" id="pkgClaimBtn" type="button" data-i18n="claimBtn">ទទួលយក</button>
+            <div class="gift-msg" id="pkgClaimMsg" hidden></div>
+          </div>
+        </div>
         <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
-          <span class="pkg-item-main"><span class="pkg-item-name">Free</span><span class="pkg-item-sub" data-i18n="pkgP1">24 ក្រេឌីត · សាកល្បង</span></span>
-          <span class="pkg-item-price">$0.00</span>
+          <span class="pkg-price-col"><span class="pkg-item-price">$4.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+          <span class="pkg-item-main"><span class="pkg-item-name">Starter</span><span class="pkg-item-sub"><b class="pkg-num">500</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>50</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">550</b></span></span>
         </a>
         <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
-          <span class="pkg-item-main"><span class="pkg-item-name">Starter</span><span class="pkg-item-sub" data-i18n="pkgP2">500 ក្រេឌីត + 50 ថែម · សរុប 550 ក្រេឌីត</span></span>
-          <span class="pkg-item-price">$4.99<span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+          <span class="pkg-price-col"><span class="pkg-item-price">$9.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+          <span class="pkg-item-main"><span class="pkg-item-name">Pro</span><span class="pkg-item-sub"><b class="pkg-num">1000</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>120</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">1120</b></span></span>
         </a>
         <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
-          <span class="pkg-item-main"><span class="pkg-item-name">Pro</span><span class="pkg-item-sub" data-i18n="pkgP3">1000 ក្រេឌីត + 120 ថែម · សរុប 1120 ក្រេឌីត</span></span>
-          <span class="pkg-item-price">$9.99<span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
-        </a>
-        <a class="pkg-item" href="https://t.me/yemsokhoeun_9999" target="_blank" rel="noopener">
-          <span class="pkg-item-main"><span class="pkg-item-name">Premium</span><span class="pkg-item-sub" data-i18n="pkgP4">2120 ក្រេឌីត + 240 ថែម · សរុប 2360 ក្រេឌីត</span></span>
-          <span class="pkg-item-price">$18.99<span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+          <span class="pkg-price-col"><span class="pkg-item-price">$18.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
+          <span class="pkg-item-main"><span class="pkg-item-name">Premium</span><span class="pkg-item-sub"><b class="pkg-num">2120</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>240</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">2360</b></span></span>
         </a>
         <div class="pkg-note" data-i18n="pkgRollover">Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។</div>
       </div>
@@ -726,10 +746,11 @@
       upgrade: "Upgrade",
       pkgTitle: "កញ្ចប់សេវាកម្ម",
       pkgBuyNote: "ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin តាម Telegram ដើម្បីទិញក្រេឌីត។",
-      pkgP1: "24 ក្រេឌីត · សាកល្បង",
-      pkgP2: "500 ក្រេឌីត + 50 ថែម · សរុប 550 ក្រេឌីត",
-      pkgP3: "1000 ក្រេឌីត + 120 ថែម · សរុប 1120 ក្រេឌីត",
-      pkgP4: "2120 ក្រេឌីត + 240 ថែម · សរុប 2360 ក្រេឌីត",
+      pkgCredits: "ក្រេឌីត",
+      pkgBonusWord: "ថែម",
+      pkgTry: "សាកល្បង",
+      pkgClaimed: "បានទទួលរួចហើយ ✓",
+      pkgNeedLogin: "សូមចូលគណនីជាមុនសិន ដើម្បីទទួលយកក្រេឌីតឥតគិតថ្លៃ។",
       pkgPerMonth: "/ខែ",
       pkgRollover: "Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។",
       heroTop: "បង្កើតចម្រៀងដោយ AI?",
@@ -797,10 +818,11 @@
       upgrade: "Upgrade",
       pkgTitle: "Service Packages",
       pkgBuyNote: "Need more credit? Contact the admin on Telegram to buy credit.",
-      pkgP1: "24 Credits · Try",
-      pkgP2: "500 Credits + 50 Bonus · 550 Credits total",
-      pkgP3: "1000 Credits + 120 Bonus · 1120 Credits total",
-      pkgP4: "2120 Credits + 240 Bonus · 2360 Credits total",
+      pkgCredits: "Credits",
+      pkgBonusWord: "Bonus",
+      pkgTry: "Try",
+      pkgClaimed: "Already claimed ✓",
+      pkgNeedLogin: "Please sign in first to claim your free credits.",
       pkgPerMonth: "/month",
       pkgRollover: "Premium: renew on time — leftover credit carries over, up to 120. Past the deadline → 0.",
       heroTop: "Made a song with AI?",
@@ -919,31 +941,57 @@
     try { sessionStorage.setItem(giftDismissKey(giftEmail), "1"); } catch (e) {}
     hideGift();
   });
-  giftClaimBtn.addEventListener("click", function(){
+  function claimFreeCredit(btn, msgEl, onOk){
     if (!giftEmail) return;
-    giftClaimBtn.disabled = true;
-    giftClaimBtn.textContent = "…";
-    giftMsg.hidden = true;
+    btn.disabled = true;
+    var oldText = btn.textContent;
+    btn.textContent = "…";
+    if (msgEl) msgEl.hidden = true;
     apiPost("/api/admin/sync", { email: giftEmail, giftClaimed: true }, 30000).then(function(j){
-      giftClaimBtn.disabled = false;
-      giftClaimBtn.textContent = t("claimBtn");
+      btn.disabled = false;
+      btn.textContent = oldText;
       if (j && j.ok === true && j.user) {
         try { localStorage.setItem(giftFlagKey(giftEmail), "1"); } catch (e) {}
-        giftMsg.textContent = t("claimedOk");
-        giftMsg.className = "gift-msg ok-t";
-        giftMsg.hidden = false;
-        setTimeout(hideGift, 2500);
+        if (msgEl) {
+          msgEl.textContent = t("claimedOk");
+          msgEl.className = "gift-msg ok-t";
+          msgEl.hidden = false;
+        }
+        if (onOk) onOk();
       } else {
-        giftMsg.textContent = (j && j.error) ? j.error : t("claimFail");
-        giftMsg.className = "gift-msg";
-        giftMsg.hidden = false;
+        if (msgEl) {
+          msgEl.textContent = (j && j.error) ? j.error : t("claimFail");
+          msgEl.className = "gift-msg";
+          msgEl.hidden = false;
+        }
       }
     }).catch(function(){
-      giftClaimBtn.disabled = false;
-      giftClaimBtn.textContent = t("claimBtn");
-      giftMsg.textContent = t("noServer");
-      giftMsg.className = "gift-msg";
-      giftMsg.hidden = false;
+      btn.disabled = false;
+      btn.textContent = oldText;
+      if (msgEl) {
+        msgEl.textContent = t("noServer");
+        msgEl.className = "gift-msg";
+        msgEl.hidden = false;
+      }
+    });
+  }
+  giftClaimBtn.addEventListener("click", function(){
+    claimFreeCredit(giftClaimBtn, giftMsg, function(){ setTimeout(hideGift, 2500); });
+  });
+  var pkgClaimBtn = document.getElementById("pkgClaimBtn");
+  var pkgClaimMsg = document.getElementById("pkgClaimMsg");
+  if (pkgClaimBtn) pkgClaimBtn.addEventListener("click", function(){
+    if (!giftEmail) {
+      if (pkgClaimMsg) {
+        pkgClaimMsg.textContent = t("pkgNeedLogin");
+        pkgClaimMsg.className = "gift-msg";
+        pkgClaimMsg.hidden = false;
+      }
+      return;
+    }
+    claimFreeCredit(pkgClaimBtn, pkgClaimMsg, function(){
+      pkgClaimBtn.disabled = true;
+      pkgClaimBtn.textContent = t("pkgClaimed");
     });
   });
   function giftInit(){
@@ -955,9 +1003,25 @@
     }).catch(function(){});
   }
 
+function refreshPkgClaim(){
+  var btn = document.getElementById("pkgClaimBtn");
+  if (!btn) return;
+  var claimed = false;
+  try { claimed = !!giftEmail && localStorage.getItem(giftFlagKey(giftEmail)) === "1"; } catch (e) {}
+  if (claimed) {
+    btn.disabled = true;
+    btn.textContent = t("pkgClaimed");
+  } else {
+    btn.disabled = false;
+    btn.textContent = t("claimBtn");
+  }
+  var msg = document.getElementById("pkgClaimMsg");
+  if (msg) msg.hidden = true;
+}
 function openPkgSheet(){
   var s = document.getElementById("pkgSheet");
   if (s) s.hidden = false;
+  refreshPkgClaim();
 }
 function closePkgSheet(){
   var s = document.getElementById("pkgSheet");
