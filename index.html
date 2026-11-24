@@ -94,7 +94,7 @@
   .pkg-claim:active{opacity:.85}
   .pkg-claim:disabled{opacity:.55;box-shadow:none}
   .pkg-claim-row .gift-msg{margin-top:8px;text-align:center}
-  .pkg-note{font-size:.78rem;color:#6b7280;line-height:1.5;padding:0 2px}
+  .pkg-note{font-size:.78rem;color:#6b7280;line-height:1.5;padding:0 2px}   /* ---- extra Gmail slots on this device (owner order 2026-11-25) ---- */   .pkg-slot-card{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:12px}   .pkg-slot-title{font-weight:700;margin-bottom:6px}   .pkg-slot-info{opacity:.85;margin-bottom:10px}   .pkg-slot-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}   .pkg-slot-step{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;cursor:pointer}   .pkg-slot-count{font-weight:700;min-width:20px;text-align:center}   .pkg-slot-price{font-weight:700}   .dev-limit-notice{position:fixed;left:12px;right:12px;bottom:12px;z-index:90;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.25)}   .dev-limit-notice-title{font-weight:700;margin-bottom:4px}   .dev-limit-notice-msg{opacity:.9;margin-bottom:10px}
   /* ---- contacts row at the bottom of the Upgrade pane: horizontal ---- */
   .pkg-contacts{margin:12px 0 0}
   .pkg-contacts-lbl{font-size:.82rem;color:#6b7280;line-height:1.6;margin:0 0 8px}
@@ -680,7 +680,7 @@
 </div>
 
 <!-- Upgrade pane: opened by the top-right Upgrade button. -->
-<div class="pkg-veil" id="pkgSheet" hidden role="dialog" aria-modal="true">
+<div class="dev-limit-notice" id="devLimitNotice" hidden role="alert">   <div class="dev-limit-notice-title" data-i18n="devLimitTitle">ឧបករណ៍នេះមាន Gmail គ្រប់ហើយ</div>   <div class="dev-limit-notice-msg" id="devLimitNoticeMsg"></div>   <button class="pkg-claim" id="devLimitUpgradeBtn" type="button" data-i18n="devLimitUpgrade">Upgrade · បន្ថែម Gmail</button>   <button class="pkg-close" id="devLimitNoticeClose" type="button" aria-label="Close">✕</button> </div> <div class="pkg-veil" id="pkgSheet" hidden role="dialog" aria-modal="true">
   <div class="pkg-card">
     <div class="pkg-card-hdr">
       <span class="pkg-card-title" data-i18n="pkgTitle">កញ្ចប់សេវាកម្ម</span>
@@ -709,7 +709,7 @@
           <span class="pkg-price-col"><span class="pkg-item-price">$18.99</span><span class="pkg-item-per" data-i18n="pkgPerMonth">/ខែ</span></span>
           <span class="pkg-item-main"><span class="pkg-item-name">Premium</span><span class="pkg-item-sub"><b class="pkg-num">2120</b> <span data-i18n="pkgCredits">ក្រេឌីត</span> <span class="pkg-bonus">+ <b>240</b> <span data-i18n="pkgBonusWord">ថែម</span></span> <span class="pkg-eq">=</span> <b class="pkg-num pkg-total">2360</b></span></span>
         </button>
-        <div class="pkg-note" data-i18n="pkgRollover">Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។</div>
+        <div class="pkg-note" data-i18n="pkgRollover">Premium៖ បង់បន្តទាន់ពេល — credit នៅសល់បន្តបានត្រឹម 120។ ផុតថ្ងៃកំណត់ → 0។</div>         <div class="pkg-slot-card" id="pkgSlotCard">           <div class="pkg-slot-title" data-i18n="slotTitle">Gmail បន្ថែមលើឧបករណ៍នេះ · Extra Gmail on this device</div>           <div class="pkg-slot-info" id="pkgSlotInfo"></div>           <div class="pkg-slot-row">             <button class="pkg-slot-step" id="pkgSlotMinus" type="button" aria-label="−">−</button>             <span class="pkg-slot-count" id="pkgSlotCount">1</span>             <button class="pkg-slot-step" id="pkgSlotPlus" type="button" aria-label="+">+</button>             <span class="pkg-slot-price" id="pkgSlotPrice">$0.99 / 1 Gmail</span>             <button class="pkg-claim" id="pkgSlotBuy" type="button" data-i18n="slotBuy">ទិញ Slot · Buy slot</button>           </div>           <div class="gift-msg" id="pkgSlotMsg" hidden></div>         </div>
       </div>
       <div class="pkg-contacts">
         <p class="pkg-contacts-lbl" data-i18n="pkgBuyNote">ត្រូវការក្រេឌីតបន្ថែម? ទាក់ទង Admin៖</p>
@@ -930,7 +930,7 @@
       pkgClaimed: "បានទទួលរួចហើយ ✓",
       pkgNeedLogin: "សូមចូលគណនីជាមុនសិន ដើម្បីទទួលយកក្រេឌីតឥតគិតថ្លៃ។",
       pkgPerMonth: "/ខែ",
-      pkgRollover: "Premium៖ credit នៅសល់បន្តបានត្រឹម 120 — តែក្នុង 2 ថ្ងៃចុងក្រោយ (ថ្ងៃទី 29–30) តែប៉ុណ្ណោះ។ ថ្ងៃទី 1–28 ទិញប៉ុន្មានបូកប៉ុណ្ណឹង។ ប្រើអស់ហើយក៏បាន 120 ដែរ។ ផុតថ្ងៃកំណត់ → 0។",
+      pkgRollover: "Premium៖ credit នៅសល់បន្តបានត្រឹម 120 — តែក្នុង 2 ថ្ងៃចុងក្រោយ (ថ្ងៃទី 29–30) តែប៉ុណ្ណោះ។ ថ្ងៃទី 1–28 ទិញប៉ុន្មានបូកប៉ុណ្ណឹង។ ប្រើអស់ហើយក៏បាន 120 ដែរ។ ផុតថ្ងៃកំណត់ → 0។",       slotTitle: "Gmail បន្ថែមលើឧបករណ៍នេះ · Extra Gmail on this device",       slotBuy: "ទិញ Slot · Buy slot",       slotNeedLogin: "សូមចូលគណនីជាមុនសិន ដើម្បីទិញ Slot។",       slotBought: "បានទិញ Slot រួចហើយ ✓",       slotTopupHint: "លុយ Wallet មិនគ្រប់ — សូមបញ្ចូលលុយជាមុនសិន។",       devLimitTitle: "ឧបករណ៍នេះមាន Gmail គ្រប់ហើយ",       devLimitUpgrade: "Upgrade · បន្ថែម Gmail",
       renewTitle: "បន្ត / Update & Continue",
       renewBody: "កញ្ចប់ Premium របស់អ្នកនៅសល់ 2 ថ្ងៃទៀត — បន្តឥឡូវនេះដើម្បីរក្សា credit នៅសល់របស់អ្នករហូតដល់ 120 ហើយទទួលបាន 2360 ថ្មីទៀត។ បើប្រើអស់ហើយក៏នៅតែបាន 120 ដែរ!",
       renewOnly2Days: "✨ មានតែ 2 ថ្ងៃនេះតែប៉ុណ្ណោះ!",
@@ -1035,7 +1035,7 @@
       pkgClaimed: "Already claimed ✓",
       pkgNeedLogin: "Please sign in first to claim your free credits.",
       pkgPerMonth: "/month",
-      pkgRollover: "Premium: leftover credit carries over, up to 120 — only in the last 2 days (days 29–30). Days 1–28, buying just adds normally. Even if you used them all, you still get 120. Past the deadline → 0.",
+      pkgRollover: "Premium: leftover credit carries over, up to 120 — only in the last 2 days (days 29–30). Days 1–28, buying just adds normally. Even if you used them all, you still get 120. Past the deadline → 0.",       slotTitle: "Extra Gmail on this device",       slotBuy: "Buy slot",       slotNeedLogin: "Please sign in first to buy a slot.",       slotBought: "Slot bought ✓",       slotTopupHint: "Not enough wallet balance — please top up first.",       devLimitTitle: "This device already has enough Gmail accounts",       devLimitUpgrade: "Upgrade · Add Gmail",
       renewTitle: "Continue / Update & Continue",
       renewBody: "Your Premium package has 2 days left — continue now to keep up to 120 of your leftover credits and get 2360 new ones. Even if you used them all, you still get 120!",
       renewOnly2Days: "✨ Only these 2 days!",
@@ -1246,7 +1246,7 @@
     var oldText = btn.textContent;
     btn.textContent = "…";
     if (msgEl) msgEl.hidden = true;
-    apiPost("/api/admin/sync", { email: giftEmail, giftClaimed: true }, 30000).then(function(j){
+    apiPost("/api/admin/sync", syncBody(giftEmail, { giftClaimed: true }), 30000).then(function(j){
       btn.disabled = false;
       btn.textContent = oldText;
       if (j && j.ok === true && j.user) {
@@ -1293,16 +1293,78 @@
       pkgClaimBtn.textContent = t("pkgClaimed");
     });
   });
+  /* ---- Stable device ID + fingerprint hints for /api/admin/sync ----
+      The server limits Gmail accounts per DEVICE (free 2, up to 10 with
+      purchased $0.99 slots). The fingerprint is deviceId + model + IP;
+      without a stable deviceId it falls back to model+IP, which changes
+      when the user switches Wi-Fi <-> mobile data. */
+  function getDeviceId(){ try { var k = "movai-device-id"; var v = localStorage.getItem(k); if (v) return v; v = "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10); localStorage.setItem(k, v); return v; } catch (e) { return ""; } }
+  function syncBody(email, extra){ var b = { email: email, deviceId: getDeviceId() }; try { b.timezone = (Intl.DateTimeFormat().resolvedOptions().timeZone || ""); } catch (e) {} try { b.screen = (window.screen ? window.screen.width + "x" + window.screen.height : ""); } catch (e) {} if (extra) for (var k in extra) b[k] = extra[k]; return b; }
   function giftInit(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
     if (!em) return;
-    apiPost("/api/admin/sync", { email: em }, 30000).then(function(j){
-      if (j && j.ok === true && j.user) { maybeShowGift(j.user); maybeShowRenew(j.user); }
+    apiPost("/api/admin/sync", syncBody(em), 30000).then(function(j){
+      if (j && j.ok === true && j.user) { syncDeviceInfo = (j && j.device) || null; refreshSlotCard(); maybeShowGift(j.user); maybeShowRenew(j.user); } else if (j && j.deviceLimitReached) { showDeviceLimitNotice(j); }
     }).catch(function(){});
   }
 
-/* ---- Premium renewal popup (last 2 days: lucky-draw 120) + zero-balance bobbing badge ----
+  /* ---- Device Gmail slots (owner order 2026-11-25): free 2 per device,
+        up to 10 with purchased slots at $0.99 each. The sync response
+        carries the device picture (syncDeviceInfo); the card sells slots
+        from the wallet (top up via the existing KHQR/USDT receipt flow). */
+  var syncDeviceInfo = null;
+  var slotBuyCount = 1;
+  function slotPriceOf(){ return (syncDeviceInfo && isFinite(Number(syncDeviceInfo.slotPrice))) ? Number(syncDeviceInfo.slotPrice) : 0.99; }
+  function slotMaxBuy(){ if (!syncDeviceInfo) return 8; return Math.max(0, (syncDeviceInfo.maxAccounts || 10) - (syncDeviceInfo.limit || 2)); }
+  function refreshSlotCard(){
+    var info = document.getElementById("pkgSlotInfo");
+    var price = document.getElementById("pkgSlotPrice");
+    var countEl = document.getElementById("pkgSlotCount");
+    var buyBtn = document.getElementById("pkgSlotBuy");
+    var maxBuy = slotMaxBuy();
+    if (slotBuyCount > Math.max(1, maxBuy)) slotBuyCount = Math.max(1, maxBuy);
+    if (slotBuyCount < 1) slotBuyCount = 1;
+    if (countEl) countEl.textContent = String(slotBuyCount);
+    if (price) price.textContent = "$" + (slotPriceOf() * slotBuyCount).toFixed(2) + " / " + slotBuyCount + " Gmail";
+    if (!info) return;
+    var em = ""; try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
+    if (!em) { info.textContent = t("slotNeedLogin"); if (buyBtn) buyBtn.disabled = true; return; }
+    if (buyBtn) buyBtn.disabled = (maxBuy <= 0);
+    if (!syncDeviceInfo) { info.textContent = ""; return; }
+    var d = syncDeviceInfo;
+    info.textContent = "ឧបករណ៍នេះ៖ " + (d.accounts || 0) + " / " + (d.limit || 0) + " Gmail" + ((d.slots || 0) > 0 ? " (+" + d.slots + " Slot ទិញរួច)" : "") + " · This device: " + (d.accounts || 0) + " / " + (d.limit || 0) + " Gmail" + ((d.slots || 0) > 0 ? " (+" + d.slots + " purchased)" : "");
+  }
+  function buyDeviceSlot(){
+    var em = ""; try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
+    var msgEl = document.getElementById("pkgSlotMsg");
+    var buyBtn = document.getElementById("pkgSlotBuy");
+    if (!em) { if (msgEl) { msgEl.textContent = t("slotNeedLogin"); msgEl.className = "gift-msg"; msgEl.hidden = false; } return; }
+    if (buyBtn) buyBtn.disabled = true;
+    if (msgEl) msgEl.hidden = true;
+    apiPost("/api/public/device/buy-slot", syncBody(em, { count: slotBuyCount }), 30000).then(function(j){
+      if (buyBtn) buyBtn.disabled = false;
+      if (!msgEl) return;
+      if (j && j.ok === true) {
+        if (syncDeviceInfo) { syncDeviceInfo.slots = j.slots; syncDeviceInfo.limit = j.deviceLimit; }
+        msgEl.textContent = t("slotBought") + " · " + (j.slots || 0) + " slots · limit " + (j.deviceLimit || 0) + " Gmail";
+        msgEl.className = "gift-msg ok-t"; msgEl.hidden = false;
+        refreshSlotCard();
+      } else {
+        msgEl.textContent = (j && j.error) ? String(j.error) : t("slotTopupHint");
+        msgEl.className = "gift-msg"; msgEl.hidden = false;
+      }
+    }).catch(function(){ if (buyBtn) buyBtn.disabled = false; if (msgEl) { msgEl.textContent = t("slotTopupHint"); msgEl.className = "gift-msg"; msgEl.hidden = false; } });
+  }
+  function showDeviceLimitNotice(j){
+    var n = document.getElementById("devLimitNotice");
+    var m = document.getElementById("devLimitNoticeMsg");
+    if (!n) return;
+    if (m) m.textContent = (j && j.error) ? String(j.error) : t("devLimitTitle");
+    n.hidden = false;
+  }
+  (function(){ var minus = document.getElementById("pkgSlotMinus"); var plus = document.getElementById("pkgSlotPlus"); var buyBtn = document.getElementById("pkgSlotBuy"); var upBtn = document.getElementById("devLimitUpgradeBtn"); var closeBtn = document.getElementById("devLimitNoticeClose"); if (minus) minus.addEventListener("click", function(){ if (slotBuyCount > 1) slotBuyCount--; refreshSlotCard(); }); if (plus) plus.addEventListener("click", function(){ if (slotBuyCount < Math.max(1, slotMaxBuy())) slotBuyCount++; refreshSlotCard(); }); if (buyBtn) buyBtn.addEventListener("click", buyDeviceSlot); if (upBtn) upBtn.addEventListener("click", function(){ var n = document.getElementById("devLimitNotice"); if (n) n.hidden = true; openPkgSheet(); }); if (closeBtn) closeBtn.addEventListener("click", function(){ var n = document.getElementById("devLimitNotice"); if (n) n.hidden = true; }); })();
+  /* ---- Premium renewal popup (last 2 days: lucky-draw 120)
    Premium only. The popup shows when the plan has 0 < remaining <= 2 days
    (days 29-30); the bobbing badge shows on the Upgrade button when the
    balance is 0 and the plan is in its last 2 days OR already expired.
@@ -1619,7 +1681,7 @@ loadFeatureSettings();
 function openPkgSheet(){
   var s = document.getElementById("pkgSheet");
   if (s) s.hidden = false;
-  refreshPkgClaim();
+  refreshPkgClaim(); refreshSlotCard();
 }
 function closePkgSheet(){
   var s = document.getElementById("pkgSheet");

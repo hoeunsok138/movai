@@ -680,6 +680,12 @@
     if (body !== undefined) opts.body = JSON.stringify(body);
     return fetch(API + path, opts).then(function(r){ return r.json(); });
   }
+  // Stable device ID (same key as the home page, "movai-device-id") so the
+  // server fingerprint (deviceId + model + IP) survives Wi-Fi <-> mobile
+  // switches. Without it the device Gmail limit keys off model+IP, which
+  // changes with the network.
+  function getDeviceId(){ try { var k = "movai-device-id"; var v = localStorage.getItem(k); if (v) return v; v = "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10); localStorage.setItem(k, v); return v; } catch (e) { return ""; } }
+  function syncBody(email, extra){ var b = { email: email, deviceId: getDeviceId() }; try { b.timezone = (Intl.DateTimeFormat().resolvedOptions().timeZone || ""); } catch (e) {} try { b.screen = (window.screen ? window.screen.width + "x" + window.screen.height : ""); } catch (e) {} if (extra) for (var k in extra) b[k] = extra[k]; return b; }
   function fmtMoney(n){
     var v = Number(n);
     if (!isFinite(v)) return "\u2014";
@@ -797,7 +803,7 @@
   // Refresh the profile from the server (server credits are the truth).
   // POST /api/admin/sync {email} -> {ok:true, user}
   function refreshProfile(email){
-    return apiJson("/api/admin/sync", "POST", { email: email })
+    return apiJson("/api/admin/sync", "POST", syncBody(email))
       .then(function(d){
         if (d && d.ok === true && d.user) {
           cacheUser(d.user);
@@ -887,7 +893,7 @@
     var name = (p.name || email.split("@")[0] || "").toString().slice(0, 100);
     loginMsg.textContent = "";
     signInBtn.disabled = true;
-    apiJson("/api/admin/sync", "POST", { email: email, name: name })
+    apiJson("/api/admin/sync", "POST", syncBody(email, { name: name }))
       .then(function(d){
         signInBtn.disabled = false;
         if (!d || d.ok !== true || !d.user) {
