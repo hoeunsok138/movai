@@ -156,6 +156,7 @@
   .menu a .nav-ic{display:inline-flex;flex:none;line-height:0}
   .menu a .new-badge{margin-left:auto;flex:none;font-size:.62rem;font-weight:800;letter-spacing:.02em;color:#fff;background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:2px 7px;line-height:1.4}
   .menu a.split-locked{opacity:.65}
+  .menu a.split-locked::after{content:" \1F512"}
   .menu a .nav-ic svg{display:block;width:20px;height:20px}
   .menu a .nav-ic img.dl-logo{box-sizing:border-box;display:block;width:18px;height:18px;object-fit:contain;flex:none}
   .menu a .nav-ic img.dl-logo + img.dl-logo{margin-left:3px}
@@ -1090,7 +1091,7 @@
     { kh: "បំបែកសំឡេង", en: "Split Stem", href: "/movai-new-songs.html", isNew: true, split6: true, color: "#3b82f6", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>" },
     { kh: "ទាញយក MP3", en: "Download MP3", href: "/movai-new-songs.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" },
     { kh: "AI Lyrics", en: "AI Lyrics", href: "/movai-new-chat.html", color: "#d97706", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>" },
-    { kh: "វីដេអូ", en: "Music Video", href: "/movai-new-chat.html", mv: true, color: "#ef4444", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>" },
+    { kh: "វីដេអូ", en: "Music Video", href: "/movai-new-chat.html", mv: true, isNew: true, color: "#ef4444", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>" },
     { kh: "កែរូបភាព", en: "Photo Edit", href: "/movai-new-chat.html", color: "#6366f1", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>" },
     { kh: "All Downloader", en: "All Downloader", href: "/movai-new-download.html", isNew: true, color: "#ff2d78", icon: "<img class=\"dl-logo\" src=\"facebook-logo.png\" alt=\"Facebook\"><img class=\"dl-logo\" src=\"youtube-play.svg\" alt=\"YouTube\"><img class=\"dl-logo dl-logo-tk\" src=\"tiktok-logo.svg\" alt=\"TikTok\">" }
   ];
@@ -1152,12 +1153,12 @@
       }
       if (f.mv) {
         a.setAttribute("data-mv", "1");
-        if (featureSettings.mvLocked) {
+        if (featureSettings.mvLocked || featureSettings.videoGenLocked) {
           a.classList.add("split-locked");
           a.addEventListener("click", function(e){
             e.preventDefault();
             setMenu(false);
-            alert(t("mvLocked"));
+            alert(t(featureSettings.videoGenLocked ? "videoGenLocked" : "mvLocked"));
           });
         }
       }
