@@ -56,6 +56,9 @@
   .mini-btn{font-size:.85rem;font-weight:700;padding:9px 14px;border-radius:10px;border:1px solid #0f766e;background:#0f766e;color:#fff;cursor:pointer}
   .mini-btn:active{opacity:.85}
   .mini-btn.stem-cancel-btn{background:transparent;border-color:#d1d5db;color:#1f2937}
+  /* ---- split lock (stage 19): a locked 6-stem option shows 🔒 ---- */
+  .split-locked{opacity:.65}
+  .split-locked::after{content:" 🔒"}
   html[data-theme="dark"] .mini-btn.stem-cancel-btn{border-color:#333333;color:#e7f0ec}
 
   /* ---- Bottom menu: fixed bottom-left button, bottom sheet (never rises to the top) ---- */
@@ -101,7 +104,7 @@
   .row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
     padding:12px 16px;background:transparent;border:0;border-bottom:1px solid #eef1f0;
     cursor:pointer}
-  .row:active{background:#eef1f0}
+  .row:active{background:rgba(255,45,120,.12)}
   .thumb{width:56px;height:56px;flex:none;border-radius:8px;object-fit:cover;background:#dfe7e2}
   .row-text{flex:1;min-width:0}
   .row-title{display:block;font-size:.95rem;font-weight:600;color:#1f2937;
@@ -109,7 +112,8 @@
   .row-sub{display:block;font-size:.8rem;color:#6b7280;margin-top:3px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .row-dur{flex:none;font-size:.85rem;color:#6b7280}
-  .row.playing .row-title{color:#0f766e}
+  .row.playing{background:linear-gradient(90deg,#fce7f3,#ffedd5);border-radius:10px}
+  .row.playing .row-title{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
   .status{padding:28px 16px;text-align:center;color:#6b7280;font-size:.95rem}
   .status a{text-decoration:underline}
   .retry{margin-top:10px;color:#1f2937;text-decoration:underline;font-size:.95rem}
@@ -227,9 +231,9 @@
   .stem-playhead::before{content:"";position:absolute;top:0;left:-4px;border:5px solid transparent;border-top:7px solid #0f766e}
   /* ---- Player seek bar (stage 14) ---- */
   .player-seek{max-width:720px;margin:8px auto 0;display:flex;align-items:center;gap:8px}
-  .player-seek input[type="range"]{flex:1;min-width:0;accent-color:#0f766e}
-  .player-time{font-size:.75rem;font-weight:600;color:#4b5563;min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
-  html[data-theme="dark"] .player-time{color:#9db8ac}
+  .player-seek input[type="range"]{flex:1;min-width:0;accent-color:#ffffff}
+  .player-time{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85);min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+  html[data-theme="dark"] .player-time{color:rgba(255,255,255,.85)}
   /* ---- SVG icons (stage 15): drawn by code, not text glyphs ---- */
   .player button svg{width:20px;height:20px;fill:currentColor;vertical-align:middle}
   .player .p-close svg{width:18px;height:18px}
@@ -237,24 +241,24 @@
 
   /* ---- Now-playing bar: slim, directly on the background ---- */
   .player{position:fixed;left:0;right:0;bottom:0;z-index:40;
-    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
-    background-attachment:fixed;
-    border-top:1px solid #e5e7eb;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);
+    border-top:0;border-radius:16px 16px 0 0;
+    box-shadow:0 -4px 24px rgba(255,45,120,.28);
     padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));}
   .player[hidden]{display:none}
   .player-in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px}
   .player-modes{max-width:720px;margin:8px auto 0;display:flex;gap:8px}
-  .player-modes .mode-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 10px;border:1px solid #d1d5db;border-radius:999px;background:#ffffff;font-size:.82rem;font-weight:600;color:#4b5563;cursor:pointer}
+  .player-modes .mode-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 10px;border:1px solid rgba(255,255,255,.4);border-radius:999px;background:rgba(255,255,255,.14);font-size:.82rem;font-weight:600;color:#ffffff;cursor:pointer}
   .player-modes .mode-btn .mode-ico{font-size:1rem;line-height:1}
-  .player-modes .mode-btn.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .player-modes .mode-btn.on{background:#ffffff;border-color:#ffffff;color:#ff2d78}
   .player img{width:40px;height:40px;flex:none;border-radius:6px;object-fit:cover;background:#dfe7e2}
-  .player-title{flex:1;min-width:0;font-size:.92rem;font-weight:600;color:#1f2937;
+  .player-title{flex:1;min-width:0;font-size:.92rem;font-weight:600;color:#ffffff;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .player button{flex:none;font-size:.9rem;font-weight:600;color:#1f2937;
-    border:1px solid #d1d5db;border-radius:8px;padding:6px 11px;background:transparent}
-  .player button:active{background:#e5e7eb}
+  .player button{flex:none;font-size:.9rem;font-weight:600;color:#ffffff;
+    border:1px solid rgba(255,255,255,.45);border-radius:8px;padding:6px 11px;background:rgba(255,255,255,.12)}
+  .player button:active{background:rgba(255,255,255,.25)}
   .player .p-close{border:0;font-size:1.05rem;padding:6px 8px}
-  .player-err{max-width:720px;margin:6px auto 0;font-size:.82rem;font-weight:600;color:#b91c1c;
+  .player-err{max-width:720px;margin:6px auto 0;font-size:.82rem;font-weight:600;color:#ffffff;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
   .player-err[hidden]{display:none}
   /* ---- Drawer settings: theme + language ---- */
@@ -316,16 +320,17 @@
   html[data-theme="dark"] .status{color:#9ca3af}
   html[data-theme="dark"] .retry{color:#e7f0ec}
   html[data-theme="dark"] .row,html[data-theme="dark"] .res-row,html[data-theme="dark"] .listing,html[data-theme="dark"] .song,html[data-theme="dark"] .stem-row,html[data-theme="dark"] .song-item{border-bottom-color:#262626}
-  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:#1a1a1a}
+  html[data-theme="dark"] .row:active,html[data-theme="dark"] .listing:active,html[data-theme="dark"] .contact-row:active{background:rgba(255,45,120,.20)}
   html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#262626}
   html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
   html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#9ca3af}
-  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
-  html[data-theme="dark"] .player{background:#000000;border-top-color:#262626}
-  html[data-theme="dark"] .player-title{color:#e7f0ec}
-  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#333333}
-  html[data-theme="dark"] .player button:active{background:#1a1a1a}
-  html[data-theme="dark"] .player-err{color:#fca5a5}
+  html[data-theme="dark"] .row.playing{background:linear-gradient(90deg,rgba(236,72,153,.22),rgba(249,115,22,.22))}
+  html[data-theme="dark"] .row.playing .row-title{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  html[data-theme="dark"] .player{background:linear-gradient(90deg,#ff2d78,#ff7a18);border-top:0}
+  html[data-theme="dark"] .player-title{color:#ffffff}
+  html[data-theme="dark"] .player button{color:#ffffff;border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.12)}
+  html[data-theme="dark"] .player button:active{background:rgba(255,255,255,.25)}
+  html[data-theme="dark"] .player-err{color:#ffffff}
   html[data-theme="dark"] .player img{background:#262626}
   html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
   html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#333333;color:#e7f0ec}
@@ -622,6 +627,11 @@
       splitDone: "បំបែករួចរាល់។",
       viewStemPanel: "មើលផ្ទាំងបំបែក",
       splitFail: "បំបែកមិនបានទេ។",
+      splitTooLong: "បទនេះវែងពេក — អតិបរមា 6 នាទី 35 វិនាទី",
+      split6Locked: "6 ស្ទេមត្រូវបានចាក់សោដោយ Admin — សូមប្រើ 2 សំឡេងសិន",
+      splitDailyLimit: "ថ្ងៃនេះអ្នកបានបំបែក 2 ដងហើយ — សូមរង់ចាំថ្ងៃស្អែក",
+      splitTooBig: "ឯកសារធំពេក — អតិបរមា 100 MB",
+      midiDownload: "ទាញយក MIDI",
       post: "ផុស",
       postPublic: "ផុសទៅសាធារណៈ",
       split6Menu: "បំបែក · ៦ ស្ទេម",
@@ -724,6 +734,11 @@
       splitDone: "Split done.",
       viewStemPanel: "Open stem panel",
       splitFail: "Split failed.",
+      splitTooLong: "This song is too long — max 6 min 35 s",
+      split6Locked: "6-stem splitting is locked by the Admin — please use 2 sounds for now",
+      splitDailyLimit: "You have used your 2 splits for today — please come back tomorrow",
+      splitTooBig: "File too big — max 100 MB",
+      midiDownload: "Download MIDI",
       post: "Post",
       postPublic: "Post to Public",
       split6Menu: "Split · 6 stems",
@@ -1536,6 +1551,7 @@
     ensureSongMenu();
     if (songMenu.classList.contains("open") && songMenuFor === idx) { closeSongMenu(); return; }
     buildSongMenu(song, idx, itemEl);
+    loadSplitSettings();
     var r = btn.getBoundingClientRect();
     var vw = window.innerWidth || document.documentElement.clientWidth;
     var vh = window.innerHeight || document.documentElement.clientHeight;
@@ -1559,9 +1575,15 @@
     dl.addEventListener("click", function(e){ e.stopPropagation(); closeSongMenu(); });
     var s6 = document.createElement("button");
     s6.type = "button"; s6.className = "song-menu-item"; s6.textContent = t("split6Menu");
+    s6.setAttribute("data-split6", "1");
     s6.addEventListener("click", function(){
       closeSongMenu();
       var box = openStemBox(song, itemEl);
+      if (splitSettings.split6Locked) {
+        var m = box && box.querySelector(".stem-msg");
+        if (m) stemSetMsg(m, t("split6Locked"), true);
+        return;
+      }
       var b6 = box && box.querySelector("[data-stem='6']");
       if (b6) b6.click();
     });
@@ -1605,6 +1627,7 @@
     songMenu.appendChild(sUp);
     songMenu.appendChild(pst);
     songMenu.appendChild(del);
+    applySplitLock();
   }
   /* ---- Split Stem (old site chooser: 6 stems at once, 12 stems asks first) ---- */
   function toggleStemBox(song, itemEl){
@@ -1618,7 +1641,7 @@
     var bVr = document.createElement("button");
     bVr.type = "button"; bVr.className = "mini-btn dark"; bVr.textContent = t("vocalRemover"); bVr.setAttribute("data-stem", "vr");
     var b6 = document.createElement("button");
-    b6.type = "button"; b6.className = "mini-btn dark"; b6.textContent = t("split6"); b6.setAttribute("data-stem", "6");
+    b6.type = "button"; b6.className = "mini-btn dark"; b6.textContent = t("split6"); b6.setAttribute("data-stem", "6"); b6.setAttribute("data-split6", "1");
     var b12 = document.createElement("button");
     b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12"); b12.setAttribute("data-stem", "12");
     rowBtns.appendChild(bVr); rowBtns.appendChild(b6); rowBtns.appendChild(b12);
@@ -1652,7 +1675,10 @@
     box.appendChild(msg); box.appendChild(res);
     itemEl.appendChild(box);
     bVr.addEventListener("click", function(){ runVocalRemover(song, msg, res); });
-    b6.addEventListener("click", function(){ runStem6(song, msg, res); });
+    b6.addEventListener("click", function(){
+      if (splitSettings.split6Locked) { stemSetMsg(msg, t("split6Locked"), true); return; }
+      runStem6(song, msg, res);
+    });
     b12.addEventListener("click", function(){
       if (b12.getAttribute("data-armed") !== "1") {
         b12.setAttribute("data-armed", "1");
@@ -1669,6 +1695,7 @@
       b12.textContent = t("split12");
       runStem12(song, msg, res);
     });
+    applySplitLock();
   }
   function stemName(n){
     var k = { vocals: "stemVocals", music: "stemMusic", drums: "stemDrums", bass: "stemBass", other: "stemOther", piano: "stemPiano", guitar: "stemGuitar" }[n];
@@ -1818,7 +1845,22 @@
       try { window.open(entry.url, "_blank"); } catch (e) {}
     });
   }
-  function mixShowMixer(title, stems){
+  function mixDownloadMidi(url, title, stemName, btn){
+    var name = safeFileName((title || "stem") + " - " + stemName) + ".mid";
+    if (btn) { btn.disabled = true; btn.textContent = t("downloadingFile"); }
+    var done = function(){ if (btn) { btn.disabled = false; btn.textContent = t("midiDownload"); } };
+    fetch(url).then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.blob(); }).then(function(b){
+      var u = URL.createObjectURL(b);
+      var a = document.createElement("a"); a.href = u; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(u); }, 5000);
+      done();
+    }).catch(function(){
+      done();
+      try { window.open(url, "_blank"); } catch (e) {}
+    });
+  }
+  function mixShowMixer(title, stems, midi){
     mixTitle = title || "";
     var veil = mixEl("stemPanelVeil");
     if (!veil) return;
@@ -1887,6 +1929,15 @@
         });
         dl.addEventListener("click", function(){ mixDownloadStem(entry, dl); });
         top.appendChild(sb); top.appendChild(mb); top.appendChild(dl);
+        // Doseedo 6-stem also returns per-stem MIDI: a small MIDI
+        // download button next to the audio download (only when the
+        // server sent a MIDI link for this stem).
+        if (midi && typeof midi[st.name] === "string" && midi[st.name]) {
+          var md = document.createElement("button");
+          md.type = "button"; md.className = "row-dl"; md.textContent = t("midiDownload");
+          md.addEventListener("click", function(){ mixDownloadMidi(midi[st.name], mixTitle, st.name, md); });
+          top.appendChild(md);
+        }
         wave.appendChild(vol);
         r.appendChild(top); r.appendChild(wave);
         mixAudios.push(entry);
@@ -1966,7 +2017,7 @@
     var b = document.createElement("button");
     b.type = "button"; b.className = "mini-btn dark"; b.textContent = t("viewStemPanel");
     b.addEventListener("click", function(){
-      if (box && box._stemData) mixShowMixer(box._stemData.title, box._stemData.stems);
+      if (box && box._stemData) mixShowMixer(box._stemData.title, box._stemData.stems, box._stemData.midi || null);
     });
     res.appendChild(b);
   }
@@ -1989,6 +2040,28 @@
     });
     veil.addEventListener("click", function(ev){ if (ev.target === veil) mixClose(); });
   })();
+  // ---- Split settings (Disband/Doseedo, owner order 2026-11-24) ----
+  // 6-stem is LOCKED by default in Admin; the 2-stem Vocal Remover is
+  // always available. The setting is read from the public endpoint
+  // (no keys exposed) on page load and re-checked whenever the song
+  // ⋮ menu opens. Default is locked (safe) until the server answers.
+  var splitSettings = { split6Locked: true, splitLimitsOn: true };
+  function loadSplitSettings(){
+    return fetch(API_BASE + "/api/public/split-settings", { cache: "no-store" })
+      .then(function(r){ return r.json(); }).then(function(j){
+        if (j && j.ok === true) {
+          splitSettings.split6Locked = j.split6Locked !== false;
+          splitSettings.splitLimitsOn = j.splitLimitsOn !== false;
+          applySplitLock();
+        }
+      }).catch(function(){});
+  }
+  function applySplitLock(){
+    var locked = !!splitSettings.split6Locked;
+    var els = document.querySelectorAll("[data-split6]");
+    for (var i = 0; i < els.length; i++) els[i].classList.toggle("split-locked", locked);
+  }
+  loadSplitSettings();
   function runStem6(song, msg, res){
     if (!email) { stemSetMsg(msg, t("signInFirst"), true); return; }
     var box = stemBoxOf(msg);
@@ -2009,9 +2082,12 @@
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
         stemRunEnd(ctx);
         stemSetMsg(msg, t("splitDone"));
-        box._stemData = { title: song.title || "", stems: j.stems };
-        mixShowMixer(box._stemData.title, j.stems);
+        box._stemData = { title: song.title || "", stems: j.stems, midi: j.midi || null };
+        mixShowMixer(box._stemData.title, j.stems, j.midi || null);
         mixViewBtn(res, box);
+      } else if (j && j.ok === false && j.error === "split_timeout" && j.provider && j.jobId) {
+        stemProcShow(box, true, t("splitWorking") + "0s");
+        pollStem6(null, msg, res, t0, ctx, j.provider, j.jobId);
       } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
         stemProcShow(box, true, t("splitWorking") + "0s");
         pollStem6(j.hash, msg, res, t0, ctx);
@@ -2027,7 +2103,7 @@
       else stemSetMsg(msg, t("noServer"), true);
     });
   }
-  function pollStem6(hash, msg, res, t0, ctx){
+  function pollStem6(hash, msg, res, t0, ctx, provider, jobId){
     var box = stemBoxOf(msg);
     var n = 0;
     var tick = setInterval(function(){
@@ -2042,17 +2118,20 @@
         stemSetMsg(msg, t("splitFail"), true);
         return;
       }
-      // GET /api/studio/separate/status?hash=&email= -> {ok, done, stems}
-      fetch(API_BASE + "/api/studio/separate/status?hash=" + encodeURIComponent(hash) +
-        "&email=" + encodeURIComponent(email), { cache: "no-store" })
+      // GET /api/studio/separate/status?provider=&jobId=&email= (new
+      // providers) or ?hash=&email= (legacy MVSEP) -> {ok, done, stems}
+      var statusUrl = (provider && jobId)
+        ? API_BASE + "/api/studio/separate/status?provider=" + encodeURIComponent(provider) + "&jobId=" + encodeURIComponent(jobId) + "&email=" + encodeURIComponent(email)
+        : API_BASE + "/api/studio/separate/status?hash=" + encodeURIComponent(hash) + "&email=" + encodeURIComponent(email);
+      fetch(statusUrl, { cache: "no-store" })
         .then(function(r){ return r.json(); }).then(function(j){
           if (ctx && ctx.cancelled) return;
           if (j && j.ok === true && j.done === true && Array.isArray(j.stems) && j.stems.length) {
             clearInterval(tick);
             if (ctx) stemRunEnd(ctx);
             stemSetMsg(msg, t("splitDone"));
-            box._stemData = { title: ctx.title, stems: j.stems };
-            mixShowMixer(box._stemData.title, j.stems);
+            box._stemData = { title: ctx.title, stems: j.stems, midi: j.midi || null };
+            mixShowMixer(box._stemData.title, j.stems, j.midi || null);
             mixViewBtn(res, box);
           } else if (j && j.ok === false) {
             clearInterval(tick);
@@ -2138,9 +2217,12 @@
       if (j && j.ok === true && Array.isArray(j.stems) && j.stems.length) {
         stemRunEnd(ctx);
         stemSetMsg(msg, vrDoneMsg(j));
-        box._stemData = { title: title, stems: j.stems };
-        mixShowMixer(box._stemData.title, j.stems);
+        box._stemData = { title: title, stems: j.stems, midi: j.midi || null };
+        mixShowMixer(box._stemData.title, j.stems, j.midi || null);
         mixViewBtn(res, box);
+      } else if (j && j.ok === false && j.error === "split_timeout" && j.provider && j.jobId) {
+        stemProcShow(box, true, t("splitWorking") + "0s");
+        pollStem6(null, msg, res, t0, ctx, j.provider, j.jobId);
       } else if (j && j.ok === false && j.error === "mvsep_timeout" && j.hash) {
         stemProcShow(box, true, t("splitWorking") + "0s");
         pollStem6(j.hash, msg, res, t0, ctx);
@@ -2173,6 +2255,32 @@
     var msg = box.querySelector(".stem-msg");
     var res = box.querySelector(".stem-res");
     if (!msg || !res) return;
+    // Duration check (max 6 min 35 s = 395 s) BEFORE uploading — read
+    // the file's metadata on the phone. If the metadata cannot be read,
+    // upload anyway and let the server's 100 MB size limit decide.
+    var durUrl = null;
+    try { durUrl = URL.createObjectURL(file); } catch (e) {}
+    if (durUrl) {
+      var au = new Audio();
+      au.preload = "metadata";
+      var durDone = false;
+      var durFinish = function(ok){
+        if (durDone) return; durDone = true;
+        try { URL.revokeObjectURL(durUrl); } catch (e) {}
+        if (ok === false) { stemSetMsg(msg, t("splitTooLong"), true); return; }
+        vrUploadFileSend(file, box, msg, res);
+      };
+      au.onloadedmetadata = function(){
+        var d = au.duration;
+        durFinish(!(d && isFinite(d) && d > 395));
+      };
+      au.onerror = function(){ durFinish(true); };
+      try { au.src = durUrl; } catch (e) { durFinish(true); }
+      return;
+    }
+    vrUploadFileSend(file, box, msg, res);
+  }
+  function vrUploadFileSend(file, box, msg, res){
     res.innerHTML = "";
     var t0 = Date.now();
     stemSetMsg(msg, t("uploadWorking") + "0s");
@@ -2206,6 +2314,13 @@
     var bVr = document.createElement("button");
     bVr.type = "button"; bVr.className = "mini-btn dark"; bVr.textContent = t("vocalRemover");
     bVr.addEventListener("click", function(){ runVocalRemoverUrl(upUrl, fileName, msg, res); });
+    var b6 = document.createElement("button");
+    b6.type = "button"; b6.className = "mini-btn dark"; b6.textContent = t("split6");
+    b6.setAttribute("data-split6", "1");
+    b6.addEventListener("click", function(){
+      if (splitSettings.split6Locked) { stemSetMsg(msg, t("split6Locked"), true); return; }
+      runStem6({ title: fileName, url: upUrl, type: "song" }, msg, res);
+    });
     var b12 = document.createElement("button");
     b12.type = "button"; b12.className = "mini-btn dark"; b12.textContent = t("split12Menu");
     b12.addEventListener("click", function(){
@@ -2224,7 +2339,8 @@
       b12.textContent = t("split12Menu");
       runStem12Url(upUrl, fileName, msg, res);
     });
-    row.appendChild(bVr); row.appendChild(b12);
+    row.appendChild(bVr); row.appendChild(b6); row.appendChild(b12);
+    applySplitLock();
     res.appendChild(lbl); res.appendChild(row);
   }
   function pollStem12(splitTaskId, msg, res, t0, ctx){

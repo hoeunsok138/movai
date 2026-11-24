@@ -154,6 +154,8 @@
   .menu a,.menu button.menu-link{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
     padding:13px 20px;font-size:.95rem;color:#1f2937;border-bottom:1px solid #eef1f0;background:transparent}
   .menu a .nav-ic{display:inline-flex;flex:none;line-height:0}
+  .menu a .new-badge{margin-left:auto;flex:none;font-size:.62rem;font-weight:800;letter-spacing:.02em;color:#fff;background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:2px 7px;line-height:1.4}
+  .menu a.split-locked{opacity:.65}
   .menu a .nav-ic svg{display:block;width:20px;height:20px}
   .menu a .nav-ic img.dl-logo{box-sizing:border-box;display:block;width:18px;height:18px;object-fit:contain;flex:none}
   .menu a .nav-ic img.dl-logo + img.dl-logo{margin-left:3px}
@@ -181,29 +183,30 @@
   .row-sub{display:block;font-size:.8rem;color:#6b7280;margin-top:3px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .row-dur{flex:none;font-size:.85rem;color:#6b7280}
-  .row.playing .row-title{color:#0f766e}
+  .row.playing{background:linear-gradient(90deg,#fce7f3,#ffedd5);border-radius:10px}
+  .row.playing .row-title{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
   .status{padding:28px 16px;text-align:center;color:#6b7280;font-size:.95rem}
   .status:empty{display:none}
   .retry{margin-top:10px;color:#1f2937;text-decoration:underline;font-size:.95rem}
 
   /* ---- Now-playing bar: slim, directly on the background ---- */
   .player{position:fixed;left:0;right:0;bottom:0;z-index:40;
-    background:linear-gradient(180deg,#e8f5f0 0%,#f2faf6 45%,#ffffff 100%);
-    background-attachment:fixed;
-    border-top:1px solid #e5e7eb;
+    background:linear-gradient(90deg,#ff2d78,#ff7a18);
+    border-top:0;border-radius:16px 16px 0 0;
+    box-shadow:0 -4px 24px rgba(255,45,120,.28);
     padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));}
   .player[hidden]{display:none}
   .player-in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px}
   .player-modes{max-width:720px;margin:8px auto 0;display:flex;gap:8px}
-  .player-modes .mode-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 10px;border:1px solid #d1d5db;border-radius:999px;background:#ffffff;font-size:.82rem;font-weight:600;color:#4b5563;cursor:pointer}
+  .player-modes .mode-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 10px;border:1px solid rgba(255,255,255,.4);border-radius:999px;background:rgba(255,255,255,.14);font-size:.82rem;font-weight:600;color:#ffffff;cursor:pointer}
   .player-modes .mode-btn .mode-ico{font-size:1rem;line-height:1}
-  .player-modes .mode-btn.on{background:#0f766e;border-color:#0f766e;color:#ffffff}
+  .player-modes .mode-btn.on{background:#ffffff;border-color:#ffffff;color:#ff2d78}
   .player img{width:40px;height:40px;flex:none;border-radius:6px;object-fit:cover;background:#dfe7e2}
-  .player-title{flex:1;min-width:0;font-size:.92rem;font-weight:600;color:#1f2937;
+  .player-title{flex:1;min-width:0;font-size:.92rem;font-weight:600;color:#ffffff;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .player button{flex:none;font-size:.9rem;font-weight:600;color:#1f2937;
-    border:1px solid #d1d5db;border-radius:8px;padding:6px 11px;background:transparent}
-  .player button:active{background:rgba(255,45,120,.12)}
+  .player button{flex:none;font-size:.9rem;font-weight:600;color:#ffffff;
+    border:1px solid rgba(255,255,255,.45);border-radius:8px;padding:6px 11px;background:rgba(255,255,255,.12)}
+  .player button:active{background:rgba(255,255,255,.25)}
   .player .p-close{border:0;font-size:1.05rem;padding:6px 8px}
 
   /* ---- Contact footer: real logo images, plain rows ---- */
@@ -238,7 +241,8 @@
   .yt-watch{display:inline-block;margin-top:6px;font-size:.8rem;font-weight:600;color:#0f766e}
   .yt-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 0;background:transparent;border:0;border-bottom:1px solid #eef1f0}
   .yt-row:active{background:rgba(255,45,120,.12)}
-  .yt-row.playing{background:#eef7f4}
+  .yt-row.playing{background:linear-gradient(90deg,#fce7f3,#ffedd5);border-radius:10px}
+  .yt-row.playing .yt-title{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
   .yt-thumb{position:relative;flex:none;width:112px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000}
   .yt-thumb img{width:100%;height:100%;object-fit:cover;display:block}
   .yt-thumb b{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.8);color:#fff;font-size:.68rem;font-weight:600;padding:1px 4px;border-radius:4px}
@@ -390,11 +394,12 @@
   html[data-theme="dark"] .thumb,html[data-theme="dark"] .c-logo{background:#262626}
   html[data-theme="dark"] .row-title,html[data-theme="dark"] .res-title,html[data-theme="dark"] .listing-price,html[data-theme="dark"] .listing-count,html[data-theme="dark"] .song-title,html[data-theme="dark"] .c-title,html[data-theme="dark"] .sec,html[data-theme="dark"] .seller,html[data-theme="dark"] .lbl,html[data-theme="dark"] .sec-title,html[data-theme="dark"] .acct,html[data-theme="dark"] .bal,html[data-theme="dark"] .prog,html[data-theme="dark"] .count,html[data-theme="dark"] .who-name,html[data-theme="dark"] .contact-title,html[data-theme="dark"] h1,html[data-theme="dark"] h2{color:#e7f0ec}
   html[data-theme="dark"] .row-sub,html[data-theme="dark"] .row-dur,html[data-theme="dark"] .res-sub,html[data-theme="dark"] .res-dur,html[data-theme="dark"] .listing-sub,html[data-theme="dark"] .song-style,html[data-theme="dark"] .song-dur,html[data-theme="dark"] .song-note,html[data-theme="dark"] .c-sub,html[data-theme="dark"] .sec-sub,html[data-theme="dark"] .hint,html[data-theme="dark"] .note,html[data-theme="dark"] .fine,html[data-theme="dark"] .payload,html[data-theme="dark"] .stem-msg,html[data-theme="dark"] .cover-msg,html[data-theme="dark"] .updated,html[data-theme="dark"] .sect-title,html[data-theme="dark"] .who-email{color:#9ca3af}
-  html[data-theme="dark"] .row.playing .row-title{color:#2dd4bf}
-  html[data-theme="dark"] .player{background:#000000;border-top-color:#262626}
-  html[data-theme="dark"] .player-title{color:#e7f0ec}
-  html[data-theme="dark"] .player button{color:#e7f0ec;border-color:#333333}
-  html[data-theme="dark"] .player button:active{background:rgba(255,45,120,.20)}
+  html[data-theme="dark"] .row.playing{background:linear-gradient(90deg,rgba(236,72,153,.22),rgba(249,115,22,.22))}
+  html[data-theme="dark"] .row.playing .row-title{background:linear-gradient(90deg,#ff2d78,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+  html[data-theme="dark"] .player{background:linear-gradient(90deg,#ff2d78,#ff7a18);border-top:0}
+  html[data-theme="dark"] .player-title{color:#ffffff}
+  html[data-theme="dark"] .player button{color:#ffffff;border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.12)}
+  html[data-theme="dark"] .player button:active{background:rgba(255,255,255,.25)}
   html[data-theme="dark"] .player img{background:#262626}
   html[data-theme="dark"] .res-dl,html[data-theme="dark"] .row-dl,html[data-theme="dark"] .row-act,html[data-theme="dark"] .c-dl,html[data-theme="dark"] .linklike,html[data-theme="dark"] .link-btn{color:#e7f0ec}
   html[data-theme="dark"] .play-btn,html[data-theme="dark"] .c-play{border-color:#333333;color:#e7f0ec}
@@ -430,11 +435,10 @@
   html[data-theme="dark"] .yt-meta,html[data-theme="dark"] .yt-now span{color:#9ca3af}
   html[data-theme="dark"] .yt-row{border-bottom-color:#262626}
   html[data-theme="dark"] .yt-row:active{background:rgba(255,45,120,.20)}
-  html[data-theme="dark"] .yt-row.playing{background:#1a1a1a}
+  html[data-theme="dark"] .yt-row.playing{background:linear-gradient(90deg,rgba(236,72,153,.22),rgba(249,115,22,.22))}
   html[data-theme="dark"] .md-sec{border-top-color:#262626}
   html[data-theme="dark"] .pkg-buy{color:#9ca3af}
-  html[data-theme="dark"] .pkg-item-name{color:#e7f0ec}
-  html[data-theme="dark"] .pkg-item-sub,html[data-theme="dark"] .pkg-note,html[data-theme="dark"] .pkg-contacts-lbl,html[data-theme="dark"] .pkg-eq,html[data-theme="dark"] .buy-brand-site,html[data-theme="dark"] .buy-hint{color:#9ca3af}
+  html[data-theme="dark"] .pkg-note,html[data-theme="dark"] .pkg-contacts-lbl,html[data-theme="dark"] .buy-brand-site,html[data-theme="dark"] .buy-hint{color:#9ca3af}
   html[data-theme="dark"] .buy-sum,html[data-theme="dark"] .buy-label{color:#e7f0ec}
   html[data-theme="dark"] .buy-method{color:#e7f0ec;background:#1a1a1a;border-color:#333333}
   html[data-theme="dark"] .buy-method.picked{border-color:#ff2d78;background:rgba(255,45,120,.15);color:#ff7a18}
@@ -827,6 +831,7 @@
       menuSignOut: "ចាកចេញ",
       signedInAs: "បានចូលជា ",
       menuAria: "ម៉ឺនុយ",
+      split6Locked: "6 ស្ទេមត្រូវបានចាក់សោដោយ Admin — សូមប្រើ 2 សំឡេងសិន",
       secSongs: "ទំព័រដើម",
       sellSong: "លក់ចម្រៀង",
       loadingSongs: "កំពុងផ្ទុកចម្រៀង…",
@@ -922,6 +927,7 @@
       menuSignOut: "Sign out",
       signedInAs: "Signed in as ",
       menuAria: "Menu",
+      split6Locked: "6-stem splitting is locked by the Admin — please use 2 sounds for now",
       secSongs: "Home",
       sellSong: "Sell Song",
       loadingSongs: "Loading songs…",
@@ -1003,14 +1009,30 @@
     { kh: "បង្កើតចម្រៀង", en: "Create Song", href: "/Movai.MusicGenerate/kh", color: "#ff2d78", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>" },
     { kh: "ខូវើ", en: "Cover", href: "/Movai.MusicGenerate/kh", color: "#ff7a18", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><line x1=\"12\" y1=\"19\" x2=\"12\" y2=\"23\"/><line x1=\"8\" y1=\"23\" x2=\"16\" y2=\"23\"/></svg>" },
     { kh: "My Voice", en: "My Voice", href: "/Movai.MusicGenerate/kh", color: "#059669", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h2l2-6 3 12 3-16 3 14 2-6 2 2h2\"/></svg>" },
-    { kh: "កាត់សំឡេង", en: "Vocal Remover", href: "/movai-new-songs.html", color: "#a855f7", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><line x1=\"20\" y1=\"4\" x2=\"8.12\" y2=\"15.88\"/><line x1=\"14.47\" y1=\"14.48\" x2=\"20\" y2=\"20\"/><line x1=\"8.12\" y1=\"8.12\" x2=\"12\" y2=\"12\"/></svg>" },
-    { kh: "បំបែកសំឡេង", en: "Split Stem", href: "/movai-new-songs.html", color: "#3b82f6", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>" },
+    { kh: "កាត់សំឡេង", en: "Vocal Remover", href: "/movai-new-songs.html", isNew: true, color: "#a855f7", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><line x1=\"20\" y1=\"4\" x2=\"8.12\" y2=\"15.88\"/><line x1=\"14.47\" y1=\"14.48\" x2=\"20\" y2=\"20\"/><line x1=\"8.12\" y1=\"8.12\" x2=\"12\" y2=\"12\"/></svg>" },
+    { kh: "បំបែកសំឡេង", en: "Split Stem", href: "/movai-new-songs.html", isNew: true, split6: true, color: "#3b82f6", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"4\" y1=\"21\" x2=\"4\" y2=\"14\"/><line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"3\"/><line x1=\"20\" y1=\"21\" x2=\"20\" y2=\"16\"/><line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"3\"/><line x1=\"1\" y1=\"14\" x2=\"7\" y2=\"14\"/><line x1=\"9\" y1=\"8\" x2=\"15\" y2=\"8\"/><line x1=\"17\" y1=\"16\" x2=\"23\" y2=\"16\"/></svg>" },
     { kh: "ទាញយក MP3", en: "Download MP3", href: "/movai-new-songs.html", color: "#0d9488", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>" },
     { kh: "AI Lyrics", en: "AI Lyrics", href: "/movai-new-chat.html", color: "#d97706", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>" },
     { kh: "វីដេអូ", en: "Music Video", href: "/movai-new-chat.html", color: "#ef4444", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2.18\"/><line x1=\"7\" y1=\"2\" x2=\"7\" y2=\"22\"/><line x1=\"17\" y1=\"2\" x2=\"17\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><line x1=\"2\" y1=\"7\" x2=\"7\" y2=\"7\"/><line x1=\"2\" y1=\"17\" x2=\"7\" y2=\"17\"/><line x1=\"17\" y1=\"17\" x2=\"22\" y2=\"17\"/><line x1=\"17\" y1=\"7\" x2=\"22\" y2=\"7\"/></svg>" },
     { kh: "កែរូបភាព", en: "Photo Edit", href: "/movai-new-chat.html", color: "#6366f1", icon: "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>" },
     { kh: "All Downloader", en: "All Downloader", href: "/movai-new-download.html", color: "#ff2d78", icon: "<img class=\"dl-logo\" src=\"facebook-logo.png\" alt=\"Facebook\"><img class=\"dl-logo\" src=\"youtube-play.svg\" alt=\"YouTube\"><img class=\"dl-logo dl-logo-tk\" src=\"tiktok-logo.svg\" alt=\"TikTok\">" }
   ];
+  /* ---- Split settings (Disband/Doseedo, owner order 2026-11-24):
+     6-stem is LOCKED by default in Admin; the 2-stem Vocal Remover is
+     always available. The setting is read from the public endpoint
+     (no keys exposed). Default is locked (safe) until the server
+     answers; re-checked every time the menu opens. ---- */
+  var splitSettings = { split6Locked: true, splitLimitsOn: true };
+  function loadSplitSettings(){
+    return fetch(API_BASE + "/api/public/split-settings", { cache: "no-store" })
+      .then(function(r){ return r.json(); }).then(function(j){
+        if (j && j.ok === true) {
+          splitSettings.split6Locked = j.split6Locked !== false;
+          splitSettings.splitLimitsOn = j.splitLimitsOn !== false;
+          if (typeof renderDrawerFns === "function") renderDrawerFns();
+        }
+      }).catch(function(){});
+  }
   function renderDrawerFns(){
     var box = document.getElementById("menuFns");
     if (!box) return;
@@ -1021,6 +1043,21 @@
       var ic = document.createElement("span"); ic.className = "nav-ic"; ic.style.color = f.color; ic.innerHTML = f.icon;
       a.appendChild(ic);
       a.appendChild(document.createTextNode(lang === "en" ? f.en : f.kh));
+      if (f.isNew) {
+        var nb = document.createElement("span"); nb.className = "new-badge"; nb.textContent = "New";
+        a.appendChild(nb);
+      }
+      if (f.split6) {
+        a.setAttribute("data-split6", "1");
+        if (splitSettings.split6Locked) {
+          a.classList.add("split-locked");
+          a.addEventListener("click", function(e){
+            e.preventDefault();
+            setMenu(false);
+            alert(t("split6Locked"));
+          });
+        }
+      }
       box.appendChild(a);
     });
     var lbl = document.getElementById("menuFnsLbl");
@@ -1376,6 +1413,7 @@ for (var _bi = 0; _bi < pkgBuyBtns.length; _bi++) {
   });
 }
 buyLoadSettings();
+loadSplitSettings();
 function openPkgSheet(){
   var s = document.getElementById("pkgSheet");
   if (s) s.hidden = false;
@@ -1391,7 +1429,7 @@ function closePkgSheet(){
   var menuSignOut = document.getElementById("menuSignOut");
   var menuUser = document.getElementById("menuUser");
   function setMenu(open){
-    if (open) syncDrawerState();
+    if (open) { syncDrawerState(); loadSplitSettings(); }
     menuEl.classList.toggle("open", !!open);
     document.body.classList.toggle("drawer-open", !!open);
     if (menuVeil) menuVeil.classList.toggle("open", !!open);
