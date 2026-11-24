@@ -1919,7 +1919,12 @@
     tracks.innerHTML = "";
     var ruler = mixEl("stemRuler");
     ruler.innerHTML = "";
-    (stems || []).forEach(function(st){
+    // Doseedo 6-stem results can include drum sub-stems (drum_substems_*),
+    // which would show as extra tracks (12 instead of 6). Drop them here so
+    // even a cached/older split renders exactly the 6 main stems. (The Suno
+    // 12-stem feature uses different names and is unaffected.)
+    var showStems = (stems || []).filter(function(st){ return st && st.name && String(st.name).toLowerCase().indexOf("substem") < 0; });
+    showStems.forEach(function(st){
       var r = document.createElement("div");
       r.className = "stem-track";
       var ic = STEM_ICONS[st.name] || STEM_ICONS.music;
