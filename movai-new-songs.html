@@ -638,6 +638,7 @@
       splitFailed: "បំបែកបទនេះមិនបានទេ — សូមព្យាយាមម្តងទៀត",
       splitNotFound: "រកមិនឃើញការងារបំបែកនេះទេ — សូមបំបែកម្តងទៀត",
       splitNeedCredits: "Credit មិនគ្រប់ទេ — បំបែកម្ដងទៀតត្រូវការ 2 Song Credits",
+      splitNoProvider: "Admin បានបិទ API បំបែកទាំងពីរ — សូមទាក់ទង Admin",
       splitDailyFree: "ថ្ងៃនេះ free បំបែក 1 ដង",
       splitDailyCost: "បំបែកម្ដងទៀតត្រូវការ 2 Song Credits",
       splitDailyDone: "ថ្ងៃនេះបំបែកអស់ 2 ដងហើយ — ស្អែក free វិញ",
@@ -755,6 +756,7 @@
       splitFailed: "This song could not be split — please try again",
       splitNotFound: "This split job was not found — please split again",
       splitNeedCredits: "Not enough credits — the next split costs 2 Song Credits",
+      splitNoProvider: "Admin has disabled both split APIs — please contact the Admin",
       splitDailyFree: "Today: 1 free split left",
       splitDailyCost: "Next split costs 2 Song Credits",
       splitDailyDone: "You have used your 2 splits for today — free again tomorrow",
@@ -931,7 +933,7 @@
       "split_timeout": "splitTimeout", "mvsep_timeout": "splitTimeout",
       "split_too_big": "splitTooBig", "split_bad_audio": "splitBadAudio",
       "split_failed": "splitFailed", "split_not_found": "splitNotFound",
-      "split_need_credits": "splitNeedCredits" };
+      "split_need_credits": "splitNeedCredits", "split_no_provider": "splitNoProvider" };
     if (map[code]) return t(map[code]);
     if (j && j.error) return cleanErr(j.error);
     return t("splitFail");
