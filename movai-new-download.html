@@ -282,6 +282,7 @@
       </div>
       <button class="dl-go" id="dlGo" type="button" data-i18n="dlGo">ចាប់ផ្តើម</button>
       <div class="dl-free" data-i18n="dlAllowance">ទាញយក MP3 500 MB / ខែ</div>
+      <div class="dl-free" id="dlUsed"></div>
       <div class="dl-status" id="dlStatus"></div>
       <div class="dl-err" id="dlErr"></div>
       <div class="dl-preview" id="dlPreview" hidden>
@@ -376,6 +377,7 @@
       dlDownload: "ទាញយក",
       dlRowMusic: "តន្ត្រី",
       dlAllowance: "ទាញយក MP3 500 MB / ខែ",
+      dlUsedLine: "ប្រើហើយ {used} MB · នៅសល់ {left} MB ខែនេះ",
       dlWorking: "កំពុងធ្វើការ…",
       dlQueued: "កំពុងរង់ចាំ…",
       dlProcessing: "កំពុងដំណើរការ…",
@@ -424,6 +426,7 @@
       dlDownload: "Download",
       dlRowMusic: "Music",
       dlAllowance: "Download MP3 500 MB / Month",
+      dlUsedLine: "Used {used} MB · {left} MB left this month",
       dlWorking: "Working…",
       dlQueued: "Queued…",
       dlProcessing: "Processing…",
@@ -632,6 +635,20 @@
     signinBox.hidden = !!em;
     dlBox.hidden = !em;
     goBtn.disabled = !em;
+    refreshUsage();
+  }
+  /* ---- monthly quota line: show what this account really used, so
+     every download visibly deducts from the 500 MB/month allowance. ---- */
+  function refreshUsage(){
+    var usedEl = document.getElementById("dlUsed");
+    var email = curEmail();
+    if (!usedEl || !email) return;
+    fetch(API_BASE + "/api/download/vidfetch/usage?email=" + encodeURIComponent(email)).then(function(r){ return r.json(); }).then(function(j){
+      if (!j || !j.ok) return;
+      var usedMb = (j.mbUsedBytes || 0) / (1024 * 1024);
+      var leftMb = (typeof j.mbRemainingBytes === "number" ? j.mbRemainingBytes : (500 * 1024 * 1024 - (j.mbUsedBytes || 0))) / (1024 * 1024);
+      usedEl.textContent = t("dlUsedLine").replace("{used}", usedMb.toFixed(1)).replace("{left}", Math.max(0, leftMb).toFixed(1));
+    }).catch(function(){});
   }
   function fileNameFor(suggested, format, url){
     var ext = format === "mp3" ? "mp3" : "mp4";
@@ -911,12 +928,17 @@
     });
   }
 
-  /* ---- blob download: Chrome ignores the download attribute on
-     cross-origin links, so fetch as a blob and save it locally. ---- */
+  /* ---- in-app download: the VidFetch storage host sends no CORS
+     headers, so fetching its URL directly always fails ("Download
+     failed") — fetch it through our own server's proxy endpoint
+     (/api/gen/video/file) instead, which returns the same bytes with
+     Content-Disposition: attachment. Never open the storage URL in a
+     new tab. ---- */
   function blobDownload(url, filename, btn, labelKey){
     btn.disabled = true;
     btn.textContent = t("dlDownloadingFile");
-    fetch(url, { mode: "cors" }).then(function(r){
+    var fileUrl = API_BASE + "/api/gen/video/file?u=" + encodeURIComponent(url) + "&name=" + encodeURIComponent(filename);
+    fetch(fileUrl).then(function(r){
       if (!r.ok) throw new Error("http " + r.status);
       return r.blob();
     }).then(function(blob){
@@ -931,11 +953,11 @@
       setStatus(t("dlDownloaded"));
       btn.disabled = false;
       btn.textContent = t(labelKey || "dlSaveFile");
+      refreshUsage();
     }).catch(function(){
       btn.disabled = false;
       btn.textContent = t(labelKey || "dlSaveFile");
       setErr(t("dlFailed"));
-      try { window.open(url, "_blank"); } catch (e) {}
     });
   }
 
