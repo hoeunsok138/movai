@@ -459,18 +459,8 @@ function mvLyrRender(){
   sv.textContent=tx("mvLyrSaveBtn");
   sv.addEventListener("click",function(){mvSaveLyricsFromEditor()});
   box.appendChild(sv);
-  var aiB=document.createElement("button");
-  aiB.type="button";aiB.className="kbtn kbtn-black";aiB.style.cssText="margin-top:10px;width:100%";
-  aiB.textContent=tx("mvAiBtn");
-  aiB.addEventListener("click",function(){mvAiTranscribe()});
-  box.appendChild(aiB);
-  var ab=document.createElement("button");
-  ab.type="button";ab.className="kbtn kbtn-black mv-auto-btn";ab.style.cssText="margin-top:10px;width:100%";
-  ab.textContent=tx("mvAutoBtn");
-  ab.addEventListener("click",function(){mvAutoCut()});
-  box.appendChild(ab);
   var sb=document.createElement("button");
-  sb.type="button";sb.className="kbtn kbtn-black mv-scan-btn";sb.style.cssText="margin-top:10px;width:100%";
+  sb.type="button";sb.className="kbtn mv-auto-btn mv-scan-btn";sb.style.cssText="margin-top:10px;width:100%";
   sb.textContent=tx("mvScanBtn");
   sb.addEventListener("click",function(){mvAutoScan()});
   box.appendChild(sb);
@@ -888,7 +878,7 @@ function mvScanApplyToLines(lines){
   if(typeof h.autoScan.singingStart==="number")mvSingStartSet(h.autoScan.singingStart,false);
   return applied;
 }
-function mvAutoCutUI(){var ctr=document.querySelector("#mvView .mv-controls");if(!ctr||mvState.autoRowBuilt||document.getElementById("mvAutoRow"))return;var row=document.createElement("div");row.id="mvAutoRow";row.className="mv-auto-row";var btn=document.createElement("button");btn.type="button";btn.className="mv-auto-btn";btn.textContent=tx("mvAutoBtn");btn.addEventListener("click",function(){mvAutoCut()});row.appendChild(btn);var sc=document.createElement("button");sc.type="button";sc.id="mvScanBtnPlayer";sc.className="mv-auto-btn mv-scan-btn";sc.textContent=tx("mvScanBtn");sc.addEventListener("click",function(){mvAutoScan()});row.appendChild(sc);var ss=document.createElement("span");ss.id="mvSingStart";ss.className="mv-sing-start";ss.textContent=mvSingStartFmt();row.appendChild(ss);var off=document.getElementById("mvLyrOffRow");if(off&&off.parentNode)off.parentNode.insertBefore(row,off.nextSibling);else ctr.parentNode.insertBefore(row,ctr.nextSibling);mvState.autoRowBuilt=true}
+function mvAutoCutUI(){var ctr=document.querySelector("#mvView .mv-controls");if(!ctr||mvState.autoRowBuilt||document.getElementById("mvAutoRow"))return;var row=document.createElement("div");row.id="mvAutoRow";row.className="mv-auto-row";var sc=document.createElement("button");sc.type="button";sc.id="mvScanBtnPlayer";sc.className="mv-auto-btn mv-scan-btn";sc.textContent=tx("mvScanBtn");sc.addEventListener("click",function(){mvAutoScan()});row.appendChild(sc);var ss=document.createElement("span");ss.id="mvSingStart";ss.className="mv-sing-start";ss.textContent=mvSingStartFmt();row.appendChild(ss);var off=document.getElementById("mvLyrOffRow");if(off&&off.parentNode)off.parentNode.insertBefore(row,off.nextSibling);else ctr.parentNode.insertBefore(row,ctr.nextSibling);mvState.autoRowBuilt=true}
 
 function mvLyrOffsetUI(){
   var ctr=document.querySelector("#mvView .mv-controls");
