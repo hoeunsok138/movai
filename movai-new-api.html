@@ -199,7 +199,6 @@
     <section class="card">
       <h1 data-i18n="apiTitle">MovAi API — ប្រើ MovAi ពីខាងក្រៅ</h1>
       <p data-i18n="apiIntro">API របស់ MovAi ឲ្យអ្នកហៅប្រើ MovAi ដោយផ្ទាល់ពីកម្មវិធី ឬគេហទំព័ររបស់អ្នក — បង្កើតចម្រៀង និងរូបភាពដោយ AI ដោយមិនចាំបាច់បើកអាប់។ អ្នកគ្រាន់តែយក API Key មួយទៅប្រើ។</p>
-      <p class="muted" data-i18n="apiIntro2">MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.</p>
     </section>
 
     <section class="card" id="signinCard" hidden>
@@ -523,16 +522,46 @@ function highlightApiCodeText(src){
      default theme (theme 1) so the page still works. ---- */
   var BG_THEME_DEFAULT = { id: "default", name: "ដើម · Original", imageUrl: null, gradient: ["#e8f5f0", "#f2faf6", "#ffffff"], acc1: "#ff2d78", acc2: "#ff7a18", dark: false, ink: "#1f2937", muted: "#6b7280" };
   var lastBgTheme = null;
-  /* ---- Night-mode ink fix (v2): applyBgTheme() sets --ink/--muted inline
-     from the Admin theme (default: dark #1f2937). In Night mode with a
-     light Admin theme that left dark text on a dark background. When the
-     page is in Night mode and the Admin theme is NOT itself dark, force
-     bright ink/muted; otherwise restore the Admin theme's own colors. ---- */
-  function applyNightInk(){
+  /* ---- Auto-contrast (theme expansion): pick --ink/--muted from the
+     theme's dominant background colour so ANY Admin theme stays readable.
+     Dark = relative luminance of bg1 < 0.35, or Night mode. The computed
+     values OVERRIDE the theme's own ink/muted. When the theme has an
+     uploaded background image, #bgVeil (dark .45 gradient) is shown so
+     text over the image stays readable; with no image in Night mode the
+     veil is left to the CSS night rule (it darkens the light gradient so
+     bright night text stays readable) — hiding it there would break
+     Night mode. ---- */
+  function themeLum(hex){
+    var h = String(hex || "").replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    if (h.length !== 6) return 1;
+    var r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255;
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return 1;
+    function lin(c){ return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  }
+  function applyThemeContrast(t){
+    t = t || lastBgTheme || BG_THEME_DEFAULT;
+    var bg1 = (t && (t.bg1 || (t.gradient && t.gradient[0]))) || "#e8f5f0";
+    var night = document.documentElement.getAttribute("data-theme") === "dark";
+    var dark = themeLum(bg1) < 0.35 || night || !!(t && (t.image || t.imageUrl));
     var r = document.documentElement;
-    var night = r.getAttribute("data-theme") === "dark" && !r.classList.contains("bg-dark");
-    if (night) { r.style.setProperty("--ink", "#e7f0ec"); r.style.setProperty("--muted", "#9ca3af"); }
-    else if (lastBgTheme) { r.style.setProperty("--ink", lastBgTheme.ink || BG_THEME_DEFAULT.ink); r.style.setProperty("--muted", lastBgTheme.muted || BG_THEME_DEFAULT.muted); }
+    if (dark) { r.style.setProperty("--ink", "#e7f0ec"); r.style.setProperty("--muted", "#9ca3af"); }
+    else { r.style.setProperty("--ink", "#1f2937"); r.style.setProperty("--muted", "#6b7280"); }
+    var veil = document.getElementById("bgVeil");
+    if (veil) {
+      var img = t && (t.image || t.imageUrl);
+      if (img) { veil.style.background = "linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.45))"; veil.style.opacity = "1"; }
+      else if (night) { veil.style.opacity = ""; }
+      else { veil.style.opacity = "0"; }
+    }
+  }
+  /* ---- Night-mode ink (v2) now delegates to applyThemeContrast():
+     it already forces bright --ink/--muted in Night mode and picks bright
+     ink for any dark Admin theme (bg1 luminance < 0.35), so the old
+     restore-the-theme's-own-ink branch can no longer fight it. ---- */
+  function applyNightInk(){
+    applyThemeContrast(lastBgTheme || BG_THEME_DEFAULT);
   }
   function applyBgTheme(t){
     if (!t || !t.gradient || t.gradient.length !== 3) t = BG_THEME_DEFAULT;
@@ -559,7 +588,7 @@ function highlightApiCodeText(src){
       }
     }
     if (t.dark) r.classList.add("bg-dark"); else r.classList.remove("bg-dark");
-    applyNightInk();
+    applyThemeContrast(t);
   }
   function loadBgTheme(){
     var ctrl = null, timer = null;
@@ -586,7 +615,6 @@ function highlightApiCodeText(src){
       themeDay: "ថ្ងៃ", themeNight: "យប់", themeAuto: "ស្វ័យប្រវត្តិ",
       apiTitle: "MovAi API — ប្រើ MovAi ពីខាងក្រៅ",
       apiIntro: "API របស់ MovAi ឲ្យអ្នកហៅប្រើ MovAi ដោយផ្ទាល់ពីកម្មវិធី ឬគេហទំព័ររបស់អ្នក — បង្កើតចម្រៀង និងរូបភាពដោយ AI ដោយមិនចាំបាច់បើកអាប់។ អ្នកគ្រាន់តែយក API Key មួយទៅប្រើ។",
-      apiIntro2: "MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.",
       needSignin: "សូមចូលប្រើជាមុនសិន",
       needSigninBody: "អ្នកត្រូវចូលប្រើគណនី MovAi របស់អ្នកជាមុនសិន ទើបអាចបង្កើត API Key បាន។",
       goSignin: "ចូលប្រើ · Sign In",
@@ -697,7 +725,6 @@ function highlightApiCodeText(src){
       themeDay: "Day", themeNight: "Night", themeAuto: "Auto",
       apiTitle: "MovAi API — Use MovAi From Outside",
       apiIntro: "MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.",
-      apiIntro2: "MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.",
       needSignin: "Please sign in first",
       needSigninBody: "Sign in to your MovAi account first, then you can create an API Key.",
       goSignin: "Sign In",

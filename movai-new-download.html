@@ -212,9 +212,11 @@
   html[data-theme="dark"] .dl-signin{color:#9ca3af}
   html[data-theme="dark"] .dl-signin a{color:#2dd4bf}
   .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
+#bgVeil{position:fixed;inset:0;z-index:1;pointer-events:none;display:none;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.45))}
 </style>
 </head>
 <body>
+<div id="bgVeil" aria-hidden="true"></div>
 <div class="wrap">
   <header id="hdr">
     <div class="hdr-row hdr-top">
@@ -318,6 +320,7 @@
     if (m) m.setAttribute("content", dark ? "#000000" : "#f2faf6");
     var seg = document.getElementById("themeSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+    if (typeof applyNightInk === "function") applyNightInk();
   }
   function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
   if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
@@ -329,6 +332,86 @@
   applyTheme();
 
   var API_BASE = "https://movai-proxy-wasr.onrender.com";
+  /* ---- Admin background themes (bg-themes client v1): ONE page background.
+     Fetches the active theme from the server; on ANY failure falls back
+     to the embedded default theme (theme 1) so the page still works. ---- */
+  var BG_THEME_DEFAULT = { id: "default", name: "ដើម · Original", imageUrl: null, gradient: ["#e8f5f0", "#f2faf6", "#ffffff"], acc1: "#ff2d78", acc2: "#ff7a18", dark: false, ink: "#1f2937", muted: "#6b7280" };
+  var lastBgTheme = null;
+  function bgThemeLuminance(hex){
+    var h = String(hex || "").replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    if (h.length !== 6) return 1;
+    var r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255;
+    function lin(c){ return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  }
+  /* ---- Auto-contrast (bg-themes v2): text protects itself on ANY theme
+     colour. The computed --ink/--muted OVERRIDE the theme's own ink/muted.
+     With an uploaded background image, #bgVeil darkens the image so text
+     on top stays readable. ---- */
+  function applyThemeContrast(t){
+    if (!t) t = lastBgTheme || BG_THEME_DEFAULT;
+    var bg1 = (t && (t.bg1 || (t.gradient && t.gradient[0]))) || "#e8f5f0";
+    var img = (t && (t.image || t.imageUrl)) || null;
+    var r = document.documentElement;
+    if (!r) return;
+    var night = r.getAttribute("data-theme") === "dark";
+    var dark = night || img || bgThemeLuminance(bg1) < 0.35;
+    if (dark) { r.style.setProperty("--ink", "#e7f0ec"); r.style.setProperty("--muted", "#9ca3af"); }
+    else { r.style.setProperty("--ink", "#1f2937"); r.style.setProperty("--muted", "#6b7280"); }
+    var veil = document.getElementById("bgVeil");
+    if (veil) veil.style.display = (img || night) ? "block" : "none";
+  }
+  /* ---- Night-mode ink fix (v2): in Night mode force bright --ink/--muted
+     via the contrast helper, so text never goes dark-on-dark. ---- */
+  function applyNightInk(){
+    applyThemeContrast(lastBgTheme || BG_THEME_DEFAULT);
+  }
+  function applyBgTheme(t){
+    if (!t || !t.gradient || t.gradient.length !== 3) t = BG_THEME_DEFAULT;
+    lastBgTheme = t;
+    var r = document.documentElement;
+    if (!r) return;
+    var g = t.gradient;
+    r.style.setProperty("--bg1", g[0]);
+    r.style.setProperty("--bg2", g[1]);
+    r.style.setProperty("--bg3", g[2]);
+    r.style.setProperty("--acc1", t.acc1 || BG_THEME_DEFAULT.acc1);
+    r.style.setProperty("--acc2", t.acc2 || BG_THEME_DEFAULT.acc2);
+    r.style.setProperty("--ink", t.ink || BG_THEME_DEFAULT.ink);
+    r.style.setProperty("--muted", t.muted || BG_THEME_DEFAULT.muted);
+    var b = document.body;
+    if (b) {
+      if (t.imageUrl) {
+        b.style.backgroundImage = "url(\"" + String(t.imageUrl).replace(/"/g, "") + "\"), linear-gradient(180deg," + g[0] + "," + g[1] + "," + g[2] + ")";
+        b.style.backgroundSize = "cover, cover";
+        b.style.backgroundPosition = "center, center";
+      } else {
+        b.style.backgroundImage = "linear-gradient(180deg," + g[0] + "," + g[1] + "," + g[2] + ")";
+        b.style.backgroundSize = "cover";
+        b.style.backgroundPosition = "center";
+      }
+    }
+    if (t.dark) r.classList.add("bg-dark"); else r.classList.remove("bg-dark");
+    applyThemeContrast(t);
+  }
+  function loadBgTheme(){
+    var ctrl = null, timer = null;
+    try {
+      if (window.AbortController) {
+        ctrl = new AbortController();
+        timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 8000);
+      }
+    } catch (e) {}
+    var opts = { cache: "no-store" };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(API_BASE + "/api/public/bg-theme", opts)
+      .then(function(r){ if (timer) clearTimeout(timer); if (!r || !r.ok) throw new Error("bg-theme bad status"); return r.json(); })
+      .then(function(d){ if (d && d.ok && d.theme) applyBgTheme(d.theme); else applyBgTheme(BG_THEME_DEFAULT); })
+      .catch(function(){ if (timer) clearTimeout(timer); applyBgTheme(BG_THEME_DEFAULT); });
+  }
+  applyBgTheme(BG_THEME_DEFAULT);
+  loadBgTheme();
   function apiPost(path, body, timeoutMs){
     var ctrl = null, timer = null;
     var opts = { method: "POST", headers: { "Content-Type": "application/json" },
