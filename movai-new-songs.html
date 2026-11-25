@@ -162,6 +162,19 @@
   .song-menu-item:active{background:#f2faf6}
   .song-menu-item.danger{color:#991b1b}
   .song-menu-item.armed{color:#991b1b;font-weight:700}
+  /* ---- Per-song lyrics sheet ---- */
+  .lyr-veil{position:fixed;inset:0;z-index:80;display:none;background:rgba(15,23,42,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .lyr-veil.open{display:block}
+  .lyr-sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;display:none;max-height:78vh;background:#ffffff;border-radius:18px 18px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.25);overflow:hidden;flex-direction:column}
+  .lyr-sheet.open{display:flex}
+  .lyr-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid #e5e7eb}
+  .lyr-head h3{margin:0;flex:1;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lyr-close{width:32px;height:32px;border-radius:50%;border:1px solid #d1d5db;background:transparent;font-size:1rem;line-height:1;cursor:pointer;color:#1f2937}
+  .lyr-body{overflow-y:auto;padding:14px 16px;white-space:pre-wrap;word-break:break-word;font-size:.95rem;line-height:1.7;color:#1f2937}
+  .lyr-body.empty{color:#6b7280;text-align:center}
+  .lyr-foot{padding:12px 16px 16px;border-top:1px solid #e5e7eb}
+  .lyr-copy{width:100%;padding:12px;border:0;border-radius:999px;background:linear-gradient(90deg,#ff2d78,#ff7a18);color:#fff;font-size:1rem;font-weight:700;cursor:pointer}
+  .lyr-copy:active{opacity:.85}
   .stem-box{padding:4px 16px 14px}
   .stem-box .hint{font-size:.82rem;color:#6b7280;margin:6px 0}
   .stem-msg{font-size:.85rem;color:#6b7280;margin-top:8px;min-height:16px}
@@ -364,6 +377,12 @@
   html[data-theme="dark"] .song-menu-item{color:#e7f0ec}
   html[data-theme="dark"] .song-menu-item:active{background:#1a1a1a}
   html[data-theme="dark"] .song-menu-item.danger,html[data-theme="dark"] .song-menu-item.armed{color:#fca5a5}
+  html[data-theme="dark"] .lyr-sheet{background:#111827;color:#f9fafb}
+  html[data-theme="dark"] .lyr-head{border-color:#1f2937}
+  html[data-theme="dark"] .lyr-close{border-color:#374151;color:#f9fafb}
+  html[data-theme="dark"] .lyr-body{color:#f9fafb}
+  html[data-theme="dark"] .lyr-body.empty{color:#9ca3af}
+  html[data-theme="dark"] .lyr-foot{border-color:#1f2937}
   html[data-theme="dark"] .c-retry,html[data-theme="dark"] .msg.ok,html[data-theme="dark"] .buy-msg.ok,html[data-theme="dark"] .cover-msg.ok-t,html[data-theme="dark"] .gift-msg.ok-t{color:#2dd4bf}
   html[data-theme="dark"] .txt{background:#000000;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .txt:focus{outline-color:#2dd4bf;border-color:#2dd4bf}
@@ -427,6 +446,12 @@
     </div>
   </header>
   <div class="menu-veil" id="menuVeil"></div>
+  <div class="lyr-veil" id="lyrVeil"></div>
+  <div class="lyr-sheet" id="lyrSheet" role="dialog" aria-modal="true" aria-label="Lyrics">
+    <div class="lyr-head"><h3 id="lyrTitle"></h3><button class="lyr-close" id="lyrClose" type="button" aria-label="Close">✕</button></div>
+    <div class="lyr-body" id="lyrBody"></div>
+    <div class="lyr-foot" id="lyrFoot"><button class="lyr-copy" id="lyrCopyBtn" type="button" data-i18n="lyricsCopy">📋 ចម្លងអត្ថបទ</button></div>
+  </div>
   <nav class="menu" id="menu" aria-label="Menu" data-i18n-aria="menuAria">
       <a href="index.html" data-i18n="navHome"><span class="nav-ic" style="color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>ទំព័រដើម</a>
       <a href="/Movai.MusicGenerate/kh" data-i18n="navCreate"><span class="nav-ic" style="color:#ff2d78"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>បង្កើតចម្រៀង</a>
@@ -679,6 +704,11 @@
       split12Menu: "Vocal Studio បំបែក ១២ ស្ទេម",
       splitVrMenu: "Vocal Remover",
       uploadMp3Menu: "ឯកសារ MP3",
+      lyricsMenu: "🎵 អត្ថបទចម្រៀង",
+      lyricsCopy: "📋 ចម្លងអត្ថបទ",
+      lyricsCopied: "✓ បានចម្លង",
+      lyricsCopyFail: "ចម្លងមិនបានទេ — សូមចម្លងដោយដៃ",
+      lyricsEmpty: "បទនេះមិនទាន់មានអត្ថបទចម្រៀងទេ",
       vocalRemover: "Vocal Remover",
       vocalRemoverNote: "បំបែកជា ២ សំឡេង៖ សំឡេងច្រៀង និងសំឡេងភ្លេង។ លឿនខ្លាំង។ ក្នុងមួយថ្ងៃ free 1 ដង បន្ទាប់មក 2 Song Credits ម្ដងទៀត អតិបរមា 2 ដង/ថ្ងៃ។",
       vocalFreeLeft: "ឥតគិតថ្លៃនៅសល់ ",
@@ -803,6 +833,11 @@
       split12Menu: "Vocal Studio Split 12",
       splitVrMenu: "Vocal Remover",
       uploadMp3Menu: "MP3 Files",
+      lyricsMenu: "🎵 Lyrics",
+      lyricsCopy: "📋 Copy lyrics",
+      lyricsCopied: "✓ Copied",
+      lyricsCopyFail: "Copy failed — please copy manually",
+      lyricsEmpty: "This song has no lyrics yet",
       vocalRemover: "Vocal Remover",
       vocalRemoverNote: "Splits into 2 sounds: vocals and music. Very fast. 1 free per day, then 2 Song Credits for one more — max 2/day.",
       vocalFreeLeft: "Free left: ",
@@ -1421,7 +1456,10 @@
   }
   // In-site MP3 download: fetch the audio (CORS allows it from both
   // Cloudinary and tempfile) and save it as "<song title>.mp3" — the
-  // browser tab never opens. Falls back to opening the URL on failure.
+  // browser tab never opens. If the direct fetch fails (slow network /
+  // CORS), retry through the server proxy /api/gen/video/file, which
+  // fetches the file server-side and returns it with CORS open. Only
+  // if the proxy also fails, open the URL in a tab as a last resort.
   function safeFileName(title){
     var s = String(title || t("untitled")).trim().replace(/[\\/:*?"<>|]/g, "").replace(/\s+/g, " ").trim();
     if (!s) s = t("untitled");
@@ -1433,23 +1471,34 @@
     if (btn && btn.getAttribute("data-busy") === "1") return;
     if (btn) btn.setAttribute("data-busy", "1");
     noteEl.textContent = t("downloadingFile");
-    fetch(url, { mode: "cors" }).then(function(r){
-      if (!r.ok) throw new Error("http " + r.status);
-      return r.blob();
-    }).then(function(blob){
+    var fileName = safeFileName(song.title);
+    function saveBlob(blob){
       var objUrl = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = objUrl;
-      a.download = safeFileName(song.title);
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       setTimeout(function(){ try { URL.revokeObjectURL(objUrl); } catch (e) {} try { a.remove(); } catch (e) {} }, 5000);
       noteEl.textContent = "";
       if (btn) btn.setAttribute("data-busy", "");
-    }).catch(function(){
+    }
+    function openFallback(){
       noteEl.textContent = t("downloadFailed");
       if (btn) btn.setAttribute("data-busy", "");
       try { window.open(url, "_blank"); } catch (e) {}
+    }
+    fetch(url, { mode: "cors" }).then(function(r){
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.blob();
+    }).then(saveBlob).catch(function(){
+      // Direct fetch failed (slow network / CORS) — retry through the
+      // server proxy before giving up and opening the URL in a tab.
+      noteEl.textContent = t("downloadingFile");
+      fetch(API_BASE + "/api/gen/video/file?u=" + encodeURIComponent(url) + "&name=" + encodeURIComponent(fileName), { mode: "cors" }).then(function(r){
+        if (!r.ok) throw new Error("http " + r.status);
+        return r.blob();
+      }).then(saveBlob).catch(openFallback);
     });
   }
   function renderList(){
@@ -1653,6 +1702,12 @@
     dl.setAttribute("download", "");
     dl.textContent = t("download");
     dl.addEventListener("click", function(e){ e.stopPropagation(); closeSongMenu(); });
+    var lyr = document.createElement("button");
+    lyr.type = "button"; lyr.className = "song-menu-item"; lyr.textContent = t("lyricsMenu");
+    lyr.addEventListener("click", function(){
+      closeSongMenu();
+      lyrOpen(song);
+    });
     var s6 = document.createElement("button");
     s6.type = "button"; s6.className = "song-menu-item"; s6.textContent = t("split6Menu");
     s6.setAttribute("data-split6", "1");
@@ -1701,6 +1756,7 @@
       if (armed) closeSongMenu();
     });
     songMenu.appendChild(dl);
+    songMenu.appendChild(lyr);
     songMenu.appendChild(sVr);
     songMenu.appendChild(s6);
     songMenu.appendChild(s12);
@@ -1709,6 +1765,91 @@
     songMenu.appendChild(del);
     applySplitLock();
   }
+  /* ---- Per-song lyrics sheet: shows the song's own lyrics (the lyrics
+     field, falling back to the prompt for older songs) with a Copy button.
+     Lyrics are set with textContent (never innerHTML) so song text cannot
+     inject markup. ---- */
+  var lyrCopyTimer = null;
+  function songLyricsText(song){
+    if (!song || typeof song !== "object") return "";
+    if (typeof song.lyrics === "string" && song.lyrics.trim()) return song.lyrics;
+    if (typeof song.prompt === "string" && song.prompt.trim()) return song.prompt;
+    return "";
+  }
+  function lyrSetCopyLabel(key){
+    var b = document.getElementById("lyrCopyBtn");
+    if (b) b.textContent = t(key);
+  }
+  function lyrOpen(song){
+    var veil = document.getElementById("lyrVeil");
+    var sheet = document.getElementById("lyrSheet");
+    var title = document.getElementById("lyrTitle");
+    var body = document.getElementById("lyrBody");
+    var foot = document.getElementById("lyrFoot");
+    if (!veil || !sheet || !body) return;
+    if (title) title.textContent = (song && song.title) ? song.title : t("untitled");
+    var text = songLyricsText(song);
+    if (text) {
+      body.classList.remove("empty");
+      body.textContent = text;
+      if (foot) foot.style.display = "";
+    } else {
+      body.classList.add("empty");
+      body.textContent = t("lyricsEmpty");
+      if (foot) foot.style.display = "none";
+    }
+    if (lyrCopyTimer) { clearTimeout(lyrCopyTimer); lyrCopyTimer = null; }
+    lyrSetCopyLabel("lyricsCopy");
+    veil.classList.add("open");
+    sheet.classList.add("open");
+  }
+  function lyrClose(){
+    var veil = document.getElementById("lyrVeil");
+    var sheet = document.getElementById("lyrSheet");
+    if (veil) veil.classList.remove("open");
+    if (sheet) sheet.classList.remove("open");
+  }
+  function lyrCopyFallback(text, done){
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { ta.setSelectionRange(0, ta.value.length); } catch (e) {}
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      done(!!ok);
+    } catch (e) { done(false); }
+  }
+  function lyrCopyText(text, done){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ done(true); },
+        function(){ lyrCopyFallback(text, done); });
+    } else { lyrCopyFallback(text, done); }
+  }
+  function lyrDoCopy(){
+    var body = document.getElementById("lyrBody");
+    if (!body || body.classList.contains("empty")) return;
+    var text = body.textContent;
+    if (!text) return;
+    lyrCopyText(text, function(ok){
+      if (lyrCopyTimer) clearTimeout(lyrCopyTimer);
+      lyrSetCopyLabel(ok ? "lyricsCopied" : "lyricsCopyFail");
+      lyrCopyTimer = setTimeout(function(){ lyrSetCopyLabel("lyricsCopy"); }, 2000);
+    });
+  }
+  (function lyrWire(){
+    var veil = document.getElementById("lyrVeil");
+    if (veil) veil.addEventListener("click", lyrClose);
+    var close = document.getElementById("lyrClose");
+    if (close) close.addEventListener("click", lyrClose);
+    var copy = document.getElementById("lyrCopyBtn");
+    if (copy) copy.addEventListener("click", lyrDoCopy);
+  })();
   /* ---- Split Stem (old site chooser: 6 stems at once, 12 stems asks first) ---- */
   function toggleStemBox(song, itemEl){
     var box = itemEl.querySelector(".stem-box");
