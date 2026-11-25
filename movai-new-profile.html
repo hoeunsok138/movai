@@ -146,7 +146,7 @@
   .dev-copy{font-size:.82rem;font-weight:700;color:#ff2d78;background:transparent;border:0;padding:4px 8px}
   .dev-acct-free{font-size:.75rem;font-weight:800;color:#0f766e;border:1px solid #0f766e;border-radius:999px;padding:3px 9px;white-space:nowrap}
   .dev-acct-waiting{font-size:.75rem;font-weight:800;color:#b45309;border:1px solid #d97706;border-radius:999px;padding:3px 9px;white-space:nowrap}
-  .dev-acct-eye{font-size:1rem;background:transparent;border:0;padding:2px 6px;color:inherit}
+  .dev-acct-eye{font-size:1rem;background:transparent;border:0;padding:2px 6px;color:inherit}   .dev-acct-createpw{font-size:.78rem;font-weight:700;color:#ff2d78;background:transparent;border:1px solid #ff2d78;border-radius:999px;padding:2px 9px;white-space:nowrap}
   .dev-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:devSpin .7s linear infinite;vertical-align:-2px;margin-right:6px}
   @keyframes devSpin{to{transform:rotate(360deg)}}
   .dev-sheet-field{width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.95rem;background:transparent;color:inherit;margin:6px 0}
@@ -351,9 +351,9 @@
 
     <div class="dev-veil" id="devUpVeil" hidden role="dialog" aria-modal="true">
       <div class="dev-card">
-        <h3 data-i18n="devUpTitle">Upgrade · បន្ថែម Gmail</h3>
-        <p class="dev-sub"><span data-i18n="devUpBody">Gmail នេះត្រូវការ Upgrade ដើម្បីចូលប្រើបាន</span><br><span id="devUpEmail"></span></p>
-        <div class="dev-price"><span data-i18n="devUpPriceLbl">1 Gmail បន្ថែម</span> = <span id="devUpPrice">$0.99</span></div>
+        <h3 id="devUpTitleEl" data-i18n="devUpTitle">Upgrade · បន្ថែម Gmail</h3>
+        <p class="dev-sub"><span id="devUpBodyEl" data-i18n="devUpBody">Gmail នេះត្រូវការ Upgrade ដើម្បីចូលប្រើបាន</span><br><span id="devUpEmail"></span></p>
+        <div class="dev-price"><span id="devUpPriceLblEl" data-i18n="devUpPriceLbl">1 Gmail បន្ថែម</span> = <span id="devUpPrice">$0.99</span></div>
         <div class="dev-methods">
           <button type="button" class="dev-method" id="devUpKhqrBtn" data-i18n="devUpKhqr">KHQR 🇰🇭</button>
           <button type="button" class="dev-method" id="devUpUsdtBtn" data-i18n="devUpUsdt">QR USDT</button>
@@ -413,7 +413,9 @@
           <p class="dev-sub"><span id="devPinVerifyEmail"></span></p>
           <input type="password" inputmode="numeric" maxlength="6" class="dev-sheet-field" id="devPinCode" placeholder="••••••" autocomplete="off">
           <p class="dev-msg" id="devPinVerifyMsg" role="status"></p>
+          <p class="dev-msg" id="devPinLockMsg" role="status"></p>
           <button type="button" class="dev-send" id="devPinUnlockBtn" data-i18n="devPinUnlock">បើកមើល</button>
+          <button type="button" class="dev-back" id="devPinForgotBtn" data-i18n="devPinForgot">ភ្លេចលេខកូដ? លុបលេខកូដ ($0.25)</button>
           <button type="button" class="dev-back" id="devPinVerifyBackBtn" data-i18n="devUpBack">ត្រឡប់ទៅ Sign In</button>
         </div>
       </div>
@@ -528,6 +530,16 @@
       devUpCopy: "ចម្លង",
       devUpCopied: "បានចម្លងហើយ",
       devUpQrFail: "QR មិនអាចបង្កើតបាន — សូមប្រើ Link ខាងក្រោម",
+      devUpCreatePw: "បង្កើត Password",
+      devPinLocked: "វាយខុស 3 ដងហើយ — ត្រូវបានបិទ សូមរង់ចាំ",
+      devPinTriesLeft: "ដងនៅសល់",
+      devPinForgot: "ភ្លេចលេខកូដ? លុបលេខកូដ ($0.25)",
+      devPinDelTitle: "លុបលេខកូដ 6 ខ្ទង់",
+      devPinDelBody: "បង់ $0.25 ដើម្បីលុបលេខកូដដែលភ្លេច — Admin អនុម័តហើយវានឹងលុបចោល អ្នកអាចដាក់លេខកូដថ្មី ឬមិនដាក់ក៏បាន",
+      devPinDelPriceLbl: "លុបលេខកូដ",
+      devPinDelSentTick: "✓ បានផ្ញើរួច — រង់ចាំ Admin អនុម័តការលុបលេខកូដ…",
+      devPinDeleted: "✓ លេខកូដត្រូវបានលុបហើយ — អ្នកអាចដាក់លេខកូដថ្មីបាន",
+      devResetMsg: "គណនីរបស់អ្នកត្រូវកំណត់ឲ្យចុះឈ្មោះសារថ្មី — សូមចូលដោយ Google ហើយបង្កើត Password ថ្មី", 
       devUpFree: "Free",
       devUpWaiting: "កំពុងរង់ចាំ",
       devUpAlreadySent: "អ្នកធ្លាប់ផ្ញើសំណើរនេះម្តងហើយ — សូមរង់ចាំ 24 ម៉ោង",
@@ -630,6 +642,16 @@
       devUpCopy: "Copy",
       devUpCopied: "Copied",
       devUpQrFail: "QR could not be created — please use the link below",
+      devUpCreatePw: "Create Password",
+      devPinLocked: "Wrong 3 times — locked, please wait",
+      devPinTriesLeft: "tries left",
+      devPinForgot: "Forgot code? Delete PIN ($0.25)",
+      devPinDelTitle: "Delete 6-digit PIN",
+      devPinDelBody: "Pay $0.25 to delete the forgotten code — once the Admin approves it is deleted and you can set a new code or leave it off",
+      devPinDelPriceLbl: "Delete PIN",
+      devPinDelSentTick: "✓ Sent — waiting for the Admin to approve the PIN delete…",
+      devPinDeleted: "✓ PIN deleted — you can set a new code",
+      devResetMsg: "Your account was reset — please sign in with Google and create a new password",
       devUpFree: "Free",
       devUpWaiting: "Waiting",
       devUpAlreadySent: "You already sent this request once — please wait 24 hours",
@@ -1009,6 +1031,7 @@
   function refreshProfile(email){
     return apiJson("/api/admin/sync", "POST", syncBody(email))
       .then(function(d){
+        if (d && devCheckForceReset(d)) return null;
         if (d && d.ok === true && d.user) {
           cacheUser(d.user);
           renderUser(d.user);
@@ -1022,6 +1045,7 @@
 
   function afterLogin(user, email){
     storeSet(SESSION_KEY, String(email).toLowerCase());
+    try { storeSet("movai-session-at", String(Date.now())); } catch (e) {}
     cacheUser(user);
     profileMsg.textContent = "";
     renderUser(user);
@@ -1146,10 +1170,14 @@
     devShowUpgrade(String(email || "").toLowerCase(), d);
     return true;
   }
-  function devShowUpgrade(email, gate){
+  function devShowUpgrade(email, gate, mode){
     devUpEmail = String(email || "").toLowerCase();
     devUpMethod = ""; devUpReceiptFile = null; devUpSent = false;
-    devUpPrice = (gate && typeof gate.upgradePrice === "number" && gate.upgradePrice > 0) ? gate.upgradePrice : 0.99;
+    devUpMode = (mode === "pin-delete") ? "pin-delete" : "device-slot";
+    devUpPrice = devUpMode === "pin-delete" ? 0.25 : (gate && typeof gate.upgradePrice === "number" && gate.upgradePrice > 0) ? gate.upgradePrice : 0.99;
+    var _tEl = document.getElementById("devUpTitleEl"); if (_tEl) _tEl.textContent = t(devUpMode === "pin-delete" ? "devPinDelTitle" : "devUpTitle");
+    var _bEl = document.getElementById("devUpBodyEl"); if (_bEl) _bEl.textContent = t(devUpMode === "pin-delete" ? "devPinDelBody" : "devUpBody");
+    var _lEl = document.getElementById("devUpPriceLblEl"); if (_lEl) _lEl.textContent = t(devUpMode === "pin-delete" ? "devPinDelPriceLbl" : "devUpPriceLbl");
     var veil = document.getElementById("devUpVeil"); if (!veil) return;
     var em = document.getElementById("devUpEmail"); if (em) em.textContent = devUpEmail;
     var pr = document.getElementById("devUpPrice"); if (pr) pr.textContent = "$" + devUpPrice.toFixed(2);
@@ -1189,7 +1217,8 @@
   }
   function devSendReceipt(){
     if (!devUpEmail) return;
-    if (devSentWithin24h(devUpEmail)) { devUpMsg(t("devUpAlreadySent")); return; }
+    if (devUpMode === "pin-delete") { if (devPinDelSentWithin24h(devUpEmail)) { devUpMsg(t("devUpAlreadySent")); return; } }
+    else if (devSentWithin24h(devUpEmail)) { devUpMsg(t("devUpAlreadySent")); return; }
     if (!devUpMethod) { devUpMsg(t("devUpPickMethod")); return; }
     if (!devUpReceiptFile) { devUpMsg(t("devUpNeedReceipt")); return; }
     var sendBtn = document.getElementById("devUpSendBtn");
@@ -1201,12 +1230,12 @@
       var b64 = dataUrl.indexOf(",") >= 0 ? dataUrl.split(",")[1] : dataUrl;
       apiJson("/api/public/purchase-receipt", "POST", { email: devUpEmail, filename: devUpReceiptFile.name, data: b64 }).then(function(rd){
         if (!rd || rd.ok !== true || !rd.url) throw new Error((rd && rd.error) || t("devUpReceiptFail"));
-        return apiJson("/api/admin/purchase-request", "POST", { email: devUpEmail, kind: "device-slot", method: devUpMethod, receiptUrl: rd.url, fingerprint: "id:" + getDeviceId() });
+        return apiJson("/api/admin/purchase-request", "POST", { email: devUpEmail, kind: devUpMode === "pin-delete" ? "pin-delete" : "device-slot", method: devUpMethod, receiptUrl: rd.url, fingerprint: "id:" + getDeviceId() });
       }).then(function(bd){
         if (!bd || bd.ok !== true) throw new Error((bd && bd.error) || t("devUpSendFail"));
         devUpSent = true;
-        devMarkSent(devUpEmail);
-        devUpMsg(t("devUpSentTick"), true);
+        if (devUpMode === "pin-delete") { devPinDelMarkSent(devUpEmail); devUpMsg(t("devPinDelSentTick"), true); }
+        else { devMarkSent(devUpEmail); devUpMsg(t("devUpSentTick"), true); }
         if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = t("devUpSend"); }
         devRenderAccts();
       }).catch(function(err){
@@ -1219,6 +1248,7 @@
   }
   function devRenderAccts(){
     var box = document.getElementById("devAccts"); if (!box) return;
+    devCheckPinDelete();
     var declined = devDeclined();
     var sentMap = devSentMap();
     apiJson("/api/public/device/accounts?deviceId=" + encodeURIComponent(getDeviceId()), "GET").then(function(d){
@@ -1248,8 +1278,16 @@
       rows.forEach(function(r){
         var row = document.createElement("div"); row.className = "dev-acct-row";
         var emEl = document.createElement("span"); emEl.className = "dev-acct-email"; emEl.textContent = devMaskEmail(r.email); row.appendChild(emEl);
-        var eye = document.createElement("button"); eye.type = "button"; eye.className = "dev-acct-eye"; eye.textContent = "👁"; eye.setAttribute("aria-label", t("devUpReveal"));
-        eye.addEventListener("click", function(e){ e.stopPropagation(); devRevealRow(emEl, r.email, eye); });
+        var eye = document.createElement("button"); eye.type = "button";
+        if (!devPinGet()) {
+          // No PIN set yet: the row shows "Create Password" (owner order
+          // 2026-11-25) — tapping it opens the 6-digit code setup directly.
+          eye.className = "dev-acct-eye dev-acct-createpw"; eye.textContent = t("devUpCreatePw"); eye.setAttribute("aria-label", t("devUpCreatePw"));
+          eye.addEventListener("click", function(e){ e.stopPropagation(); devShowPin("set", { el: emEl, email: r.email, eye: eye }); });
+        } else {
+          eye.className = "dev-acct-eye"; eye.textContent = "👁"; eye.setAttribute("aria-label", t("devUpReveal"));
+          eye.addEventListener("click", function(e){ e.stopPropagation(); devRevealRow(emEl, r.email, eye); });
+        }
         row.appendChild(eye);
         if (r.pending) {
           var wb = document.createElement("span"); wb.className = "dev-acct-waiting"; wb.textContent = t("devUpWaiting"); row.appendChild(wb);
@@ -1312,6 +1350,79 @@
      returning Gmail signs in with Gmail + password, no Google needed. */
   var devGoogleToken = "";
   var devPinTarget = null; /* {el, email, eye} for the row being revealed */
+  var devUpMode = "device-slot"; /* "device-slot" | "pin-delete" */
+  var devPinLockTimer = null;
+  /* ---- v3: Admin "Reset Create Account Sign-in" ---- */
+  function devCheckForceReset(d){
+    var at = d && d.forceReRegisterAt ? String(d.forceReRegisterAt) : "";
+    if (!at) return false;
+    var sessAt = 0;
+    try { sessAt = Number(storeGet("movai-session-at") || 0) || 0; } catch (e) { sessAt = 0; }
+    if (sessAt && sessAt >= Date.parse(at)) return false;
+    try { storeRemove(SESSION_KEY); } catch (e) {}
+    try { storeRemove("movai-session-at"); } catch (e) {}
+    currentEmail = ""; currentUser = null;
+    try { loginMsg.textContent = t("devResetMsg"); } catch (e) {}
+    showLogin();
+    return true;
+  }
+  /* ---- v3: PIN lockout ladder — 3 wrong -> 1h, then 2h, then 12h, then
+     the hours double (24h, 48h, ...). Stored per device in localStorage. */
+  function devPinLockGet(){ try { return JSON.parse(localStorage.getItem("movai-dev-pin-lock") || "{}") || {}; } catch (e) { return {}; } }
+  function devPinLockSet(o){ try { localStorage.setItem("movai-dev-pin-lock", JSON.stringify(o || {})); } catch (e) {} }
+  function devPinLockClear(){ try { localStorage.removeItem("movai-dev-pin-lock"); } catch (e) {} }
+  function devPinLockDur(level){
+    if (level <= 1) return 3600000; /* 1h */
+    if (level === 2) return 7200000; /* 2h */
+    if (level === 3) return 43200000; /* 12h */
+    return 43200000 * Math.pow(2, level - 3); /* 24h, 48h, 96h, ... */
+  }
+  function devPinLockFmt(ms){
+    var s = Math.max(0, Math.floor(ms / 1000));
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+    function p(n){ return (n < 10 ? "0" : "") + n; }
+    return p(h) + ":" + p(m) + ":" + p(ss);
+  }
+  function devPinLockTick(){
+    var lk = devPinLockGet();
+    var lm = document.getElementById("devPinLockMsg");
+    var inp = document.getElementById("devPinCode");
+    var btn = document.getElementById("devPinUnlockBtn");
+    if (devPinLockTimer) { clearInterval(devPinLockTimer); devPinLockTimer = null; }
+    if (!lk.lockedUntil || Date.now() >= lk.lockedUntil) {
+      if (lk.lockedUntil) { lk.lockedUntil = 0; devPinLockSet(lk); }
+      if (lm) lm.textContent = "";
+      if (inp) inp.disabled = false;
+      if (btn) btn.disabled = false;
+      return false;
+    }
+    if (lm) lm.textContent = t("devPinLocked") + " · " + devPinLockFmt(lk.lockedUntil - Date.now());
+    if (inp) inp.disabled = true;
+    if (btn) btn.disabled = true;
+    devPinLockTimer = setInterval(devPinLockTick, 1000);
+    return true;
+  }
+  /* ---- v3: pin-delete send map (one request per Gmail per 24h) ---- */
+  function devPinDelSentMap(){ try { return JSON.parse(localStorage.getItem("movai-dev-pin-delete-sent") || "{}") || {}; } catch (e) { return {}; } }
+  function devPinDelMarkSent(email){ var m = devPinDelSentMap(); m[String(email || "").toLowerCase()] = Date.now(); try { localStorage.setItem("movai-dev-pin-delete-sent", JSON.stringify(m)); } catch (e) {} }
+  function devPinDelSentWithin24h(email){ var ts = Number((devPinDelSentMap())[String(email || "").toLowerCase()] || 0); return !!ts && (Date.now() - ts) < 86400000; }
+  /* ---- v3: when the Admin approves the $0.25 delete, drop the local PIN
+     + lockout so a new code can be set (or left off). Checked on list load
+     and when the verify sheet opens. */
+  function devCheckPinDelete(){
+    apiJson("/api/public/device/pin-delete-status?deviceId=" + encodeURIComponent(getDeviceId()), "GET").then(function(d){
+      if (!d || d.ok !== true || !d.approved || !d.requestId) return;
+      var done = "";
+      try { done = localStorage.getItem("movai-dev-pin-deleted") || ""; } catch (e) {}
+      if (done === String(d.requestId)) return;
+      try { localStorage.removeItem("movai-dev-pin"); } catch (e) {}
+      devPinLockClear();
+      try { localStorage.setItem("movai-dev-pin-deleted", String(d.requestId)); } catch (e) {}
+      try { localStorage.removeItem("movai-dev-pin-delete-sent"); } catch (e) {}
+      devClosePin();
+      devRenderAccts();
+    }).catch(function(){});
+  }
   function devMaskEmail(email){
     var at = String(email || "").indexOf("@");
     var local = at > 0 ? String(email).slice(0, at) : String(email || "");
@@ -1372,10 +1483,12 @@
     if (mode === "verify") {
       var c = document.getElementById("devPinCode"); if (c) { c.value = ""; c.focus(); }
       var ve = document.getElementById("devPinVerifyEmail"); if (ve) ve.textContent = target && target.email ? devMaskEmail(target.email) : "";
+      devPinLockTick();
+      devCheckPinDelete();
     }
     veil.hidden = false;
   }
-  function devClosePin(){ var v = document.getElementById("devPinVeil"); if (v) v.hidden = true; devPinTarget = null; }
+  function devClosePin(){ if (devPinLockTimer) { clearInterval(devPinLockTimer); devPinLockTimer = null; } var v = document.getElementById("devPinVeil"); if (v) v.hidden = true; devPinTarget = null; }
   function devMaybeAskPin(){
     if (devPinGet() || devPinAskedNo()) return;
     devShowPin("ask", null);
@@ -1384,12 +1497,22 @@
     if (!el) return;
     if (el.textContent === email) return; /* already revealed */
     if (devPinGet()) { devShowPin("verify", { el: el, email: email, eye: eye }); return; }
-    if (devPinAskedNo()) { el.textContent = email; return; }
+    if (devPinAskedNo()) { el.textContent = email; devArmHide(el, email); return; }
     devShowPin("ask", { el: el, email: email, eye: eye });
+  }
+  var devHideTimers = {};
+  function devArmHide(el, email){
+    if (!el || !email) return;
+    if (devHideTimers[email]) clearTimeout(devHideTimers[email]);
+    devHideTimers[email] = setTimeout(function(){
+      if (el && el.textContent === email) el.textContent = devMaskEmail(email);
+      delete devHideTimers[email];
+    }, 15000);
   }
   function devUnmaskTarget(){
     if (!devPinTarget || !devPinTarget.el) return;
     devPinTarget.el.textContent = devPinTarget.email;
+    devArmHide(devPinTarget.el, devPinTarget.email);
   }
   function devPinSave(){
     var a = document.getElementById("devPin1"); var b = document.getElementById("devPin2");
@@ -1398,6 +1521,7 @@
     function msg(t){ if (m) { m.textContent = t; m.className = "dev-msg"; } }
     if (!/^\d{6}$/.test(c1) || c1 !== c2) { msg(t("devPinNeed6")); return; }
     devPinSet(c1);
+    devPinLockClear();
     var ok = document.getElementById("devPinSetMsg"); if (ok) { ok.textContent = t("devPinSetOk"); ok.className = "dev-msg ok"; }
     devUnmaskTarget();
     setTimeout(devClosePin, 900);
@@ -1406,8 +1530,21 @@
     var c = document.getElementById("devPinCode");
     var code = c ? c.value.trim() : "";
     var m = document.getElementById("devPinVerifyMsg");
-    if (code === devPinGet() && code) { devUnmaskTarget(); devClosePin(); return; }
-    if (m) { m.textContent = t("devPinWrong"); m.className = "dev-msg"; }
+    var lk = devPinLockGet();
+    if (lk.lockedUntil && Date.now() < lk.lockedUntil) { devPinLockTick(); return; }
+    if (code === devPinGet() && code) { devPinLockClear(); devUnmaskTarget(); devClosePin(); return; }
+    lk.fails = (lk.fails || 0) + 1;
+    if (lk.fails >= 3) {
+      lk.level = (lk.level || 0) + 1;
+      lk.lockedUntil = Date.now() + devPinLockDur(lk.level);
+      lk.fails = 0;
+      devPinLockSet(lk);
+      devPinLockTick();
+      if (m) { m.textContent = t("devPinLocked"); m.className = "dev-msg"; }
+      return;
+    }
+    devPinLockSet(lk);
+    if (m) { m.textContent = t("devPinWrong") + " · " + (3 - lk.fails) + " " + t("devPinTriesLeft"); m.className = "dev-msg"; }
   }
   (function devWireV2(){
     var cb = document.getElementById("devPwCreateBtn"); if (cb) cb.addEventListener("click", devPwCreate);
@@ -1418,6 +1555,7 @@
     var sv = document.getElementById("devPinSaveBtn"); if (sv) sv.addEventListener("click", devPinSave);
     var sbk = document.getElementById("devPinSetBackBtn"); if (sbk) sbk.addEventListener("click", devClosePin);
     var ub = document.getElementById("devPinUnlockBtn"); if (ub) ub.addEventListener("click", devPinUnlock);
+    var fb = document.getElementById("devPinForgotBtn"); if (fb) fb.addEventListener("click", function(){ var em = (devPinTarget && devPinTarget.email) || currentEmail || ""; devClosePin(); devShowUpgrade(em, null, "pin-delete"); });
     var vbk = document.getElementById("devPinVerifyBackBtn"); if (vbk) vbk.addEventListener("click", devClosePin);
     var pvl = document.getElementById("devPinVeil"); if (pvl) pvl.addEventListener("click", function(e){ if (e.target === pvl) devClosePin(); });
   })();
@@ -1481,6 +1619,7 @@
       storeRemove(SAVED_KEY);
     }
     storeRemove(SESSION_KEY);
+    try { storeRemove("movai-session-at"); } catch (e) {}
     currentEmail = "";
     currentUser = null;
     document.getElementById("adminSection").innerHTML = "";

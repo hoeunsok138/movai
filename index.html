@@ -1312,11 +1312,26 @@
       when the user switches Wi-Fi <-> mobile data. */
   function getDeviceId(){ try { var k = "movai-device-id"; var v = localStorage.getItem(k); if (v) return v; v = "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10); localStorage.setItem(k, v); return v; } catch (e) { return ""; } }
   function syncBody(email, extra){ var b = { email: email, deviceId: getDeviceId() }; try { b.timezone = (Intl.DateTimeFormat().resolvedOptions().timeZone || ""); } catch (e) {} try { b.screen = (window.screen ? window.screen.width + "x" + window.screen.height : ""); } catch (e) {} if (extra) for (var k in extra) b[k] = extra[k]; return b; }
+  /* ---- v3: Admin "Reset Create Account Sign-in" — a session that
+     predates settings.forceReRegisterAt is dropped on the next sync, so
+     the user must sign in again and re-register (password twice +
+     optional 6-digit PIN). Data is not deleted. */
+  function checkForceReset(j){
+    var at = j && j.forceReRegisterAt ? String(j.forceReRegisterAt) : "";
+    if (!at) return false;
+    var sessAt = 0;
+    try { sessAt = Number(localStorage.getItem("movai-session-at") || 0) || 0; } catch (e) {}
+    if (sessAt && sessAt >= Date.parse(at)) return false;
+    try { localStorage.removeItem("movai-session"); localStorage.removeItem("movai-session-at"); } catch (e) {}
+    try { location.reload(); } catch (e) {}
+    return true;
+  }
   function giftInit(){
     var em = "";
     try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
     if (!em) return;
     apiPost("/api/admin/sync", syncBody(em), 30000).then(function(j){
+      if (j && checkForceReset(j)) return;
       if (j && j.ok === true && j.user) { syncDeviceInfo = (j && j.device) || null; refreshSlotCard(); maybeShowGift(j.user); maybeShowRenew(j.user); } else if (j && j.deviceLimitReached) { showDeviceLimitNotice(j); }
     }).catch(function(){});
   }
