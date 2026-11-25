@@ -108,6 +108,67 @@
   .buy-msg.ok-t{color:#059669;font-weight:700}
   .buy-back{flex:none;font-size:.85rem;font-weight:700;color:var(--acc1);padding:6px 8px}
   [hidden]{display:none !important}
+  /* ---- API v2: night-mode ink flip (root cause: --ink/--muted stayed
+     dark #1f2937/#6b7280 in Night mode; applyNightInk() in JS flips the
+     inline vars, this CSS rule is the pre-JS fallback) ---- */
+  html[data-theme="dark"]{--ink:#e7f0ec;--muted:#9ca3af}
+  html[data-theme="dark"] pre{color:#e7f0ec}
+  html[data-theme="dark"] .msg.ok-t,html[data-theme="dark"] .pkg-off{color:#2dd4bf}
+  html[data-theme="dark"] .btn-danger{color:#fca5a5;border-color:rgba(252,165,165,.5)}
+  html[data-theme="dark"] .pkg-card{background:#16161f;color:#e7f0ec;border-color:#262626}
+  html[data-theme="dark"] .pkg-card-hdr{background:#16161f;border-bottom-color:#262626}
+  html[data-theme="dark"] .buy-brand-site,html[data-theme="dark"] .buy-hint{color:#9ca3af}
+  html[data-theme="dark"] .buy-sum,html[data-theme="dark"] .buy-label{color:#e7f0ec}
+  html[data-theme="dark"] .buy-method{background:#1a1a1a;color:#e7f0ec;border-color:#333333}
+  html[data-theme="dark"] .buy-addr{background:#262626;color:#e7f0ec}
+  html[data-theme="dark"] .buy-receipt{border-top-color:#262626}
+  /* ---- key row: masked key + eye toggle + kebab menu ---- */
+  .key-form{margin:0 0 12px}
+  .field-lbl{display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin:0 0 6px}
+  .field-input,.field-select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,.2);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem;margin:0 0 10px}
+  html[data-theme="dark"] .field-input,html[data-theme="dark"] .field-select{background:#1a1a1a;color:#e7f0ec;border-color:#333333}
+  .key-row{display:flex;align-items:stretch;gap:8px;margin:0 0 10px}
+  .key-row .key-box{flex:1;margin:0;display:flex;align-items:center;min-width:0}
+  .eye-btn,.kebab-btn{flex:none;width:42px;border:1px solid rgba(0,0,0,.15);border-radius:10px;background:var(--surface);color:var(--ink);display:flex;align-items:center;justify-content:center}
+  .eye-btn svg{width:20px;height:20px}
+  .eye-btn .eye-closed{display:none}
+  .eye-btn.revealed .eye-open{display:none}
+  .eye-btn.revealed .eye-closed{display:block}
+  .kebab-btn{font-size:1.35rem;font-weight:800;line-height:1}
+  .key-menu{position:relative;z-index:5;background:var(--surface);border:1px solid rgba(0,0,0,.12);border-radius:12px;margin:0 0 10px;overflow:hidden}
+  .key-menu button{display:block;width:100%;text-align:left;padding:11px 12px;font-size:.92rem;font-weight:600;color:var(--ink);border-bottom:1px solid rgba(0,0,0,.08)}
+  .key-menu button:last-child{border-bottom:0}
+  .key-menu button:active{background:rgba(255,45,120,.12)}
+  html[data-theme="dark"] .key-menu{background:#16161f;border-color:#262626}
+  html[data-theme="dark"] .key-menu button{border-bottom-color:#262626}
+  .status-badge{display:inline-block;font-size:.72rem;font-weight:800;color:#fff;border-radius:999px;padding:3px 10px;line-height:1.5}
+  .status-badge.active{background:#059669}
+  .status-badge.revoked{background:#dc2626}
+  html[data-theme="dark"] .status-badge.active{background:#10b981}
+  /* ---- creation modal (ONLY place the full key is shown) ---- */
+  .key-modal-veil{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:16px}
+  .key-modal-card{width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:var(--surface);color:var(--ink);border:1px solid rgba(0,0,0,.1);border-radius:16px;padding:16px}
+  html[data-theme="dark"] .key-modal-card{background:#16161f;border-color:#262626;color:#e7f0ec}
+  .key-modal-card h3{font-size:1.05rem;margin:0 0 10px}
+  .spinner{width:36px;height:36px;border-radius:50%;border:3px solid rgba(0,0,0,.15);border-top-color:var(--acc1);animation:api-spin 1s linear infinite;margin:14px auto 4px}
+  @keyframes api-spin{to{transform:rotate(360deg)}}
+  .progress{height:6px;border-radius:999px;background:rgba(0,0,0,.12);overflow:hidden;margin:10px 0 4px}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc1),var(--acc2));transition:width 10s linear}
+  /* ---- colored code examples (theme-aware, never monochrome grey) ---- */
+  .tk-kw{color:#be185d;font-weight:700}
+  .tk-str{color:#0f766e}
+  .tk-num{color:#b45309}
+  .tk-url{color:#2563eb}
+  .tk-com{color:#6b7280}
+  html[data-theme="dark"] .tk-kw{color:#f472b6}
+  html[data-theme="dark"] .tk-str{color:#5eead4}
+  html[data-theme="dark"] .tk-num{color:#fbbf24}
+  html[data-theme="dark"] .tk-url{color:#93c5fd}
+  html[data-theme="dark"] .tk-com{color:#9ca3af}
+  /* ---- dead/blocked key: red card styling + global kill-switch banner ---- */
+  .key-card-dead{border-color:rgba(220,38,38,.65) !important;box-shadow:0 0 0 1px rgba(220,38,38,.4)}
+  .kill-banner{background:#dc2626;color:#fff;font-weight:800;text-align:center;border-radius:12px;padding:12px 14px;margin:0 0 14px;line-height:1.6}
+  html[data-theme="dark"] .kill-banner{background:#b91c1c}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
@@ -134,6 +195,7 @@
     </div>
   </header>
   <main>
+    <div class="kill-banner" id="apiKillBanner" hidden role="alert">⛔ API is currently disabled by the owner · API ត្រូវបានបិទ</div>
     <section class="card">
       <h1 data-i18n="apiTitle">MovAi API — ប្រើ MovAi ពីខាងក្រៅ</h1>
       <p data-i18n="apiIntro">API របស់ MovAi ឲ្យអ្នកហៅប្រើ MovAi ដោយផ្ទាល់ពីកម្មវិធី ឬគេហទំព័ររបស់អ្នក — បង្កើតចម្រៀង និងរូបភាពដោយ AI ដោយមិនចាំបាច់បើកអាប់។ អ្នកគ្រាន់តែយក API Key មួយទៅប្រើ។</p>
@@ -149,10 +211,33 @@
     <section class="card" id="keyCard" hidden>
       <h2><span data-i18n="keyTitle">API Key របស់ខ្ញុំ</span> <span class="badge">NEW</span></h2>
       <p class="muted" id="keyEmailLine"></p>
-      <div class="key-box" id="keyDisplay">—</div>
-      <div id="keyFullBox" hidden>
-        <p class="warn" data-i18n="keyOnceWarn">⚠️ Key នេះបង្ហាញពេញតែម្ដងនេះទេ! សូមចម្លង ហើយរក្សាទុកឲ្យបានសុវត្ថិភាព។ បន្ទាប់ពីចាកចេញពីទំព័រនេះ អ្នកនឹងឃើញតែផ្នែកដើម និង 4 តួចុងក្រោយប៉ុណ្ណោះ។</p>
-        <div class="key-box" id="keyFull"></div>
+      <div class="key-form" id="keyForm">
+        <label class="field-lbl" for="keyNameInput" data-i18n="keyNameLbl">ឈ្មោះ Key · Key name</label>
+        <input class="field-input" id="keyNameInput" type="text" maxlength="80" placeholder="My App Key">
+        <label class="field-lbl" for="keyExpirySelect" data-i18n="keyExpiryLbl">ផុតកំណត់ · Expiry</label>
+        <select class="field-select" id="keyExpirySelect">
+          <option value="1mo" data-i18n="exp1mo">1 ខែ · 1 month</option>
+          <option value="3mo" data-i18n="exp3mo">3 ខែ · 3 months</option>
+          <option value="1yr" data-i18n="exp1yr">1 ឆ្នាំ · 1 year</option>
+          <option value="unlimited" data-i18n="expUnlimited">មិនកំណត់ · Unlimited (forever)</option>
+        </select>
+      </div>
+      <div class="key-row">
+        <div class="key-box" id="keyDisplay">—</div>
+        <button class="eye-btn" id="eyeBtn" type="button" aria-label="Show key" aria-pressed="false"><svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-6.5 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c6.5 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12A3 3 0 1 1 9.88 9.88"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button>
+        <button class="kebab-btn" id="keyMenuBtn" type="button" aria-label="Key menu" aria-haspopup="true" aria-expanded="false">⋮</button>
+      </div>
+      <div class="key-menu" id="keyMenu" hidden role="menu">
+        <button type="button" id="menuCopyBtn" role="menuitem" data-i18n="copyKey">ចម្លង Key</button>
+        <button type="button" id="menuRegenBtn" role="menuitem" data-i18n="regenKey">បង្កើត Key ថ្មី</button>
+        <button type="button" id="menuRevokeBtn" role="menuitem" data-i18n="revokeKey">លុប Key</button>
+        <button type="button" id="menuDetailsBtn" role="menuitem" data-i18n="keyDetails">ព័ត៌មានលម្អិត · Details</button>
+      </div>
+      <div class="key-meta" id="keyMeta" hidden>
+        <div class="row"><span data-i18n="keyNameLbl">ឈ្មោះ Key · Key name</span><b id="keyMetaName">—</b></div>
+        <div class="row"><span data-i18n="keyExpiryLbl">ផុតកំណត់ · Expiry</span><b id="keyMetaExpiry">—</b></div>
+        <div class="row"><span data-i18n="keyCreatedLbl">ថ្ងៃបង្កើត · Created</span><b id="keyMetaCreated">—</b></div>
+        <div class="row"><span data-i18n="keyStatusLbl">ស្ថានភាព · Status</span><b><span class="status-badge active" id="keyMetaStatus">Active</span></b></div>
       </div>
       <div class="btn-row">
         <button class="btn" id="genKeyBtn" type="button" data-i18n="genKey">បង្កើត API Key</button>
@@ -161,8 +246,9 @@
         <button class="btn-ghost btn-danger" id="revokeKeyBtn" type="button" data-i18n="revokeKey">លុប Key</button>
       </div>
       <p class="msg" id="keyMsg"></p>
-      <div class="row"><span data-i18n="balLbl">សមតុល្យ API Credits</span><b id="apiBalance">—</b></div>
-      <div class="row"><span data-i18n="quotaLbl">កូតា (Quota) ប្រចាំខែ</span><b id="apiQuota">—</b></div>
+      <div class="row"><span data-i18n="balLbl">សមតុល្យ API Credits</span><b id="apiBalance">loading…</b></div>
+      <div class="row"><span data-i18n="quotaLbl">កូតា (Quota) ប្រចាំខែ</span><b id="apiQuota">loading…</b></div>
+      <div class="row"><span data-i18n="pkgExpLbl">កញ្ចប់ផុតកំណត់ · Package expiry</span><b id="apiPkgExpiry">—</b></div>
       <div class="row"><span data-i18n="freeImgLbl">រូបភាពឥតគិតថ្លៃដែលនៅសល់</span><b id="freeImagesLeft">—</b></div>
       <div class="row"><span data-i18n="freeSongLbl">បង្កើតចម្រៀងឥតគិតថ្លៃដែលនៅសល់</span><b id="freeSongsLeft">—</b></div>
       <div class="row"><span data-i18n="usageLbl">ការប្រើប្រាស់ (Usage)</span><b id="apiUsage">—</b></div>
@@ -197,30 +283,31 @@
       <p class="note" data-i18n="priceDiffNote">⚠️ តម្លៃ API ខាងក្រោម ខុសពីតម្លៃគេហទំព័រ MovAi (App) ខាងក្រោមទៀត — វាជាតម្លៃពីរផ្សេងគ្នា។ API prices below are DIFFERENT from the website (app) prices further below — they are two separate price lists.</p>
       <h3 data-i18n="apiPkgTitle">កញ្ចប់ API · API Packages</h3>
       <p class="muted" data-i18n="apiPkgNote">អត្រាគោល៖ $5 = 600 credits (120 credits / $1)។ ទិញដោយ KHQR / USDT ហើយ Admin អនុម័ត។</p>
+      <p class="note" data-i18n="apiExpiryRule">⚠️ Credits API ផុតកំណត់នៅចុងបញ្ចប់នៃរយៈពេលបង់ប្រាក់ — Credits ដែលមិនបានប្រើនឹងត្រូវកាត់ចោល (គ្មានការផ្ទេរទៅខែក្រោយទេ)។ 1 ខែ = 30 ថ្ងៃ, $500 = 5 ខែ (150 ថ្ងៃ), $1250 = 12 ខែ (365 ថ្ងៃ)។ API credits expire at the end of the billing period — unused credits are cut off (no rollover).</p>
       <div class="pkg" data-pkg="api-600">
         <div class="pkg-top"><span class="pkg-name">API 600</span><span class="pkg-price">$5<span class="muted">/month</span></span></div>
         <div class="pkg-credits">600 credits</div>
-        <button class="btn api-buy-btn" type="button" data-pkg="api-600" data-price="5" data-credits="600" data-name="API 600" data-i18n="buyBtn">ទិញ · Buy</button>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-600" data-price="5" data-credits="600" data-months="1" data-name="API 600" data-i18n="buyBtn">ទិញ · Buy</button>
       </div>
       <div class="pkg" data-pkg="api-1200">
         <div class="pkg-top"><span class="pkg-name">API 1200</span><span class="pkg-price">$10<span class="muted">/month</span></span></div>
         <div class="pkg-credits">1200 credits</div>
-        <button class="btn api-buy-btn" type="button" data-pkg="api-1200" data-price="10" data-credits="1200" data-name="API 1200" data-i18n="buyBtn">ទិញ · Buy</button>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-1200" data-price="10" data-credits="1200" data-months="1" data-name="API 1200" data-i18n="buyBtn">ទិញ · Buy</button>
       </div>
       <div class="pkg" data-pkg="api-8000">
         <div class="pkg-top"><span class="pkg-name">API 8000</span><span class="pkg-price">$50<span class="muted">/month</span></span></div>
         <div class="pkg-credits">8000 credits · <span class="pkg-off">25% off</span></div>
-        <button class="btn api-buy-btn" type="button" data-pkg="api-8000" data-price="50" data-credits="8000" data-name="API 8000" data-i18n="buyBtn">ទិញ · Buy</button>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-8000" data-price="50" data-credits="8000" data-months="1" data-name="API 8000" data-i18n="buyBtn">ទិញ · Buy</button>
       </div>
       <div class="pkg" data-pkg="api-102000">
-        <div class="pkg-top"><span class="pkg-name">API 102,000</span><span class="pkg-price">$500<span class="muted">/month</span></span></div>
+        <div class="pkg-top"><span class="pkg-name">API 102,000</span><span class="pkg-price">$500<span class="muted">/5 months</span></span></div>
         <div class="pkg-credits">102,000 credits · <span class="pkg-off">41% off</span></div>
-        <button class="btn api-buy-btn" type="button" data-pkg="api-102000" data-price="500" data-credits="102000" data-name="API 102000" data-i18n="buyBtn">ទិញ · Buy</button>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-102000" data-price="500" data-credits="102000" data-months="5" data-name="API 102000" data-i18n="buyBtn">ទិញ · Buy</button>
       </div>
       <div class="pkg" data-pkg="api-255000">
-        <div class="pkg-top"><span class="pkg-name">API 255,000</span><span class="pkg-price">$1250<span class="muted">/month</span></span></div>
+        <div class="pkg-top"><span class="pkg-name">API 255,000</span><span class="pkg-price">$1250<span class="muted">/12 months</span></span></div>
         <div class="pkg-credits">255,000 credits · <span class="pkg-off">41% off</span></div>
-        <button class="btn api-buy-btn" type="button" data-pkg="api-255000" data-price="1250" data-credits="255000" data-name="API 255000" data-i18n="buyBtn">ទិញ · Buy</button>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-255000" data-price="1250" data-credits="255000" data-months="12" data-name="API 255000" data-i18n="buyBtn">ទិញ · Buy</button>
       </div>
       <h3 data-i18n="appPkgTitle">កញ្ចប់គេហទំព័រ (App) · Website App Packages</h3>
       <p class="muted" data-i18n="appPkgNote">នេះជាតម្លៃរបស់គេហទំព័រ / អាប់ MovAi ផ្ទាល់ — ខុសពីតម្លៃ API ខាងលើ។ ទិញក្នុងអាប់តាម Upgrade។</p>
@@ -246,35 +333,97 @@
     <section class="card">
       <h2 data-i18n="exTitle">ឧទាហរណ៍ · Examples (curl)</h2>
       <h3 data-i18n="exSong">បង្កើតចម្រៀង · Create a song — POST /api/v1/songs</h3>
-      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/songs \
+      <pre class="code-ex">curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/songs \
   -H "Authorization: Bearer &lt;key&gt;" \
   -H "Content-Type: application/json" \
-  -d '{"prompt": "a Khmer love song", "lyrics": "..."}'
+  -d '{"prompt": "a Khmer love song", "lyrics": "...", "model": "v6"}'
 # 12 credits per generation — 1 generation = 2 songs</pre>
-      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/songs \
+      <pre class="code-ex">curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/songs \
   -H "X-API-Key: &lt;key&gt;" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "a Khmer love song"}'</pre>
       <h3 data-i18n="exImage">បង្កើតរូបភាព · Create an image — POST /api/v1/images</h3>
-      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/images \
+      <pre class="code-ex">curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/images \
   -H "Authorization: Bearer &lt;key&gt;" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "a Khmer singer on stage"}'
 # 0 credits — FREE. First use: 4 free images.
 # After the 4 free images, an active paid API package is required.</pre>
-      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/images \
+      <pre class="code-ex">curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/images \
   -H "X-API-Key: &lt;key&gt;" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "a Khmer singer on stage"}'</pre>
       <h3 data-i18n="exBal">មើលសមតុល្យ · Check balance — GET /api/v1/balance</h3>
-      <pre>curl https://movai-proxy-wasr.onrender.com/api/v1/balance \
+      <pre class="code-ex">curl https://movai-proxy-wasr.onrender.com/api/v1/balance \
   -H "Authorization: Bearer &lt;key&gt;"</pre>
-      <pre>curl https://movai-proxy-wasr.onrender.com/api/v1/balance \
+      <pre class="code-ex">curl https://movai-proxy-wasr.onrender.com/api/v1/balance \
   -H "X-API-Key: &lt;key&gt;"</pre>
+    </section>
+
+    <section class="card" id="modelsCard">
+      <h2 data-i18n="modelsTitle">ម៉ូដែល · Models</h2>
+      <table class="costs">
+        <tr><th>Model</th><th>Code</th><th data-i18n="costNote">កំណត់សម្គាល់</th></tr>
+        <tr><td><b>V6 Ultra</b></td><td><code>v6</code></td><td data-i18n="modelV6">គុណភាពល្អបំផុត — សម្រាប់ចម្រៀងដែលត្រូវការសំឡេងច្បាស់ និងលម្អិត។ Best quality.</td></tr>
+        <tr><td><b>V6 Pro</b></td><td><code>v6-wild</code></td><td data-i18n="modelV6Wild">Pro — ច្នៃប្រឌិតខ្លាំង សម្រាប់ស្ទីលប្លែកៗ និងការសាកល្បង។ Most creative.</td></tr>
+        <tr><td><b>V6 Mini</b></td><td><code>v6-mini</code></td><td data-i18n="modelV6Mini">លឿន និងសន្សំសំចៃ — សម្រាប់បង្កើតរហ័ស។ Fast and light.</td></tr>
+        <tr><td><b>V5.5</b></td><td><code>v5.5</code></td><td data-i18n="modelV55">ម៉ូដែលជំនាន់មុន — នៅប្រើបាន សម្រាប់ភាពត្រូវគ្នា។ Previous generation.</td></tr>
+      </table>
+      <p class="muted" data-i18n="modelNote">ប្រើប៉ារ៉ាម៉ែត្រ model ក្នុង POST /api/v1/songs។ លំនាំដើម៖ v6។ Use the model parameter in POST /api/v1/songs. Default: v6.</p>
+    </section>
+
+    <section class="card" id="statusCard">
+      <h2 data-i18n="statusTitle">កូដស្ថានភាព · Status Codes</h2>
+      <p class="note" data-i18n="serverOnlyNote">⚠️ ហៅពី server របស់អ្នកតែប៉ុណ្ណោះ — កុំហៅពី browser ឬកូដ client-side; API key របស់អ្នកគឺជាសម្ងាត់។ Call from your server only — never from a browser or client-side code; your API key is secret.</p>
+      <h3>2xx · Success · ជោគជ័យ</h3>
+      <table class="costs">
+        <tr><td><b>200</b></td><td>OK — សំណើជោគជ័យ · Request succeeded</td></tr>
+        <tr><td><b>201</b></td><td>Created — បានបង្កើតហើយ (ឧ. ចម្រៀង/រូបភាពថ្មី) · Resource created</td></tr>
+      </table>
+      <h3>3xx · Redirection · ប្តូរទិស</h3>
+      <p class="muted" data-i18n="status3xxNote">API នេះមិនត្រឡប់កូដ 3xx ក្នុងការប្រើប្រាស់ធម្មតាទេ។ This API does not return 3xx codes in normal use.</p>
+      <h3>4xx · Client Error · កំហុសពីអ្នកហៅ</h3>
+      <table class="costs">
+        <tr><td><b>400</b></td><td>Bad Request — ទិន្នន័យមិនត្រឹមត្រូវ · Invalid request data</td></tr>
+        <tr><td><b>401</b></td><td>Unauthorized — Key មិនត្រឹមត្រូវ (api_key_invalid) / ផុតកំណត់ (api_key_expired) · Invalid or expired key</td></tr>
+        <tr><td><b>402</b></td><td>Payment Required — អស់ Credits · Out of credits</td></tr>
+        <tr><td><b>403</b></td><td>Forbidden — Key ត្រូវបានលុប/បិទ — សិទ្ធិត្រូវបានបិទ (api_key_revoked) · Key revoked/blocked — permission is closed. ហៅពី browser / image_requires_package ក៏ 403 ដែរ · Browser Origin rejected, or image needs a paid package</td></tr>
+        <tr><td><b>404</b></td><td>Not Found — រកមិនឃើញ · Resource not found</td></tr>
+        <tr><td><b>429</b></td><td>Too Many Requests — ហៅច្រើនពេក សូមរង់ចាំ · Rate limited, try again later</td></tr>
+      </table>
+      <p class="note">403 = Key ត្រូវបានលុប/បិទភ្លាមៗ — អ្នកហៅដឹងភ្លាមថាសិទ្ធិត្រូវបានបិទហើយ។ A blocked key answers 403 at once, so the caller knows immediately the permission was revoked.</p>
+      <h3>5xx · Server Error · កំហុសពី server</h3>
+      <table class="costs">
+        <tr><td><b>500</b></td><td>Internal Server Error — កំហុសខាង server · Server error</td></tr>
+        <tr><td><b>503</b></td><td>Service Unavailable — API ត្រូវបានបិទដោយម្ចាស់ / video_not_available_yet (Generate Video មិនទាន់បើក) · API disabled by the owner, or video generation not open yet</td></tr>
+      </table>
     </section>
 
     <p class="foot">© 2026 MovAi · <a href="index.html" data-i18n="backHome">ត្រឡប់ទៅទំព័រដើម</a></p>
   </main>
+</div>
+
+<!-- Creation modal: the ONLY place the full key is shown in full (10s generating state first) -->
+<div class="key-modal-veil" id="keyModal" hidden role="dialog" aria-modal="true" aria-labelledby="keyModalTitle">
+  <div class="key-modal-card">
+    <h3 id="keyModalTitle" data-i18n="keyModalTitle">កំពុងបង្កើត API Key…</h3>
+    <div id="keyModalGen">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="msg" data-i18n="keyGenerating">កំពុងបង្កើត…</p>
+      <div class="progress"><i id="keyModalProgress"></i></div>
+    </div>
+    <div id="keyModalDone" hidden>
+      <p class="warn" data-i18n="keyOnceWarn">⚠️ Key នេះបង្ហាញពេញតែម្ដងនេះទេ! សូមចម្លង ហើយរក្សាទុកឲ្យបានសុវត្ថិភាព។ បន្ទាប់ពីចាកចេញពីទំព័រនេះ អ្នកនឹងឃើញតែផ្នែកដើម និង 4 តួចុងក្រោយប៉ុណ្ណោះ។</p>
+      <div class="key-box" id="keyModalFull"></div>
+      <div class="btn-row">
+        <button class="btn" id="keyModalCopyBtn" type="button" data-i18n="copyKey">ចម្លង Key</button>
+        <button class="btn-ghost" id="keyModalDoneBtn" type="button" data-i18n="keyModalDone">រួចរាល់ · Done</button>
+      </div>
+      <div class="row"><span data-i18n="keyCreatedLbl">ថ្ងៃបង្កើត · Created</span><b id="keyModalCreated">—</b></div>
+      <div class="row"><span data-i18n="keyStatusLbl">ស្ថានភាព · Status</span><b><span class="status-badge active" id="keyModalStatus">Active</span></b></div>
+      <p class="msg" id="keyModalMsg"></p>
+    </div>
+  </div>
 </div>
 
 <!-- Buy sheet (KHQR / USDT) — same pattern as index.html, kind 'api-package' -->
@@ -325,6 +474,25 @@
 </div>
 
 <script>
+/* ---- API v2 code highlighter (local, no CDN/library): colors curl/JSON
+   examples — strings, URLs, numbers, keywords/flags, # comments. ---- */
+function highlightApiCodeText(src){
+  var esc = function(s){ return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
+  return esc(src).split("\n").map(function(line){
+    if (/^\s*#/.test(line)) return '<span class="tk-com">' + line + '</span>';
+    return line.replace(/("(?:[^"\\]|\\.)*")|(https?:\/\/[^\s\\<]+)|(\b\d+\b)|(\b(?:curl|POST|GET|PUT|DELETE)\b)|(-[A-Za-z]\b|--[A-Za-z-]+)/g,
+      function(m, str, url, num, kw, flag){
+        if (str) return '<span class="tk-str">' + str + '</span>';
+        if (url) return '<span class="tk-url">' + url + '</span>';
+        if (num) return '<span class="tk-num">' + num + '</span>';
+        if (kw) return '<span class="tk-kw">' + kw + '</span>';
+        if (flag) return '<span class="tk-kw">' + flag + '</span>';
+        return m;
+      });
+  }).join("\n");
+}
+</script>
+<script>
 (function(){
   "use strict";
   /* ---- theme: Day / Night / Auto (same key as index.html) ---- */
@@ -338,6 +506,7 @@
     if (m) m.setAttribute("content", dark ? "#000000" : "#f2faf6");
     var seg = document.getElementById("themeSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+    if (typeof applyNightInk === "function") applyNightInk();
   }
   function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
   if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
@@ -353,8 +522,21 @@
      fetch the active theme; on ANY failure fall back to the embedded
      default theme (theme 1) so the page still works. ---- */
   var BG_THEME_DEFAULT = { id: "default", name: "ដើម · Original", imageUrl: null, gradient: ["#e8f5f0", "#f2faf6", "#ffffff"], acc1: "#ff2d78", acc2: "#ff7a18", dark: false, ink: "#1f2937", muted: "#6b7280" };
+  var lastBgTheme = null;
+  /* ---- Night-mode ink fix (v2): applyBgTheme() sets --ink/--muted inline
+     from the Admin theme (default: dark #1f2937). In Night mode with a
+     light Admin theme that left dark text on a dark background. When the
+     page is in Night mode and the Admin theme is NOT itself dark, force
+     bright ink/muted; otherwise restore the Admin theme's own colors. ---- */
+  function applyNightInk(){
+    var r = document.documentElement;
+    var night = r.getAttribute("data-theme") === "dark" && !r.classList.contains("bg-dark");
+    if (night) { r.style.setProperty("--ink", "#e7f0ec"); r.style.setProperty("--muted", "#9ca3af"); }
+    else if (lastBgTheme) { r.style.setProperty("--ink", lastBgTheme.ink || BG_THEME_DEFAULT.ink); r.style.setProperty("--muted", lastBgTheme.muted || BG_THEME_DEFAULT.muted); }
+  }
   function applyBgTheme(t){
     if (!t || !t.gradient || t.gradient.length !== 3) t = BG_THEME_DEFAULT;
+    lastBgTheme = t;
     var r = document.documentElement;
     var g = t.gradient;
     r.style.setProperty("--bg1", g[0]);
@@ -377,6 +559,7 @@
       }
     }
     if (t.dark) r.classList.add("bg-dark"); else r.classList.remove("bg-dark");
+    applyNightInk();
   }
   function loadBgTheme(){
     var ctrl = null, timer = null;
@@ -476,7 +659,38 @@
       keyRegen: "បានបង្កើត Key ថ្មីហើយ — សូមចម្លងវាឥឡូវនេះ វាបង្ហាញពេញតែម្ដងនេះទេ។",
       keyRevokeConfirm: "តើអ្នកពិតជាចង់លុប API Key នេះមែនទេ? កម្មវិធីដែលប្រើ Key នេះនឹងឈប់ដំណើរការ។",
       keyLoadFail: "មិនអាចផ្ទុក API Key បានទេ។",
-      noKeyYet: "អ្នកមិនទាន់មាន API Key ទេ — ចុច «បង្កើត API Key»។"
+      noKeyYet: "អ្នកមិនទាន់មាន API Key ទេ — ចុច «បង្កើត API Key»។",
+      keyNameLbl: "ឈ្មោះ Key · Key name",
+      keyExpiryLbl: "ផុតកំណត់ · Expiry",
+      exp1mo: "1 ខែ · 1 month",
+      exp3mo: "3 ខែ · 3 months",
+      exp1yr: "1 ឆ្នាំ · 1 year",
+      expUnlimited: "មិនកំណត់ · Unlimited (forever)",
+      keyDetails: "ព័ត៌មានលម្អិត · Details",
+      keyCreatedLbl: "ថ្ងៃបង្កើត · Created",
+      keyStatusLbl: "ស្ថានភាព · Status",
+      keyGenerating: "កំពុងបង្កើត…",
+      keyModalTitle: "កំពុងបង្កើត API Key…",
+      keyModalDone: "រួចរាល់ · Done",
+      keyStatusActive: "Active · កំពុងប្រើ",
+      keyStatusRevoked: "Revoked · បានលុប",
+      keyStatusBlocked: "Blocked · បិទ",
+      keyStatusExpired: "Expired · ផុតកំណត់",
+      keyUnlimited: "មិនកំណត់ · Unlimited",
+      eyeShow: "បង្ហាញ Key · Show key",
+      eyeHide: "លាក់ Key · Hide key",
+      modelsTitle: "ម៉ូដែល · Models",
+      modelV6: "គុណភាពល្អបំផុត — សម្រាប់ចម្រៀងដែលត្រូវការសំឡេងច្បាស់ និងលម្អិត។ Best quality.",
+      modelV6Wild: "Pro — ច្នៃប្រឌិតខ្លាំង សម្រាប់ស្ទីលប្លែកៗ និងការសាកល្បង។ Most creative.",
+      modelV6Mini: "លឿន និងសន្សំសំចៃ — សម្រាប់បង្កើតរហ័ស។ Fast and light.",
+      modelV55: "ម៉ូដែលជំនាន់មុន — នៅប្រើបាន សម្រាប់ភាពត្រូវគ្នា។ Previous generation.",
+      modelNote: "ប្រើប៉ារ៉ាម៉ែត្រ model ក្នុង POST /api/v1/songs។ លំនាំដើម៖ v6។ Use the model parameter in POST /api/v1/songs. Default: v6.",
+      statusTitle: "កូដស្ថានភាព · Status Codes",
+      serverOnlyNote: "⚠️ ហៅពី server របស់អ្នកតែប៉ុណ្ណោះ — កុំហៅពី browser ឬកូដ client-side; API key របស់អ្នកគឺជាសម្ងាត់។ Call from your server only — never from a browser or client-side code; your API key is secret.",
+      status3xxNote: "API នេះមិនត្រឡប់កូដ 3xx ក្នុងការប្រើប្រាស់ធម្មតាទេ។ This API does not return 3xx codes in normal use.",
+      keyModalError: "បង្កើត Key មិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      pkgExpLbl: "កញ្ចប់ផុតកំណត់ · Package expiry",
+      apiExpiryRule: "⚠️ Credits API ផុតកំណត់នៅចុងបញ្ចប់នៃរយៈពេលបង់ប្រាក់ — Credits ដែលមិនបានប្រើនឹងត្រូវកាត់ចោល (គ្មានការផ្ទេរទៅខែក្រោយទេ)។ 1 ខែ = 30 ថ្ងៃ, $500 = 5 ខែ (150 ថ្ងៃ), $1250 = 12 ខែ (365 ថ្ងៃ)។ API credits expire at the end of the billing period — unused credits are cut off (no rollover)."
     },
     en: {
       secApi: "MovAi API · API Key",
@@ -556,7 +770,38 @@
       keyRegen: "New key created — copy it now, it is shown in full only once.",
       keyRevokeConfirm: "Really revoke this API Key? Apps using it will stop working.",
       keyLoadFail: "Could not load the API Key.",
-      noKeyYet: "You do not have an API Key yet — tap “Generate API Key”."
+      noKeyYet: "You do not have an API Key yet — tap “Generate API Key”.",
+      keyNameLbl: "Key name",
+      keyExpiryLbl: "Expiry",
+      exp1mo: "1 month",
+      exp3mo: "3 months",
+      exp1yr: "1 year",
+      expUnlimited: "Unlimited (forever)",
+      keyDetails: "Details",
+      keyCreatedLbl: "Created",
+      keyStatusLbl: "Status",
+      keyGenerating: "Generating…",
+      keyModalTitle: "Generating API Key…",
+      keyModalDone: "Done",
+      keyStatusActive: "Active",
+      keyStatusRevoked: "Revoked",
+      keyStatusBlocked: "Blocked",
+      keyStatusExpired: "Expired",
+      keyUnlimited: "Unlimited",
+      eyeShow: "Show key",
+      eyeHide: "Hide key",
+      modelsTitle: "Models",
+      modelV6: "Best quality — for songs that need a clear, detailed sound.",
+      modelV6Wild: "Pro — most creative, for unusual styles and experiments.",
+      modelV6Mini: "Fast and light — for quick generations.",
+      modelV55: "Previous generation — still available for compatibility.",
+      modelNote: "Use the model parameter in POST /api/v1/songs. Default: v6.",
+      statusTitle: "Status Codes",
+      serverOnlyNote: "⚠️ Call from your server only — never from a browser or client-side code; your API key is secret.",
+      status3xxNote: "This API does not return 3xx codes in normal use.",
+      keyModalError: "Could not create the key. Please try again.",
+      pkgExpLbl: "Package expiry",
+      apiExpiryRule: "⚠️ API credits expire at the end of the billing period — unused credits are cut off (no rollover). 1 month = 30 days, $500 = 5 months (150 days), $1250 = 12 months (365 days)." 
     }
   };
   var LANG_KEY = "movai-lang";
@@ -617,8 +862,23 @@
   /* ---- API key state ---- */
   var keyMsg = document.getElementById("keyMsg");
   var keyDisplay = document.getElementById("keyDisplay");
-  var keyFullBox = document.getElementById("keyFullBox");
-  var keyFullEl = document.getElementById("keyFull");
+  var eyeBtn = document.getElementById("eyeBtn");
+  var keyMenuBtn = document.getElementById("keyMenuBtn");
+  var keyMenu = document.getElementById("keyMenu");
+  var keyMetaEl = document.getElementById("keyMeta");
+  var keyModal = document.getElementById("keyModal");
+  var keyModalGen = document.getElementById("keyModalGen");
+  var keyModalDone = document.getElementById("keyModalDone");
+  var keyModalFull = document.getElementById("keyModalFull");
+  var keyModalCreated = document.getElementById("keyModalCreated");
+  var keyModalStatus = document.getElementById("keyModalStatus");
+  var keyModalMsg = document.getElementById("keyModalMsg");
+  var keyModalProgress = document.getElementById("keyModalProgress");
+  var keyRevealed = false;      /* eye toggle: masked by default */
+  var pendingFullKey = "";       /* full key waiting for the 10s modal timer */
+  var keyModalTimer = null;
+  var keyModalTimerDone = false;
+  var keyModalError = "";
   var currentKey = null;      /* {id, prefix, last4, masked} from the server list */
   var currentFullKey = "";    /* full key, held in memory ONLY, shown once */
   function pick(o){
@@ -642,18 +902,66 @@
     if (el) el.textContent = em ? (t("signedInAs") + em) : "";
   }
   function showFullKeyOnce(full){
+    /* Full key lives in memory ONLY and is shown ONLY inside the creation
+       modal (after its 10s generating state). The main page never shows
+       the full key — only the masked form + eye toggle. */
     currentFullKey = full || "";
-    if (currentFullKey) {
-      keyFullEl.textContent = currentFullKey;
-      keyFullBox.hidden = false;
-    } else {
-      keyFullBox.hidden = true;
-    }
+    pendingFullKey = currentFullKey;
+    if (currentFullKey && keyModal && keyModal.hidden) openKeyModal();
+    maybeShowModalKey();
+  }
+  function updateEyeBtn(){
+    if (!eyeBtn) return;
+    eyeBtn.classList.toggle("revealed", !!keyRevealed);
+    eyeBtn.setAttribute("aria-pressed", keyRevealed ? "true" : "false");
+    eyeBtn.setAttribute("aria-label", keyRevealed ? t("eyeHide") : t("eyeShow"));
+  }
+  function fmtDate(v){
+    if (!v) return "—";
+    try { var d = new Date(v); if (!isNaN(d.getTime())) return d.toLocaleString(); } catch (e) {}
+    return String(v);
+  }
+  function fmtExpiry(){
+    if (!currentKey) return "—";
+    var exp = pick(currentKey, "expiresAt", "expires", "expireAt", "expiryDate");
+    if (exp) return fmtDate(exp);
+    var ex = pick(currentKey, "expiry", "expiresIn");
+    if (ex === "unlimited" || ex === null || ex === undefined || ex === "") return t("keyUnlimited");
+    if (ex === "1mo") return t("exp1mo");
+    if (ex === "3mo") return t("exp3mo");
+    if (ex === "1yr") return t("exp1yr");
+    return String(ex);
+  }
+  function keyStatusInfo(){
+    if (!currentKey) return { text: t("keyStatusActive"), revoked: false, kind: "active" };
+    var st = String(pick(currentKey, "status", "state") || "").toLowerCase();
+    if (st === "blocked") return { text: t("keyStatusBlocked"), revoked: true, kind: "blocked" };
+    if (st === "expired") return { text: t("keyStatusExpired"), revoked: true, kind: "expired" };
+    var revoked = st === "revoked" || st === "closed" ||
+      pick(currentKey, "revoked", "isRevoked") === true;
+    return { text: revoked ? t("keyStatusRevoked") : t("keyStatusActive"), revoked: revoked, kind: revoked ? "revoked" : "active" };
+  }
+  function renderKeyMeta(){
+    var nameEl = document.getElementById("keyMetaName");
+    var expEl = document.getElementById("keyMetaExpiry");
+    var creEl = document.getElementById("keyMetaCreated");
+    var stEl = document.getElementById("keyMetaStatus");
+    if (!keyMetaEl) return;
+    if (!currentKey) { keyMetaEl.hidden = true; return; }
+    keyMetaEl.hidden = false;
+    if (nameEl) nameEl.textContent = pick(currentKey, "name", "keyName", "label") || "—";
+    if (expEl) expEl.textContent = fmtExpiry();
+    if (creEl) creEl.textContent = fmtDate(pick(currentKey, "createdAt", "created", "createdDate"));
+    if (stEl) { var si = keyStatusInfo(); stEl.textContent = si.text; stEl.className = "status-badge " + (si.revoked ? "revoked" : "active"); }
+    var kc = document.getElementById("keyCard"); if (kc) kc.classList.toggle("key-card-dead", keyStatusInfo().revoked);
   }
   function renderKey(){
     if (!currentKey) {
       keyDisplay.textContent = t("noKeyYet");
-      keyFullBox.hidden = true;
+      keyRevealed = false;
+      var kc0 = document.getElementById("keyCard"); if (kc0) kc0.classList.remove("key-card-dead");
+      updateEyeBtn();
+      renderKeyMeta();
       return;
     }
     var masked = pick(currentKey, "masked", "maskedKey", "display") || maskKey(pick(currentKey, "prefix", "keyPrefix", "key") || "");
@@ -662,29 +970,33 @@
       var last4 = pick(currentKey, "last4", "lastFour") || "";
       masked = pre ? (pre + "…" + last4) : "—";
     }
-    keyDisplay.textContent = masked;
+    keyDisplay.textContent = (keyRevealed && currentFullKey) ? currentFullKey : masked;
+    renderKeyMeta();
   }
   function renderBalance(d){
     var bal = pick(d, "balance", "credits", "apiCredits");
     var quota = pick(d, "quota", "monthlyQuota", "creditQuota", "limit");
     var freeImg = pick(d, "freeImagesLeft", "freeImages", "imagesLeft");
     var freeSong = pick(d, "freeSongsLeft", "freeSongGenerationsLeft", "freeGenerationsLeft");
-    var set = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = (v === null || v === undefined || v === "") ? "—" : String(v); };
+    var set = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = (v === null || v === undefined || v === "") ? "0" : String(v); };
     set("apiBalance", bal);
     set("apiQuota", quota);
     set("freeImagesLeft", freeImg === null || freeImg === undefined ? "4" : freeImg);
     set("freeSongsLeft", freeSong === null || freeSong === undefined ? "1" : freeSong);
+    var pkgExp = pick(d, "packageExpiresAt", "packageExpiry", "packageExpires");
+    var pkgExpEl = document.getElementById("apiPkgExpiry");
+    if (pkgExpEl) pkgExpEl.textContent = pkgExp ? fmtDate(pkgExp) : "—";
   }
   function renderUsage(d){
     var el = document.getElementById("apiUsage");
     if (!el) return;
-    if (!d) { el.textContent = "—"; return; }
+    if (!d) { el.textContent = "Songs: 0 · Images: 0"; return; }
     var songs = pick(d, "songs", "songCalls", "songGenerations");
     var images = pick(d, "images", "imageCalls");
     var parts = [];
     if (songs !== null && songs !== undefined) parts.push("Songs: " + songs);
     if (images !== null && images !== undefined) parts.push("Images: " + images);
-    el.textContent = parts.length ? parts.join(" · ") : "—";
+    el.textContent = parts.length ? parts.join(" · ") : "Songs: 0 · Images: 0";
   }
   function loadKeys(){
     var em = curEmail();
@@ -727,7 +1039,8 @@
     var em = curEmail();
     if (!em) return;
     keyMsg.textContent = "";
-    apiPost("/api/public/api-keys", { email: em }, 60000).then(function(d){
+    openKeyModal();
+    apiPost("/api/public/api-keys", { email: em, name: keyNameVal(), expiry: keyExpiryVal() }, 60000).then(function(d){
       if (!d || d.ok !== true) throw new Error((d && d.error) || t("noServer"));
       var full = pick(d, "key", "apiKey", "fullKey") || (d.keyObj ? pick(d.keyObj, "key", "apiKey") : null);
       currentKey = d.keyObj || d.key || d;
@@ -738,8 +1051,10 @@
       keyMsg.textContent = t("keyCreated");
       keyMsg.className = "msg ok-t";
     }).catch(function(err){
-      keyMsg.textContent = (err && err.message) ? err.message : t("noServer");
+      keyModalError = (err && err.message) ? err.message : t("noServer");
+      keyMsg.textContent = keyModalError;
       keyMsg.className = "msg";
+      maybeShowModalKey();
     });
   });
   if (copyBtn) copyBtn.addEventListener("click", function(){
@@ -752,7 +1067,8 @@
     var em = curEmail();
     if (!em) return;
     keyMsg.textContent = "";
-    apiPost("/api/public/api-keys/regenerate", { email: em, keyId: keyIdOf() }, 60000).then(function(d){
+    openKeyModal();
+    apiPost("/api/public/api-keys/regenerate", { email: em, keyId: keyIdOf(), name: keyNameVal(), expiry: keyExpiryVal() }, 60000).then(function(d){
       if (!d || d.ok !== true) throw new Error((d && d.error) || t("noServer"));
       var full = pick(d, "key", "apiKey", "fullKey") || (d.keyObj ? pick(d.keyObj, "key", "apiKey") : null);
       currentKey = d.keyObj || d.key || d;
@@ -763,8 +1079,10 @@
       keyMsg.textContent = t("keyRegen");
       keyMsg.className = "msg ok-t";
     }).catch(function(err){
-      keyMsg.textContent = (err && err.message) ? err.message : t("noServer");
+      keyModalError = (err && err.message) ? err.message : t("noServer");
+      keyMsg.textContent = keyModalError;
       keyMsg.className = "msg";
+      maybeShowModalKey();
     });
   });
   if (revokeBtn) revokeBtn.addEventListener("click", function(){
@@ -776,7 +1094,10 @@
       if (!d || d.ok !== true) throw new Error((d && d.error) || t("noServer"));
       currentKey = null;
       currentFullKey = "";
-      showFullKeyOnce("");
+      pendingFullKey = "";
+      keyRevealed = false;
+      updateEyeBtn();
+      closeKeyModal();
       renderKey();
       renderBalance(null);
       renderUsage(null);
@@ -787,6 +1108,132 @@
       keyMsg.className = "msg";
     });
   });
+
+  /* ---- API v2 helpers: eye toggle, kebab menu, creation modal,
+     name/expiry fields, colored code examples ---- */
+  function keyNameVal(){
+    var el = document.getElementById("keyNameInput");
+    return el ? el.value.trim() : "";
+  }
+  function keyExpiryVal(){
+    var el = document.getElementById("keyExpirySelect");
+    return el ? el.value : "1mo";
+  }
+  function highlightApiExamples(){
+    var pres = document.querySelectorAll("pre.code-ex");
+    for (var i = 0; i < pres.length; i++) {
+      try { pres[i].innerHTML = highlightApiCodeText(pres[i].textContent); } catch (e) {}
+    }
+  }
+  function openKeyModal(){
+    if (!keyModal) return;
+    keyModalTimerDone = false;
+    keyModalError = "";
+    if (keyModalTimer) { clearTimeout(keyModalTimer); keyModalTimer = null; }
+    if (keyModalGen) keyModalGen.hidden = false;
+    if (keyModalDone) keyModalDone.hidden = true;
+    if (keyModalMsg) keyModalMsg.textContent = "";
+    if (keyModalProgress) {
+      keyModalProgress.style.transition = "none";
+      keyModalProgress.style.width = "0";
+      setTimeout(function(){ if (keyModalProgress) { keyModalProgress.style.transition = "width 10s linear"; keyModalProgress.style.width = "100%"; } }, 50);
+    }
+    keyModal.hidden = false;
+    /* 10s generating state on a timer — never blocks the UI thread. */
+    keyModalTimer = setTimeout(function(){
+      keyModalTimer = null;
+      keyModalTimerDone = true;
+      maybeShowModalKey();
+    }, 10000);
+  }
+  function maybeShowModalKey(){
+    if (!keyModal || keyModal.hidden || !keyModalTimerDone) return;
+    if (keyModalError) {
+      if (keyModalMsg) { keyModalMsg.textContent = keyModalError; keyModalMsg.className = "msg"; }
+      return;
+    }
+    if (!pendingFullKey) return;
+    if (keyModalFull) keyModalFull.textContent = pendingFullKey;
+    if (keyModalCreated) keyModalCreated.textContent = fmtDate(pick(currentKey, "createdAt", "created", "createdDate") || new Date().toISOString());
+    if (keyModalStatus) { var si = keyStatusInfo(); keyModalStatus.textContent = si.text; keyModalStatus.className = "status-badge " + (si.revoked ? "revoked" : "active"); }
+    if (keyModalGen) keyModalGen.hidden = true;
+    if (keyModalDone) keyModalDone.hidden = false;
+  }
+  function closeKeyModal(){
+    if (keyModalTimer) { clearTimeout(keyModalTimer); keyModalTimer = null; }
+    if (keyModal) keyModal.hidden = true;
+    keyRevealed = false;
+    updateEyeBtn();
+    renderKey();
+  }
+  if (eyeBtn) eyeBtn.addEventListener("click", function(){
+    if (!currentKey) return;
+    keyRevealed = !keyRevealed;
+    updateEyeBtn();
+    renderKey();
+  });
+  if (keyMenuBtn && keyMenu) keyMenuBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var open = keyMenu.hidden;
+    keyMenu.hidden = !open;
+    keyMenuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.addEventListener("click", function(e){
+    if (keyMenu && !keyMenu.hidden) {
+      var t = e.target;
+      if (!t || !t.closest || (!t.closest("#keyMenu") && !t.closest("#keyMenuBtn"))) {
+        keyMenu.hidden = true;
+        if (keyMenuBtn) keyMenuBtn.setAttribute("aria-expanded", "false");
+      }
+    }
+  });
+  var menuCopyBtn = document.getElementById("menuCopyBtn");
+  var menuRegenBtn = document.getElementById("menuRegenBtn");
+  var menuRevokeBtn = document.getElementById("menuRevokeBtn");
+  var menuDetailsBtn = document.getElementById("menuDetailsBtn");
+  if (menuCopyBtn && copyBtn) menuCopyBtn.addEventListener("click", function(){ keyMenu.hidden = true; copyBtn.click(); });
+  if (menuRegenBtn && regenBtn) menuRegenBtn.addEventListener("click", function(){ keyMenu.hidden = true; regenBtn.click(); });
+  if (menuRevokeBtn && revokeBtn) menuRevokeBtn.addEventListener("click", function(){ keyMenu.hidden = true; revokeBtn.click(); });
+  if (menuDetailsBtn) menuDetailsBtn.addEventListener("click", function(){
+    keyMenu.hidden = true;
+    renderKeyMeta();
+    if (keyMetaEl) { keyMetaEl.hidden = !keyMetaEl.hidden; if (!keyMetaEl.hidden && keyMetaEl.scrollIntoView) keyMetaEl.scrollIntoView({ block: "nearest" }); }
+  });
+  var keyModalCopyBtn = document.getElementById("keyModalCopyBtn");
+  var keyModalDoneBtn = document.getElementById("keyModalDoneBtn");
+  if (keyModalCopyBtn) keyModalCopyBtn.addEventListener("click", function(){
+    var done = function(){ if (keyModalMsg) { keyModalMsg.textContent = t("keyCopied"); keyModalMsg.className = "msg ok-t"; } };
+    if (!pendingFullKey) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(pendingFullKey).then(done, done);
+    else { try { var ta = document.createElement("textarea"); ta.value = pendingFullKey; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); } catch (e) {} done(); }
+  });
+  if (keyModalDoneBtn) keyModalDoneBtn.addEventListener("click", function(){ closeKeyModal(); });
+  if (keyModal) keyModal.addEventListener("click", function(e){ if (e.target === keyModal) closeKeyModal(); });
+
+  /* ---- global API kill switch (owner): red banner + block creating keys.
+     Reads the flag defensively from /api/public/api-status and from the
+     /api/public/api-packages response (any of apiEnabled/enabled/disabled/
+     apiDisabled/publicApiEnabled/status). Any fetch failure = no banner. ---- */
+  function setApiKillSwitch(disabled){
+    var b = document.getElementById("apiKillBanner");
+    if (b) b.hidden = !disabled;
+    var g = document.getElementById("genKeyBtn");
+    if (g) g.disabled = !!disabled;
+  }
+  function checkApiKillSwitch(d){
+    if (!d || typeof d !== "object") return;
+    if (d.apiEnabled === false || d.enabled === false || d.disabled === true ||
+        d.apiDisabled === true || d.publicApiEnabled === false || d.status === "disabled") {
+      setApiKillSwitch(true);
+    }
+  }
+  function loadApiKillSwitch(){
+    fetch(API_BASE + "/api/public/api-status", { cache: "no-store" })
+      .then(function(r){ return r.json().catch(function(){ return null; }); })
+      .then(function(d){ checkApiKillSwitch(d); })
+      .catch(function(){});
+  }
+  loadApiKillSwitch();
 
   /* ---- buy sheet: KHQR / USDT for the API packages (same pattern as
      index.html). Receipt upload + purchase request reuse the market flow;
@@ -870,7 +1317,8 @@
     buyKhqr.classList.remove("picked"); buyUsdt.classList.remove("picked");
     buyMsg.textContent = ""; buyMsg.className = "buy-msg"; buyReceiptName.textContent = ""; buyCopyMsg.textContent = "";
     buyReceiptInput.value = "";
-    buySum.textContent = pkg.name + " — $" + pkg.price + (lang === "en" ? "/month" : "/ខែ") + " · " + pkg.credits + " API Credits";
+    var per = (pkg.months && pkg.months > 1) ? ("/" + pkg.months + (lang === "en" ? " months" : " ខែ")) : (lang === "en" ? "/month" : "/ខែ");
+    buySum.textContent = pkg.name + " — $" + pkg.price + per + " · " + pkg.credits + " API Credits";
     var em = buyEmail();
     buySigninMsg.hidden = !!em;
     buySteps.hidden = !em;
@@ -977,12 +1425,36 @@
   var apiBuyBtns = document.querySelectorAll(".api-buy-btn");
   for (var _bi = 0; _bi < apiBuyBtns.length; _bi++) {
     apiBuyBtns[_bi].addEventListener("click", function(){
-      openBuySheet({ id: this.getAttribute("data-pkg"), price: this.getAttribute("data-price"), credits: this.getAttribute("data-credits"), name: this.getAttribute("data-name"), kind: "api-package" });
+      openBuySheet({ id: this.getAttribute("data-pkg"), price: this.getAttribute("data-price"), credits: this.getAttribute("data-credits"), months: parseInt(this.getAttribute("data-months") || "1", 10) || 1, name: this.getAttribute("data-name"), kind: "api-package" });
     });
   }
   buyLoadSettings();
+  /* ---- API package durations from the server when available
+     (months: 1, 1, 1, 5, 12); hardcoded 5 / 12 above is the fallback. ---- */
+  function loadApiPackages(){
+    fetch(API_BASE + "/api/public/api-packages", { cache: "no-store" })
+      .then(function(r){ return r.json().catch(function(){ return null; }); })
+      .then(function(d){
+        checkApiKillSwitch(d);
+        var list = (d && (d.packages || d.apiPackages)) || [];
+        for (var i = 0; i < list.length; i++) {
+          var p = list[i];
+          var months = pick(p, "months", "durationMonths", "billingMonths", "duration");
+          var credits = pick(p, "credits", "songCredits");
+          if (!months || !credits) continue;
+          var btn = document.querySelector('.api-buy-btn[data-credits="' + credits + '"]');
+          if (!btn) continue;
+          btn.setAttribute("data-months", String(months));
+          var card = btn.closest ? btn.closest(".pkg") : null;
+          var perEl = card ? card.querySelector(".pkg-price .muted") : null;
+          if (perEl) perEl.textContent = months > 1 ? "/" + months + " months" : "/month";
+        }
+      }).catch(function(){});
+  }
+  loadApiPackages();
 
   /* ---- init ---- */
+  highlightApiExamples();
   applyLang();
   var em0 = curEmail();
   var signinCard = document.getElementById("signinCard");

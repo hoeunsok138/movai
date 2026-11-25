@@ -523,10 +523,21 @@
   html[data-theme="dark"] .field{background:transparent;border-color:#333333;color:#e7f0ec}
   html[data-theme="dark"] .field:focus{outline-color:#2dd4bf}
   html[data-theme="dark"] .field-label{color:#e7f0ec}
+  /* ---- v2 night audit: classes the dark block missed (dark text on dark bg) ---- */
+  html[data-theme="dark"] .pkg-item,html[data-theme="dark"] .pkg-contact{background:#1a1a1a;border-color:#333333}
+  html[data-theme="dark"] .pkg-item-name{color:#e7f0ec}
+  html[data-theme="dark"] .pkg-item-sub,html[data-theme="dark"] .pkg-item-per,html[data-theme="dark"] .pkg-eq{color:#9ca3af}
+  html[data-theme="dark"] .site-footer{color:#e7f0ec}
+  html[data-theme="dark"] .ft-about{color:#9ca3af}
+  html[data-theme="dark"] .ft-col h3,html[data-theme="dark"] .ft-col a,html[data-theme="dark"] .ft-steps,html[data-theme="dark"] .ft-prices{color:#e7f0ec}
+  html[data-theme="dark"] .hdr-logo{color:#e7f0ec}
+  html[data-theme="dark"] .buy-receipt{border-top-color:#262626}
+  html[data-theme="dark"] .pkg-buy a{color:#2dd4bf}
   html[data-theme="dark"] .primary-btn{color:#e7f0ec;border-color:#e7f0ec}
   html[data-theme="dark"] .primary-btn:active{background:rgba(255,45,120,.20)}
   /* ---- bg-themes client v1: ONE page background, Admin-managed themes ---- */
   :root{--bg1:#e8f5f0;--bg2:#f2faf6;--bg3:#ffffff;--acc1:#ff2d78;--acc2:#ff7a18;--ink:#1f2937;--muted:#6b7280;--surface:rgba(255,255,255,.82)}
+  html[data-theme="dark"]{--ink:#e7f0ec;--muted:#9ca3af}
   html.bg-dark,html[data-theme="dark"]{--surface:rgba(12,12,20,.55)}
   #bgVeil{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,.55);opacity:0;transition:opacity .3s ease}
   html[data-theme="dark"]:not(.bg-dark) #bgVeil{opacity:1}
@@ -895,6 +906,7 @@
     if (m) m.setAttribute("content", dark ? "#000000" : "#f2faf6");
     var seg = document.getElementById("themeSeg");
     if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+    if (typeof applyNightInk === "function") applyNightInk();
   }
   function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
   if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
@@ -1339,8 +1351,19 @@
      Fetches the active theme from the server; on ANY failure falls back
      to the embedded default theme (theme 1) so the page still works. ---- */
   var BG_THEME_DEFAULT = { id: "default", name: "ដើម · Original", imageUrl: null, gradient: ["#e8f5f0", "#f2faf6", "#ffffff"], acc1: "#ff2d78", acc2: "#ff7a18", dark: false, ink: "#1f2937", muted: "#6b7280" };
+  var lastBgTheme = null;
+  /* ---- Night-mode ink fix (v2, same as the API page): in Night mode with
+     a light Admin theme, force bright --ink/--muted; a dark Admin theme
+     (bg-dark) keeps its own colors. ---- */
+  function applyNightInk(){
+    var r = document.documentElement;
+    var night = r.getAttribute("data-theme") === "dark" && !r.classList.contains("bg-dark");
+    if (night) { r.style.setProperty("--ink", "#e7f0ec"); r.style.setProperty("--muted", "#9ca3af"); }
+    else if (lastBgTheme) { r.style.setProperty("--ink", lastBgTheme.ink || BG_THEME_DEFAULT.ink); r.style.setProperty("--muted", lastBgTheme.muted || BG_THEME_DEFAULT.muted); }
+  }
   function applyBgTheme(t){
     if (!t || !t.gradient || t.gradient.length !== 3) t = BG_THEME_DEFAULT;
+    lastBgTheme = t;
     var r = document.documentElement;
     var g = t.gradient;
     r.style.setProperty("--bg1", g[0]);
@@ -1363,6 +1386,7 @@
       }
     }
     if (t.dark) r.classList.add("bg-dark"); else r.classList.remove("bg-dark");
+    applyNightInk();
   }
   function loadBgTheme(){
     var ctrl = null, timer = null;
