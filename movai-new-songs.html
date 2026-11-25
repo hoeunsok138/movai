@@ -414,7 +414,7 @@
   <header id="hdr">
     <div class="hdr-row hdr-top">
       <a class="hdr-logo" href="index.html">
-        <img src="movai-logo-mark.png" width="26" height="26" alt="MovAi logo">
+        <img src="movai-logo-mark.svg" width="26" height="26" alt="MovAi logo">
         <b>MovAi</b>
       </a>
     </div>
@@ -497,7 +497,7 @@
       <button class="stem-panel-close" id="stemPanelClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button>
     </div>
     <div class="stem-proc-view" id="stemProcView">
-      <div class="stem-logo-big"><img src="movai-logo-mark.png" alt=""><span class="stem-ring-big"></span><span class="stem-shadow-big"></span></div>
+      <div class="stem-logo-big"><img src="movai-logo-mark.svg" alt=""><span class="stem-ring-big"></span><span class="stem-shadow-big"></span></div>
       <div class="stem-proc-bar"><span class="stem-proc-fill" id="stemProcFill"></span></div>
       <div class="stem-proc-pct" id="stemProcPct">0%</div>
       <div class="stem-proc-stages" id="stemProcStages"></div>
@@ -1082,7 +1082,7 @@
         row.className = "c-row";
         var logo = document.createElement("img");
         logo.className = "c-logo";
-        logo.src = "movai-logo-mark.png";
+        logo.src = "movai-logo-mark.svg";
         logo.alt = "MovAi";
         row.appendChild(logo);
         var text = document.createElement("span");
@@ -1272,7 +1272,7 @@
     snapRestoring = false; // a real generation finishing ends the quiet restore window
     if (!slot || !slot.url) return;
     clearPlayErr();
-    pCover.src = "movai-logo-mark.png";
+    pCover.src = "movai-logo-mark.svg";
     pCover.onerror = function(){ if (pCover.src !== COVER_FALLBACK) pCover.src = COVER_FALLBACK; };
     pTitle.textContent = slot.title || t("untitled");
     playerEl.hidden = false; document.body.classList.add("player-on");
@@ -1731,7 +1731,7 @@
     var pLogo = document.createElement("div");
     pLogo.className = "stem-logo";
     var pImg = document.createElement("img");
-    pImg.src = "movai-logo-mark.png";
+    pImg.src = "movai-logo-mark.svg";
     pImg.alt = "";
     var pRing = document.createElement("span");
     pRing.className = "stem-ring";
