@@ -211,7 +211,7 @@ html[data-mode=light] .mv-a{color:#8a5f0b!important}
 <div id="mvView" class="mv-view" style="display:none" role="dialog" aria-modal="true" aria-label="MV" data-i18n-aria="mvBtn"><div class="mv-stage-wrap" id="mvStageWrap"><div class="mv-stage" id="mvStage"><div class="mv-bg" id="mvBg"></div><canvas class="mv-fx" id="mvFx" aria-hidden="true"></canvas><div class="mv-mood" id="mvMood" aria-hidden="true"><div class="mv-mood-char" id="mvMoodChar">🧸</div><div class="mv-mood-float" id="mvMoodFloat"></div></div><div class="mv-title" id="mvTitle"></div><button type="button" class="mv-title-toggle" onclick="mvTitleToggle()" aria-label="Show/hide title">👁</button><div class="mv-lyrics" id="mvLyrics"></div><button type="button" class="mv-bigplay" id="mvBigPlay" aria-label="ចាក់" data-i18n-aria="histPlay">▶</button><div class="mv-progress" id="mvProgress" style="display:none"><div class="mv-spinner" aria-hidden="true"></div><div class="mv-progress-pct" id="mvProgressPct">0%</div><div class="mv-progress-txt" id="mvProgressTxt"></div></div></div></div><p class="mv-note" id="mvNote"></p><div class="mv-controls"><button type="button" class="mv-cbtn" id="mvPlayBtn" aria-label="ចាក់" data-i18n-aria="histPlay">▶</button> <span class="mv-time" id="mvCur">0:00</span> <input type="range" class="mv-seek" id="mvSeek" min="0" max="1000" value="0" aria-label="រំកិល" data-i18n-aria="mvSeekAria"> <span class="mv-time" id="mvDur">0:00</span> <button type="button" class="mv-cbtn wide" id="mvDlBtn"></button> <button type="button" class="mv-cbtn wide" id="mvShareBtn"></button> <button type="button" class="mv-cbtn wide" id="mvExpBtn"></button> <button type="button" class="mv-cbtn" id="mvOptBtn" aria-label="ជម្រើស MV" data-i18n-aria="mvOptionsAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button> <button type="button" class="mv-cbtn" id="mvCloseBtn" aria-label="Close">✕</button></div><div class="mv-transcript" id="mvTranscript" hidden><div class="mv-tr-head"><div><div class="mv-tr-title" data-i18n="mvTrTitle">🎧 Transcript · អត្ថបទតាមពេលច្រៀង</div><div class="mv-tr-hint" data-i18n="mvTrHint">បន្ទាត់នីមួយៗមានវិនាទីដែលគេច្រៀងពិត — ចុចលើបន្ទាត់ ដើម្បីលោតទៅវិនាទីនោះ</div></div><button type="button" class="mv-tr-edit-btn" onclick="mvEditLyricsFromPlayer()">✏️ <span data-i18n="mvLyrEditBtn">កែអត្ថបទ</span></button><button type="button" class="mv-tr-toggle" id="mvTrToggle" aria-label="Transcript">▾</button></div><div class="mv-tr-list" id="mvTrList"></div></div></div>
 
 <script>
-var I18N={km:{mvBtn:"MV",mvFormat:"ទម្រង់អេក្រង់",mvFmtPortrait:"បញ្ឈរ",mvFmtLandscape:"ផ្ដេក",mvFmtSquare:"ការ៉េ",mvFmtWide:"ធំទូលាយ",mvBg:"ផ្ទៃខាងក្រោយ",mvBgAuto:"អូតូ",mvBgUpload:"អាប់ឡូតវីដេអូ / រូបភាព",mvBgAutoNote:"អូតូ — ប្រើរូបគម្របរបស់បទ ឬផ្ទៃ MovAi ដែលបង្កើតឲ្យ",mvLyricsLbl:"អត្ថបទចម្រៀង",mvLyricsHave:"មានអត្ថបទរួច — អក្សរនឹងរត់តាមពេលច្រៀង",mvLyricsNone:"បទនេះមិនទាន់មានអត្ថបទទេ — បិទភ្ជាប់អត្ថបទខាងក្រោម",mvLyricsPastePh:"បិទភ្ជាប់អត្ថបទចម្រៀងនៅទីនេះ… (មួយបន្ទាត់ មួយឃ្លា)",mvLyrSaveBtn:"💾 រក្សាទុកអត្ថបទ",mvLyrSaved:"រក្សាទុកអត្ថបទរួចរាល់ ✓",mvLyrSaving:"កំពុងរក្សាទុកអត្ថបទ…",mvLyrSaveFail:"រក្សាទុកអត្ថបទមិនបាន — សូមព្យាយាមម្ដងទៀត",mvLyrEditBtn:"✏️ កែអត្ថបទ",mvTitleShow:"បង្ហាញចំណងជើង",mvTitleHide:"លាក់ចំណងជើង",mvTrTitle:"🎧 អត្ថបទតាមពេលច្រៀង",mvTrHint:"បន្ទាត់នីមួយៗមានវិនាទីដែលគេច្រៀងពិត — ចុចលើបន្ទាត់ ដើម្បីលោតទៅវិនាទីនោះ",mvAiBtn:"AI ស្ដាប់ + សរសេរអត្ថបទ",mvAiBusy:"AI កំពុងស្ដាប់… {s} វិនាទី",mvAiDone:"AI សរសេរអត្ថបទរួចរាល់ ✓",mvAiFail:"AI ស្ដាប់មិនបានទេ — សឺវើរអាចមិនទាន់មានមុខងារនេះ ឬអ៊ីនធឺណិតមានបញ្ហា។ សូមព្យាយាមម្ដងទៀត",mvTrLabel:"បកប្រែអត្ថបទទៅ (បើចង់)",mvTrNone:"អត់បកប្រែ",mvTrBusy:"កំពុងបកប្រែអត្ថបទ…",mvTrFail:"បកប្រែមិនបាន — បង្ហាញអត្ថបទដើមវិញ",mvStart:"ចាប់ផ្ដើម MV",mvNoSong:"រកបទចម្រៀងមិនឃើញទេ",mvProgListen:"AI កំពុងស្ដាប់ + សរសេរអត្ថបទ…",mvExpBtn:"ទាញយកជាវីដេអូ",mvExpStop:"បញ្ឈប់",mvExpRec:"កំពុងថត MV… {p}% · {t}",mvExpDone:"ថតរួចរាល់ ✓",mvExpDl:"ទាញយកវីដេអូ",mvExpFail:"នាំចេញមិនបានទេ — ប្រោវស័រនេះមិនគាំទ្រ ឬសំឡេងបទមិនអាចថតបាន",mvExpFast:"កំពុងបង្កើតវីដេអូ… {p}% · {t}",mvExpListen:"កំពុងស្ដាប់បទ + ចាប់ពេលគេច្រៀង…",mvExpSlow:"នាំចេញលឿនយឺតពេកលើទូរស័ព្ទនេះ — កំពុងថតតាមពេលពិតវិញ (ចប់តាមរយៈពេលបទ)…",mvExpQTitle:"គុណភាពវីដេអូ",mvExpQFps:"អត្រាហ្វ្រេម",mvExpQRes:"កម្រិតភាពច្បាស់",mvExpQFast:"លឿនបំផុត",mvExpQBal:"លឿន · សមតុល្យ",mvExpQBest:"ច្បាស់បំផុត",mvExpQStart:"ចាប់ផ្ដើមនាំចេញ",mvExpQNote:"តូច = លឿន · ធំ = ច្បាស់ តែយូរ",mvSeekAria:"រំកិល",mvOptionsAria:"ជម្រើស MV",mvContinue:"… បន្ត",mvLyrOffLbl:"🎵 ពេលអត្ថបទ",mvLyrOffMinus:"បង្ហាញអត្ថបទយឺតជាង (អត្ថបទលឿនពេក)",mvLyrOffPlus:"បង្ហាញអត្ថបទលឿនជាង (អត្ថបទយឺតពេក)",mvLyrOffReset:"ចុចដើម្បីកំណត់ឡើងវិញ · 0.0s",mvAutoBtn:"✂️ Automatic · កាត់អត្ថបទស្វ័យប្រវត្តិ",mvAutoBusy:"កំពុងកាត់អត្ថបទ…",mvAutoDone:"កាត់រួច ✓ {m}/{n} បន្ទាត់ត្រូវនឹងសំលេង",mvScanBtn:"🔍 Auto Scan · ស្កេនពេលច្រៀង",mvScanBusy:"កំពុងស្កេនបទ…",mvScanDone:"ស្កេនរួច ✓ {m}/{n} បន្ទាត់ត្រូវនឹងសំលេង",mvAutoNoLyrics:"មិនទាន់មានអត្ថបទចម្រៀងទេ — សូមបិទភ្ជាប់អត្ថបទជាមុនសិន",mvAutoNoWhisper:"AI ស្ដាប់មិនបានទេ — សូមព្យាយាមម្ដងទៀត",mvAutoPartial:"បន្ទាត់ខ្លះមិនទាន់ត្រូវ — អូស ឬកែពេលវាដោយខ្លួនឯង",mvSingStart:"🎤 ច្រៀងចាប់ផ្តើមនៅ {t}",mvSingStartEst:"🎤 ច្រៀងចាប់ផ្តើមនៅប្រហែល {t}",mvLineStartLbl:"ចាប់ផ្តើម",mvLineUnaligned:"បន្ទាត់នេះមិនទាន់ត្រូវនឹងសំលេង — អូស ឬកែពេលវា",histDownload:"ទាញយក",histShare:"ចែករំលែក",more:"… បន្ត",playFailed:"បទនេះចាក់មិនបាន — សូមចុចម្ដងទៀត",histPlay:"ចាក់",navVideoSub:"វីដេអូ",mvPageTitle:"MV · វីដេអូ",mvPickSong:"ជ្រើសបទចម្រៀងរបស់អ្នក",mvNoSongs:"មិនទាន់មានបទចម្រៀងទេ — សូមបង្កើតបទជាមុនសិន",mvNeedLogin:"សូមចូលគណនេយ្យជាមុនសិន · Please sign in first",mvPasteUrl:"ឬបិទភ្ជាប់ URL បទចម្រៀង",mvPasteUrlPh:"https://…/song.mp3",mvPasteTitlePh:"ឈ្មោះបទ (បើចង់)",mvUseSong:"ធ្វើ MV បទនេះ",mvOut:"MV អស់ហើយ",mvOutMsg:"អ្នកបានប្រើ MV ឥតគិតថ្លៃ 2 ដងអស់ហើយ និងមិនមាន MV allowance ទៀតទេ — សូមទិញ package បទចម្រៀងដើម្បីបន្ត",mvLocked:"Music Video ត្រូវបានបិទដោយ Admin · Music Video is disabled by the Admin",mvLeft:"MV នៅសល់",mvBack:"← ត្រឡប់",mvLoading:"កំពុងផ្ទុក…",mvLoadFail:"ផ្ទុកបទមិនបានទេ — សូមព្យាយាមម្ដងទៀត"},en:{mvBtn:"MV",mvFormat:"Screen format",mvFmtPortrait:"Portrait",mvFmtLandscape:"Landscape",mvFmtSquare:"Square",mvFmtWide:"Ultra-wide",mvBg:"Background",mvBgAuto:"Auto",mvBgUpload:"Upload video / image",mvBgAutoNote:"Auto — uses the song cover, or a generated MovAi backdrop",mvLyricsLbl:"Lyrics",mvLyricsHave:"Lyrics found — they will run karaoke-style with the singing",mvLyricsNone:"This song has no lyrics yet — paste the lyrics below",mvLyricsPastePh:"Paste the song lyrics here… (one line per lyric line)",mvLyrSaveBtn:"💾 Save lyrics",mvLyrSaved:"Lyrics saved ✓",mvLyrSaving:"Saving lyrics…",mvLyrSaveFail:"Could not save lyrics — please try again",mvLyrEditBtn:"✏️ Edit lyrics",mvTitleShow:"Show title",mvTitleHide:"Hide title",mvTrTitle:"🎧 Transcript · lyrics by sung time",mvTrHint:"Every line carries the exact second it is sung — tap a line to jump to that second",mvAiBtn:"AI listen + write lyrics",mvAiBusy:"AI is listening… {s}s",mvAiDone:"AI wrote the lyrics ✓",mvAiFail:"AI could not listen — the server may not have this feature yet, or the connection failed. Please try again",mvTrLabel:"Translate lyrics to (optional)",mvTrNone:"No translation",mvTrBusy:"Translating lyrics…",mvTrFail:"Translation failed — showing the original lyrics",mvStart:"Start MV",mvNoSong:"Song not found",mvProgListen:"AI is listening + writing lyrics…",mvExpBtn:"Export Video",mvExpStop:"Stop",mvExpRec:"Recording MV… {p}% · {t}",mvExpDone:"Recording done ✓",mvExpDl:"Download Video",mvExpFail:"Export failed — this browser does not support recording, or the song audio cannot be captured",mvExpFast:"Building video… {p}% · {t}",mvExpListen:"Listening + catching the singing…",mvExpSlow:"Fast export is too slow on this phone — recording in real-time instead (finishes in the song length)…",mvExpQTitle:"Video quality",mvExpQFps:"Frame rate",mvExpQRes:"Resolution",mvExpQFast:"Fastest",mvExpQBal:"Fast · balanced",mvExpQBest:"Best quality",mvExpQStart:"Start Export",mvExpQNote:"Smaller = faster · bigger = sharper but slower",mvSeekAria:"Seek",mvOptionsAria:"MV options",mvContinue:"… Continue",mvLyrOffLbl:"🎵 Lyric timing",mvLyrOffMinus:"Show lyrics later (lyrics run ahead)",mvLyrOffPlus:"Show lyrics earlier (lyrics lag behind)",mvLyrOffReset:"Tap to reset · 0.0s",mvAutoBtn:"✂️ Automatic · Auto-cut lyrics",mvAutoBusy:"Cutting lyrics…",mvAutoDone:"Done ✓ {m}/{n} lines matched the singing",mvScanBtn:"🔍 Auto Scan · Scan singing times",mvScanBusy:"Scanning the song…",mvScanDone:"Scan done ✓ {m}/{n} lines matched the singing",mvAutoNoLyrics:"No lyrics yet — please paste the lyrics first",mvAutoNoWhisper:"AI could not listen — please try again",mvAutoPartial:"Some lines did not match — drag or edit their times",mvSingStart:"🎤 Singing starts at {t}",mvSingStartEst:"🎤 Singing starts at approx {t}",mvLineStartLbl:"Start",mvLineUnaligned:"This line is not matched yet — drag or edit its time",histDownload:"Download",histShare:"Share",more:"more",playFailed:"This song cannot play — please tap again",histPlay:"Play",navVideoSub:"Video",mvPageTitle:"MV · Music Video",mvPickSong:"Pick one of your songs",mvNoSongs:"No songs yet — please create a song first",mvNeedLogin:"Please sign in first",mvPasteUrl:"Or paste a song URL",mvPasteUrlPh:"https://…/song.mp3",mvPasteTitlePh:"Song title (optional)",mvUseSong:"Make MV for this song",mvOut:"No MVs left",mvOutMsg:"You have used your 2 free MV plays and have no MV allowance left — please buy a song package to continue",mvLocked:"Music Video is disabled by the Admin",mvLeft:"MVs left",mvBack:"← Back",mvLoading:"Loading…",mvLoadFail:"Could not load your songs — please try again"}};
+var I18N={km:{mvBtn:"MV",mvFormat:"ទម្រង់អេក្រង់",mvFmtPortrait:"បញ្ឈរ",mvFmtLandscape:"ផ្ដេក",mvFmtSquare:"ការ៉េ",mvFmtWide:"ធំទូលាយ",mvBg:"ផ្ទៃខាងក្រោយ",mvBgAuto:"អូតូ",mvBgUpload:"អាប់ឡូតវីដេអូ / រូបភាព",mvBgAutoNote:"អូតូ — ប្រើរូបគម្របរបស់បទ ឬផ្ទៃ MovAi ដែលបង្កើតឲ្យ",mvLyricsLbl:"អត្ថបទចម្រៀង",mvLyricsHave:"មានអត្ថបទរួច — អក្សរនឹងរត់តាមពេលច្រៀង",mvLyricsNone:"បទនេះមិនទាន់មានអត្ថបទទេ — បិទភ្ជាប់អត្ថបទខាងក្រោម",mvLyricsPastePh:"បិទភ្ជាប់អត្ថបទចម្រៀងនៅទីនេះ… (មួយបន្ទាត់ មួយឃ្លា)",mvLyrSaveBtn:"💾 រក្សាទុកអត្ថបទ",mvLyrSaved:"រក្សាទុកអត្ថបទរួចរាល់ ✓",mvLyrSaving:"កំពុងរក្សាទុកអត្ថបទ…",mvLyrSaveFail:"រក្សាទុកអត្ថបទមិនបាន — សូមព្យាយាមម្ដងទៀត",mvLyrEditBtn:"✏️ កែអត្ថបទ",mvTitleShow:"បង្ហាញចំណងជើង",mvTitleHide:"លាក់ចំណងជើង",mvTrTitle:"🎧 អត្ថបទតាមពេលច្រៀង",mvTrHint:"បន្ទាត់នីមួយៗមានវិនាទីដែលគេច្រៀងពិត — ចុចលើបន្ទាត់ ដើម្បីលោតទៅវិនាទីនោះ",mvAiBtn:"AI ស្ដាប់ + សរសេរអត្ថបទ",mvAiBusy:"AI កំពុងស្ដាប់… {s} វិនាទី",mvAiDone:"AI សរសេរអត្ថបទរួចរាល់ ✓",mvAiFail:"AI ស្ដាប់មិនបានទេ — សឺវើរអាចមិនទាន់មានមុខងារនេះ ឬអ៊ីនធឺណិតមានបញ្ហា។ សូមព្យាយាមម្ដងទៀត",mvTrLabel:"បកប្រែអត្ថបទទៅ (បើចង់)",mvTrNone:"អត់បកប្រែ",mvTrBusy:"កំពុងបកប្រែអត្ថបទ…",mvTrFail:"បកប្រែមិនបាន — បង្ហាញអត្ថបទដើមវិញ",mvStart:"ចាប់ផ្ដើម MV",mvNoSong:"រកបទចម្រៀងមិនឃើញទេ",mvProgListen:"AI កំពុងស្ដាប់ + សរសេរអត្ថបទ…",mvExpBtn:"ទាញយកជាវីដេអូ",mvExpStop:"បញ្ឈប់",mvExpRec:"កំពុងថត MV… {p}% · {t}",mvExpDone:"ថតរួចរាល់ ✓",mvExpDl:"ទាញយកវីដេអូ",mvExpFail:"នាំចេញមិនបានទេ — ប្រោវស័រនេះមិនគាំទ្រ ឬសំឡេងបទមិនអាចថតបាន",mvExpFast:"កំពុងបង្កើតវីដេអូ… {p}% · {t}",mvExpListen:"កំពុងស្ដាប់បទ + ចាប់ពេលគេច្រៀង…",mvExpSlow:"នាំចេញលឿនយឺតពេកលើទូរស័ព្ទនេះ — កំពុងថតតាមពេលពិតវិញ (ចប់តាមរយៈពេលបទ)…",mvExpQTitle:"គុណភាពវីដេអូ",mvExpQFps:"អត្រាហ្វ្រេម",mvExpQRes:"កម្រិតភាពច្បាស់",mvExpQFast:"លឿនបំផុត",mvExpQBal:"លឿន · សមតុល្យ",mvExpQBest:"ច្បាស់បំផុត",mvExpQStart:"ចាប់ផ្ដើមនាំចេញ",mvExpQNote:"តូច = លឿន · ធំ = ច្បាស់ តែយូរ",mvSeekAria:"រំកិល",mvOptionsAria:"ជម្រើស MV",mvContinue:"… បន្ត",mvLyrOffLbl:"🎵 ពេលអត្ថបទ",mvLyrOffMinus:"បង្ហាញអត្ថបទយឺតជាង (អត្ថបទលឿនពេក)",mvLyrOffPlus:"បង្ហាញអត្ថបទលឿនជាង (អត្ថបទយឺតពេក)",mvLyrOffReset:"ចុចដើម្បីកំណត់ឡើងវិញ · 0.0s",mvAutoBtn:"✂️ Automatic · កាត់អត្ថបទស្វ័យប្រវត្តិ",mvAutoBusy:"កំពុងកាត់អត្ថបទ…",mvAutoDone:"កាត់រួច ✓ {m}/{n} បន្ទាត់ត្រូវនឹងសំលេង",mvScanBtn:"🔍 Auto Scan · ស្កេនពេលច្រៀង",mvScanBusy:"កំពុងស្កេនបទ…",mvScanDone:"ស្កេនរួច ✓ {m}/{n} បន្ទាត់ត្រូវនឹងសំលេង",mvScanSplit:"កំពុងញែកសំឡេងច្រៀង…",mvScanListen:"កំពុងស្តាប់សំឡេងច្រៀង…",mvScanSplitLimit:"ថ្ងៃនេះអ្នកបានបំបែក 2 ដងហើយ — សូមរង់ចាំថ្ងៃស្អែក",mvScanSplitFail:"បំបែកសំឡេងមិនបានទេ — សូមព្យាយាមម្ដងទៀត",mvScanNoVocals:"រកសំឡេងច្រៀងមិនឃើញទេ — សូមព្យាយាមម្ដងទៀត",mvScanNeedCredits:"Credit មិនគ្រប់ទេ — បំបែកម្ដងទៀតត្រូវការ 2 Song Credits",mvAutoNoLyrics:"មិនទាន់មានអត្ថបទចម្រៀងទេ — សូមបិទភ្ជាប់អត្ថបទជាមុនសិន",mvAutoNoWhisper:"AI ស្ដាប់មិនបានទេ — សូមព្យាយាមម្ដងទៀត",mvAutoPartial:"បន្ទាត់ខ្លះមិនទាន់ត្រូវ — អូស ឬកែពេលវាដោយខ្លួនឯង",mvSingStart:"🎤 ច្រៀងចាប់ផ្តើមនៅ {t}",mvSingStartEst:"🎤 ច្រៀងចាប់ផ្តើមនៅប្រហែល {t}",mvLineStartLbl:"ចាប់ផ្តើម",mvLineUnaligned:"បន្ទាត់នេះមិនទាន់ត្រូវនឹងសំលេង — អូស ឬកែពេលវា",histDownload:"ទាញយក",histShare:"ចែករំលែក",more:"… បន្ត",playFailed:"បទនេះចាក់មិនបាន — សូមចុចម្ដងទៀត",histPlay:"ចាក់",navVideoSub:"វីដេអូ",mvPageTitle:"MV · វីដេអូ",mvPickSong:"ជ្រើសបទចម្រៀងរបស់អ្នក",mvNoSongs:"មិនទាន់មានបទចម្រៀងទេ — សូមបង្កើតបទជាមុនសិន",mvNeedLogin:"សូមចូលគណនេយ្យជាមុនសិន · Please sign in first",mvPasteUrl:"ឬបិទភ្ជាប់ URL បទចម្រៀង",mvPasteUrlPh:"https://…/song.mp3",mvPasteTitlePh:"ឈ្មោះបទ (បើចង់)",mvUseSong:"ធ្វើ MV បទនេះ",mvOut:"MV អស់ហើយ",mvOutMsg:"អ្នកបានប្រើ MV ឥតគិតថ្លៃ 2 ដងអស់ហើយ និងមិនមាន MV allowance ទៀតទេ — សូមទិញ package បទចម្រៀងដើម្បីបន្ត",mvLocked:"Music Video ត្រូវបានបិទដោយ Admin · Music Video is disabled by the Admin",mvLeft:"MV នៅសល់",mvBack:"← ត្រឡប់",mvLoading:"កំពុងផ្ទុក…",mvLoadFail:"ផ្ទុកបទមិនបានទេ — សូមព្យាយាមម្ដងទៀត"},en:{mvBtn:"MV",mvFormat:"Screen format",mvFmtPortrait:"Portrait",mvFmtLandscape:"Landscape",mvFmtSquare:"Square",mvFmtWide:"Ultra-wide",mvBg:"Background",mvBgAuto:"Auto",mvBgUpload:"Upload video / image",mvBgAutoNote:"Auto — uses the song cover, or a generated MovAi backdrop",mvLyricsLbl:"Lyrics",mvLyricsHave:"Lyrics found — they will run karaoke-style with the singing",mvLyricsNone:"This song has no lyrics yet — paste the lyrics below",mvLyricsPastePh:"Paste the song lyrics here… (one line per lyric line)",mvLyrSaveBtn:"💾 Save lyrics",mvLyrSaved:"Lyrics saved ✓",mvLyrSaving:"Saving lyrics…",mvLyrSaveFail:"Could not save lyrics — please try again",mvLyrEditBtn:"✏️ Edit lyrics",mvTitleShow:"Show title",mvTitleHide:"Hide title",mvTrTitle:"🎧 Transcript · lyrics by sung time",mvTrHint:"Every line carries the exact second it is sung — tap a line to jump to that second",mvAiBtn:"AI listen + write lyrics",mvAiBusy:"AI is listening… {s}s",mvAiDone:"AI wrote the lyrics ✓",mvAiFail:"AI could not listen — the server may not have this feature yet, or the connection failed. Please try again",mvTrLabel:"Translate lyrics to (optional)",mvTrNone:"No translation",mvTrBusy:"Translating lyrics…",mvTrFail:"Translation failed — showing the original lyrics",mvStart:"Start MV",mvNoSong:"Song not found",mvProgListen:"AI is listening + writing lyrics…",mvExpBtn:"Export Video",mvExpStop:"Stop",mvExpRec:"Recording MV… {p}% · {t}",mvExpDone:"Recording done ✓",mvExpDl:"Download Video",mvExpFail:"Export failed — this browser does not support recording, or the song audio cannot be captured",mvExpFast:"Building video… {p}% · {t}",mvExpListen:"Listening + catching the singing…",mvExpSlow:"Fast export is too slow on this phone — recording in real-time instead (finishes in the song length)…",mvExpQTitle:"Video quality",mvExpQFps:"Frame rate",mvExpQRes:"Resolution",mvExpQFast:"Fastest",mvExpQBal:"Fast · balanced",mvExpQBest:"Best quality",mvExpQStart:"Start Export",mvExpQNote:"Smaller = faster · bigger = sharper but slower",mvSeekAria:"Seek",mvOptionsAria:"MV options",mvContinue:"… Continue",mvLyrOffLbl:"🎵 Lyric timing",mvLyrOffMinus:"Show lyrics later (lyrics run ahead)",mvLyrOffPlus:"Show lyrics earlier (lyrics lag behind)",mvLyrOffReset:"Tap to reset · 0.0s",mvAutoBtn:"✂️ Automatic · Auto-cut lyrics",mvAutoBusy:"Cutting lyrics…",mvAutoDone:"Done ✓ {m}/{n} lines matched the singing",mvScanBtn:"🔍 Auto Scan · Scan singing times",mvScanBusy:"Scanning the song…",mvScanDone:"Scan done ✓ {m}/{n} lines matched the singing",mvScanSplit:"Separating the vocals…",mvScanListen:"Listening to the vocals…",mvScanSplitLimit:"You have used your 2 splits for today — please come back tomorrow",mvScanSplitFail:"Could not separate the vocals — please try again",mvScanNoVocals:"No vocals track found — please try again",mvScanNeedCredits:"Not enough credits — the next split costs 2 Song Credits",mvAutoNoLyrics:"No lyrics yet — please paste the lyrics first",mvAutoNoWhisper:"AI could not listen — please try again",mvAutoPartial:"Some lines did not match — drag or edit their times",mvSingStart:"🎤 Singing starts at {t}",mvSingStartEst:"🎤 Singing starts at approx {t}",mvLineStartLbl:"Start",mvLineUnaligned:"This line is not matched yet — drag or edit its time",histDownload:"Download",histShare:"Share",more:"more",playFailed:"This song cannot play — please tap again",histPlay:"Play",navVideoSub:"Video",mvPageTitle:"MV · Music Video",mvPickSong:"Pick one of your songs",mvNoSongs:"No songs yet — please create a song first",mvNeedLogin:"Please sign in first",mvPasteUrl:"Or paste a song URL",mvPasteUrlPh:"https://…/song.mp3",mvPasteTitlePh:"Song title (optional)",mvUseSong:"Make MV for this song",mvOut:"No MVs left",mvOutMsg:"You have used your 2 free MV plays and have no MV allowance left — please buy a song package to continue",mvLocked:"Music Video is disabled by the Admin",mvLeft:"MVs left",mvBack:"← Back",mvLoading:"Loading…",mvLoadFail:"Could not load your songs — please try again"}};
 
 /* ================= MV maker — ported from the old website =================
    API_BASE is the NEW proxy (wasr). GEN_API is defined as API_BASE+"/api"
@@ -733,12 +733,32 @@ function mvLineOverridesSave(list){try{var k=mvLineOverridesKey();if(!k)return;l
 function mvLineOverrideSet(i,start,end){var lines=mvState.lines;if(!lines||!lines[i])return;var list=mvLineOverridesLoad()||[];var out=lines.map(function(L,idx){var o=list[idx];if(idx===i)return{text:L.text,start:start,end:end};if(o&&o.text===L.text&&typeof o.start==="number")return{text:L.text,start:o.start,end:o.end};return null});mvLineOverridesSave(out)}
 function mvLineOverridesApply(lines){var list=mvLineOverridesLoad();if(!list||!lines)return false;var applied=false;for(var i=0;i<lines.length&&i<list.length;i++){var o=list[i];if(!o||o.text!==lines[i].text||typeof o.start!=="number")continue;var L=lines[i];var oldS=typeof L._s==="number"?L._s:typeof L.start==="number"?L.start:null;var delta=oldS===null?0:o.start-oldS;L.start=o.start;L.end=typeof o.end==="number"&&o.end>o.start?o.end:o.start+2;if(L.words&&delta){for(var wi=0;wi<L.words.length;wi++){L.words[wi].start+=delta;if(typeof L.words[wi].end==="number")L.words[wi].end+=delta}}applied=true}return applied}
 function mvAutoCut(){var song=mvState.song;if(!song||!song.url){mvAutoStatus(tx("mvNoSong"),"err");return}var btns=document.querySelectorAll(".mv-auto-btn");for(var bi=0;bi<btns.length;bi++)btns[bi].disabled=true;var done=function(msg,cls){for(var bj=0;bj<btns.length;bj++)btns[bj].disabled=false;if(msg)mvAutoStatus(msg,cls)};var text=String(song.lyrics||"").replace(/^\s+|\s+$/g,"");if(!text){var ta=document.getElementById("mvLyrPaste");if(ta){text=String(ta.value||"").replace(/^\s+|\s+$/g,"");if(text)song.lyrics=text}}if(!text){done(tx("mvAutoNoLyrics"),"err");return}mvAutoStatus(tx("mvAutoBusy"),"");var timed=null;var cached=mvCache[song.url];if(cached&&cached.kind==="timed"&&cached.lines&&cached.lines.length)timed=cached.lines;var go=function(){if(!timed||!timed.length){done(tx("mvAutoNoWhisper"),"err");return}var lines=mvTextLines(text).map(function(t){return{text:t,start:null,end:null,tr:""}});if(!lines.length){done(tx("mvAutoNoLyrics"),"err");return}var res=mvAutoAlignLines(lines,timed);if(typeof res.singStart==="number")mvSingStartSet(res.singStart,false);try{delete mvCache[song.url]}catch(e){}mvCache[song.url]={kind:"timed",lines:lines};mvApplyLines(lines,true);var msg=tx("mvAutoDone").replace("{m}",String(res.matched)).replace("{n}",String(res.total));if(res.matched<res.total)msg+=" · "+tx("mvAutoPartial");done(msg,res.matched===res.total?"ok":"");mvAutoCutUI();mvSingStartUI()};if(timed){go();return}fetch(API_BASE+"/api/mv/lyrics",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({audioUrl:song.url,language:mvDetectLang(text)||mvSongLang(song)||undefined})}).then(function(r){return r.json().catch(function(){return null})}).then(function(j){if(!j||!j.ok){done(tx("mvAutoNoWhisper"),"err");return}timed=mvNormLines(j);if(!timed||!timed.length){done(tx("mvAutoNoWhisper"),"err");return}try{delete mvCache[song.url]}catch(e){}mvCache[song.url]={kind:"timed",lines:timed};go()}).catch(function(){done(tx("mvAutoNoWhisper"),"err")})}
-/* ---- MV Auto Scan (2026-11-25): server-side scan helper. The server
-   (POST /api/mv/auto-scan) runs Groq Whisper + the ported matcher and
-   returns the EXACT original lyric lines with real Whisper times
-   attached. Unmatched lines come back with start/end null — NEVER a
+/* ---- MV Auto Scan, vocals-first (2026-11-25): Whisper cannot hear
+   the vocals clearly in the full music mix (live test: 0 matched on
+   real Khmer songs), so Auto Scan first separates the vocals with the
+   existing 2-stem split (POST /api/studio/separate), then lets
+   Whisper listen to the VOCALS-ONLY stem (transcribeUrl). The vocals
+   stem is TIMING ONLY — it NEVER becomes the song's audio: it is sent
+   only as transcribeUrl in the auto-scan request body, never assigned
+   to any audio/video src, never used in export, never saved as the
+   song URL. The MV player, export and download always use the
+   ORIGINAL song URL. Unmatched lines get start/end null — NEVER a
    guessed time — and render amber + ⚠ so Manual Sync can fix them.
    The beat-synced karaoke display (mvKarPaint) is NOT touched. */
+function mvScanVocalsUrl(stems){
+  if(!Array.isArray(stems))return "";
+  for(var i=0;i<stems.length;i++){
+    var st=stems[i]||{};
+    if(String(st.name||"").toLowerCase()==="vocals"&&typeof st.url==="string"&&st.url)return st.url;
+  }
+  return "";
+}
+function mvScanSplitErr(j){
+  var c=(j&&(j.code||j.error))||"";
+  if(c==="split_daily_limit")return tx("mvScanSplitLimit");
+  if(c==="split_need_credits")return tx("mvScanNeedCredits");
+  return tx("mvScanSplitFail");
+}
 function mvAutoScan(){
   var song=mvState.song;
   if(!song||!song.url){mvAutoStatus(tx("mvNoSong"),"err");return}
@@ -748,56 +768,99 @@ function mvAutoScan(){
   var text=String(song.lyrics||"").replace(/^\s+|\s+$/g,"");
   if(!text){var ta=document.getElementById("mvLyrPaste");if(ta){text=String(ta.value||"").replace(/^\s+|\s+$/g,"");if(text)song.lyrics=text}}
   if(!text){done(tx("mvAutoNoLyrics"),"err");return}
-  mvAutoStatus(tx("mvScanBusy"),"");
   var email="";
   try{email=genUserEmail()||""}catch(e){email=""}
-  fetch(API_BASE+"/api/mv/auto-scan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,url:song.url,lyrics:text,language:mvDetectLang(text)||mvSongLang(song)||undefined})}).then(function(r){return r.json().catch(function(){return null})}).then(function(j){
-    if(!j||!j.ok){
-      if(j&&j.error==="no_lyrics"){done(tx("mvAutoNoLyrics"),"err");return}
-      done(tx("mvAutoNoWhisper"),"err");return
-    }
-    var arr=Array.isArray(j.lines)?j.lines:null;
-    if(!arr||!arr.length){done(tx("mvAutoNoWhisper"),"err");return}
-    var lines=arr.map(function(L){
-      var o={text:String(L.text||""),start:null,end:null,tr:""};
-      if(L.matched&&typeof L.start==="number"){
-        o.start=L.start;
-        o.end=(typeof L.end==="number"&&L.end>L.start)?L.end:L.start+2;
-        o.aligned=true;o.unaligned=false;
-        if(Array.isArray(L.words)&&L.words.length)o.words=L.words;
-      }else{
-        o.unaligned=true;o.aligned=false;
+  if(!email){done(tx("mvNeedLogin"),"err");return}
+  var lang=mvDetectLang(text)||mvSongLang(song)||undefined;
+  /* Step 3 (defined first — function declarations hoist): Whisper
+     listens to the VOCALS-ONLY stem. The original song URL is sent
+     as `url` and is the key the result is stored under. The vocals
+     URL appears ONLY here, in this request body. */
+  function scanVocals(vocalsUrl){
+    mvAutoStatus(tx("mvScanListen"),"");
+    fetch(API_BASE+"/api/mv/auto-scan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,url:song.url,transcribeUrl:vocalsUrl,lyrics:text,language:lang})}).then(function(r){return r.json().catch(function(){return null})}).then(function(j){
+      if(!j||!j.ok){
+        if(j&&j.error==="no_lyrics"){done(tx("mvAutoNoLyrics"),"err");return}
+        done(tx("mvAutoNoWhisper"),"err");return
       }
-      return o;
-    });
-    var matched=0;for(var i=0;i<lines.length;i++)if(lines[i].aligned)matched++;
-    if(typeof j.singingStart==="number")mvSingStartSet(j.singingStart,false);
-    try{delete mvCache[song.url]}catch(e){}
-    mvCache[song.url]={kind:"timed",lines:lines};
-    mvApplyLines(lines,true);
-    /* Save the times to the existing per-line override store (same
-       place Manual Sync writes) so they survive reloads. Unmatched
-       lines store null — no invented time. */
-    try{
-      var ovList=lines.map(function(L){
-        return (typeof L.start==="number")?{text:L.text,start:L.start,end:L.end}:null;
+      var arr=Array.isArray(j.lines)?j.lines:null;
+      if(!arr||!arr.length){done(tx("mvAutoNoWhisper"),"err");return}
+      var lines=arr.map(function(L){
+        var o={text:String(L.text||""),start:null,end:null,tr:""};
+        if(L.matched&&typeof L.start==="number"){
+          o.start=L.start;
+          o.end=(typeof L.end==="number"&&L.end>L.start)?L.end:L.start+2;
+          o.aligned=true;o.unaligned=false;
+          if(Array.isArray(L.words)&&L.words.length)o.words=L.words;
+        }else{
+          o.unaligned=true;o.aligned=false;
+        }
+        return o;
       });
-      mvLineOverridesSave(ovList);
-    }catch(e){}
-    /* Store the scan on the history item via the existing save path
-       (mvSaveLyricsToSong posts the item through POST
-       /api/public/history, which merges by id/url). */
-    try{
-      if(mvState.hist&&typeof mvState.hist==="object"){
-        mvState.hist.autoScan={lines:j.lines,singingStart:j.singingStart,scannedAt:new Date().toISOString(),language:j.language||""};
-        mvSaveLyricsToSong();
+      var matched=0;for(var i=0;i<lines.length;i++)if(lines[i].aligned)matched++;
+      if(typeof j.singingStart==="number")mvSingStartSet(j.singingStart,false);
+      try{delete mvCache[song.url]}catch(e){}
+      mvCache[song.url]={kind:"timed",lines:lines};
+      mvApplyLines(lines,true);
+      /* Save the times to the existing per-line override store (same
+         place Manual Sync writes) so they survive reloads. Unmatched
+         lines store null — no invented time. */
+      try{
+        var ovList=lines.map(function(L){
+          return (typeof L.start==="number")?{text:L.text,start:L.start,end:L.end}:null;
+        });
+        mvLineOverridesSave(ovList);
+      }catch(e){}
+      /* Store the scan on the history item via the existing save path
+         (mvSaveLyricsToSong posts the item through POST
+         /api/public/history, which merges by id/url). */
+      try{
+        if(mvState.hist&&typeof mvState.hist==="object"){
+          mvState.hist.autoScan={lines:j.lines,singingStart:j.singingStart,scannedAt:new Date().toISOString(),language:j.language||""};
+          mvSaveLyricsToSong();
+        }
+      }catch(e){}
+      var msg=tx("mvScanDone").replace("{m}",String(matched)).replace("{n}",String(lines.length));
+      if(matched<lines.length)msg+=" · "+tx("mvAutoPartial");
+      done(msg,matched===lines.length?"ok":"");
+      mvAutoCutUI();mvSingStartUI();
+    }).catch(function(){done(tx("mvAutoNoWhisper"),"err")});
+  }
+  /* Step 2: poll the split status (same pattern as My Songs) until
+     the vocals stem URL is ready. Max 60 tries x 10s (~10 min). */
+  var pollN=0;
+  function pollSplit(provider,jobId){
+    if(pollN++>=60){done(tx("mvScanSplitFail"),"err");return}
+    var u=API_BASE+"/api/studio/separate/status?provider="+encodeURIComponent(provider)+"&jobId="+encodeURIComponent(jobId)+"&email="+encodeURIComponent(email);
+    fetch(u,{cache:"no-store"}).then(function(r){return r.json().catch(function(){return null})}).then(function(j){
+      if(j&&j.ok===true&&j.done===true&&Array.isArray(j.stems)&&j.stems.length){
+        var v=mvScanVocalsUrl(j.stems);
+        if(!v){done(tx("mvScanNoVocals"),"err");return}
+        scanVocals(v);
+      }else if(j&&j.ok===false){
+        done(mvScanSplitErr(j),"err");return;
+      }else{
+        setTimeout(function(){pollSplit(provider,jobId)},10000);
       }
-    }catch(e){}
-    var msg=tx("mvScanDone").replace("{m}",String(matched)).replace("{n}",String(lines.length));
-    if(matched<lines.length)msg+=" · "+tx("mvAutoPartial");
-    done(msg,matched===lines.length?"ok":"");
-    mvAutoCutUI();mvSingStartUI();
-  }).catch(function(){done(tx("mvAutoNoWhisper"),"err")});
+    }).catch(function(){setTimeout(function(){pollSplit(provider,jobId)},10000)});
+  }
+  /* Step 1: separate the vocals (2-stem split, existing endpoint —
+     daily limit + provider rotation apply automatically, one split
+     per Auto Scan). */
+  mvAutoStatus(tx("mvScanSplit"),"");
+  fetch(API_BASE+"/api/studio/separate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,audioUrl:song.url,songTitle:song.title||"",stems:2})}).then(function(r){return r.json().catch(function(){return null})}).then(function(j){
+    if(j&&j.ok===true&&Array.isArray(j.stems)&&j.stems.length){
+      var v=mvScanVocalsUrl(j.stems);
+      if(!v){done(tx("mvScanNoVocals"),"err");return}
+      scanVocals(v);
+    }else if(j&&j.ok===false&&j.error==="split_timeout"&&j.provider&&j.jobId){
+      pollSplit(j.provider,j.jobId);
+    }else if(j&&j.ok===false){
+      done(mvScanSplitErr(j),"err");return;
+    }else{
+      done(tx("mvScanSplitFail"),"err");return;
+    }
+  }).catch(function(){done(tx("mvScanSplitFail"),"err")});
 }
 /* Attach a stored autoScan (from the song's history item) to the
    resolved text lines when the player opens. Matches by EXACT text,
