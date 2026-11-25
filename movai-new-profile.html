@@ -115,6 +115,35 @@
   .primary-btn:disabled{opacity:.5}
   .msg{font-size:.9rem;color:#b91c1c;margin-top:12px;min-height:1.2em}
   .msg.ok{color:#0f766e}
+  .dev-accts{margin-top:14px}
+  .dev-accts-title{font-size:.8rem;font-weight:700;color:#6b7280;margin-bottom:6px}
+  .dev-acct-row{display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid #e5e7eb;border-radius:10px;margin-top:6px;cursor:pointer;background:#fff}
+  html[data-theme="dark"] .dev-acct-row{background:#111;border-color:#333}
+  .dev-acct-email{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.88rem}
+  .dev-acct-pro{font-size:.75rem;font-weight:800;color:#fff;background:linear-gradient(90deg,#ff2d78,#ff7a18);border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .dev-acct-upgrade{font-size:.8rem;font-weight:700;color:#ff2d78;border:1px solid #ff2d78;background:transparent;border-radius:999px;padding:4px 10px;white-space:nowrap}
+  .dev-veil{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:90;display:flex;align-items:flex-end;justify-content:center}
+  .dev-card{background:#fff;color:#111827;border-radius:18px 18px 0 0;width:100%;max-width:520px;max-height:88vh;overflow:auto;padding:18px 16px 22px}
+  html[data-theme="dark"] .dev-card{background:#171717;color:#e7f0ec}
+  .dev-card h3{margin:0 0 4px;font-size:1.05rem}
+  .dev-card .dev-sub{font-size:.88rem;color:#6b7280;margin:0 0 10px}
+  .dev-price{font-size:1.05rem;font-weight:800;color:#ff2d78;margin:6px 0 12px}
+  .dev-methods{display:flex;gap:8px;margin-bottom:12px}
+  .dev-method{flex:1;padding:11px 6px;border:1.5px solid #d1d5db;border-radius:12px;background:transparent;font-weight:700;font-size:.92rem;color:inherit}
+  .dev-method.picked{border-color:#ff2d78;background:rgba(255,45,120,.08);color:#ff2d78}
+  .dev-qrbox{text-align:center;margin-bottom:12px}
+  .dev-qrbox svg{max-width:220px;width:100%;height:auto;background:#fff;border-radius:10px}
+  .dev-amt{font-size:1rem;font-weight:800;margin:4px 0}
+  .dev-addr{font-size:.82rem;word-break:break-all;background:#f3f4f6;border-radius:8px;padding:8px;margin:6px 0}
+  html[data-theme="dark"] .dev-addr{background:#262626}
+  .dev-link{display:inline-block;margin-top:6px;font-weight:700;color:#ff2d78}
+  .dev-receipt{margin:10px 0}
+  .dev-receipt input{width:100%}
+  .dev-send{width:100%;padding:12px;border:0;border-radius:999px;font-weight:800;font-size:.95rem;color:#fff;background:linear-gradient(90deg,#ff2d78,#ff7a18);margin-top:10px}
+  .dev-back{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:999px;font-weight:700;font-size:.92rem;background:transparent;color:inherit;margin-top:8px}
+  .dev-msg{font-size:.88rem;margin-top:10px;min-height:1.2em;color:#b91c1c}
+  .dev-msg.ok{color:#0f766e}
+  .dev-copy{font-size:.82rem;font-weight:700;color:#ff2d78;background:transparent;border:0;padding:4px 8px}
   .note{font-size:.85rem;color:#6b7280;margin-top:14px}
   .link-btn{font-size:.95rem;font-weight:600;color:#1f2937;text-decoration:underline;
     padding:0}
@@ -238,6 +267,7 @@
   html[data-theme="dark"] .primary-btn:active{background:#1a1a1a}
   .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -308,7 +338,39 @@
       <div id="googleBtn" style="margin-top:10px"></div>
       <button class="primary-btn" id="googleFallbackBtn" type="button" hidden data-i18n="googleFallback">បន្តជាមួយ Google</button>
       <p class="msg" id="loginMsg" role="alert"></p>
+      <div id="devAccts" class="dev-accts"></div>
       <p class="note" data-i18n="signinNote">សូមចូលប្រើដោយ Gmail និងពាក្យសម្ងាត់នៃគណនី MovAi របស់អ្នក។</p>
+    </div>
+
+    <div class="dev-veil" id="devUpVeil" hidden role="dialog" aria-modal="true">
+      <div class="dev-card">
+        <h3 data-i18n="devUpTitle">Upgrade · បន្ថែម Gmail</h3>
+        <p class="dev-sub"><span data-i18n="devUpBody">Gmail នេះត្រូវការ Upgrade ដើម្បីចូលប្រើបាន</span><br><span id="devUpEmail"></span></p>
+        <div class="dev-price"><span data-i18n="devUpPriceLbl">1 Gmail បន្ថែម</span> = <span id="devUpPrice">$0.99</span></div>
+        <div class="dev-methods">
+          <button type="button" class="dev-method" id="devUpKhqrBtn" data-i18n="devUpKhqr">KHQR 🇰🇭</button>
+          <button type="button" class="dev-method" id="devUpUsdtBtn" data-i18n="devUpUsdt">QR USDT</button>
+        </div>
+        <div class="dev-qrbox" id="devUpKhqrBox" hidden>
+          <div class="dev-amt" id="devUpKhqrAmt"></div>
+          <div id="devUpKhqrQr"></div>
+          <a class="dev-link" id="devUpKhqrLink" href="https://pay.canadiabank.com.kh/K6EkJR30W0BM3VVK" target="_blank" rel="noopener">Canadia Bank · KHQR</a>
+        </div>
+        <div class="dev-qrbox" id="devUpUsdtBox" hidden>
+          <div class="dev-amt" id="devUpUsdtAmt"></div>
+          <div id="devUpUsdtQr"></div>
+          <div class="dev-addr"><span id="devUpUsdtAddr">TPHu2Z45PZ9xUB7AzqMehWKv72HysE9Vzd</span> <button type="button" class="dev-copy" id="devUpCopyAddr" data-i18n="devUpCopy">ចម្លង</button></div>
+          <span id="devUpCopyMsg"></span>
+        </div>
+        <div class="dev-receipt" id="devUpReceiptBox" hidden>
+          <label class="field-label" data-i18n="devUpReceiptLbl">វិក្កយបត្រ · Receipt</label>
+          <input type="file" id="devUpReceiptFile" accept="image/*">
+          <div id="devUpReceiptName" style="font-size:.82rem;color:#6b7280;margin-top:4px"></div>
+        </div>
+        <p class="dev-msg" id="devUpMsg" role="status"></p>
+        <button type="button" class="dev-send" id="devUpSendBtn" data-i18n="devUpSend">ផ្ញើទៅ Admin</button>
+        <button type="button" class="dev-back" id="devUpBackBtn" data-i18n="devUpBack">ត្រឡប់ទៅ Sign In</button>
+      </div>
     </div>
 
     <!-- Logged in -->
@@ -398,6 +460,28 @@
       orTxt: "ឬ",
       googleFallback: "បន្តជាមួយ Google",
       signinNote: "សូមចូលប្រើដោយ Gmail និងពាក្យសម្ងាត់នៃគណនី MovAi របស់អ្នក។",
+      devUpTitle: "Upgrade · បន្ថែម Gmail",
+      devUpBody: "Gmail នេះត្រូវការ Upgrade ដើម្បីចូលប្រើបាន",
+      devUpPriceLbl: "1 Gmail បន្ថែម",
+      devUpMethod: "ជ្រើសវិធីបង់ប្រាក់",
+      devUpKhqr: "KHQR 🇰🇭",
+      devUpUsdt: "QR USDT",
+      devUpReceiptLbl: "វិក្កយបត្រ · Receipt",
+      devUpSend: "ផ្ញើទៅ Admin",
+      devUpWaiting: "បានផ្ញើរួច — រង់ចាំ Admin អនុម័ត រួចចុច Sign in with Google ម្តងទៀត",
+      devUpBack: "ត្រឡប់ទៅ Sign In",
+      devUpNeedReceipt: "សូមបង្ហោះវិក្កយបត្រជាមុនសិន",
+      devUpPickMethod: "សូមជ្រើសវិធីបង់ប្រាក់ជាមុនសិន",
+      devUpUploading: "កំពុងបង្ហោះវិក្កយបត្រ…",
+      devUpReceiptFail: "បង្ហោះវិក្កយបត្រមិនបានទេ",
+      devUpSendFail: "ផ្ញើមិនបានទេ — សូមព្យាយាមម្ដងទៀត",
+      devUpReadFail: "អានរូបភាពមិនបានទេ",
+      devUpPro: "Gmail Pro",
+      devUpUpgrade: "Upgrade",
+      devUpAcctsTitle: "Gmail នៅលើឧបករណ៍នេះ",
+      devUpCopy: "ចម្លង",
+      devUpCopied: "បានចម្លងហើយ",
+      devUpQrFail: "QR មិនអាចបង្កើតបាន — សូមប្រើ Link ខាងក្រោម",
       creditsTitle: "ក្រេឌីត",
       songCredits: "ក្រេឌីតចម្រៀង",
       mediaCredits: "ក្រេឌីតមេឌៀ",
@@ -452,6 +536,28 @@
       orTxt: "or",
       googleFallback: "Continue with Google",
       signinNote: "Sign in with the Gmail and password of your MovAi account.",
+      devUpTitle: "Upgrade · Add Gmail",
+      devUpBody: "This Gmail needs an Upgrade to sign in",
+      devUpPriceLbl: "1 extra Gmail",
+      devUpMethod: "Choose how to pay",
+      devUpKhqr: "KHQR 🇰🇭",
+      devUpUsdt: "QR USDT",
+      devUpReceiptLbl: "Receipt",
+      devUpSend: "Send to Admin",
+      devUpWaiting: "Sent — waiting for Admin approval, then tap Sign in with Google again",
+      devUpBack: "Back to Sign In",
+      devUpNeedReceipt: "Please upload the receipt first",
+      devUpPickMethod: "Please choose a payment method first",
+      devUpUploading: "Uploading receipt…",
+      devUpReceiptFail: "Could not upload the receipt",
+      devUpSendFail: "Could not send — please try again",
+      devUpReadFail: "Could not read the image",
+      devUpPro: "Gmail Pro",
+      devUpUpgrade: "Upgrade",
+      devUpAcctsTitle: "Gmails on this device",
+      devUpCopy: "Copy",
+      devUpCopied: "Copied",
+      devUpQrFail: "QR could not be created — please use the link below",
       creditsTitle: "Credits",
       songCredits: "Song credits",
       mediaCredits: "Media credits",
@@ -852,7 +958,7 @@
         signInBtn.textContent = t("signInBtn");
         if (!d) { loginMsg.textContent = t("noServer"); return; }
         if (d.ok !== true || !d.user) {
-          loginMsg.textContent = d.error ? String(d.error) : t("wrongLogin");
+          if (!devHandleLimit(d, email)) { loginMsg.textContent = d.error ? String(d.error) : t("wrongLogin"); }
           return;
         }
         passwordInput.value = "";
@@ -897,7 +1003,7 @@
       .then(function(d){
         signInBtn.disabled = false;
         if (!d || d.ok !== true || !d.user) {
-          loginMsg.textContent = d && d.error ? String(d.error) : t("googleFail");
+          if (!devHandleLimit(d, email)) { loginMsg.textContent = d && d.error ? String(d.error) : t("googleFail"); }
           return;
         }
         passwordInput.value = "";
@@ -908,6 +1014,166 @@
         loginMsg.textContent = t("noServer");
       });
   }
+  /* ---- Device-limit Upgrade (new Gmail on a full device) ----
+     When sign-in is refused with code 'device_limit_reached', do NOT dump
+     the raw server error into #loginMsg (a big red dead end). Open the
+     Upgrade popup instead: $0.99 for 1 more Gmail, pay by KHQR / QR USDT,
+     receipt -> Admin approves -> slot granted -> tap Sign in again.
+     Declining keeps the Sign In path open; the Gmail is listed below the
+     Google button with "Upgrade" (+ decline count) and becomes "Gmail Pro"
+     once it is registered as a paid slot. */
+  var DEV_PAY = { khqrLink: "https://pay.canadiabank.com.kh/K6EkJR30W0BM3VVK", usdtAddress: "TPHu2Z45PZ9xUB7AzqMehWKv72HysE9Vzd" };
+  var DEV_KHQR_BASE = "00020101021129530016cadikhppxxx@cadi011300100045531070212Canadia Bank5204000053038405802KH5912YEM SOKHOEUN6010Phnom Penh";
+  var devUpEmail = "", devUpMethod = "", devUpPrice = 0.99, devUpReceiptFile = null, devUpSent = false;
+  function devQrSvg(text){ try { if (typeof qrcode !== "function") return ""; var qr = qrcode(0, "M"); qr.addData(text, "Byte"); qr.make(); return qr.createSvgTag({ cellSize: 6, margin: 8 }); } catch (e) { return ""; } }
+  function devKhqrCrc16(str){ var crc = 65535, i, b; for (i = 0; i < str.length; i++) { crc ^= str.charCodeAt(i) << 8; for (b = 0; b < 8; b++) { crc = (crc & 32768) ? ((crc << 1) ^ 4129) & 65535 : (crc << 1) & 65535; } } return crc; }
+  function devKhqrPayload(){ var p = DEV_KHQR_BASE; return p + "6304" + ("0000" + devKhqrCrc16(p + "6304").toString(16).toUpperCase()).slice(-4); }
+  function devUpMsgEl(){ return document.getElementById("devUpMsg"); }
+  function devUpMsg(text, ok){ var m = devUpMsgEl(); if (!m) return; m.textContent = text || ""; m.className = "dev-msg" + (ok ? " ok" : ""); }
+  function devDeclined(){ try { return JSON.parse(localStorage.getItem("movai-dev-declined") || "{}") || {}; } catch (e) { return {}; } }
+  function devDecline(email){
+    var k = String(email || "").toLowerCase(); if (!k) return;
+    var m = devDeclined(); m[k] = Math.floor(Number(m[k]) || 0) + 1;
+    try { localStorage.setItem("movai-dev-declined", JSON.stringify(m)); } catch (e) {}
+    devRenderAccts();
+  }
+  function devHandleLimit(d, email){
+    // True when the failure was a device-limit refusal and the Upgrade
+    // popup was opened (caller must NOT also show loginMsg). A blocked
+    // device cannot buy slots, so it keeps the plain error instead.
+    if (!d || d.code !== "device_limit_reached" || d.deviceBlocked) return false;
+    devShowUpgrade(String(email || "").toLowerCase(), d);
+    return true;
+  }
+  function devShowUpgrade(email, gate){
+    devUpEmail = String(email || "").toLowerCase();
+    devUpMethod = ""; devUpReceiptFile = null; devUpSent = false;
+    devUpPrice = (gate && typeof gate.upgradePrice === "number" && gate.upgradePrice > 0) ? gate.upgradePrice : 0.99;
+    var veil = document.getElementById("devUpVeil"); if (!veil) return;
+    var em = document.getElementById("devUpEmail"); if (em) em.textContent = devUpEmail;
+    var pr = document.getElementById("devUpPrice"); if (pr) pr.textContent = "$" + devUpPrice.toFixed(2);
+    var kb = document.getElementById("devUpKhqrBtn"); if (kb) kb.classList.remove("picked");
+    var ub = document.getElementById("devUpUsdtBtn"); if (ub) ub.classList.remove("picked");
+    var kbox = document.getElementById("devUpKhqrBox"); if (kbox) kbox.hidden = true;
+    var ubox = document.getElementById("devUpUsdtBox"); if (ubox) ubox.hidden = true;
+    var rbox = document.getElementById("devUpReceiptBox"); if (rbox) rbox.hidden = true;
+    var fi = document.getElementById("devUpReceiptFile"); if (fi) fi.value = "";
+    var rn = document.getElementById("devUpReceiptName"); if (rn) rn.textContent = "";
+    var cm = document.getElementById("devUpCopyMsg"); if (cm) cm.textContent = "";
+    devUpMsg("");
+    veil.hidden = false;
+  }
+  function devCloseUpgrade(declined){
+    var veil = document.getElementById("devUpVeil"); if (veil) veil.hidden = true;
+    if (declined && devUpEmail && !devUpSent) devDecline(devUpEmail);
+  }
+  function devPickMethod(method){
+    if (!devUpEmail) return;
+    devUpMethod = method;
+    var kb = document.getElementById("devUpKhqrBtn"); if (kb) kb.classList.toggle("picked", method === "khqr");
+    var ub = document.getElementById("devUpUsdtBtn"); if (ub) ub.classList.toggle("picked", method === "usdt");
+    var kbox = document.getElementById("devUpKhqrBox"); if (kbox) kbox.hidden = method !== "khqr";
+    var ubox = document.getElementById("devUpUsdtBox"); if (ubox) ubox.hidden = method !== "usdt";
+    var rbox = document.getElementById("devUpReceiptBox"); if (rbox) rbox.hidden = false;
+    devUpMsg("");
+    if (method === "khqr") {
+      var ka = document.getElementById("devUpKhqrAmt"); if (ka) ka.textContent = "$" + devUpPrice.toFixed(2);
+      var kq = document.getElementById("devUpKhqrQr"); if (kq) { var svg = devQrSvg(devKhqrPayload()); kq.innerHTML = svg || ""; if (!svg) { var w = document.createElement("p"); w.textContent = t("devUpQrFail") + " $" + devUpPrice.toFixed(2); kq.appendChild(w); } }
+      var kl = document.getElementById("devUpKhqrLink"); if (kl) kl.href = DEV_PAY.khqrLink;
+    } else {
+      var ua = document.getElementById("devUpUsdtAmt"); if (ua) ua.textContent = "$" + devUpPrice.toFixed(2) + " USDT";
+      var ad = document.getElementById("devUpUsdtAddr"); if (ad) ad.textContent = DEV_PAY.usdtAddress;
+      var uq = document.getElementById("devUpUsdtQr"); if (uq) { var usvg = devQrSvg(DEV_PAY.usdtAddress); uq.innerHTML = usvg || ""; if (!usvg) { var w2 = document.createElement("p"); w2.textContent = t("devUpQrFail"); uq.appendChild(w2); } }
+    }
+  }
+  function devSendReceipt(){
+    if (!devUpEmail) return;
+    if (!devUpMethod) { devUpMsg(t("devUpPickMethod")); return; }
+    if (!devUpReceiptFile) { devUpMsg(t("devUpNeedReceipt")); return; }
+    var sendBtn = document.getElementById("devUpSendBtn"); if (sendBtn) sendBtn.disabled = true;
+    devUpMsg(t("devUpUploading"));
+    var reader = new FileReader();
+    reader.onload = function(){
+      var dataUrl = String(reader.result || "");
+      var b64 = dataUrl.indexOf(",") >= 0 ? dataUrl.split(",")[1] : dataUrl;
+      apiJson("/api/public/purchase-receipt", "POST", { email: devUpEmail, filename: devUpReceiptFile.name, data: b64 }).then(function(rd){
+        if (!rd || rd.ok !== true || !rd.url) throw new Error((rd && rd.error) || t("devUpReceiptFail"));
+        return apiJson("/api/admin/purchase-request", "POST", { email: devUpEmail, kind: "device-slot", method: devUpMethod, receiptUrl: rd.url, fingerprint: "id:" + getDeviceId() });
+      }).then(function(bd){
+        if (!bd || bd.ok !== true) throw new Error((bd && bd.error) || t("devUpSendFail"));
+        devUpSent = true;
+        devUpMsg(t("devUpWaiting"), true);
+        if (sendBtn) sendBtn.disabled = false;
+      }).catch(function(err){
+        devUpMsg((err && err.message) || t("devUpSendFail"));
+        if (sendBtn) sendBtn.disabled = false;
+      });
+    };
+    reader.onerror = function(){ devUpMsg(t("devUpReadFail")); if (sendBtn) sendBtn.disabled = false; };
+    reader.readAsDataURL(devUpReceiptFile);
+  }
+  function devRenderAccts(){
+    var box = document.getElementById("devAccts"); if (!box) return;
+    var declined = devDeclined();
+    apiJson("/api/public/device/accounts?deviceId=" + encodeURIComponent(getDeviceId()), "GET").then(function(d){
+      box.innerHTML = "";
+      var list = (d && Array.isArray(d.emails)) ? d.emails : [];
+      var rows = [];
+      list.forEach(function(it){ if (it && it.email) rows.push({ email: String(it.email).toLowerCase(), pro: !!it.pro, declined: 0 }); });
+      Object.keys(declined).forEach(function(em){
+        if (rows.some(function(r){ return r.email === em; })) {
+          var m2 = devDeclined(); delete m2[em];
+          try { localStorage.setItem("movai-dev-declined", JSON.stringify(m2)); } catch (e) {}
+          return;
+        }
+        rows.push({ email: em, pro: false, declined: Math.floor(Number(declined[em]) || 0) });
+      });
+      if (!rows.length) return;
+      var title = document.createElement("div"); title.className = "dev-accts-title"; title.textContent = t("devUpAcctsTitle"); box.appendChild(title);
+      rows.forEach(function(r){
+        var row = document.createElement("div"); row.className = "dev-acct-row";
+        var emEl = document.createElement("span"); emEl.className = "dev-acct-email"; emEl.textContent = r.email; row.appendChild(emEl);
+        if (r.pro) {
+          var pb = document.createElement("span"); pb.className = "dev-acct-pro"; pb.textContent = t("devUpPro"); row.appendChild(pb);
+        } else if (r.declined > 0) {
+          var ub = document.createElement("button"); ub.type = "button"; ub.className = "dev-acct-upgrade";
+          ub.textContent = t("devUpUpgrade") + " · " + r.declined;
+          ub.addEventListener("click", function(e){ e.stopPropagation(); devShowUpgrade(r.email, null); });
+          row.appendChild(ub);
+        }
+        row.addEventListener("click", function(){ if (emailInput) { emailInput.value = r.email; emailInput.focus(); } });
+        box.appendChild(row);
+      });
+    }).catch(function(){ /* the list is a nicety; sign-in still works without it */ });
+  }
+  (function devWireUp(){
+    var kb = document.getElementById("devUpKhqrBtn"); if (kb) kb.addEventListener("click", function(){ devPickMethod("khqr"); });
+    var ub = document.getElementById("devUpUsdtBtn"); if (ub) ub.addEventListener("click", function(){ devPickMethod("usdt"); });
+    var sb = document.getElementById("devUpSendBtn"); if (sb) sb.addEventListener("click", devSendReceipt);
+    var bb = document.getElementById("devUpBackBtn"); if (bb) bb.addEventListener("click", function(){ devCloseUpgrade(true); });
+    var veil = document.getElementById("devUpVeil"); if (veil) veil.addEventListener("click", function(e){ if (e.target === veil) devCloseUpgrade(true); });
+    var fi = document.getElementById("devUpReceiptFile");
+    if (fi) fi.addEventListener("change", function(){
+      devUpReceiptFile = fi.files && fi.files[0] ? fi.files[0] : null;
+      var rn = document.getElementById("devUpReceiptName"); if (rn) rn.textContent = devUpReceiptFile ? devUpReceiptFile.name : "";
+    });
+    var cp = document.getElementById("devUpCopyAddr");
+    if (cp) cp.addEventListener("click", function(){
+      var done = function(){ var cm = document.getElementById("devUpCopyMsg"); if (cm) cm.textContent = t("devUpCopied"); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(DEV_PAY.usdtAddress).then(done, done);
+      else { try { var ta = document.createElement("textarea"); ta.value = DEV_PAY.usdtAddress; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); } catch (e) {} done(); }
+    });
+    devRenderAccts();
+    // Payment settings (same as the home page buy sheet) so a changed
+    // KHQR link / USDT address is used instead of the defaults above.
+    fetch(API + "/api/admin/settings", { cache: "no-store" }).then(function(r){ return r.json(); }).then(function(dd){
+      var pay = dd && dd.settings && dd.settings.payment;
+      if (pay) {
+        if (typeof pay.khqrLink === "string" && pay.khqrLink.trim()) DEV_PAY.khqrLink = pay.khqrLink.trim();
+        if (typeof pay.binanceUsdtAddress === "string" && pay.binanceUsdtAddress.trim()) DEV_PAY.usdtAddress = pay.binanceUsdtAddress.trim();
+      }
+    }).catch(function(){});
+  })();
   function gisRenderButton(){
     if (!window.google || !google.accounts || !google.accounts.id) return false;
     try {
