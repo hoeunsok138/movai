@@ -165,7 +165,7 @@
   .chat-fab.out{transform:translateX(calc(100% + 24px));opacity:0;filter:blur(6px);pointer-events:none}
   .chat-fab:active{opacity:.85}
   body.drawer-open .chat-fab{transform:translateX(calc(100% + 24px)) !important;opacity:0 !important;filter:blur(6px) !important;pointer-events:none !important}
-  body.scrolling .menu-fab,body.scrolling .chat-fab{opacity:0 !important;pointer-events:none !important}
+  body.scrolling .menu-fab,body.scrolling .chat-fab,body.scrolling .dl-fab{opacity:0 !important;pointer-events:none !important} .dl-fab{position:fixed;right:16px;bottom:84px;z-index:60;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#2563eb);border:1px solid #1d4ed8;color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 2px 14px rgba(37,99,235,.55);transition:opacity .25s ease} .dl-fab.show{display:flex} .dl-fab svg{width:26px;height:26px;flex:none;filter:drop-shadow(0 0 4px rgba(125,211,252,.9))} .dl-fab:active{opacity:.85} .dl-fab-count{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#ff2d78;color:#fff;font-size:.7rem;font-weight:700;line-height:20px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.3)} .dl-veil{position:fixed;inset:0;z-index:70;display:none;background:rgba(15,23,42,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)} .dl-veil.open{display:block} .dl-sheet{position:fixed;left:0;right:0;bottom:0;z-index:71;display:none;max-height:72vh;background:#ffffff;border-radius:18px 18px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.25);overflow:hidden} .dl-sheet.open{display:flex;flex-direction:column} .dl-sheet-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid #e5e7eb} .dl-sheet-head h3{margin:0;flex:1;font-size:1.05rem} .dl-sheet-close{width:32px;height:32px;border-radius:50%;border:1px solid #d1d5db;background:transparent;font-size:1rem;line-height:1;cursor:pointer} .dl-list{overflow-y:auto;padding:6px 0 16px} .dl-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #f1f5f9} .dl-row-info{flex:1;min-width:0} .dl-row-title{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .dl-row-meta{font-size:.8rem;color:#6b7280} .dl-row-btn{flex:none;padding:7px 12px;border-radius:999px;border:0;background:linear-gradient(90deg,#ff2d78,#ff7a18);color:#fff;font-weight:700;cursor:pointer} .dl-row-del{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid #d1d5db;background:transparent;color:#6b7280;cursor:pointer} .dl-empty{padding:24px 16px;text-align:center;color:#6b7280} html[data-theme="dark"] .dl-sheet{background:#111827;color:#f9fafb} html[data-theme="dark"] .dl-sheet-head{border-color:#1f2937} html[data-theme="dark"] .dl-row{border-color:#1f2937} html[data-theme="dark"] .dl-row-meta{color:#9ca3af}
   .chat-fab svg{width:24px;height:24px;flex:none}
   html[data-theme="dark"] .chat-fab{background:#0f766e;border-color:#0f766e;color:#ffffff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
   /* ---- Night theme: same layout, pure black ---- */
@@ -265,6 +265,9 @@
   </nav>
   <button class="menu-fab" id="menuFab" type="button" aria-label="Menu" data-i18n-aria="menuAria" aria-expanded="false">&#9776;</button>
   <button class="chat-fab" id="chatFab" type="button" aria-label="AI Chat" data-i18n-aria="chatFabAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+  <button class="dl-fab" id="dlFab" type="button" aria-label="បទដែលបានទាញយក"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="dlFabGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bae6fd"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><path d="M12 3v11" stroke="url(#dlFabGrad)" stroke-width="3" stroke-linecap="round"/><path d="M6.5 10.5 12 16l5.5-5.5" stroke="url(#dlFabGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20h16" stroke="url(#dlFabGrad)" stroke-width="3" stroke-linecap="round"/></svg><span class="dl-fab-count" id="dlFabCount"></span></button>
+  <div class="dl-veil" id="dlVeil"></div>
+  <div class="dl-sheet" id="dlSheet" role="dialog" aria-label="Downloaded songs"><div class="dl-sheet-head"><h3 id="dlSheetTitle">បទដែលបានទាញយក</h3><button class="dl-sheet-close" id="dlSheetClose" type="button" aria-label="Close">✕</button></div><div class="dl-list" id="dlList"></div></div>
 
   <main>
     <div class="dl-signin" id="dlSignin" hidden>
@@ -385,6 +388,7 @@
       dlNoFormats: "គ្មានទម្រង់សម្រាប់ទាញយកទេ",
       dlReady: "រួចហើយ — ចុចដើម្បីរក្សាទុក",
       dlSaveFile: "រក្សាទុកឯកសារ",
+      dlDlTitle: "បទដែលបានទាញយក",       dlDlEmpty: "មិនទាន់មានបទដែលបានទាញយកទេ",       dlDlAgain: "ទាញយក",       dlDlDel: "លុប",
       dlDownloadingFile: "កំពុងទាញយកឯកសារ…",
       dlDownloaded: "បានទាញយករួចហើយ",
       dlNeedSignIn: "សូមចូលប្រើជាមុនសិន ដើម្បីទាញយក",
@@ -434,6 +438,7 @@
       dlNoFormats: "No downloadable formats found",
       dlReady: "Ready — tap to save",
       dlSaveFile: "Save file",
+      dlDlTitle: "Downloaded songs",       dlDlEmpty: "No downloaded songs yet",       dlDlAgain: "Download",       dlDlDel: "Delete",
       dlDownloadingFile: "Downloading file…",
       dlDownloaded: "Downloaded",
       dlNeedSignIn: "Please sign in first to download",
@@ -949,6 +954,7 @@
       document.body.appendChild(a);
       a.click();
       a.remove();
+      try { dlRecordDownload({ title: filename, url: url, size: blob.size, at: Date.now() }); } catch (e) {}
       setTimeout(function(){ try { URL.revokeObjectURL(objUrl); } catch (e) {} }, 5000);
       setStatus(t("dlDownloaded"));
       btn.disabled = false;
@@ -979,6 +985,24 @@
   goBtn.addEventListener("click", runStart);
   downloadBtn.addEventListener("click", runDownload);
 
+  /* ---- Downloaded songs: floating blue-arrow button (bottom-right,
+      above the chat button) + bottom sheet. Every completed download
+      is recorded in localStorage (movai-downloads) so the list survives
+      reloads and shows the songs saved to the phone. The button only
+      appears when there is at least one downloaded song; when it
+      appears, the chat button pops up with it (it does not auto-hide). ---- */
+  var DL_STORE_KEY = "movai-downloads";
+  var DL_STORE_MAX = 100;
+  function dlLoadDownloads(){ try { var raw = localStorage.getItem(DL_STORE_KEY); var arr = raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; } catch (e) { return []; } }
+  function dlSaveDownloads(arr){ try { localStorage.setItem(DL_STORE_KEY, JSON.stringify(arr.slice(0, DL_STORE_MAX))); } catch (e) {} }
+  function dlRecordDownload(item){ if (!item || !item.url) return; var arr = dlLoadDownloads(); arr = arr.filter(function(x){ return x.url !== item.url; }); arr.unshift({ title: item.title || "MP3", url: item.url, size: item.size || 0, at: item.at || Date.now() }); dlSaveDownloads(arr); dlRenderFab(); }
+  function dlRemoveDownload(url){ dlSaveDownloads(dlLoadDownloads().filter(function(x){ return x.url !== url; })); dlRenderFab(); dlRenderList(); }
+  function dlFmtSize(b){ if (!b || b <= 0) return ""; if (b >= 1048576) return (b / 1048576).toFixed(1) + " MB"; return Math.max(1, Math.round(b / 1024)) + " KB"; }
+  function dlFmtDate(ts){ try { var d = new Date(ts); return (d.getMonth() + 1) + "/" + d.getDate(); } catch (e) { return ""; } }
+  function dlRenderFab(){ var fab = document.getElementById("dlFab"); var cnt = document.getElementById("dlFabCount"); if (!fab) return; var arr = dlLoadDownloads(); if (arr.length > 0) { fab.classList.add("show"); if (cnt) cnt.textContent = String(arr.length); if (window.movaiShowChatFab) { try { window.movaiShowChatFab(); } catch (e) {} } } else { fab.classList.remove("show"); } }
+  function dlRenderList(){ var list = document.getElementById("dlList"); if (!list) return; var arr = dlLoadDownloads(); var title = document.getElementById("dlSheetTitle"); if (title) title.textContent = t("dlDlTitle") + (arr.length ? " · " + arr.length : ""); if (!arr.length) { list.innerHTML = '<div class="dl-empty">' + t("dlDlEmpty") + '</div>'; return; } list.innerHTML = ""; arr.forEach(function(it){ var row = document.createElement("div"); row.className = "dl-row"; var info = document.createElement("div"); info.className = "dl-row-info"; var ti = document.createElement("div"); ti.className = "dl-row-title"; ti.textContent = (it.title || "MP3").replace(/\.mp3$/i, ""); var me = document.createElement("div"); me.className = "dl-row-meta"; me.textContent = [dlFmtSize(it.size), dlFmtDate(it.at)].filter(Boolean).join(" · "); info.appendChild(ti); info.appendChild(me); var again = document.createElement("button"); again.type = "button"; again.className = "dl-row-btn"; again.textContent = t("dlDlAgain"); again.addEventListener("click", function(){ blobDownload(it.url, it.title || "song.mp3", again, "dlDownload"); }); var del = document.createElement("button"); del.type = "button"; del.className = "dl-row-del"; del.textContent = "✕"; del.setAttribute("aria-label", t("dlDlDel")); del.addEventListener("click", function(){ dlRemoveDownload(it.url); }); row.appendChild(info); row.appendChild(again); row.appendChild(del); list.appendChild(row); }); }
+  function dlSetSheet(open){ var veil = document.getElementById("dlVeil"); var sheet = document.getElementById("dlSheet"); if (!veil || !sheet) return; if (open) { dlRenderList(); veil.classList.add("open"); sheet.classList.add("open"); } else { veil.classList.remove("open"); sheet.classList.remove("open"); } }
+  (function dlWire(){ var fab = document.getElementById("dlFab"); if (fab) fab.addEventListener("click", function(){ dlSetSheet(true); }); var close = document.getElementById("dlSheetClose"); if (close) close.addEventListener("click", function(){ dlSetSheet(false); }); var veil = document.getElementById("dlVeil"); if (veil) veil.addEventListener("click", function(){ dlSetSheet(false); }); dlRenderFab(); })();
   syncDlAuth();
   applyLang();
 })();
@@ -1008,6 +1032,7 @@
     setTimeout(function(){ fab.style.display = "none"; }, 500);
   }
   function cancelHide(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  window.movaiShowChatFab = function(){ cancelHide(); fab.classList.remove("out"); fab.classList.add("in"); fab.style.display = ""; };
   fab.addEventListener("pointerdown", cancelHide);
   fab.addEventListener("mouseenter", cancelHide);
   fab.addEventListener("touchstart", cancelHide, { passive: true });
