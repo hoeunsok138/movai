@@ -1131,7 +1131,7 @@
         passwordInput.value = "";
         afterLogin(d.user, email);
         devGoogleToken = resp.credential || "";
-        if (!d.user.hasPassword) { devShowPwSheet(email); }
+        if (!d.user.hasPassword) { devShowPwSheet(email, !!d.user.resetPending); }
         else { devMaybeAskPin(); }
       })
       .catch(function(){
@@ -1366,6 +1366,20 @@
     showLogin();
     return true;
   }
+  /* ---- v4: poll the reset state so an already-open page kicks the user
+     out promptly when the owner Resets (not only on the next reload). ---- */
+  function devPollReset(){
+    var em = "";
+    try { em = storeGet(SESSION_KEY) || ""; } catch (e) {}
+    if (!em) return;
+    apiJson("/api/public/reset-state", "GET").then(function(d){
+      if (d) devCheckForceReset(d);
+    }).catch(function(){});
+  }
+  (function devStartResetPoll(){
+    try { setInterval(devPollReset, 60000); } catch (e) {}
+    try { document.addEventListener("visibilitychange", function(){ if (!document.hidden) devPollReset(); }); } catch (e) {}
+  })();
   /* ---- v3: PIN lockout ladder — 3 wrong -> 1h, then 2h, then 12h, then
      the hours double (24h, 48h, ...). Stored per device in localStorage. */
   function devPinLockGet(){ try { return JSON.parse(localStorage.getItem("movai-dev-pin-lock") || "{}") || {}; } catch (e) { return {}; } }
@@ -1442,7 +1456,10 @@
     var ts = Number((devSentMap())[String(email || "").toLowerCase()] || 0);
     return !!ts && (Date.now() - ts) < 86400000;
   }
-  function devShowPwSheet(email){
+  var devPwMandatory = false;
+  function devShowPwSheet(email, mandatory){
+    devPwMandatory = !!mandatory;
+    var sk = document.getElementById("devPwSkipBtn"); if (sk) sk.style.display = devPwMandatory ? "none" : "";
     var veil = document.getElementById("devPwVeil"); if (!veil) return;
     var em = document.getElementById("devPwEmail"); if (em) em.textContent = String(email || "").toLowerCase();
     var p1 = document.getElementById("devPw1"); if (p1) p1.value = "";
@@ -1548,8 +1565,8 @@
   }
   (function devWireV2(){
     var cb = document.getElementById("devPwCreateBtn"); if (cb) cb.addEventListener("click", devPwCreate);
-    var sb = document.getElementById("devPwSkipBtn"); if (sb) sb.addEventListener("click", function(){ devClosePwSheet(); devMaybeAskPin(); });
-    var pv = document.getElementById("devPwVeil"); if (pv) pv.addEventListener("click", function(e){ if (e.target === pv) { devClosePwSheet(); devMaybeAskPin(); } });
+    var sb = document.getElementById("devPwSkipBtn"); if (sb) sb.addEventListener("click", function(){ if (devPwMandatory) return; devClosePwSheet(); devMaybeAskPin(); });
+    var pv = document.getElementById("devPwVeil"); if (pv) pv.addEventListener("click", function(e){ if (e.target === pv) { if (devPwMandatory) return; devClosePwSheet(); devMaybeAskPin(); } });
     var yb = document.getElementById("devPinYesBtn"); if (yb) yb.addEventListener("click", function(){ devShowPin("set", devPinTarget); });
     var nb = document.getElementById("devPinNoBtn"); if (nb) nb.addEventListener("click", function(){ try { localStorage.setItem("movai-dev-pin-ask", "no"); } catch (e) {} devUnmaskTarget(); devClosePin(); });
     var sv = document.getElementById("devPinSaveBtn"); if (sv) sv.addEventListener("click", devPinSave);

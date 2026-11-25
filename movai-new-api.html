@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2faf6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="movai-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="movai-icon-512.png">
+<link rel="apple-touch-icon" href="movai-icon-192.png">
+<title>MovAi API — Generate API Key</title>
+<script>try{var _mt=localStorage.getItem("movai-theme")||"auto";var _md=_mt==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:_mt==="night";document.documentElement.setAttribute("data-theme",_md?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
+<style>
+  /* MovAi API page — same single-background theme system as index.html
+     (bg-themes client v1): ONE page background, Admin-managed themes. */
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;overflow-x:hidden}
+  :root{--bg1:#e8f5f0;--bg2:#f2faf6;--bg3:#ffffff;--acc1:#ff2d78;--acc2:#ff7a18;--ink:#1f2937;--muted:#6b7280;--surface:rgba(255,255,255,.82)}
+  html.bg-dark,html[data-theme="dark"]{--surface:rgba(12,12,20,.55)}
+  html{background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 45%,var(--bg3) 100%);background-attachment:fixed;-webkit-text-size-adjust:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 45%,var(--bg3) 100%);background-attachment:fixed;min-height:100vh}
+  a{color:var(--ink);text-decoration:none}
+  button{font:inherit;color:inherit;background:transparent;border:0;padding:0;cursor:pointer}
+  #bgVeil{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,.55);opacity:0;transition:opacity .3s ease}
+  html[data-theme="dark"]:not(.bg-dark) #bgVeil{opacity:1}
+  #bgFade{position:fixed;left:0;right:0;bottom:0;height:180px;z-index:0;pointer-events:none;background:linear-gradient(180deg,transparent,var(--bg3) 70%);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .wrap{position:relative;z-index:1;max-width:720px;margin:0 auto}
+  html.bg-dark body{color:var(--ink)}
+  html.bg-dark h1,html.bg-dark h2,html.bg-dark h3{color:var(--ink)}
+  html.bg-dark .muted{color:var(--muted)}
+  header{position:fixed;top:0;left:0;right:0;z-index:50;max-width:720px;margin:auto;background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 45%,var(--bg3) 100%);background-attachment:fixed}
+  .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-left:16px;padding-right:16px}
+  .hdr-top{padding-top:14px;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,.08)}
+  .hdr-sub{padding-top:11px;padding-bottom:11px;border-bottom:1px solid rgba(0,0,0,.08)}
+  .hdr-logo{display:flex;align-items:center;gap:8px;color:var(--ink);min-width:0}
+  .hdr-logo b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;line-height:1;background:linear-gradient(90deg,var(--acc1),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hdr-sec{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .hdr-sec-name{font-size:1rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hdr-back{font-size:1.5rem;font-weight:700;color:inherit;text-decoration:none;padding:0 10px 0 0;line-height:1.2}
+  .seg{display:flex;gap:4px}
+  .seg button{font-size:.8rem;font-weight:700;padding:5px 9px;border-radius:999px;border:1px solid rgba(0,0,0,.15);color:var(--ink)}
+  .seg button.on{background:linear-gradient(90deg,var(--acc1),var(--acc2));color:#fff;border-color:transparent}
+  main{padding:118px 16px 120px}
+  .card{background:var(--surface);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:16px;margin:0 0 14px}
+  .card h1{font-size:1.3rem;margin:0 0 8px}
+  .card h2{font-size:1.1rem;margin:0 0 10px}
+  .card h3{font-size:.95rem;margin:14px 0 8px}
+  .card p{font-size:.92rem;line-height:1.7;margin:0 0 10px}
+  .muted{color:var(--muted)}
+  .warn{border:1px solid rgba(255,122,24,.5);background:rgba(255,122,24,.08);border-radius:12px;padding:10px 12px;font-size:.88rem;line-height:1.6;margin:0 0 10px}
+  .note{border:1px solid rgba(255,45,120,.4);background:rgba(255,45,120,.07);border-radius:12px;padding:10px 12px;font-size:.88rem;line-height:1.6;margin:0 0 10px}
+  .btn{display:inline-block;font-size:.95rem;font-weight:800;color:#fff;background:linear-gradient(90deg,var(--acc1),var(--acc2));border-radius:999px;padding:11px 20px;box-shadow:0 0 16px rgba(255,90,40,.35);cursor:pointer}
+  .btn:active{opacity:.85}
+  .btn:disabled{opacity:.55;box-shadow:none}
+  .btn-ghost{display:inline-block;font-size:.9rem;font-weight:700;color:var(--ink);border:1px solid rgba(0,0,0,.2);border-radius:999px;padding:9px 16px;cursor:pointer;background:var(--surface)}
+  .btn-ghost:active{background:rgba(255,45,120,.12)}
+  .btn-danger{color:#dc2626;border-color:rgba(220,38,38,.5)}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.08);font-size:.92rem}
+  .row:last-child{border-bottom:0}
+  .row b{font-size:1.05rem}
+  .key-box{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;word-break:break-all;background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:10px 12px;margin:0 0 10px}
+  html.bg-dark .key-box{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
+  .msg{font-size:.88rem;text-align:center;margin:10px 0 0;line-height:1.6}
+  .msg.ok-t{color:#059669;font-weight:700}
+  table.costs{width:100%;border-collapse:collapse;font-size:.92rem;margin:0 0 6px}
+  table.costs th,table.costs td{padding:9px 6px;border-bottom:1px solid rgba(0,0,0,.08);text-align:left;line-height:1.5}
+  table.costs th{font-size:.82rem;color:var(--muted)}
+  .badge{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.02em;color:#fff;background:linear-gradient(90deg,var(--acc1),var(--acc2));border-radius:999px;padding:3px 9px;line-height:1.5;vertical-align:middle}
+  .badge.soon{background:#6b7280}
+  .pkg{border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:12px;margin:0 0 10px;background:var(--surface)}
+  .pkg-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .pkg-name{font-weight:800;font-size:1rem}
+  .pkg-price{font-weight:800;font-size:1.15rem;background:linear-gradient(90deg,var(--acc1),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pkg-credits{font-size:.9rem;color:var(--muted);margin-top:4px}
+  .pkg-off{font-size:.8rem;font-weight:800;color:#059669}
+  .pkg .btn{margin-top:10px}
+  pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;line-height:1.6;white-space:pre-wrap;word-break:break-all;background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:12px;margin:0 0 12px;overflow-x:auto}
+  html.bg-dark pre{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+  .foot{text-align:center;font-size:.82rem;color:var(--muted);padding:8px 0 24px}
+  /* ---- buy sheet (KHQR / USDT) — same pattern as index.html ---- */
+  .pkg-veil{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}
+  .pkg-card{width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#f2faf6;border:1px solid #e5e7eb;border-radius:16px 16px 0 0;padding:0 0 20px;color:#1f2937}
+  .pkg-card-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;background:#f2faf6;z-index:1}
+  .pkg-card-title{font-weight:800}
+  .pkg-card-body{padding:14px 16px 0}
+  .buy-brand{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 12px;text-align:center}
+  .buy-brand-name{font-size:1.25rem;font-weight:800;background:linear-gradient(90deg,var(--acc1),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .buy-brand-site{font-size:.78rem;color:#6b7280}
+  .buy-sum{text-align:center;font-size:.9rem;font-weight:700;color:#1f2937;margin:0 0 12px}
+  .buy-label{font-size:.85rem;font-weight:700;color:#1f2937;margin:0 0 8px}
+  .buy-methods{display:flex;gap:10px;margin-bottom:12px}
+  .buy-method{flex:1;font-size:1rem;font-weight:800;padding:12px 8px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;color:#1f2937;cursor:pointer}
+  .buy-method.picked{border-color:var(--acc1);background:rgba(255,45,120,.08);color:var(--acc1)}
+  .buy-amt{text-align:center;font-size:1.3rem;font-weight:800;margin:6px 0 10px;background:linear-gradient(90deg,var(--acc1),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .buy-qr{display:flex;justify-content:center;margin:4px 0 10px}
+  .buy-qr svg{width:220px;height:220px;max-width:100%}
+  .buy-hint{font-size:.85rem;color:#6b7280;line-height:1.6;margin:0 0 10px;text-align:center}
+  .buy-addr{font-size:.85rem;word-break:break-all;background:#eef1f0;border-radius:8px;padding:8px 10px;margin:0 0 10px;text-align:center}
+  .buy-link{display:block;text-align:center;font-weight:700;color:var(--acc1);margin:0 0 10px}
+  .buy-receipt{border-top:1px solid #e5e7eb;padding-top:12px;margin-top:4px}
+  .buy-receipt input[type=file]{width:100%;font-size:.85rem;margin:6px 0}
+  .buy-send{display:block;width:100%;font-size:1rem;font-weight:800;color:#fff;background:linear-gradient(90deg,var(--acc1),var(--acc2));border:none;border-radius:999px;padding:11px 16px;box-shadow:0 0 16px rgba(255,90,40,.35);cursor:pointer;margin-top:8px}
+  .buy-send:active{opacity:.85}
+  .buy-send:disabled{opacity:.55;box-shadow:none}
+  .buy-msg{font-size:.85rem;text-align:center;margin:10px 0 0;line-height:1.6}
+  .buy-msg.ok-t{color:#059669;font-weight:700}
+  .buy-back{flex:none;font-size:.85rem;font-weight:700;color:var(--acc1);padding:6px 8px}
+  [hidden]{display:none !important}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+<div id="bgVeil"></div>
+<div id="bgFade"></div>
+<div class="wrap">
+  <header>
+    <div class="hdr-row hdr-top">
+      <a class="hdr-logo" href="index.html"><img src="movai-logo-mark.svg" width="26" height="26" alt="MovAi logo"><b>MovAi</b></a>
+      <div class="seg" id="langSeg">
+        <button type="button" data-lang-val="kh">ខ្មែរ</button>
+        <button type="button" data-lang-val="en">English</button>
+      </div>
+    </div>
+    <div class="hdr-row hdr-sub">
+      <a class="hdr-back" href="index.html" aria-label="Back">&#8249;</a>
+      <span class="hdr-sec"><span class="hdr-sec-name" data-i18n="secApi">MovAi API · API Key</span></span>
+      <div class="seg" id="themeSeg">
+        <button type="button" data-theme-val="day" data-i18n="themeDay">ថ្ងៃ</button>
+        <button type="button" data-theme-val="night" data-i18n="themeNight">យប់</button>
+        <button type="button" data-theme-val="auto" data-i18n="themeAuto">ស្វ័យប្រវត្តិ</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="card">
+      <h1 data-i18n="apiTitle">MovAi API — ប្រើ MovAi ពីខាងក្រៅ</h1>
+      <p data-i18n="apiIntro">API របស់ MovAi ឲ្យអ្នកហៅប្រើ MovAi ដោយផ្ទាល់ពីកម្មវិធី ឬគេហទំព័ររបស់អ្នក — បង្កើតចម្រៀង និងរូបភាពដោយ AI ដោយមិនចាំបាច់បើកអាប់។ អ្នកគ្រាន់តែយក API Key មួយទៅប្រើ។</p>
+      <p class="muted" data-i18n="apiIntro2">MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.</p>
+    </section>
+
+    <section class="card" id="signinCard" hidden>
+      <h2 data-i18n="needSignin">សូមចូលប្រើជាមុនសិន</h2>
+      <p data-i18n="needSigninBody">អ្នកត្រូវចូលប្រើគណនី MovAi របស់អ្នកជាមុនសិន ទើបអាចបង្កើត API Key បាន។</p>
+      <a class="btn" href="movai-new-profile.html" data-i18n="goSignin">ចូលប្រើ · Sign In</a>
+    </section>
+
+    <section class="card" id="keyCard" hidden>
+      <h2><span data-i18n="keyTitle">API Key របស់ខ្ញុំ</span> <span class="badge">NEW</span></h2>
+      <p class="muted" id="keyEmailLine"></p>
+      <div class="key-box" id="keyDisplay">—</div>
+      <div id="keyFullBox" hidden>
+        <p class="warn" data-i18n="keyOnceWarn">⚠️ Key នេះបង្ហាញពេញតែម្ដងនេះទេ! សូមចម្លង ហើយរក្សាទុកឲ្យបានសុវត្ថិភាព។ បន្ទាប់ពីចាកចេញពីទំព័រនេះ អ្នកនឹងឃើញតែផ្នែកដើម និង 4 តួចុងក្រោយប៉ុណ្ណោះ។</p>
+        <div class="key-box" id="keyFull"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="genKeyBtn" type="button" data-i18n="genKey">បង្កើត API Key</button>
+        <button class="btn-ghost" id="copyKeyBtn" type="button" data-i18n="copyKey">ចម្លង Key</button>
+        <button class="btn-ghost" id="regenKeyBtn" type="button" data-i18n="regenKey">បង្កើត Key ថ្មី</button>
+        <button class="btn-ghost btn-danger" id="revokeKeyBtn" type="button" data-i18n="revokeKey">លុប Key</button>
+      </div>
+      <p class="msg" id="keyMsg"></p>
+      <div class="row"><span data-i18n="balLbl">សមតុល្យ API Credits</span><b id="apiBalance">—</b></div>
+      <div class="row"><span data-i18n="quotaLbl">កូតា (Quota) ប្រចាំខែ</span><b id="apiQuota">—</b></div>
+      <div class="row"><span data-i18n="freeImgLbl">រូបភាពឥតគិតថ្លៃដែលនៅសល់</span><b id="freeImagesLeft">—</b></div>
+      <div class="row"><span data-i18n="freeSongLbl">បង្កើតចម្រៀងឥតគិតថ្លៃដែលនៅសល់</span><b id="freeSongsLeft">—</b></div>
+      <div class="row"><span data-i18n="usageLbl">ការប្រើប្រាស់ (Usage)</span><b id="apiUsage">—</b></div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="trialTitle">សាកល្បងឥតគិតថ្លៃ · Free Trial</h2>
+      <p data-i18n="trialBody">អ្នកប្រើ API ថ្មីទទួលបានសាកល្បងឥតគិតថ្លៃ៖ រូបភាពឥតគិតថ្លៃ 4 រូប និងបង្កើតចម្រៀងឥតគិតថ្លៃ 1 ដង (1 ដង = 2 បទ)។ នេះជាការសាកល្បងម្ដងប៉ុណ្ណោះ មិនមែនជា Credits ផ្ដល់ឲ្យទេ។</p>
+      <p data-i18n="trialImgRule">បន្ទាប់ពីប្រើរូបភាពឥតគិតថ្លៃ 4 រូបអស់ហើយ ការបង្កើតរូបភាពត្រូវការកញ្ចប់ API ដែលបានបង់ប្រាក់ និងនៅមានសុពលភាព។</p>
+      <p class="muted" data-i18n="trialBodyEn">New API users get a free trial: 4 free images and 1 free song generation (1 generation = 2 songs). This is a one-time trial, not free credits. After the 4 free images are used, image generation requires an active paid API package.</p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="costTitle">តម្លៃក្នុងមួយលើក · Cost Per Call</h2>
+      <table class="costs">
+        <tr><th data-i18n="costWhat">អ្វី</th><th data-i18n="costAmt">តម្លៃ</th><th data-i18n="costNote">កំណត់សម្គាល់</th></tr>
+        <tr><td data-i18n="costSong">បង្កើតចម្រៀង (Song)</td><td><b>12 credits</b></td><td data-i18n="costSongNote">1 generation = 2 songs · 1 ដងបាន 2 បទ</td></tr>
+        <tr><td data-i18n="costImage">បង្កើតរូបភាព (Image)</td><td><b>0 credits</b></td><td data-i18n="costImageNote">FREE · ឥតគិតថ្លៃ — មិនកាត់ Credits ទេ</td></tr>
+        <tr><td data-i18n="costVideo">បង្កើតវីដេអូ (Video)</td><td><b>50 credits</b></td><td><span data-i18n="costVideoNote">COMING SOON · មិនទាន់បើក</span></td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="videoTitle">Generate Video <span class="badge soon">COMING SOON · មិនទាន់បើក</span></h2>
+      <p data-i18n="videoBody">Generate Video ប្រើម៉ូដែល Pro តែប៉ុណ្ណោះ គ្មានកម្រិតឥតគិតថ្លៃទេ ហើយនៅមិនទាន់បើកឲ្យប្រើនៅឡើយទេ។ តម្លៃកញ្ចប់នឹងត្រូវកំណត់នៅពេលក្រោយក្នុង Admin។</p>
+      <p data-i18n="videoCost">តម្លៃក្នុងមួយលើក៖ 50 credits ក្នុងមួយវីដេអូ។</p>
+      <p class="muted" data-i18n="videoBodyEn">Generate Video uses the Pro model only, has no free tier, and is not open yet. Its package price will be set later in Admin.</p>
+    </section>
+
+    <section class="card" id="pricingCard">
+      <h2 data-i18n="priceTitle">តម្លៃកញ្ចប់ · Pricing</h2>
+      <p class="note" data-i18n="priceDiffNote">⚠️ តម្លៃ API ខាងក្រោម ខុសពីតម្លៃគេហទំព័រ MovAi (App) ខាងក្រោមទៀត — វាជាតម្លៃពីរផ្សេងគ្នា។ API prices below are DIFFERENT from the website (app) prices further below — they are two separate price lists.</p>
+      <h3 data-i18n="apiPkgTitle">កញ្ចប់ API · API Packages</h3>
+      <p class="muted" data-i18n="apiPkgNote">អត្រាគោល៖ $5 = 600 credits (120 credits / $1)។ ទិញដោយ KHQR / USDT ហើយ Admin អនុម័ត។</p>
+      <div class="pkg" data-pkg="api-600">
+        <div class="pkg-top"><span class="pkg-name">API 600</span><span class="pkg-price">$5<span class="muted">/month</span></span></div>
+        <div class="pkg-credits">600 credits</div>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-600" data-price="5" data-credits="600" data-name="API 600" data-i18n="buyBtn">ទិញ · Buy</button>
+      </div>
+      <div class="pkg" data-pkg="api-1200">
+        <div class="pkg-top"><span class="pkg-name">API 1200</span><span class="pkg-price">$10<span class="muted">/month</span></span></div>
+        <div class="pkg-credits">1200 credits</div>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-1200" data-price="10" data-credits="1200" data-name="API 1200" data-i18n="buyBtn">ទិញ · Buy</button>
+      </div>
+      <div class="pkg" data-pkg="api-8000">
+        <div class="pkg-top"><span class="pkg-name">API 8000</span><span class="pkg-price">$50<span class="muted">/month</span></span></div>
+        <div class="pkg-credits">8000 credits · <span class="pkg-off">25% off</span></div>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-8000" data-price="50" data-credits="8000" data-name="API 8000" data-i18n="buyBtn">ទិញ · Buy</button>
+      </div>
+      <div class="pkg" data-pkg="api-102000">
+        <div class="pkg-top"><span class="pkg-name">API 102,000</span><span class="pkg-price">$500<span class="muted">/month</span></span></div>
+        <div class="pkg-credits">102,000 credits · <span class="pkg-off">41% off</span></div>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-102000" data-price="500" data-credits="102000" data-name="API 102000" data-i18n="buyBtn">ទិញ · Buy</button>
+      </div>
+      <div class="pkg" data-pkg="api-255000">
+        <div class="pkg-top"><span class="pkg-name">API 255,000</span><span class="pkg-price">$1250<span class="muted">/month</span></span></div>
+        <div class="pkg-credits">255,000 credits · <span class="pkg-off">41% off</span></div>
+        <button class="btn api-buy-btn" type="button" data-pkg="api-255000" data-price="1250" data-credits="255000" data-name="API 255000" data-i18n="buyBtn">ទិញ · Buy</button>
+      </div>
+      <h3 data-i18n="appPkgTitle">កញ្ចប់គេហទំព័រ (App) · Website App Packages</h3>
+      <p class="muted" data-i18n="appPkgNote">នេះជាតម្លៃរបស់គេហទំព័រ / អាប់ MovAi ផ្ទាល់ — ខុសពីតម្លៃ API ខាងលើ។ ទិញក្នុងអាប់តាម Upgrade។</p>
+      <div class="pkg" data-pkg="app-free">
+        <div class="pkg-top"><span class="pkg-name">Free</span><span class="pkg-price">$0</span></div>
+        <div class="pkg-credits">24 credits</div>
+      </div>
+      <div class="pkg" data-pkg="app-starter">
+        <div class="pkg-top"><span class="pkg-name">Starter</span><span class="pkg-price">$4.99<span class="muted">/mo</span></span></div>
+        <div class="pkg-credits">550 credits</div>
+      </div>
+      <div class="pkg" data-pkg="app-pro">
+        <div class="pkg-top"><span class="pkg-name">Pro</span><span class="pkg-price">$9.99<span class="muted">/mo</span></span></div>
+        <div class="pkg-credits">1120 credits</div>
+      </div>
+      <div class="pkg" data-pkg="app-premium">
+        <div class="pkg-top"><span class="pkg-name">Premium</span><span class="pkg-price">$18.99<span class="muted">/mo</span></span></div>
+        <div class="pkg-credits">2360 credits</div>
+      </div>
+      <p class="muted" style="text-align:center"><a href="index.html" data-i18n="appPkgBuyLink">ទិញកញ្ចប់ App ក្នុងគេហទំព័រ · Buy app packages on the website →</a></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="exTitle">ឧទាហរណ៍ · Examples (curl)</h2>
+      <h3 data-i18n="exSong">បង្កើតចម្រៀង · Create a song — POST /api/v1/songs</h3>
+      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/songs \
+  -H "Authorization: Bearer &lt;key&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "a Khmer love song", "lyrics": "..."}'
+# 12 credits per generation — 1 generation = 2 songs</pre>
+      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/songs \
+  -H "X-API-Key: &lt;key&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "a Khmer love song"}'</pre>
+      <h3 data-i18n="exImage">បង្កើតរូបភាព · Create an image — POST /api/v1/images</h3>
+      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/images \
+  -H "Authorization: Bearer &lt;key&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "a Khmer singer on stage"}'
+# 0 credits — FREE. First use: 4 free images.
+# After the 4 free images, an active paid API package is required.</pre>
+      <pre>curl -X POST https://movai-proxy-wasr.onrender.com/api/v1/images \
+  -H "X-API-Key: &lt;key&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "a Khmer singer on stage"}'</pre>
+      <h3 data-i18n="exBal">មើលសមតុល្យ · Check balance — GET /api/v1/balance</h3>
+      <pre>curl https://movai-proxy-wasr.onrender.com/api/v1/balance \
+  -H "Authorization: Bearer &lt;key&gt;"</pre>
+      <pre>curl https://movai-proxy-wasr.onrender.com/api/v1/balance \
+  -H "X-API-Key: &lt;key&gt;"</pre>
+    </section>
+
+    <p class="foot">© 2026 MovAi · <a href="index.html" data-i18n="backHome">ត្រឡប់ទៅទំព័រដើម</a></p>
+  </main>
+</div>
+
+<!-- Buy sheet (KHQR / USDT) — same pattern as index.html, kind 'api-package' -->
+<div class="pkg-veil" id="buySheet" hidden role="dialog" aria-modal="true">
+  <div class="pkg-card">
+    <div class="pkg-card-hdr">
+      <button class="buy-back" id="buyBack" type="button" data-i18n="buyBack">← ត្រឡប់</button>
+      <span class="pkg-card-title" data-i18n="buyTitle">ទិញកញ្ចប់ API</span>
+      <button class="buy-back" id="buyClose" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="pkg-card-body">
+      <div class="buy-brand"><span class="buy-brand-name">♪ MovAi</span><span class="buy-brand-site">movai-78r6.onrender.com</span></div>
+      <p class="buy-sum" id="buySum"></p>
+      <p class="buy-msg" id="buySigninMsg" hidden></p>
+      <div id="buySteps" hidden>
+        <p class="buy-label" data-i18n="choosePay">ជ្រើសរើសរបៀបបង់ប្រាក់៖</p>
+        <div class="buy-methods">
+          <button class="buy-method" id="buyKhqr" type="button">KHQR 🇰🇭</button>
+          <button class="buy-method" id="buyUsdt" type="button">QR USDT</button>
+        </div>
+        <div id="buyKhqrBox" hidden>
+          <p class="buy-label" data-i18n="amtToPay">ចំនួនត្រូវបង់</p>
+          <p class="buy-amt" id="buyKhqrAmt"></p>
+          <div class="buy-qr" id="buyKhqrQr"></div>
+          <p class="buy-hint" data-i18n="scanBank">ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — វាយចំនួននេះក្នុងអាប់ធនាគារ។ បង់ទៅឲ្យ YEM SOKHOEUN។</p>
+          <p class="buy-hint" id="buyKhqrPayloadWrap" hidden><span data-i18n="khqrCode">កូដ KHQR៖ </span><span id="buyKhqrPayload"></span></p>
+          <a class="buy-link" id="buyKhqrLink" href="#" target="_blank" rel="noopener" data-i18n="khqrLinkTxt">បើកលីង់បង់ប្រាក់ KHQR</a>
+        </div>
+        <div id="buyUsdtBox" hidden>
+          <p class="buy-label" data-i18n="amtToPay">ចំនួនត្រូវបង់</p>
+          <p class="buy-amt" id="buyUsdtAmt"></p>
+          <div class="buy-qr" id="buyUsdtQr"></div>
+          <p class="buy-hint" data-i18n="sendUsdt">សូមផ្ញើចំនួននេះឲ្យត្រឹមត្រូវជា USDT (TRC20 តែប៉ុណ្ណោះ) ទៅកាន់៖</p>
+          <p class="buy-addr" id="buyUsdtAddr"></p>
+          <p style="text-align:center;margin:0 0 10px"><button class="buy-method" id="buyCopyAddr" type="button" data-i18n="copyAddr" style="flex:none">ចម្លងអាសយដ្ឋាន</button> <span class="buy-hint" id="buyCopyMsg"></span></p>
+        </div>
+        <div class="buy-receipt" id="buyReceiptBox" hidden>
+          <p class="buy-label" data-i18n="receiptLbl">អាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក (បន្ទាប់ពីបង់ប្រាក់)៖</p>
+          <input type="file" id="buyReceiptFile" accept="image/jpeg,image/png,image/webp">
+          <p class="buy-hint" data-i18n="receiptHint">JPG, PNG ឬ WebP, អតិបរមា ៥ MB។</p>
+          <p class="buy-hint" id="buyReceiptName"></p>
+          <button class="buy-send" id="buySubmit" type="button" data-i18n="submitBuy">ខ្ញុំបានបង់ហើយ — ផ្ញើវិក្កយបត្រឲ្យអនុម័ត</button>
+          <p class="buy-msg" id="buyMsg"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* ---- theme: Day / Night / Auto (same key as index.html) ---- */
+  var THEME_KEY = "movai-theme";
+  function curTheme(){ try { return localStorage.getItem(THEME_KEY) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme(){
+    var v = curTheme();
+    var dark = v === "auto" ? !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) : v === "night";
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#000000" : "#f2faf6");
+    var seg = document.getElementById("themeSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-theme-val") === v); }
+  }
+  function setTheme(v){ try { localStorage.setItem(THEME_KEY, v); } catch (e) {} applyTheme(); }
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if (curTheme() === "auto") applyTheme(); }); } catch (e) {} }
+  var themeSeg = document.getElementById("themeSeg");
+  if (themeSeg) themeSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-theme-val]") : null;
+    if (b) setTheme(b.getAttribute("data-theme-val"));
+  });
+  applyTheme();
+
+  var API_BASE = "https://movai-proxy-wasr.onrender.com";
+  /* ---- Admin background themes (bg-themes client v1, same as index.html):
+     fetch the active theme; on ANY failure fall back to the embedded
+     default theme (theme 1) so the page still works. ---- */
+  var BG_THEME_DEFAULT = { id: "default", name: "ដើម · Original", imageUrl: null, gradient: ["#e8f5f0", "#f2faf6", "#ffffff"], acc1: "#ff2d78", acc2: "#ff7a18", dark: false, ink: "#1f2937", muted: "#6b7280" };
+  function applyBgTheme(t){
+    if (!t || !t.gradient || t.gradient.length !== 3) t = BG_THEME_DEFAULT;
+    var r = document.documentElement;
+    var g = t.gradient;
+    r.style.setProperty("--bg1", g[0]);
+    r.style.setProperty("--bg2", g[1]);
+    r.style.setProperty("--bg3", g[2]);
+    r.style.setProperty("--acc1", t.acc1 || BG_THEME_DEFAULT.acc1);
+    r.style.setProperty("--acc2", t.acc2 || BG_THEME_DEFAULT.acc2);
+    r.style.setProperty("--ink", t.ink || BG_THEME_DEFAULT.ink);
+    r.style.setProperty("--muted", t.muted || BG_THEME_DEFAULT.muted);
+    var b = document.body;
+    if (b) {
+      if (t.imageUrl) {
+        b.style.backgroundImage = "url(\"" + String(t.imageUrl).replace(/"/g, "") + "\"), linear-gradient(180deg," + g[0] + "," + g[1] + "," + g[2] + ")";
+        b.style.backgroundSize = "cover, cover";
+        b.style.backgroundPosition = "center, center";
+      } else {
+        b.style.backgroundImage = "";
+        b.style.backgroundSize = "";
+        b.style.backgroundPosition = "";
+      }
+    }
+    if (t.dark) r.classList.add("bg-dark"); else r.classList.remove("bg-dark");
+  }
+  function loadBgTheme(){
+    var ctrl = null, timer = null;
+    try {
+      if (window.AbortController) {
+        ctrl = new AbortController();
+        timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, 8000);
+      }
+    } catch (e) {}
+    var opts = { cache: "no-store" };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(API_BASE + "/api/public/bg-theme", opts)
+      .then(function(r){ if (timer) clearTimeout(timer); if (!r || !r.ok) throw new Error("bg-theme bad status"); return r.json(); })
+      .then(function(d){ if (d && d.ok && d.theme) applyBgTheme(d.theme); else applyBgTheme(BG_THEME_DEFAULT); })
+      .catch(function(){ if (timer) clearTimeout(timer); applyBgTheme(BG_THEME_DEFAULT); });
+  }
+  applyBgTheme(BG_THEME_DEFAULT);
+  loadBgTheme();
+
+  /* ---- i18n (same STR kh/en + data-i18n pattern as index.html) ---- */
+  var STR = {
+    kh: {
+      secApi: "MovAi API · API Key",
+      themeDay: "ថ្ងៃ", themeNight: "យប់", themeAuto: "ស្វ័យប្រវត្តិ",
+      apiTitle: "MovAi API — ប្រើ MovAi ពីខាងក្រៅ",
+      apiIntro: "API របស់ MovAi ឲ្យអ្នកហៅប្រើ MovAi ដោយផ្ទាល់ពីកម្មវិធី ឬគេហទំព័ររបស់អ្នក — បង្កើតចម្រៀង និងរូបភាពដោយ AI ដោយមិនចាំបាច់បើកអាប់។ អ្នកគ្រាន់តែយក API Key មួយទៅប្រើ។",
+      apiIntro2: "MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.",
+      needSignin: "សូមចូលប្រើជាមុនសិន",
+      needSigninBody: "អ្នកត្រូវចូលប្រើគណនី MovAi របស់អ្នកជាមុនសិន ទើបអាចបង្កើត API Key បាន។",
+      goSignin: "ចូលប្រើ · Sign In",
+      keyTitle: "API Key របស់ខ្ញុំ",
+      keyOnceWarn: "⚠️ Key នេះបង្ហាញពេញតែម្ដងនេះទេ! សូមចម្លង ហើយរក្សាទុកឲ្យបានសុវត្ថិភាព។ បន្ទាប់ពីចាកចេញពីទំព័រនេះ អ្នកនឹងឃើញតែផ្នែកដើម និង 4 តួចុងក្រោយប៉ុណ្ណោះ។",
+      genKey: "បង្កើត API Key",
+      copyKey: "ចម្លង Key",
+      regenKey: "បង្កើត Key ថ្មី",
+      revokeKey: "លុប Key",
+      balLbl: "សមតុល្យ API Credits",
+      quotaLbl: "កូតា (Quota) ប្រចាំខែ",
+      freeImgLbl: "រូបភាពឥតគិតថ្លៃដែលនៅសល់",
+      freeSongLbl: "បង្កើតចម្រៀងឥតគិតថ្លៃដែលនៅសល់",
+      usageLbl: "ការប្រើប្រាស់ (Usage)",
+      trialTitle: "សាកល្បងឥតគិតថ្លៃ · Free Trial",
+      trialBody: "អ្នកប្រើ API ថ្មីទទួលបានសាកល្បងឥតគិតថ្លៃ៖ រូបភាពឥតគិតថ្លៃ 4 រូប និងបង្កើតចម្រៀងឥតគិតថ្លៃ 1 ដង (1 ដង = 2 បទ)។ នេះជាការសាកល្បងម្ដងប៉ុណ្ណោះ មិនមែនជា Credits ផ្ដល់ឲ្យទេ។",
+      trialImgRule: "បន្ទាប់ពីប្រើរូបភាពឥតគិតថ្លៃ 4 រូបអស់ហើយ ការបង្កើតរូបភាពត្រូវការកញ្ចប់ API ដែលបានបង់ប្រាក់ និងនៅមានសុពលភាព។",
+      trialBodyEn: "New API users get a free trial: 4 free images and 1 free song generation (1 generation = 2 songs). This is a one-time trial, not free credits. After the 4 free images are used, image generation requires an active paid API package.",
+      costTitle: "តម្លៃក្នុងមួយលើក · Cost Per Call",
+      costWhat: "អ្វី", costAmt: "តម្លៃ", costNote: "កំណត់សម្គាល់",
+      costSong: "បង្កើតចម្រៀង (Song)",
+      costSongNote: "1 generation = 2 songs · 1 ដងបាន 2 បទ",
+      costImage: "បង្កើតរូបភាព (Image)",
+      costImageNote: "FREE · ឥតគិតថ្លៃ — មិនកាត់ Credits ទេ",
+      costVideo: "បង្កើតវីដេអូ (Video)",
+      costVideoNote: "COMING SOON · មិនទាន់បើក",
+      videoTitle: "Generate Video",
+      videoBody: "Generate Video ប្រើម៉ូដែល Pro តែប៉ុណ្ណោះ គ្មានកម្រិតឥតគិតថ្លៃទេ ហើយនៅមិនទាន់បើកឲ្យប្រើនៅឡើយទេ។ តម្លៃកញ្ចប់នឹងត្រូវកំណត់នៅពេលក្រោយក្នុង Admin។",
+      videoCost: "តម្លៃក្នុងមួយលើក៖ 50 credits ក្នុងមួយវីដេអូ។",
+      videoBodyEn: "Generate Video uses the Pro model only, has no free tier, and is not open yet. Its package price will be set later in Admin.",
+      priceTitle: "តម្លៃកញ្ចប់ · Pricing",
+      priceDiffNote: "⚠️ តម្លៃ API ខាងក្រោម ខុសពីតម្លៃគេហទំព័រ MovAi (App) ខាងក្រោមទៀត — វាជាតម្លៃពីរផ្សេងគ្នា។ API prices below are DIFFERENT from the website (app) prices further below — they are two separate price lists.",
+      apiPkgTitle: "កញ្ចប់ API · API Packages",
+      apiPkgNote: "អត្រាគោល៖ $5 = 600 credits (120 credits / $1)។ ទិញដោយ KHQR / USDT ហើយ Admin អនុម័ត។",
+      appPkgTitle: "កញ្ចប់គេហទំព័រ (App) · Website App Packages",
+      appPkgNote: "នេះជាតម្លៃរបស់គេហទំព័រ / អាប់ MovAi ផ្ទាល់ — ខុសពីតម្លៃ API ខាងលើ។ ទិញក្នុងអាប់តាម Upgrade។",
+      appPkgBuyLink: "ទិញកញ្ចប់ App ក្នុងគេហទំព័រ · Buy app packages on the website →",
+      buyBtn: "ទិញ · Buy",
+      exTitle: "ឧទាហរណ៍ · Examples (curl)",
+      exSong: "បង្កើតចម្រៀង · Create a song — POST /api/v1/songs",
+      exImage: "បង្កើតរូបភាព · Create an image — POST /api/v1/images",
+      exBal: "មើលសមតុល្យ · Check balance — GET /api/v1/balance",
+      backHome: "ត្រឡប់ទៅទំព័រដើម",
+      buyBack: "← ត្រឡប់", buyTitle: "ទិញកញ្ចប់ API",
+      choosePay: "ជ្រើសរើសរបៀបបង់ប្រាក់៖",
+      amtToPay: "ចំនួនត្រូវបង់",
+      scanBank: "ស្កេនជាមួយអាប់ធនាគារណាមួយក៏បាន — វាយចំនួននេះក្នុងអាប់ធនាគារ។ បង់ទៅឲ្យ YEM SOKHOEUN។",
+      khqrCode: "កូដ KHQR៖ ", khqrLinkTxt: "បើកលីង់បង់ប្រាក់ KHQR",
+      sendUsdt: "សូមផ្ញើចំនួននេះឲ្យត្រឹមត្រូវជា USDT (TRC20 តែប៉ុណ្ណោះ) ទៅកាន់៖",
+      copyAddr: "ចម្លងអាសយដ្ឋាន", copiedAddr: "បានចម្លងអាសយដ្ឋានហើយ",
+      receiptLbl: "អាប់ឡូតវិក្កយបត្រទូទាត់របស់អ្នក (បន្ទាប់ពីបង់ប្រាក់)៖",
+      receiptHint: "JPG, PNG ឬ WebP, អតិបរមា ៥ MB។",
+      submitBuy: "ខ្ញុំបានបង់ហើយ — ផ្ញើវិក្កយបត្រឲ្យអនុម័ត",
+      uploadReceiptFirst: "សូមអាប់ឡូតវិក្កយបត្រជាមុនសិន។",
+      uploadingReceipt: "កំពុងអាប់ឡូតវិក្កយបត្រ…",
+      receiptUploaded: "បានអាប់ឡូតវិក្កយបត្រ — កំពុងផ្ញើទៅ Admin…",
+      receiptUploadFail: "អាប់ឡូតវិក្កយបត្រមិនបានទេ។",
+      purchaseFail: "ផ្ញើការទិញមិនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      waitingApproval: "បានផ្ញើហើយ — កំពុងរង់ចាំ Admin អនុម័ត។",
+      readImageFail: "អានរូបភាពមិនបានទេ។",
+      qrFailKhqr: "បង្កើត QR មិនបានទេ — សូមប្រើលីង់ KHQR ខាងក្រោម។ ចំនួនត្រូវបង់៖ ",
+      qrFailUsdt: "បង្កើត QR មិនបានទេ — សូមចម្លងអាសយដ្ឋានខាងក្រោម។",
+      buySigninFirst: "សូមចូលប្រើជាមុនសិន ទើបអាចទិញបាន។",
+      noServer: "មិនអាចភ្ជាប់ទៅ server បានទេ។ សូមព្យាយាមម្ដងទៀត។",
+      signedInAs: "បានចូលជា ",
+      keyCreated: "បានបង្កើត API Key ហើយ — សូមចម្លងវាឥឡូវនេះ វាបង្ហាញពេញតែម្ដងនេះទេ។",
+      keyCopied: "បានចម្លង Key ហើយ។",
+      keyCopyNeedFull: "Key ត្រូវបានលាក់ហើយ — សូមបង្កើត Key ថ្មីដើម្បីចម្លង Key ពេញ។",
+      keyRevoked: "បានលុប API Key ហើយ។",
+      keyRegen: "បានបង្កើត Key ថ្មីហើយ — សូមចម្លងវាឥឡូវនេះ វាបង្ហាញពេញតែម្ដងនេះទេ។",
+      keyRevokeConfirm: "តើអ្នកពិតជាចង់លុប API Key នេះមែនទេ? កម្មវិធីដែលប្រើ Key នេះនឹងឈប់ដំណើរការ។",
+      keyLoadFail: "មិនអាចផ្ទុក API Key បានទេ។",
+      noKeyYet: "អ្នកមិនទាន់មាន API Key ទេ — ចុច «បង្កើត API Key»។"
+    },
+    en: {
+      secApi: "MovAi API · API Key",
+      themeDay: "Day", themeNight: "Night", themeAuto: "Auto",
+      apiTitle: "MovAi API — Use MovAi From Outside",
+      apiIntro: "MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.",
+      apiIntro2: "MovAi API lets you call MovAi directly from your own app or website — generate songs and images with AI without opening the app. You just need one API Key.",
+      needSignin: "Please sign in first",
+      needSigninBody: "Sign in to your MovAi account first, then you can create an API Key.",
+      goSignin: "Sign In",
+      keyTitle: "My API Key",
+      keyOnceWarn: "⚠️ This full key is shown only ONCE! Copy it and keep it safe. After you leave this page you will only see its prefix and last 4 characters.",
+      genKey: "Generate API Key",
+      copyKey: "Copy Key",
+      regenKey: "Regenerate Key",
+      revokeKey: "Revoke Key",
+      balLbl: "API Credits balance",
+      quotaLbl: "Monthly quota",
+      freeImgLbl: "Free images left",
+      freeSongLbl: "Free song generations left",
+      usageLbl: "Usage",
+      trialTitle: "Free Trial",
+      trialBody: "New API users get a free trial: 4 free images and 1 free song generation (1 generation = 2 songs). This is a one-time trial, not free credits.",
+      trialImgRule: "After the 4 free images are used up, image generation requires an active paid API package.",
+      trialBodyEn: "New API users get a free trial: 4 free images and 1 free song generation (1 generation = 2 songs). This is a one-time trial, not free credits. After the 4 free images are used, image generation requires an active paid API package.",
+      costTitle: "Cost Per Call",
+      costWhat: "What", costAmt: "Cost", costNote: "Note",
+      costSong: "Song generation",
+      costSongNote: "1 generation = 2 songs",
+      costImage: "Image generation",
+      costImageNote: "FREE — never deducts credits",
+      costVideo: "Video generation",
+      costVideoNote: "COMING SOON · Not open yet",
+      videoTitle: "Generate Video",
+      videoBody: "Generate Video uses the Pro model only, has no free tier, and is not open yet. Its package price will be set later in Admin.",
+      videoCost: "Cost per call: 50 credits per video.",
+      videoBodyEn: "Generate Video uses the Pro model only, has no free tier, and is not open yet. Its package price will be set later in Admin.",
+      priceTitle: "Pricing",
+      priceDiffNote: "⚠️ The API prices below are DIFFERENT from the MovAi website (app) prices further below — they are two separate price lists.",
+      apiPkgTitle: "API Packages",
+      apiPkgNote: "Standard rate: $5 = 600 credits (120 credits / $1). Pay by KHQR / USDT; Admin approves.",
+      appPkgTitle: "Website App Packages",
+      appPkgNote: "These are the MovAi website / app prices — different from the API prices above. Buy in the app via Upgrade.",
+      appPkgBuyLink: "Buy app packages on the website →",
+      buyBtn: "Buy",
+      exTitle: "Examples (curl)",
+      exSong: "Create a song — POST /api/v1/songs",
+      exImage: "Create an image — POST /api/v1/images",
+      exBal: "Check balance — GET /api/v1/balance",
+      backHome: "Back to home",
+      buyBack: "← Back", buyTitle: "Buy API Package",
+      choosePay: "Choose a payment method:",
+      amtToPay: "Amount to pay",
+      scanBank: "Scan with any bank app — type this amount in your bank app. Pay to YEM SOKHOEUN.",
+      khqrCode: "KHQR code: ", khqrLinkTxt: "Open KHQR payment link",
+      sendUsdt: "Send exactly this amount in USDT (TRC20 only) to:",
+      copyAddr: "Copy address", copiedAddr: "Address copied",
+      receiptLbl: "Upload your payment receipt (after paying):",
+      receiptHint: "JPG, PNG or WebP, max 5 MB.",
+      submitBuy: "I've paid — send receipt for approval",
+      uploadReceiptFirst: "Please upload your receipt first.",
+      uploadingReceipt: "Uploading receipt…",
+      receiptUploaded: "Receipt uploaded — sending to admin…",
+      receiptUploadFail: "Could not upload the receipt.",
+      purchaseFail: "Could not send the purchase. Please try again.",
+      waitingApproval: "Sent — waiting for Admin approval.",
+      readImageFail: "Could not read the image.",
+      qrFailKhqr: "Could not draw the QR — please use the KHQR link below. Amount to pay: ",
+      qrFailUsdt: "Could not draw the QR — please copy the address below.",
+      buySigninFirst: "Please sign in first to buy.",
+      noServer: "Could not reach the server. Please try again.",
+      signedInAs: "Signed in as ",
+      keyCreated: "API Key created — copy it now, it is shown in full only once.",
+      keyCopied: "Key copied.",
+      keyCopyNeedFull: "The key is masked — regenerate a new key to copy the full key.",
+      keyRevoked: "API Key revoked.",
+      keyRegen: "New key created — copy it now, it is shown in full only once.",
+      keyRevokeConfirm: "Really revoke this API Key? Apps using it will stop working.",
+      keyLoadFail: "Could not load the API Key.",
+      noKeyYet: "You do not have an API Key yet — tap “Generate API Key”."
+    }
+  };
+  var LANG_KEY = "movai-lang";
+  var lang = "kh";
+  try {
+    var _sl = localStorage.getItem(LANG_KEY) || "";
+    if (_sl === "en" || _sl === "kh") lang = _sl;
+  } catch (e) {}
+  function t(k){
+    var d = (STR && STR[lang]) || STR.en;
+    return (d && d[k]) || (STR.en && STR.en[k]) || k;
+  }
+  function applyLang(){
+    var els = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute("data-i18n"); els[i].textContent = t(k); }
+    document.documentElement.lang = lang === "en" ? "en" : "km";
+    var seg = document.getElementById("langSeg");
+    if (seg) { var bs = seg.querySelectorAll("button"); for (var q = 0; q < bs.length; q++) bs[q].classList.toggle("on", bs[q].getAttribute("data-lang-val") === lang); }
+    renderKeyEmail();
+  }
+  function setLang(v){ lang = v; try { localStorage.setItem(LANG_KEY, v); } catch (e) {} applyLang(); }
+  var langSeg = document.getElementById("langSeg");
+  if (langSeg) langSeg.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button[data-lang-val]") : null;
+    if (b) setLang(b.getAttribute("data-lang-val"));
+  });
+
+  /* ---- session: same "movai-session" email string as index.html /
+     movai-new-profile.html (GET /api/public/* calls send {email}). ---- */
+  function curEmail(){
+    var em = "";
+    try { em = (localStorage.getItem("movai-session") || "").trim(); } catch (e) {}
+    return em;
+  }
+  function apiJson(path, method, body){
+    var opts = { method: method || "GET", headers: { "Content-Type": "application/json" }, cache: "no-store" };
+    if (body !== undefined) opts.body = JSON.stringify(body);
+    return fetch(API_BASE + path, opts).then(function(r){ return r.json(); });
+  }
+  function apiPost(path, body, timeoutMs){
+    var ctrl = null, timer = null;
+    var opts = { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) };
+    if (window.AbortController) {
+      ctrl = new AbortController();
+      opts.signal = ctrl.signal;
+      var ms = timeoutMs || 60000;
+      if (ms > 0) timer = setTimeout(function(){ try { ctrl.abort(); } catch (e) {} }, ms);
+    }
+    return fetch(API_BASE + path, opts).then(function(r){
+      if (timer) clearTimeout(timer);
+      return r.json().catch(function(){ return null; });
+    }).catch(function(e){
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
+  }
+
+  /* ---- API key state ---- */
+  var keyMsg = document.getElementById("keyMsg");
+  var keyDisplay = document.getElementById("keyDisplay");
+  var keyFullBox = document.getElementById("keyFullBox");
+  var keyFullEl = document.getElementById("keyFull");
+  var currentKey = null;      /* {id, prefix, last4, masked} from the server list */
+  var currentFullKey = "";    /* full key, held in memory ONLY, shown once */
+  function pick(o){
+    if (!o) return null;
+    if (typeof o !== "object") return o;
+    for (var i = 1; i < arguments.length; i++) {
+      var k = arguments[i];
+      if (o[k] !== undefined && o[k] !== null && o[k] !== "") return o[k];
+    }
+    return null;
+  }
+  function maskKey(k){
+    if (!k) return "—";
+    k = String(k);
+    if (k.length <= 8) return k.slice(0, 2) + "…" + k.slice(-4);
+    return k.slice(0, 8) + "…" + k.slice(-4);
+  }
+  function renderKeyEmail(){
+    var el = document.getElementById("keyEmailLine");
+    var em = curEmail();
+    if (el) el.textContent = em ? (t("signedInAs") + em) : "";
+  }
+  function showFullKeyOnce(full){
+    currentFullKey = full || "";
+    if (currentFullKey) {
+      keyFullEl.textContent = currentFullKey;
+      keyFullBox.hidden = false;
+    } else {
+      keyFullBox.hidden = true;
+    }
+  }
+  function renderKey(){
+    if (!currentKey) {
+      keyDisplay.textContent = t("noKeyYet");
+      keyFullBox.hidden = true;
+      return;
+    }
+    var masked = pick(currentKey, "masked", "maskedKey", "display") || maskKey(pick(currentKey, "prefix", "keyPrefix", "key") || "");
+    if (!masked || masked === "—") {
+      var pre = pick(currentKey, "prefix", "keyPrefix") || "";
+      var last4 = pick(currentKey, "last4", "lastFour") || "";
+      masked = pre ? (pre + "…" + last4) : "—";
+    }
+    keyDisplay.textContent = masked;
+  }
+  function renderBalance(d){
+    var bal = pick(d, "balance", "credits", "apiCredits");
+    var quota = pick(d, "quota", "monthlyQuota", "creditQuota", "limit");
+    var freeImg = pick(d, "freeImagesLeft", "freeImages", "imagesLeft");
+    var freeSong = pick(d, "freeSongsLeft", "freeSongGenerationsLeft", "freeGenerationsLeft");
+    var set = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = (v === null || v === undefined || v === "") ? "—" : String(v); };
+    set("apiBalance", bal);
+    set("apiQuota", quota);
+    set("freeImagesLeft", freeImg === null || freeImg === undefined ? "4" : freeImg);
+    set("freeSongsLeft", freeSong === null || freeSong === undefined ? "1" : freeSong);
+  }
+  function renderUsage(d){
+    var el = document.getElementById("apiUsage");
+    if (!el) return;
+    if (!d) { el.textContent = "—"; return; }
+    var songs = pick(d, "songs", "songCalls", "songGenerations");
+    var images = pick(d, "images", "imageCalls");
+    var parts = [];
+    if (songs !== null && songs !== undefined) parts.push("Songs: " + songs);
+    if (images !== null && images !== undefined) parts.push("Images: " + images);
+    el.textContent = parts.length ? parts.join(" · ") : "—";
+  }
+  function loadKeys(){
+    var em = curEmail();
+    if (!em) return Promise.resolve(null);
+    return apiJson("/api/public/api-keys?email=" + encodeURIComponent(em), "GET")
+      .then(function(d){
+        if (!d || d.ok !== true) throw new Error((d && d.error) || t("keyLoadFail"));
+        var list = d.keys || d.apiKeys || [];
+        currentKey = (list && list.length) ? list[0] : null;
+        renderKey();
+        renderBalance(currentKey || d);
+        return d;
+      })
+      .catch(function(){
+        keyMsg.textContent = t("keyLoadFail");
+        keyMsg.className = "msg";
+        renderBalance(null);
+        return null;
+      });
+  }
+  function loadBalance(){
+    if (!currentFullKey) return;
+    fetch(API_BASE + "/api/v1/balance", { headers: { "X-API-Key": currentFullKey }, cache: "no-store" })
+      .then(function(r){ return r.json().catch(function(){ return null; }); })
+      .then(function(d){ if (d) renderBalance(d); })
+      .catch(function(){});
+    fetch(API_BASE + "/api/v1/usage", { headers: { "X-API-Key": currentFullKey }, cache: "no-store" })
+      .then(function(r){ return r.json().catch(function(){ return null; }); })
+      .then(function(d){ if (d) renderUsage(d && d.usage ? d.usage : d); })
+      .catch(function(){});
+  }
+  function keyIdOf(){
+    return currentKey ? (pick(currentKey, "id", "keyId") || "") : "";
+  }
+  var genBtn = document.getElementById("genKeyBtn");
+  var copyBtn = document.getElementById("copyKeyBtn");
+  var regenBtn = document.getElementById("regenKeyBtn");
+  var revokeBtn = document.getElementById("revokeKeyBtn");
+  if (genBtn) genBtn.addEventListener("click", function(){
+    var em = curEmail();
+    if (!em) return;
+    keyMsg.textContent = "";
+    apiPost("/api/public/api-keys", { email: em }, 60000).then(function(d){
+      if (!d || d.ok !== true) throw new Error((d && d.error) || t("noServer"));
+      var full = pick(d, "key", "apiKey", "fullKey") || (d.keyObj ? pick(d.keyObj, "key", "apiKey") : null);
+      currentKey = d.keyObj || d.key || d;
+      if (full) showFullKeyOnce(full);
+      renderKey();
+      renderBalance(d.keyObj || d);
+      loadBalance();
+      keyMsg.textContent = t("keyCreated");
+      keyMsg.className = "msg ok-t";
+    }).catch(function(err){
+      keyMsg.textContent = (err && err.message) ? err.message : t("noServer");
+      keyMsg.className = "msg";
+    });
+  });
+  if (copyBtn) copyBtn.addEventListener("click", function(){
+    var done = function(){ keyMsg.textContent = t("keyCopied"); keyMsg.className = "msg ok-t"; };
+    if (!currentFullKey) { keyMsg.textContent = t("keyCopyNeedFull"); keyMsg.className = "msg"; return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(currentFullKey).then(done, done);
+    else { try { var ta = document.createElement("textarea"); ta.value = currentFullKey; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); } catch (e) {} done(); }
+  });
+  if (regenBtn) regenBtn.addEventListener("click", function(){
+    var em = curEmail();
+    if (!em) return;
+    keyMsg.textContent = "";
+    apiPost("/api/public/api-keys/regenerate", { email: em, keyId: keyIdOf() }, 60000).then(function(d){
+      if (!d || d.ok !== true) throw new Error((d && d.error) || t("noServer"));
+      var full = pick(d, "key", "apiKey", "fullKey") || (d.keyObj ? pick(d.keyObj, "key", "apiKey") : null);
+      currentKey = d.keyObj || d.key || d;
+      if (full) showFullKeyOnce(full);
+      renderKey();
+      renderBalance(d.keyObj || d);
+      loadBalance();
+      keyMsg.textContent = t("keyRegen");
+      keyMsg.className = "msg ok-t";
+    }).catch(function(err){
+      keyMsg.textContent = (err && err.message) ? err.message : t("noServer");
+      keyMsg.className = "msg";
+    });
+  });
+  if (revokeBtn) revokeBtn.addEventListener("click", function(){
+    var em = curEmail();
+    if (!em || !currentKey) return;
+    if (!window.confirm(t("keyRevokeConfirm"))) return;
+    keyMsg.textContent = "";
+    apiPost("/api/public/api-keys/revoke", { email: em, keyId: keyIdOf() }, 60000).then(function(d){
+      if (!d || d.ok !== true) throw new Error((d && d.error) || t("noServer"));
+      currentKey = null;
+      currentFullKey = "";
+      showFullKeyOnce("");
+      renderKey();
+      renderBalance(null);
+      renderUsage(null);
+      keyMsg.textContent = t("keyRevoked");
+      keyMsg.className = "msg ok-t";
+    }).catch(function(err){
+      keyMsg.textContent = (err && err.message) ? err.message : t("noServer");
+      keyMsg.className = "msg";
+    });
+  });
+
+  /* ---- buy sheet: KHQR / USDT for the API packages (same pattern as
+     index.html). Receipt upload + purchase request reuse the market flow;
+     credits are granted ONLY after the admin approves. The request carries
+     kind: "api-package" so Admin knows it is an API package, not an app
+     package. Every step is logged to /api/public/purchase-event. ---- */
+  var BUY_PAY = { khqrLink: "https://pay.canadiabank.com.kh/K6EkJR30W0BM3VVK", usdtAddress: "TPHu2Z45PZ9xUB7AzqMehWKv72HysE9Vzd" };
+  var KHQR_BASE = "00020101021129530016cadikhppxxx@cadi011300100045531070212Canadia Bank5204000053038405802KH5912YEM SOKHOEUN6010Phnom Penh";
+  function buyEmail(){ return curEmail(); }
+  function buyEvent(step, method){
+    var em = buyEmail();
+    if (!em || !buyPkg) return;
+    try { apiPost("/api/public/purchase-event", { email: em, packageId: buyPkg.id, kind: "api-package", step: step, method: method || "" }, 15000).catch(function(){}); } catch (e) {}
+  }
+  function khqrCrc16(s){
+    var crc = 65535;
+    for (var i = 0; i < s.length; i++) {
+      crc ^= s.charCodeAt(i) << 8;
+      for (var b = 0; b < 8; b++) {
+        crc = (crc & 32768) ? ((crc << 1) ^ 4129) & 65535 : (crc << 1) & 65535;
+      }
+    }
+    return crc;
+  }
+  function khqrStaticPayload(){
+    var p = KHQR_BASE; /* 010211 = static, no amount tag — buyer types it */
+    var crc = khqrCrc16(p + "6304");
+    return p + "6304" + ("0000" + crc.toString(16).toUpperCase()).slice(-4);
+  }
+  function buyQrSvg(text){
+    try {
+      if (typeof qrcode !== "function") return "";
+      var qr = qrcode(0, "M");
+      qr.addData(text, "Byte");
+      qr.make();
+      return qr.createSvgTag({ cellSize: 6, margin: 8 });
+    } catch (e) { return ""; }
+  }
+  function buyLoadSettings(){
+    fetch(API_BASE + "/api/admin/settings", { cache: "no-store" }).then(function(r){ return r.json(); }).then(function(d){
+      var pay = d && d.settings && d.settings.payment;
+      if (pay) {
+        if (typeof pay.khqrLink === "string" && pay.khqrLink.trim()) BUY_PAY.khqrLink = pay.khqrLink.trim();
+        if (typeof pay.binanceUsdtAddress === "string" && pay.binanceUsdtAddress.trim()) BUY_PAY.usdtAddress = pay.binanceUsdtAddress.trim();
+      }
+    }).catch(function(){ /* keep the verified defaults above */ });
+  }
+  var buyPkg = null;      /* {id, name, price, credits, kind: "api-package"} */
+  var buyMethod = "";     /* "khqr" | "usdt" */
+  var buyQrShown = false;
+  var buySent = false;
+  var buyReceiptFile = null;
+  var buySheetEl = document.getElementById("buySheet");
+  var buySum = document.getElementById("buySum");
+  var buySigninMsg = document.getElementById("buySigninMsg");
+  var buySteps = document.getElementById("buySteps");
+  var buyKhqr = document.getElementById("buyKhqr");
+  var buyUsdt = document.getElementById("buyUsdt");
+  var buyKhqrBox = document.getElementById("buyKhqrBox");
+  var buyUsdtBox = document.getElementById("buyUsdtBox");
+  var buyKhqrAmt = document.getElementById("buyKhqrAmt");
+  var buyKhqrQr = document.getElementById("buyKhqrQr");
+  var buyKhqrPayloadWrap = document.getElementById("buyKhqrPayloadWrap");
+  var buyKhqrPayload = document.getElementById("buyKhqrPayload");
+  var buyKhqrLink = document.getElementById("buyKhqrLink");
+  var buyUsdtAmt = document.getElementById("buyUsdtAmt");
+  var buyUsdtQr = document.getElementById("buyUsdtQr");
+  var buyUsdtAddr = document.getElementById("buyUsdtAddr");
+  var buyCopyAddr = document.getElementById("buyCopyAddr");
+  var buyCopyMsg = document.getElementById("buyCopyMsg");
+  var buyReceiptBox = document.getElementById("buyReceiptBox");
+  var buyReceiptInput = document.getElementById("buyReceiptFile");
+  var buyReceiptName = document.getElementById("buyReceiptName");
+  var buySubmit = document.getElementById("buySubmit");
+  var buyMsg = document.getElementById("buyMsg");
+  var buyBackBtn = document.getElementById("buyBack");
+  var buyCloseBtn = document.getElementById("buyClose");
+  function openBuySheet(pkg){
+    buyPkg = pkg; buyMethod = ""; buyQrShown = false; buySent = false; buyReceiptFile = null;
+    buyKhqrBox.hidden = true; buyUsdtBox.hidden = true; buyReceiptBox.hidden = true;
+    buyKhqr.classList.remove("picked"); buyUsdt.classList.remove("picked");
+    buyMsg.textContent = ""; buyMsg.className = "buy-msg"; buyReceiptName.textContent = ""; buyCopyMsg.textContent = "";
+    buyReceiptInput.value = "";
+    buySum.textContent = pkg.name + " — $" + pkg.price + (lang === "en" ? "/month" : "/ខែ") + " · " + pkg.credits + " API Credits";
+    var em = buyEmail();
+    buySigninMsg.hidden = !!em;
+    buySteps.hidden = !em;
+    if (!em) buySigninMsg.textContent = t("buySigninFirst");
+    if (buySheetEl) buySheetEl.hidden = false;
+    buyEvent("viewed", "");
+  }
+  function closeBuySheet(){
+    if (buySheetEl) buySheetEl.hidden = true;
+    if (buyPkg && buyQrShown && !buySent) buyEvent("abandoned", buyMethod);
+    buyPkg = null;
+  }
+  function showBuyMethod(method){
+    if (!buyPkg) return;
+    buyMethod = method;
+    buyKhqr.classList.toggle("picked", method === "khqr");
+    buyUsdt.classList.toggle("picked", method === "usdt");
+    buyKhqrBox.hidden = method !== "khqr";
+    buyUsdtBox.hidden = method !== "usdt";
+    buyReceiptBox.hidden = false;
+    buyMsg.textContent = ""; buyMsg.className = "buy-msg";
+    buyEvent("method", method);
+    if (method === "khqr") {
+      buyKhqrAmt.textContent = "$" + buyPkg.price;
+      var payload = khqrStaticPayload();
+      var svg = buyQrSvg(payload);
+      buyKhqrQr.innerHTML = "";
+      if (svg) { buyKhqrQr.innerHTML = svg; buyKhqrPayloadWrap.hidden = true; }
+      else {
+        buyKhqrPayload.textContent = payload;
+        buyKhqrPayloadWrap.hidden = false;
+        var warn = document.createElement("p");
+        warn.className = "buy-hint";
+        warn.textContent = t("qrFailKhqr") + "$" + buyPkg.price;
+        buyKhqrQr.appendChild(warn);
+      }
+      buyKhqrLink.href = BUY_PAY.khqrLink;
+    } else {
+      buyUsdtAmt.textContent = "$" + buyPkg.price + " USDT";
+      buyUsdtAddr.textContent = BUY_PAY.usdtAddress;
+      var usvg = buyQrSvg(BUY_PAY.usdtAddress);
+      buyUsdtQr.innerHTML = "";
+      if (usvg) buyUsdtQr.innerHTML = usvg;
+      else {
+        var w2 = document.createElement("p");
+        w2.className = "buy-hint";
+        w2.textContent = t("qrFailUsdt");
+        buyUsdtQr.appendChild(w2);
+      }
+    }
+    buyQrShown = true;
+    buyEvent("qr", method);
+  }
+  if (buyKhqr) buyKhqr.addEventListener("click", function(){ showBuyMethod("khqr"); });
+  if (buyUsdt) buyUsdt.addEventListener("click", function(){ showBuyMethod("usdt"); });
+  if (buyCopyAddr) buyCopyAddr.addEventListener("click", function(){
+    var done = function(){ buyCopyMsg.textContent = t("copiedAddr"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(BUY_PAY.usdtAddress).then(done, done);
+    else { try { var ta = document.createElement("textarea"); ta.value = BUY_PAY.usdtAddress; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); } catch (e) {} done(); }
+  });
+  if (buyReceiptInput) buyReceiptInput.addEventListener("change", function(){
+    buyReceiptFile = buyReceiptInput.files && buyReceiptInput.files[0] ? buyReceiptInput.files[0] : null;
+    buyReceiptName.textContent = buyReceiptFile ? buyReceiptFile.name : "";
+    if (buyReceiptFile) buyEvent("receipt", buyMethod);
+  });
+  if (buySubmit) buySubmit.addEventListener("click", function(){
+    var em = buyEmail();
+    if (!em || !buyPkg) return;
+    if (!buyReceiptFile) { buyMsg.textContent = t("uploadReceiptFirst"); buyMsg.className = "buy-msg"; return; }
+    buySubmit.disabled = true;
+    buyMsg.textContent = t("uploadingReceipt");
+    buyMsg.className = "buy-msg";
+    var reader = new FileReader();
+    reader.onload = function(){
+      var dataUrl = String(reader.result || "");
+      var b64 = dataUrl.indexOf(",") >= 0 ? dataUrl.split(",")[1] : dataUrl;
+      apiPost("/api/public/purchase-receipt", { email: em, filename: buyReceiptFile.name, data: b64 }, 60000).then(function(rd){
+        if (!rd || rd.ok !== true || !rd.url) throw new Error((rd && rd.error) || t("receiptUploadFail"));
+        buyMsg.textContent = t("receiptUploaded");
+        return apiPost("/api/admin/purchase-request", { email: em, packageId: buyPkg.id, plan: buyPkg.name, kind: "api-package", method: buyMethod, receiptUrl: rd.url }, 60000);
+      }).then(function(bd){
+        if (!bd || bd.ok !== true) throw new Error((bd && bd.error) || t("purchaseFail"));
+        buySent = true;
+        buyMsg.textContent = t("waitingApproval");
+        buyMsg.className = "buy-msg ok-t";
+        buySubmit.disabled = false;
+        buyEvent("sent", buyMethod);
+      }).catch(function(err){
+        buyMsg.textContent = (err && err.message) ? err.message : t("purchaseFail");
+        buyMsg.className = "buy-msg";
+        buySubmit.disabled = false;
+      });
+    };
+    reader.onerror = function(){
+      buyMsg.textContent = t("readImageFail");
+      buyMsg.className = "buy-msg";
+      buySubmit.disabled = false;
+    };
+    reader.readAsDataURL(buyReceiptFile);
+  });
+  if (buyBackBtn) buyBackBtn.addEventListener("click", function(){ closeBuySheet(); });
+  if (buyCloseBtn) buyCloseBtn.addEventListener("click", function(){ closeBuySheet(); });
+  if (buySheetEl) buySheetEl.addEventListener("click", function(e){ if (e.target === buySheetEl) { closeBuySheet(); } });
+  var apiBuyBtns = document.querySelectorAll(".api-buy-btn");
+  for (var _bi = 0; _bi < apiBuyBtns.length; _bi++) {
+    apiBuyBtns[_bi].addEventListener("click", function(){
+      openBuySheet({ id: this.getAttribute("data-pkg"), price: this.getAttribute("data-price"), credits: this.getAttribute("data-credits"), name: this.getAttribute("data-name"), kind: "api-package" });
+    });
+  }
+  buyLoadSettings();
+
+  /* ---- init ---- */
+  applyLang();
+  var em0 = curEmail();
+  var signinCard = document.getElementById("signinCard");
+  var keyCard = document.getElementById("keyCard");
+  if (signinCard) signinCard.hidden = !!em0;
+  if (keyCard) keyCard.hidden = !em0;
+  if (em0) { renderKeyEmail(); renderKey(); renderBalance(null); loadKeys(); }
+})();
+</script>
+</body>
+</html>
